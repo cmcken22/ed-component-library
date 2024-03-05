@@ -1,5 +1,5 @@
 // import { Colors, palette, theme, useEllisDonTheme } from "./theme";
-import './main.css';
+import './index.css';
 export { default as Avatar } from "./Avatar";
 export { default as Button } from "./Button";
 export { default as Typography } from "./Typography";

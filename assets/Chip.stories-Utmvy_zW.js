@@ -1,0 +1,17 @@
+import{j as r}from"./Typography-B9kEj_1_.js";import{r as y}from"./index-CBqU2yxZ.js";import{a,I as x}from"./Icon-D5TdMPxV.js";import{T as u}from"./Typography-DWwGZyhw.js";import{h}from"./index-DkvFToXR.js";import{s as w}from"./styled-rwD5gtOs.js";import{B as I}from"./Box-BFjoy81w.js";import"./emotion-use-insertion-effect-with-fallbacks.browser.esm-DZp7yd2Y.js";import"./_commonjsHelpers-BosuxZz1.js";import"./index-Bzc-O77O.js";import"./Typography-LR_mAL0j.js";const T=w(I,{shouldForwardProp:e=>e!=="type"&&e!=="iconPosition",slot:"root"})(({theme:e,type:n,iconPosition:t})=>{const i={positive:e.palette.success.dark,negative:e.palette.error.dark,warning:e.palette.warning.dark,pending:e.palette.primary[70],neutral:e.palette.charcoal[80]};return{width:"fit-content",display:"flex",flexDirection:t==="right"?"row-reverse":"row",alignItems:"center",borderRadius:"16px",paddingTop:e.spacing(.5),paddingBottom:e.spacing(.5),paddingLeft:e.spacing(1),paddingRight:e.spacing(1),background:h(i[n],.2),gap:e.spacing(.5),".icon-wrapper":{color:i[n]},".MuiTypography-root":{color:i[n]}}}),s=({id:e,type:n,text:t,hideIcon:i,iconPosition:f,onClick:l,onHover:v,children:p})=>{const d=y.useMemo(()=>n==="positive"?a.Success:n==="negative"?a.Error:n==="warning"?a.WarningV2:n==="pending"?a.MoreActionsHorizontal:n==="neutral"?a.Undetermined:"",[n]);return r.jsxs(T,{id:e,type:n,iconPosition:f,onClick:l,onMouseEnter:v,sx:{cursor:l?"pointer":"default"},children:[!i&&d&&r.jsx(x,{icon:d,height:"14px",width:"14px"}),typeof p=="string"?r.jsx(u,{preventTextSelection:!0,variant:"bodyXS",children:t}):r.jsx(r.Fragment,{children:p}),t&&!p&&r.jsx(u,{preventTextSelection:!0,variant:"bodyXS",children:t})]})};s.defaultProps={type:"neutral",hideIcon:!1,iconPosition:"left"};try{s.displayName="Chip",s.__docgenInfo={description:"",displayName:"Chip",props:{id:{defaultValue:null,description:"",name:"id",required:!1,type:{name:"string"}},type:{defaultValue:{value:'"neutral" as ChipType'},description:"",name:"type",required:!1,type:{name:"enum",value:[{value:'"warning"'},{value:'"positive"'},{value:'"negative"'},{value:'"pending"'},{value:'"neutral"'}]}},text:{defaultValue:null,description:"",name:"text",required:!0,type:{name:"string"}},hideIcon:{defaultValue:{value:"false"},description:"",name:"hideIcon",required:!1,type:{name:"boolean"}},iconPosition:{defaultValue:{value:'"left" as "left" | "right"'},description:"",name:"iconPosition",required:!1,type:{name:"enum",value:[{value:'"left"'},{value:'"right"'}]}},onClick:{defaultValue:null,description:"",name:"onClick",required:!1,type:{name:"() => void"}},onHover:{defaultValue:null,description:"",name:"onHover",required:!1,type:{name:"() => void"}}}}}catch{}const B={title:"Example/Chip",component:s,parameters:{layout:"centered"},tags:["autodocs"]},o={args:{type:"positive",text:"Chip",hideIcon:!1,iconPosition:"left"},argTypes:{type:{options:["positive","negative","warning","pending","neutral"],control:{type:"radio"}}}};var c,g,m;o.parameters={...o.parameters,docs:{...(c=o.parameters)==null?void 0:c.docs,source:{originalSource:`{
+  args: {
+    type: "positive",
+    text: "Chip",
+    hideIcon: false,
+    iconPosition: "left"
+    // tooltip: "This is a Chip",
+  },
+  argTypes: {
+    type: {
+      options: ["positive", "negative", "warning", "pending", "neutral"],
+      control: {
+        type: "radio"
+      }
+    }
+  }
+}`,...(m=(g=o.parameters)==null?void 0:g.docs)==null?void 0:m.source}}};const R=["Smaple"];export{o as Smaple,R as __namedExportsOrder,B as default};

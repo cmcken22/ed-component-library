@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
-import Avatar from './Avatar';
+import Avatar from './';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -14,7 +13,7 @@ const meta = {
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   // argTypes: {
-  //   backgroundColor: { control: 'color' },
+  //   size: { control: AvatarSize },
   // },
 } satisfies Meta<typeof Avatar>;
 
@@ -28,6 +27,9 @@ export const Sample: Story = {
     size: "default",
     // onHover: (hovered: boolean) => action("onHover")(hovered),
     // onClick: (hovered: boolean) => action("onClick")(hovered),
+  },
+  argTypes: {
+    size: { control: { type: 'radio', options: ['default', 'large', 'small'] } },
   },
 };
 

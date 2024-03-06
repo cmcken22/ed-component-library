@@ -22,8 +22,15 @@ const StyledWrapper = styled(Box, {
   };
 });
 
+export enum AvatarSizeEnum {
+  default = "default",
+  large = "large",
+  small = "small",
+}
+export type AvatarSize = keyof typeof AvatarSizeEnum;
+
 export interface AvatarProps {
-  size?: "default" | "large" | "small" | number | string;
+  size?: AvatarSize;
   text?: string;
   sx?: any;
   src?: string;
@@ -79,13 +86,13 @@ const Avatar = ({ size, text, src,
         ...sx,
       }}
     >
-      {text}
       {!src && (
         <Typography
           variant={getFontSize()}
           color="secondary.dark"
           preventTextSelection
         >
+          {text}
         </Typography>
       )}
     </StyledWrapper>
@@ -93,7 +100,7 @@ const Avatar = ({ size, text, src,
 };
 
 Avatar.defaultProps = {
-  size: "default",
+  size: AvatarSizeEnum.default,
 };
 
 export default Avatar;

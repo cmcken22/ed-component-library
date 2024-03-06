@@ -4,7 +4,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { theme } from "../theme";
-// import "../index.css";
+import "../index.css";
 
 const ThemeWrapper = ({ children }: any) => {
   return (

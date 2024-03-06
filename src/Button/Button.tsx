@@ -1,4 +1,4 @@
-import { Box, Button as MuiButton } from "@mui/material";
+import { Box, Button as MuiButton, SxProps } from "@mui/material";
 import { ReactNode, useCallback } from "react";
 import Icon, { IconVariantType } from "src/Icon";
 
@@ -11,6 +11,7 @@ export interface ButtonProps {
   iconLeft?: IconVariantType | React.FC<React.SVGProps<SVGSVGElement>>;
   iconRight?: IconVariantType | React.FC<React.SVGProps<SVGSVGElement>>;
   onHover?: () => void;
+  sx?: SxProps;
 }
 
 const Button = ({
@@ -22,6 +23,7 @@ const Button = ({
   iconLeft,
   iconRight,
   onHover,
+  sx,
 }: ButtonProps) => {
   const handleClick = useCallback(() => {
     if (onClick) onClick();
@@ -35,6 +37,7 @@ const Button = ({
       disabled={disabled}
       disableTouchRipple
       onMouseEnter={onHover}
+      sx={sx}
     >
       {iconLeft && (
         <Box mr={1}>
@@ -52,7 +55,7 @@ const Button = ({
 };
 
 Button.defaultProps = {
-  variant: "contained" as "contained" | "outlined" | "link",
+  variant: "contained",
   color: "primary",
   disabled: false,
   onHover: () => {},

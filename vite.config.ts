@@ -1,14 +1,14 @@
-import { defineConfig } from 'vite'
-import { libInjectCss } from 'vite-plugin-lib-inject-css'
-import dts from 'vite-plugin-dts';
-import { resolve } from 'path'
-import react from '@vitejs/plugin-react'
+import react from "@vitejs/plugin-react";
+import { resolve } from "path";
+import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
+import { libInjectCss } from "vite-plugin-lib-inject-css";
 
 export default defineConfig({
   plugins: [
     react(),
     libInjectCss(),
-    dts({ include: ["src"] }),
+    dts({ include: ["src"], exclude: ["**/*.stories.tsx"] }),
   ],
   build: {
     copyPublicDir: false,
@@ -20,15 +20,14 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "react",
-        "react/jsx-runtime", 
+        "react/jsx-runtime",
         /^react\//,
-        '@mui/material'
+        "@mui/material",
+        "@emotion/react",
+        "@emotion/styled",
       ],
     },
   },
-  // optimizeDeps: {
-  //   exclude: ['**/*.stories.tsx'],
-  // },
   resolve: {
     alias: {
       src: resolve(__dirname, "./src"),

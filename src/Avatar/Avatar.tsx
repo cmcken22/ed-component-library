@@ -1,7 +1,7 @@
-import { Box, styled } from "@mui/material";
+import { Box, SxProps, styled } from "@mui/material";
 import { useCallback } from "react";
+import { useOnHover } from "src/Hooks";
 import Typography from "src/Typography";
-// import { useOnHover } from "src/Hooks";
 
 const StyledWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "src",
@@ -22,26 +22,17 @@ const StyledWrapper = styled(Box, {
   };
 });
 
-export enum AvatarSizeEnum {
-  default = "default",
-  large = "large",
-  small = "small",
-}
-export type AvatarSize = keyof typeof AvatarSizeEnum;
-
 export interface AvatarProps {
-  size?: AvatarSize;
+  size?: "default" | "large" | "small";
   text?: string;
-  sx?: any;
+  sx?: SxProps;
   src?: string;
   onClick?: () => void;
   onHover?: (hovered: boolean) => void;
 }
 
-const Avatar = ({ size, text, src, 
-  // onHover, 
-  onClick, sx }: AvatarProps) => {
-  // const onHoverMethods = useOnHover(onHover);
+const Avatar = ({ size, text, src, onHover, onClick, sx }: AvatarProps) => {
+  const onHoverMethods = useOnHover(onHover);
 
   const getAvatarSize = useCallback(() => {
     if (size === "default") {
@@ -77,7 +68,7 @@ const Avatar = ({ size, text, src,
 
   return (
     <StyledWrapper
-      // {...onHoverMethods}
+      {...onHoverMethods}
       onClick={onClick}
       src={src}
       sx={{
@@ -100,7 +91,7 @@ const Avatar = ({ size, text, src,
 };
 
 Avatar.defaultProps = {
-  size: AvatarSizeEnum.default,
+  size: "default",
 };
 
 export default Avatar;

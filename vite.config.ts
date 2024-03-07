@@ -8,7 +8,10 @@ export default defineConfig({
   plugins: [
     react(),
     libInjectCss(),
-    dts({ include: ["src"], exclude: ["**/*.stories.tsx"] }),
+    dts({
+      include: ["src"],
+      exclude: ["**/*.stories.tsx"],
+    }),
   ],
   build: {
     copyPublicDir: false,

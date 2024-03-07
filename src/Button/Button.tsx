@@ -1,18 +1,7 @@
-import { Box, Button as MuiButton, SxProps } from "@mui/material";
-import { ReactNode, useCallback } from "react";
-import Icon, { IconVariantType } from "src/Icon";
-
-export interface ButtonProps {
-  children?: ReactNode;
-  variant?: "contained" | "outlined" | "link";
-  color?: any;
-  onClick?: () => void;
-  disabled?: boolean;
-  iconLeft?: IconVariantType | React.FC<React.SVGProps<SVGSVGElement>>;
-  iconRight?: IconVariantType | React.FC<React.SVGProps<SVGSVGElement>>;
-  onHover?: () => void;
-  sx?: SxProps;
-}
+import { Box, Button as MuiButton } from "@mui/material";
+import { useCallback } from "react";
+import Icon from "src/Icon";
+import { ButtonProps } from "./Button.types";
 
 const Button = ({
   children,

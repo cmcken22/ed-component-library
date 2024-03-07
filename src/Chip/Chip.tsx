@@ -1,4 +1,3 @@
-// Generated with util/create-component.js
 import { Box, styled } from "@mui/material";
 import { useMemo } from "react";
 import Icon, { IconVariant } from "src/Icon";
@@ -63,8 +62,8 @@ const Chip = ({
   onClick,
   onHover,
   children,
-  // tooltip,
-}: ChipProps) => {
+}: // tooltip,
+ChipProps) => {
   const currentIconVariant = useMemo(() => {
     if (type === "positive") return IconVariant.Success;
     if (type === "negative") return IconVariant.Error;

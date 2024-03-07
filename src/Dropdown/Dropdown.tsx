@@ -1,13 +1,6 @@
-// Generated with util/create-component.js
 import { FormControl, MenuItem, Select } from "@mui/material";
 import cx from "classnames";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useOnHover } from "src/Hooks";
 import BaseInput from "../BaseInput";
 import Typography from "../Typography";

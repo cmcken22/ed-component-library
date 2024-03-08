@@ -14,7 +14,7 @@ const meta = {
 } satisfies Meta<typeof CheckboxGroup>;
 
 export default meta;
-type Story = StoryObj<typeof CheckboxGroup>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {

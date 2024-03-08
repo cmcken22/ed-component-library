@@ -1,4 +1,3 @@
-
 export interface DateProps {
-  foo?: string;
+  range?: boolean;
 }

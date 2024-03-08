@@ -1,4 +1,3 @@
-
 import type { Meta, StoryObj } from "@storybook/react";
 import Date from "./";
 
@@ -15,8 +14,10 @@ const meta = {
 } satisfies Meta<typeof Date>;
 
 export default meta;
-type Story = StoryObj<typeof Date>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    range: false,
+  },
 };

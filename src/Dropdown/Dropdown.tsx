@@ -3,6 +3,7 @@ import cx from "classnames";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useOnHover } from "src/Hooks";
 import BaseInput from "../BaseInput";
+import Checkbox from "../Checkbox";
 import Typography from "../Typography";
 import DropdownIcon from "./DropdownIcon";
 
@@ -33,6 +34,7 @@ export interface DropdownProps {
   onHover?: (hovered: boolean) => void;
   defaultActiveFirstOption?: boolean;
   minWidth?: number | string;
+  checkBoxSelection?: boolean;
 }
 
 const Dropdown = ({
@@ -55,11 +57,20 @@ const Dropdown = ({
   onHover,
   defaultActiveFirstOption,
   minWidth,
+  checkBoxSelection,
 }: DropdownProps) => {
   const [value, setValue] = useState(passedValue || "");
   const [open, setOpen] = useState(defaultOpen || false);
   const onHoverMethods = useOnHover(onHover);
   const alreadyCheckedFirstValue = useRef(false);
+
+  useEffect(() => {
+    setValue(passedValue || "");
+  }, [passedValue]);
+
+  useEffect(() => {
+    setOpen(defaultOpen || false);
+  }, [defaultOpen]);
 
   const handleChange = useCallback(
     (e: any) => {
@@ -103,7 +114,7 @@ const Dropdown = ({
       ? getOptionValue(firstOption)
       : firstOption.value;
     handleChange({ target: { value } });
-  }, [options, getOptionValue, value, handleChange]);
+  }, [options, getOptionValue, handleChange]);
 
   useEffect(() => {
     if (defaultActiveFirstOption && !value && options.length > 0) {
@@ -112,7 +123,12 @@ const Dropdown = ({
         handleDefaultActiveFirstOption();
       }
     }
-  }, [options, defaultActiveFirstOption, handleDefaultActiveFirstOption]);
+  }, [
+    options,
+    defaultActiveFirstOption,
+    handleDefaultActiveFirstOption,
+    value,
+  ]);
 
   return (
     <BaseInput id={id} status={status}>
@@ -126,6 +142,7 @@ const Dropdown = ({
               className={cx("dropdown", {
                 "dropdown--open": open,
               })}
+              open={open}
               {...onHoverMethods}
               onOpen={() => setOpen(true)}
               onClose={() => setOpen(false)}
@@ -140,17 +157,32 @@ const Dropdown = ({
               )}
             >
               {options?.map((opt: StandardDropdownOption | any) => {
-                const value = getOptionValue ? getOptionValue(opt) : opt?.value;
+                const optValue = getOptionValue
+                  ? getOptionValue(opt)
+                  : opt?.value;
                 const optDisabled = getOptionDisabled
                   ? getOptionDisabled(opt)
                   : opt?.disabled;
                 return (
                   <MenuItem
-                    key={value}
-                    value={value}
+                    key={optValue}
+                    value={optValue}
                     disabled={optDisabled || disabled}
                   >
-                    {getOptionLabel ? getOptionLabel(opt) : opt?.label}
+                    {checkBoxSelection ? (
+                      <Checkbox
+                        label={
+                          getOptionLabel ? getOptionLabel(opt) : opt?.label
+                        }
+                        checked={optValue === value}
+                        disabled={optDisabled || disabled}
+                        typographyVariant="bodyS"
+                      />
+                    ) : (
+                      <Typography variant="bodyS" color="text.primary">
+                        {getOptionLabel ? getOptionLabel(opt) : opt?.label}
+                      </Typography>
+                    )}
                   </MenuItem>
                 );
               })}

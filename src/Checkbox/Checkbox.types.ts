@@ -1,3 +1,5 @@
+import { FontVariant } from "src/theme/Typography";
+
 export interface CheckboxProps {
   id?: string;
   label?: string;
@@ -5,4 +7,5 @@ export interface CheckboxProps {
   disabled?: boolean;
   onChange?: (checked: boolean) => void;
   labelPosition?: "left" | "right";
+  typographyVariant?: FontVariant;
 }

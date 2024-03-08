@@ -20,6 +20,7 @@ export default {
           borderRadius: "2px",
           borderColor: theme.palette.charcoal.main,
           zIndex: -1,
+          backgroundColor: "white",
         },
         "&:hover": {
           "& svg": {

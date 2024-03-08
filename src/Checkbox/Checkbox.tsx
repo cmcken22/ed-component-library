@@ -4,7 +4,6 @@ import {
   styled,
 } from "@mui/material";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { FONTS } from "../theme/Typography";
 import { CheckboxProps } from "./Checkbox.types";
 
 const StyledFormControlLabel = styled(FormControlLabel, {
@@ -15,6 +14,9 @@ const StyledFormControlLabel = styled(FormControlLabel, {
     msUserSelect: "none",
     userSelect: "none",
     margin: 0,
+    ".Checkbox": {
+      zIndex: 1,
+    },
     "&.MuiFormControlLabel": {
       "&-labelPlacementStart": {
         ".Checkbox": {
@@ -29,11 +31,11 @@ const StyledFormControlLabel = styled(FormControlLabel, {
         },
       },
     },
-    ".MuiFormControlLabel-label": {
-      fontFamily: FONTS.NUNITO,
-      fontWeight: 400,
-      fontSize: theme.typography.pxToRem(16),
-    },
+    // ".MuiFormControlLabel-label": {
+    //   fontFamily: FONTS.NUNITO,
+    //   fontWeight: 400,
+    //   fontSize: theme.typography.pxToRem(16),
+    // },
   };
 });
 
@@ -57,6 +59,7 @@ const Checkbox = ({
   disabled,
   onChange,
   labelPosition,
+  typographyVariant,
 }: CheckboxProps) => {
   const [checked, setChecked] = useState(passedValue || false);
 
@@ -80,6 +83,12 @@ const Checkbox = ({
       className="CheckboxWrapper"
       label={label}
       labelPlacement={muiLabelPlacementMap[labelPosition] || "end"}
+      componentsProps={{
+        typography: {
+          // @ts-expect-error
+          variant: typographyVariant,
+        },
+      }}
       control={
         <StyledCheckbox
           key={`Checkbox--${checked}`}
@@ -101,6 +110,7 @@ Checkbox.defaultProps = {
   labelPosition: "right",
   disabled: false,
   checked: false,
+  typographyVariant: "bodyR",
 };
 
 export default Checkbox;

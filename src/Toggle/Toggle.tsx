@@ -1,4 +1,5 @@
 import { Box, styled } from "@mui/material";
+import cx from "classnames";
 import { useCallback, useState } from "react";
 import Typography from "../Typography";
 
@@ -62,6 +63,11 @@ const ToggleWrapper = styled(Box, {
       display: "flex",
       alignItems: "center",
       transition: "all 0.2s ease",
+      ".ToggleText": {
+        webkitUserSelect: "none",
+        msUserSelect: "none",
+        userSelect: "none",
+      },
       ...(!disabled && {
         "&:hover": {
           borderColor: theme.palette.primary.main,
@@ -151,7 +157,9 @@ const Toggle = ({
       return (
         <ToggleText sx={{ pr: type === "OFF" ? 0.3 : 0 }}>
           <Typography
-            className={`ToggleText--${type}`}
+            className={cx("ToggleText", {
+              [`ToggleText--${type}`]: type,
+            })}
             variant="errorMessage"
             color={type === "OFF" ? "charcoal.main" : "white"}
             fontSize="8px"

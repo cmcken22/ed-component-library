@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import cx from "classnames";
 import _debounce from "lodash.debounce";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import BaseInput, { BaseInputProps } from "src/BaseInput";
 import Currency from "./Currency";
 import Percent from "./Percent";
@@ -12,7 +12,7 @@ export interface InputProps extends BaseInputProps {
   label?: string;
   placeholder?: string;
   helperText?: string;
-  value?: string;
+  value?: string | number;
   required?: boolean;
   labelPosition?: "top" | "left";
   onChange?: (value: string) => void;
@@ -45,6 +45,10 @@ const Input = ({
   minWidth,
 }: InputProps) => {
   const [value, setValue] = useState(passedValue || "");
+
+  useEffect(() => {
+    setValue(passedValue || "");
+  }, [passedValue]);
 
   const debounceOnChange = useCallback(
     _debounce((value: any) => {

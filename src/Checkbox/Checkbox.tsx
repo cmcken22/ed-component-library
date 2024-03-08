@@ -3,8 +3,9 @@ import {
   Checkbox as MuiCheckbox,
   styled,
 } from "@mui/material";
-import { useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { FONTS } from "../theme/Typography";
+import { CheckboxProps } from "./Checkbox.types";
 
 const StyledFormControlLabel = styled(FormControlLabel, {
   slot: "root",
@@ -13,8 +14,20 @@ const StyledFormControlLabel = styled(FormControlLabel, {
     webkitUserSelect: "none",
     msUserSelect: "none",
     userSelect: "none",
-    ".MuiCheckbox-root": {
-      paddingRight: theme.spacing(1),
+    margin: 0,
+    "&.MuiFormControlLabel": {
+      "&-labelPlacementStart": {
+        ".Checkbox": {
+          marginLeft: theme.spacing(1),
+          marginRight: 0,
+        },
+      },
+      "&-labelPlacementEnd": {
+        ".Checkbox": {
+          marginRight: theme.spacing(1),
+          marginLeft: 0,
+        },
+      },
     },
     ".MuiFormControlLabel-label": {
       fontFamily: FONTS.NUNITO,
@@ -28,21 +41,52 @@ const StyledCheckbox = styled(MuiCheckbox, {
   slot: "root",
 })<{ status?: string }>(() => {
   return {
-    marginRight: "-2px",
+    padding: 0,
   };
 });
 
-const Checkbox = ({ label, defaultChecked, disabled }: any) => {
-  const [checked, setChecked] = useState(defaultChecked || false);
+const muiLabelPlacementMap: Record<string, "start" | "end"> = {
+  left: "start",
+  right: "end",
+};
+
+const Checkbox = ({
+  id,
+  label,
+  checked: passedValue,
+  disabled,
+  onChange,
+  labelPosition,
+}: CheckboxProps) => {
+  const [checked, setChecked] = useState(passedValue || false);
+
+  useEffect(() => {
+    setChecked(passedValue || false);
+  }, [passedValue, setChecked]);
+
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (disabled) return;
+      const checked = e.target.checked;
+      setChecked(checked);
+      if (onChange) onChange(checked);
+    },
+    [setChecked, onChange, disabled]
+  );
 
   return (
     <StyledFormControlLabel
+      id={id}
+      className="CheckboxWrapper"
       label={label}
+      labelPlacement={muiLabelPlacementMap[labelPosition] || "end"}
       control={
         <StyledCheckbox
+          key={`Checkbox--${checked}`}
+          className="Checkbox"
           checked={checked}
-          defaultChecked={defaultChecked}
-          onChange={(e) => setChecked(e.target.checked)}
+          defaultChecked={checked}
+          onChange={handleChange}
           disableFocusRipple
           disableTouchRipple
           disableRipple
@@ -53,6 +97,10 @@ const Checkbox = ({ label, defaultChecked, disabled }: any) => {
   );
 };
 
-Checkbox.defaultProps = {};
+Checkbox.defaultProps = {
+  labelPosition: "right",
+  disabled: false,
+  checked: false,
+};
 
 export default Checkbox;

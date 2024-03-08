@@ -4,6 +4,7 @@ import Icon from "src/Icon";
 import { ButtonProps } from "./Button.types";
 
 const Button = ({
+  id,
   children,
   onClick,
   color = "primary",
@@ -20,13 +21,18 @@ const Button = ({
 
   return (
     <MuiButton
+      id={id}
       onClick={handleClick}
       variant={variant as any}
       color={color}
       disabled={disabled}
       disableTouchRipple
       onMouseEnter={onHover}
-      sx={sx}
+      sx={{
+        ...sx,
+        // width: "200px",
+        // backgroundColor: "red",
+      }}
     >
       {iconLeft && (
         <Box mr={1}>

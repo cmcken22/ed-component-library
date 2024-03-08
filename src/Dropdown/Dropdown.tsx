@@ -164,7 +164,7 @@ const Dropdown = ({
 };
 
 Dropdown.defaultProps = {
-  labelPosition: "top" as "top" | "left",
+  labelPosition: "top",
   options: [],
   minWidth: 120,
 };

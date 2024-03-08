@@ -1,5 +1,5 @@
 import { Box, FormControlLabel, styled } from "@mui/material";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FONTS } from "../theme/Typography";
 import { hexToRGBA } from "../utils";
 
@@ -28,12 +28,12 @@ const StyledRadioButton = styled(Box, {
   slot: "root",
 })<{ checked?: boolean; disabled?: boolean }>(
   ({ theme, checked, disabled }) => {
-    console.log("checked:", checked);
     return {
       height: 16,
       width: 16,
       borderRadius: "50%",
       marginRight: theme.spacing(1),
+
       border: `${checked ? 4 : 1}px solid ${theme.palette.charcoal.main}`,
       ...(!checked &&
         !disabled && {
@@ -60,8 +60,19 @@ const StyledFormControlLabel = styled(FormControlLabel, {
     webkitUserSelect: "none",
     msUserSelect: "none",
     userSelect: "none",
-    ".MuiCheckbox-root": {
-      paddingRight: theme.spacing(1),
+    "&.MuiFormControlLabel": {
+      "&-labelPlacementStart": {
+        ".RadioButton": {
+          marginLeft: theme.spacing(1),
+          marginRight: 0,
+        },
+      },
+      "&-labelPlacementEnd": {
+        ".RadioButton": {
+          marginRight: theme.spacing(1),
+          marginLeft: 0,
+        },
+      },
     },
     ".MuiFormControlLabel-label": {
       fontFamily: FONTS.NUNITO,
@@ -71,6 +82,11 @@ const StyledFormControlLabel = styled(FormControlLabel, {
   };
 });
 
+const muiLabelPlacementMap: Record<string, "start" | "end"> = {
+  left: "start",
+  right: "end",
+};
+
 interface RadioButtonProps {
   checked?: boolean;
   disabled?: boolean;
@@ -78,6 +94,7 @@ interface RadioButtonProps {
   value: any;
   onChange: (value: any, checked: boolean) => void;
   allowDeselect?: boolean;
+  labelPosition?: "left" | "right";
 }
 
 const RadioButton = ({
@@ -87,8 +104,13 @@ const RadioButton = ({
   value,
   onChange,
   allowDeselect,
+  labelPosition,
 }: RadioButtonProps) => {
   const [checked, setChecked] = useState(passedValue || false);
+
+  useEffect(() => {
+    setChecked(passedValue || false);
+  }, [passedValue, setChecked]);
 
   const handleChange = useCallback(
     (checked: boolean) => {
@@ -111,6 +133,7 @@ const RadioButton = ({
         label={label}
         value={value}
         onClick={() => handleChange(!checked)}
+        labelPlacement={muiLabelPlacementMap[labelPosition] || "end"}
         control={
           <StyledRadioButton
             className="RadioButton"
@@ -127,6 +150,7 @@ RadioButton.defaultProps = {
   checked: false,
   disabled: false,
   allowDeselect: false,
+  labelPosition: "right",
 };
 
 export default RadioButton;

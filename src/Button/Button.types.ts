@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { IconVariantType } from "src/Icon";
 
 export interface ButtonProps {
+  id?: string;
   children?: ReactNode;
   variant?: "contained" | "outlined" | "link";
   color?: any;

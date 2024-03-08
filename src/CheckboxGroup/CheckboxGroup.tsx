@@ -1,8 +1,9 @@
 import { Box, styled } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import RadioButton from "../RadioButton";
+import Checkbox from "../Checkbox";
+import { CheckboxGroupProps } from "./CheckboxGroup.types";
 
-const RadioButtonGroupWrapper = styled(Box, {
+const CheckboxGroupWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "row",
   slot: "root",
 })<{ row?: boolean }>(({ theme, row }) => {
@@ -11,78 +12,65 @@ const RadioButtonGroupWrapper = styled(Box, {
       ? {
           display: "flex",
           flexDirection: "column",
-          ".RadioButtonWrapper": {
+          ".CheckboxWrapper": {
             marginBottom: theme.spacing(2),
           },
         }
       : {
           display: "flex",
           flexDirection: "row",
-          ".RadioButtonWrapper": {
+          ".CheckboxWrapper": {
             marginRight: theme.spacing(2),
           },
         }),
   };
 });
 
-export type OptionType = {
-  label: string;
-  value: any;
-  disabled?: boolean;
-};
-
-export interface RadioButtonGroupProps {
-  id?: string;
-  options: OptionType[] | any[];
-  value: any;
-  onChange?: (value: any) => void;
-  disabled?: boolean;
-  row?: boolean;
-  allowDeselect?: boolean;
-  getOptionValue?: (option: any) => any;
-  getOptionLabel?: (option: any) => any;
-  getOptionDisabled?: (option: any) => any;
-  labelPosition?: "left" | "right";
-}
-
-const RadioButtonGroup = ({
+const CheckboxGroup = ({
   id,
   options,
-  value: selectedValue,
+  value: passedValue,
   onChange,
   disabled,
   row,
-  allowDeselect,
   getOptionValue,
   getOptionLabel,
   getOptionDisabled,
   labelPosition,
-}: RadioButtonGroupProps) => {
-  const [value, setValue] = useState(selectedValue || null);
+}: CheckboxGroupProps) => {
+  const [selected, setSelected] = useState(passedValue || []);
 
   useEffect(() => {
-    setValue(selectedValue || null);
-  }, [selectedValue]);
+    setSelected(passedValue || []);
+  }, [passedValue]);
 
   const getOptionChecked = useCallback(
     (optionValue: any) => {
-      return optionValue === value;
+      return selected.includes(optionValue);
     },
-    [value]
+    [selected]
   );
 
   const handleChange = useCallback(
-    (value: any, checked: any) => {
-      let nextValue = value;
-      if (allowDeselect) nextValue = checked ? value : null;
-      setValue(nextValue);
-      if (onChange) onChange(nextValue);
+    (checkBoxValue: any, checked: any) => {
+      if (disabled) return;
+      if (checked) {
+        const nextSelected = [...selected, checkBoxValue];
+        setSelected(nextSelected);
+        if (onChange) onChange(nextSelected);
+      } else {
+        const nextSelected = selected.filter(
+          (value) => value !== checkBoxValue
+        );
+        setSelected(nextSelected);
+        if (onChange) onChange(nextSelected);
+      }
     },
-    [setValue, onChange, allowDeselect]
+    [setSelected, onChange, disabled, selected]
   );
 
   return (
-    <RadioButtonGroupWrapper id={id} row={row}>
+    <CheckboxGroupWrapper id={id} row={row}>
       {options?.map((option, index) => {
         const label = getOptionLabel ? getOptionLabel(option) : option?.label;
         const value = getOptionValue ? getOptionValue(option) : option?.value;
@@ -90,29 +78,28 @@ const RadioButtonGroup = ({
           ? getOptionDisabled(option)
           : option?.disabled;
         return (
-          <RadioButton
+          <Checkbox
             key={`${label}--${index}`}
             {...option}
             label={label}
-            onChange={handleChange}
+            value={value}
+            onChange={(checked) => handleChange(value, checked)}
             checked={() => getOptionChecked(value)}
             disabled={optDisabled || disabled}
-            allowDeselect={allowDeselect}
             labelPosition={labelPosition}
           />
         );
       })}
-    </RadioButtonGroupWrapper>
+    </CheckboxGroupWrapper>
   );
 };
 
-RadioButtonGroup.defaultProps = {
+CheckboxGroup.defaultProps = {
   options: [],
   value: null,
   disabled: false,
   row: false,
-  allowDeselect: false,
   labelPosition: "right",
 };
 
-export default RadioButtonGroup;
+export default CheckboxGroup;

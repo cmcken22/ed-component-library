@@ -23,6 +23,7 @@ const StyledWrapper = styled(Box, {
 });
 
 export interface AvatarProps {
+  id?: string;
   size?: "default" | "large" | "small";
   text?: string;
   sx?: SxProps;
@@ -31,7 +32,7 @@ export interface AvatarProps {
   onHover?: (hovered: boolean) => void;
 }
 
-const Avatar = ({ size, text, src, onHover, onClick, sx }: AvatarProps) => {
+const Avatar = ({ id, size, text, src, onHover, onClick, sx }: AvatarProps) => {
   const onHoverMethods = useOnHover(onHover);
 
   const getAvatarSize = useCallback(() => {
@@ -68,6 +69,7 @@ const Avatar = ({ size, text, src, onHover, onClick, sx }: AvatarProps) => {
 
   return (
     <StyledWrapper
+      id={id}
       {...onHoverMethods}
       onClick={onClick}
       src={src}

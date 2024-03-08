@@ -1,7 +1,7 @@
 {
-  "name": "test-sb6",
+  "name": "@cmckenna/ed-component-library",
   "private": false,
-  "version": "0.0.5",
+  "version": "0.0.0",
   "type": "module",
   "homepage": "http://cmcken22.github.io/ed-component-library",
   "exports": {
@@ -47,7 +47,8 @@
     "classnames": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-number-format": "^5.3.3"
+    "react-number-format": "^5.3.3",
+    "use-lilius": "^2.0.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.1.0",

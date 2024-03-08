@@ -1,13 +1,15 @@
+import type { Meta, StoryObj } from "@storybook/react";
 import Checkbox from "./Checkbox";
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/Checkbox',
+  title: "Example/Checkbox",
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   component: Checkbox,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
@@ -15,9 +17,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Smaple: Story = {
   args: {
-    defaultChecked: true,
+    ...Checkbox.defaultProps,
     checked: true,
     disabled: false,
     label: "Primary",
+    labelPosition: "right",
   },
 };

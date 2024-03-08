@@ -88,9 +88,6 @@ const Percent = ({
             sx={{
               width,
               minWidth,
-              // "& input": {
-              //   textAlign: "left",
-              // },
             }}
             InputProps={{
               endAdornment: endAdornment || percentAdornment(),
@@ -109,8 +106,8 @@ Percent.defaultProps = {
   thousandSeparator: false,
   disabled: false,
   required: false,
-  width: "73px",
-  minWidth: "73px",
+  // width: "73px",
+  // minWidth: "73px",
 };
 
 export default Percent;

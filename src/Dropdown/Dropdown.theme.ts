@@ -1,6 +1,3 @@
-import { Colors } from "src/theme";
-import { hexToRGBA } from "src/utils";
-
 export default {
   defaultProps: {
     MenuProps: {
@@ -24,7 +21,7 @@ export default {
               borderBottom: "none",
             },
             "&:hover": {
-              backgroundColor: hexToRGBA(Colors.Bermuda["10"], 0.07),
+              // backgroundColor: hexToRGBA(Colors.Bermuda["10"], 0.07),
             },
           },
         },

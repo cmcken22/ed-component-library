@@ -11,6 +11,7 @@ export interface ButtonProps {
   disabled?: boolean;
   iconLeft?: IconVariantType | React.FC<React.SVGProps<SVGSVGElement>>;
   iconRight?: IconVariantType | React.FC<React.SVGProps<SVGSVGElement>>;
+  loading?: boolean;
   onHover?: () => void;
   sx?: SxProps;
 }

@@ -6,7 +6,7 @@ export interface InputProps extends BaseInputProps {
     label?: string;
     placeholder?: string;
     helperText?: string;
-    value?: string;
+    value?: string | number;
     required?: boolean;
     labelPosition?: "top" | "left";
     onChange?: (value: string) => void;
@@ -49,8 +49,6 @@ declare const Input: {
             thousandSeparator: boolean;
             disabled: boolean;
             required: boolean;
-            width: string;
-            minWidth: string;
         };
     };
     TextArea: {

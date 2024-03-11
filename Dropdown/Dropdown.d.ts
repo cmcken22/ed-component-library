@@ -24,11 +24,12 @@ export interface DropdownProps {
     onHover?: (hovered: boolean) => void;
     defaultActiveFirstOption?: boolean;
     minWidth?: number | string;
+    checkBoxSelection?: boolean;
 }
 declare const Dropdown: {
-    ({ id, label, placeholder, open: defaultOpen, status, helperText, disabled, value: passedValue, required, labelPosition, onChange, options, getOptionLabel, getOptionValue, getOptionDisabled, onHover, defaultActiveFirstOption, minWidth, }: DropdownProps): import("react/jsx-runtime").JSX.Element;
+    ({ id, label, placeholder, open: defaultOpen, status, helperText, disabled, value: passedValue, required, labelPosition, onChange, options, getOptionLabel, getOptionValue, getOptionDisabled, onHover, defaultActiveFirstOption, minWidth, checkBoxSelection, }: DropdownProps): import("react/jsx-runtime").JSX.Element;
     defaultProps: {
-        labelPosition: "top" | "left";
+        labelPosition: string;
         options: any[];
         minWidth: number;
     };

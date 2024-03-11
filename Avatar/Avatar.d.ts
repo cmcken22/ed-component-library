@@ -1,5 +1,6 @@
 import { SxProps } from "@mui/material";
 export interface AvatarProps {
+    id?: string;
     size?: "default" | "large" | "small";
     text?: string;
     sx?: SxProps;
@@ -8,7 +9,7 @@ export interface AvatarProps {
     onHover?: (hovered: boolean) => void;
 }
 declare const Avatar: {
-    ({ size, text, src, onHover, onClick, sx }: AvatarProps): import("react/jsx-runtime").JSX.Element;
+    ({ id, size, text, src, onHover, onClick, sx }: AvatarProps): import("react/jsx-runtime").JSX.Element;
     defaultProps: {
         size: string;
     };

@@ -17,6 +17,7 @@ declare const _default: {
                 borderRadius: string;
                 borderColor: any;
                 zIndex: number;
+                backgroundColor: string;
             };
             "&:hover": {
                 "& svg": {
@@ -50,6 +51,24 @@ declare const _default: {
                 };
             };
             "&.Mui-disabled": {
+                cursor: string;
+            };
+            "&.Mui-disabled:not(.Mui-checked)": {
+                "& svg": {
+                    color: string;
+                };
+                "&:after": {
+                    content: string;
+                    height: string;
+                    width: string;
+                    position: string;
+                    border: string;
+                    borderRadius: string;
+                    borderColor: any;
+                    zIndex: number;
+                };
+            };
+            "&.Mui-disabled.Mui-checked": {
                 "& svg": {
                     color: string;
                 };

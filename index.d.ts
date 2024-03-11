@@ -1,10 +1,11 @@
 export { default as Avatar } from "./Avatar";
 export { default as Button } from "./Button";
-export { default as Typography } from "./Typography";
 export { default as Checkbox } from "./Checkbox";
 export { default as Chip } from "./Chip";
 export { default as Dropdown } from "./Dropdown";
 export { default as Icon } from "./Icon";
 export { default as Input } from "./Input";
+export { default as Snackbar, SnackbarProvider, closeSnackbar, enqueueSnackbar, } from "./Snackbar";
 export { default as ThemeWrapper } from "./ThemeWrapper";
-export { theme, palette, useEllisDonTheme } from "./theme";
+export { default as Typography } from "./Typography";
+export { palette, theme, useEllisDonTheme } from "./theme";

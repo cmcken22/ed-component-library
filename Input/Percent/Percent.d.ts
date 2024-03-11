@@ -13,8 +13,6 @@ declare const Percent: {
         thousandSeparator: boolean;
         disabled: boolean;
         required: boolean;
-        width: string;
-        minWidth: string;
     };
 };
 export default Percent;

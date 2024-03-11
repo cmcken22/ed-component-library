@@ -109,9 +109,9 @@ const DateRangePicker = () => {
 
   const getDateSelected = useCallback(
     (date: Date) => {
-      return getDateWithinRange(date);
+      return selected?.includes(date);
     },
-    [selected, getDateWithinRange]
+    [selected]
   );
 
   return (
@@ -124,12 +124,16 @@ const DateRangePicker = () => {
         viewPreviousMonth,
         viewing: new Date(),
         getDateSelected,
+        getDateInRange: getDateWithinRange,
       }}
     >
       <Box
         sx={{
           border: 1,
-          p: 1,
+          p: 2,
+          bgcolor: "background.paper",
+          borderColor: "charcoal.20",
+          borderRadius: "2px",
         }}
       >
         <Box
@@ -145,7 +149,7 @@ const DateRangePicker = () => {
               <MonthView key={index} weeks={weeks}>
                 <Box
                   sx={{
-                    height: "40px",
+                    height: "20px",
                     width: "100%",
                     background: "red",
                     display: "flex",

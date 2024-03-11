@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import cx from "classnames";
 import { useEllisDonTheme } from "src/theme";
 import IconMap from "./Icon.map";
 
@@ -26,7 +27,7 @@ const Icon = ({ icon, color, height, width, className, sx }: BaseIconProps) => {
 
   return (
     <Box
-      className={`icon-wrapper ${className}`}
+      className={cx(`icon-wrapper`, { [className]: className })}
       sx={{
         display: "flex",
         color: color ? color : "charcoal.90",

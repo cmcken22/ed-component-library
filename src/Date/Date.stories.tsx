@@ -21,3 +21,10 @@ export const Default: Story = {
     range: false,
   },
 };
+export const Range: Story = {
+  // @ts-ignore
+  // render: (args) => <DateRangePicker {...args} />,
+  args: {
+    range: true,
+  },
+};

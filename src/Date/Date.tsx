@@ -31,13 +31,14 @@ const DateField = ({
   placeholder,
   currentDate = new Date(),
   disableFuture,
+  disableCurrent,
   disablePast,
+  dateDisabled,
 }: DateProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [value, setValue] = useState<Date | null>(
     convertDateString(passedValue)
   );
-  // const [currentDate] = useState(setDateBeggining(passedCurrentDate));
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState(0);
   const popoverRef = useRef(null);
@@ -69,10 +70,9 @@ const DateField = ({
       <BaseInput key={key}>
         {({ endAdornment }: any) => (
           <>
-            <Box onClick={() => setOpen(true)} ref={(r) => setAnchorEl(r)}>
+            <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <MuiDatePicker
-                  // ref={(r) => setAnchorEl(r)}
                   format={format}
                   disableOpenPicker
                   value={dayjs(value)}
@@ -115,7 +115,9 @@ const DateField = ({
           value={isValidDate(value) ? value : null}
           disableFuture={disableFuture}
           disablePast={disablePast}
+          disableCurrent={disableCurrent}
           currentDate={currentDate}
+          dateDisabled={dateDisabled}
         />
       </Popover>
     </div>

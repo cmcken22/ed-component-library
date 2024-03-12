@@ -14,6 +14,14 @@ const meta = {
     onChange: {
       action: "changed",
     },
+    status: {
+      options: ["error", "success", "warning"],
+      control: { type: "radio" },
+    },
+    // labelPosition: {
+    //   options: ["top", "left"],
+    //   control: { type: "radio" },
+    // },
   },
 } satisfies Meta<typeof DateField>;
 
@@ -27,12 +35,13 @@ export const Default: Story = {
   },
   args: {
     ...DateField.defaultProps,
-    format: "DD-MM-YYYY",
+    // format: "DD-MM-YYYY",
+    format: "MMM DD, YYYY",
     // value: new Date(),
     currentDate: new Date(),
     disableFuture: false,
     disablePast: false,
-    // onChange: (date: Date) => console.log("XXdateXX:", date),
+    status: undefined,
   },
 };
 // export const Range: Story = {

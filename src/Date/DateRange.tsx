@@ -1,27 +1,15 @@
-import { Box, InputAdornment } from "@mui/material";
+import { Box } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useCallback, useRef, useState } from "react";
 import BaseInput from "src/BaseInput";
-import Icon, { IconVariant } from "src/Icon";
 import { DateProps } from "./Date.types";
 import DatePicker from "./DatePicker";
 import DateRangeInput from "./DateRangeInput";
 import Popover from "./Popover";
 dayjs.extend(customParseFormat);
-
-const convertDateString = (text) => {
-  if (!text) return null;
-  if (text instanceof Date) return text;
-  return new Date(text);
-};
-
-function isValidDate(d: any) {
-  // @ts-ignore
-  return d instanceof Date && !isNaN(d);
-}
 
 const DateField = ({
   value: passedValue,
@@ -30,24 +18,18 @@ const DateField = ({
   placeholder,
   currentDate = new Date(),
   disableFuture,
+  disableCurrent,
   disablePast,
+  dateDisabled,
+  status,
 }: DateProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [value, setValue] = useState<Date[] | null>([]);
-  // const [currentDate] = useState(setDateBeggining(passedCurrentDate));
+  const [value, setValue] = useState<Date[] | null>(
+    (passedValue ? passedValue : []) as Date[]
+  );
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState(0);
   const popoverRef = useRef(null);
-
-  // console.log("currentDate:", currentDate, currentDate?.toDateString());
-
-  const startAdornment = useCallback(() => {
-    return (
-      <InputAdornment position="start" sx={{ ml: "8px" }}>
-        <Icon icon={IconVariant.Calendar} height="20px" width="20px" />
-      </InputAdornment>
-    );
-  }, []);
 
   const handleSelect = useCallback(
     (dateRange: Date[]) => {
@@ -67,11 +49,9 @@ const DateField = ({
     [setValue, onChange, disableFuture, disablePast, currentDate]
   );
 
-  console.log("value:", value);
-
   return (
     <div>
-      <BaseInput key={key}>
+      <BaseInput key={key} status={status}>
         {({ endAdornment }: any) => (
           <>
             <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
@@ -80,6 +60,9 @@ const DateField = ({
                   format={format}
                   value={value}
                   onChange={handleSelect}
+                  placeholder={placeholder}
+                  endAdornment={endAdornment}
+                  status={status}
                 />
               </LocalizationProvider>
             </Box>
@@ -104,7 +87,9 @@ const DateField = ({
           onSelect={handleSelect}
           value={value}
           disableFuture={disableFuture}
+          disableCurrent={disableCurrent}
           disablePast={disablePast}
+          dateDisabled={dateDisabled}
           currentDate={currentDate}
           numberOfMonths={2}
           range

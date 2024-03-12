@@ -24,14 +24,13 @@ export type DatePickerContext = {
   months: any;
   selected: Date[] | undefined;
   onSelect: (date: Date) => void;
-  // selectedDateStrings: string[] | undefined;
   viewNextMonth: () => void;
   viewPreviousMonth: () => void;
   viewing: Date | undefined;
-  // getDateSelected: (date: Date) => boolean | undefined;
-  // getDateInRange: (date: Date) => boolean | undefined;
   disableFuture?: boolean;
+  disableCurrent?: boolean;
   disablePast?: boolean;
+  dateDisabled?: (date: Date) => boolean;
   currentDate?: Date;
   range?: boolean;
   isSelected?: (date: Date) => boolean;
@@ -42,13 +41,14 @@ const defaultContext: DatePickerContext = {
   value: undefined,
   months: [],
   selected: undefined,
-  // selectedDateStrings: undefined,
   onSelect: () => {},
   viewNextMonth: () => {},
   viewPreviousMonth: () => {},
   viewing: undefined,
   disableFuture: false,
+  disableCurrent: false,
   disablePast: false,
+  dateDisabled: () => false,
   currentDate: new Date(),
   range: false,
   isSelected: () => false,
@@ -64,7 +64,9 @@ const DatePickerContextProvider = ({
   value,
   children,
   disableFuture,
+  disableCurrent,
   disablePast,
+  dateDisabled,
   currentDate,
   range,
 }) => {
@@ -92,23 +94,20 @@ const DatePickerContextProvider = ({
     select(value, true);
     if (value) {
       if (Array.isArray(value)) {
-        if (value?.length === 1) setViewing(value?.[0]);
+        // @ts-ignore
+        const isDateValid = value?.[0] instanceof Date && !isNaN(value?.[0]);
+        if (value?.length === 1) {
+          if (isDateValid) setViewing(value?.[0]);
+        }
       } else {
         setViewing(value);
       }
     }
   }, [value]);
 
-  const selectedDateStrings = useMemo(() => {
-    return selected?.filter((date) => date).map((date) => date?.toISOString());
-  }, [selected]);
-
   const handelSelectSingleDate = useCallback(
     (date: Date) => {
-      if (
-        selectedDateStrings?.includes(date?.toISOString()) &&
-        selectedDateStrings?.length === 1
-      ) {
+      if (isSelected(date)) {
         if (onSelect) onSelect(null);
         select([], true);
         return;
@@ -116,19 +115,17 @@ const DatePickerContextProvider = ({
       if (onSelect) onSelect(date);
       select(date, true);
     },
-    [select, selectedDateStrings, onSelect]
+    [select, isSelected, onSelect]
   );
 
   const handelSelectDateRange = useCallback(
     (date: Date) => {
-      let nextSelected = selected
+      let nextSelected = [...selected]
         ?.filter((date) => date)
         .sort((a, b) => a?.getTime() - b?.getTime());
 
       if (nextSelected.includes(date)) {
         nextSelected = nextSelected.filter((d) => d !== date);
-        console.log("nextSelected:", nextSelected);
-        console.log("date:", date);
         select(nextSelected, true);
         if (onSelect) onSelect(nextSelected);
         return;
@@ -170,7 +167,10 @@ const DatePickerContextProvider = ({
   const handleCheckInRange = useCallback(
     (date: Date) => {
       if (selected?.length < 2) return false;
-      return inRange(date, selected[0], selected[1]);
+      const sortedValues = [...selected].sort(
+        (a, b) => a.getTime() - b.getTime()
+      );
+      return inRange(date, sortedValues[0], sortedValues[1]);
     },
     [selected, inRange]
   );
@@ -189,6 +189,8 @@ const DatePickerContextProvider = ({
       range,
       inRange: handleCheckInRange,
       isSelected,
+      disableCurrent,
+      dateDisabled,
     };
     return context;
   }, [
@@ -205,6 +207,8 @@ const DatePickerContextProvider = ({
     range,
     handleCheckInRange,
     isSelected,
+    disableCurrent,
+    dateDisabled,
   ]);
 
   return (

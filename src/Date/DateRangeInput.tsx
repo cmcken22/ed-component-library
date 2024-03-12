@@ -1,4 +1,4 @@
-import { Box, InputAdornment } from "@mui/material";
+import { Box, InputAdornment, styled } from "@mui/material";
 import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -6,12 +6,53 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Icon, { IconVariant } from "src/Icon";
 dayjs.extend(customParseFormat);
 
+const StyledWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "row",
+  slot: "root",
+})<{ status?: string; disabled?: boolean }>(({ theme, status, disabled }) => {
+  const colorMap = {
+    error: theme.palette.error.main,
+    warning: theme.palette.warning.main,
+    success: theme.palette.success.main,
+  };
+
+  let borderColor = colorMap?.[status]
+    ? `${colorMap?.[status]} !important`
+    : theme.palette.charcoal["20"];
+  if (disabled) borderColor = theme.palette.charcoal["20"];
+
+  console.log("borderColor:", borderColor);
+
+  return {
+    border: "1px solid",
+    borderRadius: "4px",
+    display: "flex",
+    alignItems: "center",
+    width: "400px",
+    borderColor: borderColor,
+    ".MuiInputBase-root": {
+      width: "auto",
+    },
+    fieldset: {
+      display: "none",
+    },
+    "&:hover": {
+      borderColor: !disabled ? theme.palette.primary.main : "",
+    },
+    "&:focus-within": {
+      borderColor: !disabled ? theme.palette.primary.main : "",
+    },
+  };
+});
+
 const findIndicesOfSpecialCharacters = (str) => {
+  const formattedStr = str.replace(/ /g, "_");
   const indices = [];
   const specialCharRegex = /[^A-Za-z0-9\s]/g; // Regular expression to match any non-alphanumeric character
-  // Loop through the string and find indices of special characters
+
   let match;
-  while ((match = specialCharRegex.exec(str)) !== null) {
+  while ((match = specialCharRegex.exec(formattedStr)) !== null) {
+    console.log("match:", match);
     indices.push(match.index);
   }
 
@@ -41,7 +82,16 @@ const inverseIndices = (indices, strLength) => {
   return ranges;
 };
 
-const DateRangeInput = ({ format, value: passedValue, onChange }: any) => {
+const DateRangeInput = ({
+  format,
+  value: passedValue,
+  onChange,
+  placeholder,
+  endAdornment,
+  status,
+}: any) => {
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
   const [value, setValue] = useState(passedValue);
 
   useEffect(() => {
@@ -56,17 +106,15 @@ const DateRangeInput = ({ format, value: passedValue, onChange }: any) => {
     );
   }, []);
 
-  const ref1 = useRef(null);
-  const ref2 = useRef(null);
-
   const handleKeyDown = useCallback(
     (e, target, refNumber) => {
       if (e?.key !== "ArrowLeft" && e?.key !== "ArrowRight") return;
       const indices = findIndicesOfSpecialCharacters(format);
       const inverse = inverseIndices(indices, format.length);
+
       const direction = e?.key === "ArrowRight" ? 1 : -1;
-      const nextInput = refNumber === 1 ? ref2.current : ref1.current;
-      if (target.selectionEnd === 10 && direction === 1) {
+      const nextInput = refNumber === 0 ? ref2.current : ref1.current;
+      if (target.selectionEnd >= format.length && direction === 1) {
         nextInput.focus();
         nextInput.setSelectionRange(0, 0);
       }
@@ -83,79 +131,55 @@ const DateRangeInput = ({ format, value: passedValue, onChange }: any) => {
 
   const handleChange = useCallback(
     (date: Date | null, idx: number) => {
-      console.log("date:", date);
-      console.log("value:", value);
-      console.log("idx:", idx);
       const nextValue = [...value];
       nextValue[idx] = date;
       setValue(nextValue);
       if (onChange) onChange(nextValue);
     },
-    [value, onChange]
+    [value, onChange, setValue]
+  );
+
+  const renderInput = useCallback(
+    (index: number) => {
+      return (
+        <MuiDatePicker
+          inputRef={index === 0 ? ref1 : ref2}
+          format={format}
+          disableOpenPicker
+          value={value?.[index] ? dayjs(value?.[index]) : null}
+          sx={{
+            fieldset: {
+              border: "none",
+            },
+          }}
+          slotProps={{
+            textField: {
+              onKeyDown: (e) => handleKeyDown(e, e.target, index),
+              placeholder,
+            },
+          }}
+          onChange={(date: any) => {
+            handleChange(date.toDate(), index);
+          }}
+        />
+      );
+    },
+    [handleKeyDown, format, value, handleChange, placeholder]
   );
 
   return (
-    <Box
-      sx={{
-        border: "1px solid",
-        borderColor: "primary.main",
-        borderRadius: "4px",
-        display: "flex",
-        alignItems: "center",
-        width: "400px",
-        ".MuiInputBase-root": {
-          // background: "rgba(255, 0, 255, 0.4)",
-          width: "auto",
-        },
-        fieldset: {
-          display: "none",
-        },
-      }}
-    >
+    <StyledWrapper status={status}>
       {startAdornment()}
-      <MuiDatePicker
-        inputRef={ref1}
-        format={format}
-        disableOpenPicker
-        value={value?.[0] ? dayjs(value?.[0]) : ""}
-        sx={{
-          fieldset: {
-            border: "none",
-          },
-        }}
-        slotProps={{
-          textField: {
-            onKeyDown: (e) => handleKeyDown(e, e.target, 1),
-            sx: {
-              border: "none",
-            },
-          },
-        }}
-        onChange={(date: any) => {
-          handleChange(date.toDate(), 0);
-        }}
-      />
+      {renderInput(0)}
       <Icon
         icon={IconVariant.ArrowRight}
         height="16px"
         width="16px"
         sx={{ flexShrink: 0, mr: "8px" }}
       />
-      <MuiDatePicker
-        inputRef={ref2}
-        format={format}
-        disableOpenPicker
-        value={value?.[1] ? dayjs(value?.[1]) : ""}
-        slotProps={{
-          textField: {
-            onKeyDown: (e) => handleKeyDown(e, e.target, 2),
-          },
-        }}
-        onChange={(date: any) => {
-          handleChange(date.toDate(), 1);
-        }}
-      />
-    </Box>
+      {renderInput(1)}
+      {endAdornment && <Box sx={{ mr: 1 }}>{endAdornment}</Box>}
+    </StyledWrapper>
   );
 };
 

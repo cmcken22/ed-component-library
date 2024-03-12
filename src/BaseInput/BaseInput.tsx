@@ -65,6 +65,12 @@ const StyledWrapper = styled(Box, {
         "&:hover fieldset": {
           borderColor: !disabled ? theme.palette.primary.main : "",
         },
+        "&:focus-within": {
+          "& fieldset": {
+            borderColor: theme.palette.primary.main,
+            // borderColor: borderColor,
+          },
+        },
       },
       "& .MuiInputBase-root.Mui-disabled": {
         "& fieldset": {

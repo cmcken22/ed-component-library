@@ -167,7 +167,9 @@ const DatePickerWrapper = ({
   value,
   onSelect,
   disableFuture,
+  disableCurrent,
   disablePast,
+  dateDisabled,
   currentDate,
   numberOfMonths,
   range,
@@ -178,7 +180,9 @@ const DatePickerWrapper = ({
       onSelect={onSelect}
       numberOfMonths={numberOfMonths}
       disableFuture={disableFuture}
+      disableCurrent={disableCurrent}
       disablePast={disablePast}
+      dateDisabled={dateDisabled}
       currentDate={currentDate}
       range={range}
     >

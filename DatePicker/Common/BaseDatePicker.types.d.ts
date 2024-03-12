@@ -2,7 +2,7 @@ export interface BaseDatePickerProps {
     id?: string;
     label?: string;
     /**
-     * @default "top"
+     * @default top
      */
     labelPosition?: "top" | "left";
     /**
@@ -12,10 +12,9 @@ export interface BaseDatePickerProps {
     helperText?: string;
     /**
      * Format of the date, formats come from dayjs
-     * @default "MM-DD-YYYY"
+     * @default MM-DD-YYYY
      */
     format?: string;
-    placeholder?: string;
     /**
      * @default false
      */

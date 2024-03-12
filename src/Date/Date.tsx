@@ -1,14 +1,55 @@
-import { InputAdornment, TextField } from "@mui/material";
-import { useCallback, useState } from "react";
+import { Box, InputAdornment } from "@mui/material";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { useCallback, useRef, useState } from "react";
 import BaseInput from "src/BaseInput";
 import Icon, { IconVariant } from "src/Icon";
 import { DateProps } from "./Date.types";
+// import DatePicker from "./DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import DatePicker from "./DatePicker";
-import DateRangePicker from "./DateRangePicker";
 import Popover from "./Popover";
+dayjs.extend(customParseFormat);
 
-const DateField = ({ range }: DateProps) => {
+const convertDateString = (text) => {
+  if (!text) return null;
+  if (text instanceof Date) return text;
+  return new Date(text);
+};
+
+function isValidDate(d: any) {
+  // @ts-ignore
+  return d instanceof Date && !isNaN(d);
+}
+
+const setDateBeggining = (date: Date) => {
+  const newDate = new Date(date);
+  newDate.setHours(0);
+  newDate.setMinutes(0);
+  newDate.setSeconds(0);
+  newDate.setMilliseconds(0);
+  return new Date(newDate);
+};
+
+const DateField = ({
+  value: passedValue,
+  onChange,
+  format,
+  placeholder,
+  currentDate: passedCurrentDate = new Date(),
+  disableFuture,
+  disablePast,
+}: DateProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [value, setValue] = useState<Date | null>(
+    convertDateString(passedValue)
+  );
+  const [currentDate] = useState(setDateBeggining(passedCurrentDate));
+  const [open, setOpen] = useState(false);
+  const [key, setKey] = useState(0);
+  const popoverRef = useRef(null);
 
   const startAdornment = useCallback(() => {
     return (
@@ -18,43 +59,79 @@ const DateField = ({ range }: DateProps) => {
     );
   }, []);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const handleSelect = useCallback((date: Date) => {
-    console.clear();
-    console.log(date);
-  }, []);
+  const handleSelect = useCallback(
+    (date: Date) => {
+      if (disableFuture && date > currentDate) {
+        return;
+      }
+      if (disablePast && date < currentDate) {
+        return;
+      }
+      setValue(date);
+      if (onChange) onChange(date);
+    },
+    [setValue, onChange, disableFuture, disablePast, currentDate]
+  );
 
   return (
     <div>
-      <BaseInput>
+      <BaseInput key={key}>
         {({ endAdornment }: any) => (
           <>
-            <TextField
-              placeholder="MM-DD-YYYY"
-              onClick={handleClick}
-              autoComplete="one-time-code" // <- this will disable chrome autofill
-              InputProps={{
-                startAdornment: startAdornment(),
-                endAdornment,
-              }}
-            />
+            <Box onClick={() => setOpen(true)}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MuiDatePicker
+                  ref={(r) => setAnchorEl(r)}
+                  format={format}
+                  disableOpenPicker
+                  value={dayjs(value)}
+                  slotProps={{
+                    textField: {
+                      InputProps: {
+                        placeholder,
+                        startAdornment: startAdornment(),
+                        endAdornment,
+                      },
+                    },
+                  }}
+                  onChange={(date: any) => {
+                    handleSelect(date.toDate());
+                  }}
+                />
+              </LocalizationProvider>
+            </Box>
           </>
         )}
       </BaseInput>
       <Popover
+        key={`date-picker--${key}`}
+        open={open}
         anchorEl={anchorEl}
         placement="bottom-end"
-        onClose={() => setAnchorEl(null)}
+        onClose={() => {
+          if (anchorEl?.contains(document.activeElement)) return;
+          if (document.activeElement === anchorEl) return;
+          setOpen(false);
+          setKey((prev) => prev + 1);
+        }}
       >
-        {range ? <DateRangePicker /> : <DatePicker onSelect={handleSelect} />}
+        <DatePicker
+          ref={popoverRef}
+          key={`date-picker2--${key}`}
+          onSelect={handleSelect}
+          value={isValidDate(value) ? value : null}
+          disableFuture={disableFuture}
+          disablePast={disablePast}
+          currentDate={currentDate}
+        />
       </Popover>
     </div>
   );
 };
 
-DateField.defaultProps = {};
+DateField.defaultProps = {
+  format: "MM-DD-YYYY",
+  placeholder: "MM-DD-YYYY",
+};
 
 export default DateField;

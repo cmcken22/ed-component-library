@@ -2,10 +2,11 @@ import { Box, Popper } from "@mui/material";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useConditionalDelay } from "src/Hooks";
 
-const Popover = ({ children, anchorEl, onClose }: any) => {
-  const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
-  const [arrowRef, setArrowRef] = useState(null);
+const Popover = ({ children, open: isOpen, anchorEl, onClose }: any) => {
   const ref = useRef(null);
+  const [arrowRef, setArrowRef] = useState(null);
+  const open = useMemo(() => Boolean(anchorEl) && isOpen, [anchorEl, isOpen]);
+
   const listenDelay = useConditionalDelay(open, 100);
 
   const handleClickOutside = useCallback(
@@ -65,9 +66,9 @@ const Popover = ({ children, anchorEl, onClose }: any) => {
             element: arrowRef,
             x: 0.5,
             padding: ({ popper, reference, placement }) => {
-              console.log("placement:", placement);
-              console.log("popper:", popper);
-              console.log("reference:", reference);
+              // console.log("placement:", placement);
+              // console.log("popper:", popper);
+              // console.log("reference:", reference);
               // return popper.width / reference.width;
               return 10;
             },

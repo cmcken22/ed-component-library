@@ -3,7 +3,6 @@ import { FONT_WEIGHT_VALUES } from "../theme/Typography";
 export default {
   styleOverrides: {
     root: ({ theme, ownerState }: any) => {
-      console.log("ownerState:", ownerState);
       const startAdornment = ownerState?.InputProps?.startAdornment;
       const endAdornment = ownerState?.InputProps?.endAdornment;
 

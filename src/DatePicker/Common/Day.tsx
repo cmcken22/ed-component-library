@@ -79,7 +79,7 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
   if (outOfMonth) disabled = true;
   if (disableFuture && day > currentDate) disabled = true;
   if (disablePast && !isToday && day < currentDate) disabled = true;
-  if (disableCurrent) disabled = true;
+  if (disableCurrent && isToday) disabled = true;
   if (dateDisabled && dateDisabled(day)) disabled = true;
 
   let leftRange = false;

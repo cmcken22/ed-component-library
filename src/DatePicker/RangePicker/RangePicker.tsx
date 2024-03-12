@@ -18,6 +18,7 @@ const RangePicker = ({
   required,
   helperText,
   value: passedValue,
+  disabled,
   onChange,
   format,
   placeholder,
@@ -28,14 +29,17 @@ const RangePicker = ({
   dateDisabled,
   status,
   numberOfMonths,
+  calendarOpen,
+  hideCalendar,
+  disableTextInput,
 }: RangePickerProps) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const anchorRef = useRef<HTMLElement>(null);
+  const popoverRef = useRef(null);
   const [value, setValue] = useState<Date[] | null>(
     (passedValue ? passedValue : []) as Date[]
   );
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState(0);
-  const popoverRef = useRef(null);
 
   const checkDateDisabled = useCallback(
     (date: Date) => {
@@ -78,6 +82,11 @@ const RangePicker = ({
     [setValue, onChange, checkDateDisabled]
   );
 
+  const handleOpenPopover = useCallback(() => {
+    if (disabled) return;
+    setOpen(true);
+  }, [disabled, setOpen]);
+
   return (
     <div>
       <BaseInput key={key} id={id} status={status}>
@@ -86,7 +95,7 @@ const RangePicker = ({
             <BaseInput.Label required={required} position={labelPosition}>
               {label}
             </BaseInput.Label>
-            <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
+            <Box ref={anchorRef} onClick={handleOpenPopover}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <RangePickerInput
                   format={format}
@@ -95,6 +104,8 @@ const RangePicker = ({
                   placeholder={placeholder}
                   endAdornment={endAdornment}
                   status={status}
+                  disabled={disabled}
+                  disableTextInput={disableTextInput}
                 />
               </LocalizationProvider>
             </Box>
@@ -104,12 +115,13 @@ const RangePicker = ({
       </BaseInput>
       <Popover
         key={`date-picker--${key}`}
-        open={open}
-        anchorEl={anchorEl}
+        open={hideCalendar ? false : open || calendarOpen}
+        anchorEl={anchorRef?.current}
         placement="bottom-end"
         onClose={() => {
-          if (anchorEl?.contains(document.activeElement)) return;
-          if (document.activeElement === anchorEl) return;
+          if (calendarOpen) return;
+          if (anchorRef?.current?.contains(document.activeElement)) return;
+          if (document.activeElement === anchorRef?.current) return;
           setOpen(false);
           setKey((prev) => prev + 1);
         }}

@@ -87,6 +87,8 @@ const DateRangeInput = ({
   placeholder,
   endAdornment,
   status,
+  disabled,
+  disableTextInput,
 }: any) => {
   const ref1 = useRef(null);
   const ref2 = useRef(null);
@@ -146,6 +148,7 @@ const DateRangeInput = ({
           disableOpenPicker
           value={value?.[index] ? dayjs(value?.[index]) : null}
           sx={{
+            pointerEvents: disableTextInput ? "none" : "all",
             fieldset: {
               border: "none",
             },
@@ -158,17 +161,26 @@ const DateRangeInput = ({
                 : placeholder,
             },
           }}
+          disabled={disabled || disableTextInput}
           onChange={(date: any) => {
             handleChange(date.toDate(), index);
           }}
         />
       );
     },
-    [handleKeyDown, format, value, handleChange, placeholder]
+    [
+      handleKeyDown,
+      format,
+      value,
+      handleChange,
+      placeholder,
+      disabled,
+      disableTextInput,
+    ]
   );
 
   return (
-    <StyledWrapper status={status}>
+    <StyledWrapper status={status} disabled={disabled}>
       {startAdornment()}
       {renderInput(0)}
       <Icon

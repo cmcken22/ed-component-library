@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useMemo } from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef } from "react";
 import { useLilius } from "use-lilius";
 
 export const numberToMonth = (num: number) => {
@@ -92,24 +92,40 @@ const DatePickerContextProvider = ({
     numberOfMonths: numberOfMonths || 1,
   });
 
+  const viewingUpdated = useRef(false);
+
+  // current date is an object, so it will always be a new reference
+  // don't put in the dependency array, only check once on mount
   useEffect(() => {
     if (currentDate) setViewing(currentDate);
     else viewToday();
-  }, [currentDate]);
+  }, []);
+
+  const handleUpdateViewing = useCallback(
+    (value: Date) => {
+      if (!value) return;
+      if (Array.isArray(value)) {
+        // if its a date range, only update the viewing date if its not already set
+        if (viewingUpdated.current) return;
+        viewingUpdated.current = true;
+        // @ts-ignore
+        const isDateValid = value?.[0] instanceof Date && !isNaN(value?.[0]);
+        if (value?.length >= 1) {
+          if (isDateValid) setViewing(value?.[0]);
+        }
+        return;
+      }
+      setViewing(value);
+    },
+    [value, setViewing]
+  );
+
+  useEffect(() => {
+    handleUpdateViewing(value);
+  }, [value]);
 
   useEffect(() => {
     select(value, true);
-    if (value) {
-      if (Array.isArray(value)) {
-        // @ts-ignore
-        const isDateValid = value?.[0] instanceof Date && !isNaN(value?.[0]);
-        if (value?.length === 1) {
-          if (isDateValid) setViewing(value?.[0]);
-        }
-      } else {
-        setViewing(value);
-      }
-    }
   }, [value]);
 
   const handelSelectSingleDate = useCallback(

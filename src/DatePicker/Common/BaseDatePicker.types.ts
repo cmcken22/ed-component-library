@@ -41,4 +41,20 @@ export interface BaseDatePickerProps {
    */
   currentDate?: Date;
   status?: "error" | "success" | "warning";
+  /**
+   * Controls the calendar open state
+   * @default false
+   */
+  calendarOpen?: boolean;
+  /**
+   * To use the text field without the calendar
+   * @default false
+   */
+  hideCalendar?: boolean;
+  /**
+   * To force the user to select from the calendar,
+   * we can disable the text input
+   * @default false
+   */
+  disableTextInput?: boolean;
 }

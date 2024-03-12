@@ -31,6 +31,7 @@ const DatePicker = ({
   helperText,
   value: passedValue,
   onChange,
+  disabled,
   format,
   placeholder,
   currentDate = new Date(),
@@ -40,6 +41,9 @@ const DatePicker = ({
   dateDisabled,
   status,
   numberOfMonths,
+  calendarOpen,
+  hideCalendar,
+  disableTextInput,
 }: DatePickerProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [value, setValue] = useState<Date | null>(
@@ -104,11 +108,24 @@ const DatePicker = ({
             <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <MuiDatePicker
+                  key={`MuiDatePicker--${disableTextInput}--${key}`}
                   format={format}
                   disableOpenPicker
                   value={dayjs(value)}
+                  disabled={disabled}
+                  sx={{
+                    ".MuiInputBase-root": {
+                      cursor: disableTextInput ? "pointer" : "text",
+                      "& input": {
+                        pointerEvents: disableTextInput ? "none" : "",
+                      },
+                    },
+                  }}
                   slotProps={{
                     textField: {
+                      onFocus: disableTextInput
+                        ? (e) => e?.target?.blur()
+                        : null,
                       InputProps: {
                         placeholder,
                         startAdornment: startAdornment(),
@@ -117,6 +134,7 @@ const DatePicker = ({
                     },
                   }}
                   onChange={(date: any) => {
+                    if (disableTextInput) return;
                     handleSelect(date.toDate());
                   }}
                 />
@@ -128,12 +146,11 @@ const DatePicker = ({
       </BaseInput>
       <Popover
         key={`date-picker--${key}`}
-        open={open}
+        open={hideCalendar ? false : open || calendarOpen}
         anchorEl={anchorEl}
         placement="bottom-end"
         onClose={() => {
-          console.clear();
-          console.log("document.activeElement:", document.activeElement);
+          if (calendarOpen) return;
           if (anchorEl?.contains(document.activeElement)) return;
           if (document.activeElement === anchorEl) return;
           setOpen(false);

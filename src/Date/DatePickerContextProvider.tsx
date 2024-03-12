@@ -90,6 +90,13 @@ const DatePickerContextProvider = ({
 
   useEffect(() => {
     select(value, true);
+    if (value) {
+      if (Array.isArray(value)) {
+        if (value?.length === 1) setViewing(value?.[0]);
+      } else {
+        setViewing(value);
+      }
+    }
   }, [value]);
 
   const selectedDateStrings = useMemo(() => {

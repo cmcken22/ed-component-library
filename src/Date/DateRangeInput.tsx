@@ -6,41 +6,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Icon, { IconVariant } from "src/Icon";
 dayjs.extend(customParseFormat);
 
-const findLastSpecialCharIndex = (str: string) => {
-  // Regular expression to match any special character
-  const specialCharRegex = /[^\w\s]/;
-  // Match all special characters in the string
-  const matches = str.match(new RegExp(specialCharRegex, "g"));
-  // If there are no special characters, return -1
-  if (!matches) return 0;
-  // Find the index of the last occurrence of any special character
-  const lastIndex = str.lastIndexOf(matches[matches.length - 1]);
-  return lastIndex + 1;
-};
-
-const trimTextFromEnd = (str, endIndex) => {
-  // Check if endIndex is within the string bounds
-  if (endIndex < 0 || endIndex >= str.length) {
-    return str; // Return the original string if the endIndex is out of bounds
-  }
-  return str.substring(0, endIndex + 1); // Trim text from the end up to endIndex
-};
-
-function findIndicesOfSpecialCharacters(str) {
-  var indices = [];
-  var specialCharRegex = /[^A-Za-z0-9\s]/g; // Regular expression to match any non-alphanumeric character
-
+const findIndicesOfSpecialCharacters = (str) => {
+  const indices = [];
+  const specialCharRegex = /[^A-Za-z0-9\s]/g; // Regular expression to match any non-alphanumeric character
   // Loop through the string and find indices of special characters
-  var match;
+  let match;
   while ((match = specialCharRegex.exec(str)) !== null) {
     indices.push(match.index);
   }
 
   return indices;
-}
+};
 
-function inverseIndices(indices, strLength) {
-  var ranges = [];
+const inverseIndices = (indices, strLength) => {
+  const ranges = [];
 
   // Add range from beginning to first index - 1
   if (indices[0] > 0) {
@@ -48,7 +27,7 @@ function inverseIndices(indices, strLength) {
   }
 
   // Add ranges between consecutive indices
-  for (var i = 0; i < indices.length - 1; i++) {
+  for (let i = 0; i < indices.length - 1; i++) {
     if (indices[i] + 1 < indices[i + 1]) {
       ranges.push([indices[i] + 1, indices[i + 1] - 1]);
     }
@@ -60,16 +39,6 @@ function inverseIndices(indices, strLength) {
   }
 
   return ranges;
-}
-
-const findInverseIndex = (index, inverse) => {
-  for (let i = 0; i < inverse.length; i++) {
-    const x = inverse[i][0];
-    if (index === x) {
-      return i;
-    }
-  }
-  return -1;
 };
 
 const DateRangeInput = ({ format, value: passedValue, onChange }: any) => {
@@ -143,6 +112,7 @@ const DateRangeInput = ({ format, value: passedValue, onChange }: any) => {
         },
       }}
     >
+      {startAdornment()}
       <MuiDatePicker
         inputRef={ref1}
         format={format}
@@ -169,7 +139,7 @@ const DateRangeInput = ({ format, value: passedValue, onChange }: any) => {
         icon={IconVariant.ArrowRight}
         height="16px"
         width="16px"
-        sx={{ flexShrink: 0 }}
+        sx={{ flexShrink: 0, mr: "8px" }}
       />
       <MuiDatePicker
         inputRef={ref2}

@@ -2,7 +2,7 @@ import { Box, Popper } from "@mui/material";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useConditionalDelay } from "src/Hooks";
 
-const Popover = ({ children, open: isOpen, anchorEl, onClose }: any) => {
+const Popover = ({ children, open: isOpen, anchorEl, onClose, arrow }: any) => {
   const ref = useRef(null);
   const [arrowRef, setArrowRef] = useState(null);
   const open = useMemo(() => Boolean(anchorEl) && isOpen, [anchorEl, isOpen]);
@@ -48,20 +48,9 @@ const Popover = ({ children, open: isOpen, anchorEl, onClose }: any) => {
             // padding: 8,
           },
         },
-        // {
-        //   name: "preventOverflow",
-        //   enabled: true,
-        //   options: {
-        //     altAxis: true,
-        //     altBoundary: true,
-        //     tether: true,
-        //     rootBoundary: "document",
-        //     // padding: 8,
-        //   },
-        // },
         {
           name: "arrow",
-          enabled: true,
+          enabled: arrow,
           options: {
             element: arrowRef,
             x: 0.5,
@@ -76,23 +65,25 @@ const Popover = ({ children, open: isOpen, anchorEl, onClose }: any) => {
         },
       ]}
     >
-      <Box
-        component="span"
-        className="arrow"
-        ref={setArrowRef}
-        sx={{
-          // height: "20px",
-          // width: "20px",
-          // backgroundColor: "red",
-          position: "absolute",
-          top: "-5px",
-          width: 0,
-          height: 0,
-          borderLeft: "5px solid transparent",
-          borderRight: "5px solid transparent",
-          borderBottom: "5px solid black",
-        }}
-      />
+      {arrow && (
+        <Box
+          component="span"
+          className="arrow"
+          ref={setArrowRef}
+          sx={{
+            // height: "20px",
+            // width: "20px",
+            // backgroundColor: "red",
+            position: "absolute",
+            top: "-5px",
+            width: 0,
+            height: 0,
+            borderLeft: "5px solid transparent",
+            borderRight: "5px solid transparent",
+            borderBottom: "5px solid black",
+          }}
+        />
+      )}
       {children}
     </Popper>
   );

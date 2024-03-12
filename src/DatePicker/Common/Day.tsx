@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 import { useContext } from "react";
 import { hexToRGBA } from "src/utils";
-import { Typography } from "..";
+import { Typography } from "../..";
 import { DatePickerContext } from "./DatePickerContextProvider";
 
 const StyledBox = styled(Box, {

@@ -1,9 +1,9 @@
-// import { Colors, palette, theme, useEllisDonTheme } from "./theme";
 import "./index.css";
 export { default as Avatar } from "./Avatar";
 export { default as Button } from "./Button";
 export { default as Checkbox } from "./Checkbox";
 export { default as Chip } from "./Chip";
+export { DatePicker, RangePicker } from "./DatePicker";
 export { default as Dropdown } from "./Dropdown";
 export { default as Icon } from "./Icon";
 export { default as Input } from "./Input";

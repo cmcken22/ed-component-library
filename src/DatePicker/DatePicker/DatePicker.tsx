@@ -1,16 +1,15 @@
 import { Box, InputAdornment } from "@mui/material";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useCallback, useRef, useState } from "react";
-import BaseInput from "src/BaseInput";
-import Icon, { IconVariant } from "src/Icon";
-import { DateProps } from "./Date.types";
-// import DatePicker from "./DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import DatePicker from "./DatePicker";
-import Popover from "./Popover";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { useCallback, useEffect, useRef, useState } from "react";
+import BaseInput from "src/BaseInput";
+import Icon, { IconVariant } from "src/Icon";
+import { CalendarPicker } from "../Common";
+import Popover from "../Popover";
+import { DatePickerProps } from "./DatePicker.types";
 dayjs.extend(customParseFormat);
 
 const convertDateString = (text) => {
@@ -24,7 +23,12 @@ function isValidDate(d: any) {
   return d instanceof Date && !isNaN(d);
 }
 
-const DateField = ({
+const DatePicker = ({
+  id,
+  label,
+  labelPosition,
+  required,
+  helperText,
   value: passedValue,
   onChange,
   format,
@@ -34,7 +38,9 @@ const DateField = ({
   disableCurrent,
   disablePast,
   dateDisabled,
-}: DateProps) => {
+  status,
+  numberOfMonths,
+}: DatePickerProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [value, setValue] = useState<Date | null>(
     convertDateString(passedValue)
@@ -42,6 +48,10 @@ const DateField = ({
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState(0);
   const popoverRef = useRef(null);
+
+  useEffect(() => {
+    setValue(convertDateString(passedValue));
+  }, [passedValue]);
 
   const startAdornment = useCallback(() => {
     return (
@@ -66,10 +76,13 @@ const DateField = ({
   );
 
   return (
-    <div>
-      <BaseInput key={key}>
+    <>
+      <BaseInput key={key} id={id} status={status}>
         {({ endAdornment }: any) => (
           <>
+            <BaseInput.Label required={required} position={labelPosition}>
+              {label}
+            </BaseInput.Label>
             <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <MuiDatePicker
@@ -91,6 +104,7 @@ const DateField = ({
                 />
               </LocalizationProvider>
             </Box>
+            <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
           </>
         )}
       </BaseInput>
@@ -108,7 +122,7 @@ const DateField = ({
           setKey((prev) => prev + 1);
         }}
       >
-        <DatePicker
+        <CalendarPicker
           ref={popoverRef}
           key={`date-picker2--${key}`}
           onSelect={handleSelect}
@@ -118,15 +132,17 @@ const DateField = ({
           disableCurrent={disableCurrent}
           currentDate={currentDate}
           dateDisabled={dateDisabled}
+          numberOfMonths={numberOfMonths}
         />
       </Popover>
-    </div>
+    </>
   );
 };
 
-DateField.defaultProps = {
+DatePicker.defaultProps = {
   format: "MM-DD-YYYY",
   placeholder: "MM-DD-YYYY",
+  numberOfMonths: 1,
 };
 
-export default DateField;
+export default DatePicker;

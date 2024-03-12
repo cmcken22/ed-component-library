@@ -5,13 +5,18 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useCallback, useRef, useState } from "react";
 import BaseInput from "src/BaseInput";
-import { DateProps } from "./Date.types";
-import DatePicker from "./DatePicker";
-import DateRangeInput from "./DateRangeInput";
-import Popover from "./Popover";
+import { CalendarPicker } from "../Common";
+import Popover from "../Popover";
+import { RangePickerProps } from "./RangePicker.types";
+import RangePickerInput from "./RangePickerInput";
 dayjs.extend(customParseFormat);
 
-const DateField = ({
+const RangePicker = ({
+  id,
+  label,
+  labelPosition,
+  required,
+  helperText,
   value: passedValue,
   onChange,
   format,
@@ -22,7 +27,8 @@ const DateField = ({
   disablePast,
   dateDisabled,
   status,
-}: DateProps) => {
+  numberOfMonths,
+}: RangePickerProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [value, setValue] = useState<Date[] | null>(
     (passedValue ? passedValue : []) as Date[]
@@ -51,12 +57,15 @@ const DateField = ({
 
   return (
     <div>
-      <BaseInput key={key} status={status}>
+      <BaseInput key={key} id={id} status={status}>
         {({ endAdornment }: any) => (
           <>
+            <BaseInput.Label required={required} position={labelPosition}>
+              {label}
+            </BaseInput.Label>
             <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateRangeInput
+                <RangePickerInput
                   format={format}
                   value={value}
                   onChange={handleSelect}
@@ -66,6 +75,7 @@ const DateField = ({
                 />
               </LocalizationProvider>
             </Box>
+            <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
           </>
         )}
       </BaseInput>
@@ -81,7 +91,7 @@ const DateField = ({
           setKey((prev) => prev + 1);
         }}
       >
-        <DatePicker
+        <CalendarPicker
           ref={popoverRef}
           key={`date-picker2--${key}`}
           onSelect={handleSelect}
@@ -91,7 +101,7 @@ const DateField = ({
           disablePast={disablePast}
           dateDisabled={dateDisabled}
           currentDate={currentDate}
-          numberOfMonths={2}
+          numberOfMonths={numberOfMonths}
           range
         />
       </Popover>
@@ -99,9 +109,10 @@ const DateField = ({
   );
 };
 
-DateField.defaultProps = {
+RangePicker.defaultProps = {
   format: "MM/DD/YYYY",
   placeholder: "MM/DD/YYYY",
+  numberOfMonths: 2,
 };
 
-export default DateField;
+export default RangePicker;

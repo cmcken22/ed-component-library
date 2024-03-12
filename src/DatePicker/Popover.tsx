@@ -32,6 +32,9 @@ const Popover = ({ children, open: isOpen, anchorEl, onClose, arrow }: any) => {
       open={open}
       anchorEl={anchorEl}
       placement="bottom-end"
+      sx={{
+        background: "white",
+      }}
       modifiers={[
         {
           name: "offset",
@@ -54,13 +57,13 @@ const Popover = ({ children, open: isOpen, anchorEl, onClose, arrow }: any) => {
           options: {
             element: arrowRef,
             x: 0.5,
-            padding: ({ popper, reference, placement }) => {
-              // console.log("placement:", placement);
-              // console.log("popper:", popper);
-              // console.log("reference:", reference);
-              // return popper.width / reference.width;
-              return 10;
-            },
+            // padding: ({ popper, reference, placement }) => {
+            //   // console.log("placement:", placement);
+            //   // console.log("popper:", popper);
+            //   // console.log("reference:", reference);
+            //   // return popper.width / reference.width;
+            //   return 10;
+            // },
           },
         },
       ]}

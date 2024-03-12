@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { useCallback, useContext, useMemo } from "react";
-import { Icon, Typography } from "..";
+import { Icon, Typography } from "../..";
 import CalendarWrapper from "./CalendarWrapper";
 import DatePickerContextProvider, {
   DatePickerContext,
@@ -25,25 +25,25 @@ export const numberToMonth = (num: number) => {
   return monthMap?.[num];
 };
 
-export const getMonth = (months: any) => {
-  const firstDayOfMonth = getFirstDay(months);
+export const getMonth = (weeks: any) => {
+  const firstDayOfMonth = getFirstDay(weeks);
   const month = new Date(firstDayOfMonth).getMonth();
   return month;
 };
 
-export const getFirstDay = (month: any) => {
-  for (let m = 0; m < month.length; m++) {
-    const weeks = month[m];
-    for (let i = 0; i < weeks.length; i++) {
-      const week = weeks[i];
-      for (let j = 0; j < week.length; j++) {
-        const day = week[j];
-        if (new Date(day).getDate() === 1) {
-          return day;
-        }
+export const getFirstDay = (weeks: any) => {
+  // for (let m = 0; m < month.length; m++) {
+  //   const weeks = month[m];
+  for (let i = 0; i < weeks.length; i++) {
+    const week = weeks[i];
+    for (let j = 0; j < week.length; j++) {
+      const day = week[j];
+      if (new Date(day).getDate() === 1) {
+        return day;
       }
     }
   }
+  // }
 };
 
 export const WeeklyHeader = () => {
@@ -163,7 +163,40 @@ const Spacer = () => (
   />
 );
 
-const DatePickerWrapper = ({
+const CalendarPicker = () => {
+  const { months } = useContext(DatePickerContext);
+
+  return (
+    <CalendarWrapper>
+      {months?.map((month, index) => {
+        const monthNumber = getMonth(month);
+        return (
+          <MonthView
+            key={`month--${monthNumber}`}
+            weeks={month}
+            month={monthNumber}
+          >
+            <Box
+              sx={{
+                height: "20px",
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              {index === 0 ? <PrevMonthBtn /> : <Spacer />}
+              <MonthTitle weeks={month} />
+              {index === months.length - 1 ? <NextMonthBtn /> : <Spacer />}
+            </Box>
+          </MonthView>
+        );
+      })}
+    </CalendarWrapper>
+  );
+};
+
+const CalendarPickerWrapper = ({
   value,
   onSelect,
   disableFuture,
@@ -186,42 +219,9 @@ const DatePickerWrapper = ({
       currentDate={currentDate}
       range={range}
     >
-      <DatePicker />
+      <CalendarPicker />
     </DatePickerContextProvider>
   );
 };
 
-const DatePicker = () => {
-  const { months } = useContext(DatePickerContext);
-
-  return (
-    <CalendarWrapper>
-      {months?.map((month, index) => {
-        const monthNumber = getMonth([month]);
-        return (
-          <MonthView
-            key={`month--${monthNumber}`}
-            weeks={month}
-            month={monthNumber}
-          >
-            <Box
-              sx={{
-                height: "20px",
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              {index === 0 ? <PrevMonthBtn /> : <Spacer />}
-              <MonthTitle weeks={[month]} />
-              {index === months.length - 1 ? <NextMonthBtn /> : <Spacer />}
-            </Box>
-          </MonthView>
-        );
-      })}
-    </CalendarWrapper>
-  );
-};
-
-export default DatePickerWrapper;
+export default CalendarPickerWrapper;

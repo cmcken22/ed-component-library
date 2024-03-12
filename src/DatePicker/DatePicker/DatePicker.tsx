@@ -61,18 +61,36 @@ const DatePicker = ({
     );
   }, []);
 
+  const checkDateDisabled = useCallback(
+    (date: Date) => {
+      const formattedCurrentDate = new Date(currentDate);
+      formattedCurrentDate.setHours(0, 0, 0, 0);
+
+      if (disableCurrent && date === formattedCurrentDate) {
+        return true;
+      }
+      if (disableFuture && date > formattedCurrentDate) {
+        return true;
+      }
+      if (disablePast && date < formattedCurrentDate) {
+        return true;
+      }
+      if (dateDisabled) {
+        return dateDisabled(date);
+      }
+      return false;
+    },
+    [disableCurrent, currentDate, disableFuture, disablePast, dateDisabled]
+  );
+
   const handleSelect = useCallback(
     (date: Date) => {
-      if (disableFuture && date > currentDate) {
-        return;
-      }
-      if (disablePast && date < currentDate) {
-        return;
-      }
+      const dateDisabled = checkDateDisabled(date);
+      if (dateDisabled) return;
       setValue(date);
       if (onChange) onChange(date);
     },
-    [setValue, onChange, disableFuture, disablePast, currentDate]
+    [setValue, onChange, checkDateDisabled]
   );
 
   return (

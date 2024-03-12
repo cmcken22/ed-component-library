@@ -58,6 +58,13 @@ const defaultContext: DatePickerContext = {
 export const DatePickerContext =
   createContext<DatePickerContext>(defaultContext);
 
+const checkDateInArray = (date: Date, dates: Date[]) => {
+  return dates.some((d) => d.getTime() === date.getTime());
+};
+
+const nullFilter = (date: Date | null) => date !== null;
+const sorteDates = (d1: Date, d2: Date) => d1.getTime() - d2.getTime();
+
 const DatePickerContextProvider = ({
   onSelect,
   numberOfMonths,
@@ -120,12 +127,13 @@ const DatePickerContextProvider = ({
 
   const handelSelectDateRange = useCallback(
     (date: Date) => {
-      let nextSelected = [...selected]
-        ?.filter((date) => date)
-        .sort((a, b) => a?.getTime() - b?.getTime());
+      // TODO: prevent unselecting the min date if the max date is selected
+      let nextSelected = [...selected]?.filter(nullFilter).sort(sorteDates);
 
-      if (nextSelected.includes(date)) {
-        nextSelected = nextSelected.filter((d) => d !== date);
+      if (checkDateInArray(date, nextSelected)) {
+        nextSelected = nextSelected.filter(
+          (d) => d?.getTime() !== date?.getTime()
+        );
         select(nextSelected, true);
         if (onSelect) onSelect(nextSelected);
         return;
@@ -133,7 +141,7 @@ const DatePickerContextProvider = ({
 
       if (nextSelected?.length < 2) {
         nextSelected.push(date);
-        nextSelected.sort((a, b) => a?.getTime() - b?.getTime());
+        nextSelected.sort(sorteDates);
         select(nextSelected, true);
         if (onSelect) onSelect(nextSelected);
         return;
@@ -167,9 +175,7 @@ const DatePickerContextProvider = ({
   const handleCheckInRange = useCallback(
     (date: Date) => {
       if (selected?.length < 2) return false;
-      const sortedValues = [...selected].sort(
-        (a, b) => a.getTime() - b.getTime()
-      );
+      const sortedValues = [...selected].sort(sorteDates);
       return inRange(date, sortedValues[0], sortedValues[1]);
     },
     [selected, inRange]

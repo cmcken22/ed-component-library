@@ -37,22 +37,45 @@ const RangePicker = ({
   const [key, setKey] = useState(0);
   const popoverRef = useRef(null);
 
+  const checkDateDisabled = useCallback(
+    (date: Date) => {
+      const formattedCurrentDate = new Date(currentDate);
+      formattedCurrentDate.setHours(0, 0, 0, 0);
+
+      if (disableCurrent && date === formattedCurrentDate) {
+        return true;
+      }
+      if (disableFuture && date > formattedCurrentDate) {
+        return true;
+      }
+      if (disablePast && date < formattedCurrentDate) {
+        return true;
+      }
+      if (dateDisabled) {
+        return dateDisabled(date);
+      }
+      return false;
+    },
+    [disableCurrent, currentDate, disableFuture, disablePast, dateDisabled]
+  );
+
   const handleSelect = useCallback(
     (dateRange: Date[]) => {
-      console.clear();
-      console.log("dateRange:", dateRange);
+      const sortedRange = dateRange.sort((a, b) => a.getTime() - b.getTime());
+
+      let valid = true;
+      for (let i = 0; i < sortedRange.length; i++) {
+        if (checkDateDisabled(sortedRange[i])) {
+          valid = false;
+          break;
+        }
+      }
+      if (!valid) return;
+
       setValue(dateRange);
-      // TODO: validate date range before updating
-      // if (disableFuture && date > currentDate) {
-      //   return;
-      // }
-      // if (disablePast && date < currentDate) {
-      //   return;
-      // }
-      // setValue(date);
-      // if (onChange) onChange(date);
+      if (onChange) onChange(dateRange);
     },
-    [setValue, onChange, disableFuture, disablePast, currentDate]
+    [setValue, onChange, checkDateDisabled]
   );
 
   return (

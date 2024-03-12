@@ -21,8 +21,6 @@ const StyledWrapper = styled(Box, {
     : theme.palette.charcoal["20"];
   if (disabled) borderColor = theme.palette.charcoal["20"];
 
-  console.log("borderColor:", borderColor);
-
   return {
     border: "1px solid",
     borderRadius: "4px",
@@ -155,7 +153,9 @@ const DateRangeInput = ({
           slotProps={{
             textField: {
               onKeyDown: (e) => handleKeyDown(e, e.target, index),
-              placeholder,
+              placeholder: Array.isArray(placeholder)
+                ? placeholder?.[index]
+                : placeholder,
             },
           }}
           onChange={(date: any) => {

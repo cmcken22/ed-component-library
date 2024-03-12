@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { Icon, Typography } from "..";
 import CalendarWrapper from "./CalendarWrapper";
 import DatePickerContextProvider, {
@@ -107,8 +107,17 @@ export const MonthTitle = ({ weeks }: any) => {
 
 export const NextMonthBtn = () => {
   const { viewNextMonth } = useContext(DatePickerContext);
+
+  const handleViewNextMonth = useCallback(
+    (e) => {
+      e.stopPropagation();
+      viewNextMonth();
+    },
+    [viewNextMonth]
+  );
+
   return (
-    <Box onClick={viewNextMonth} sx={{ cursor: "pointer" }}>
+    <Box onClick={handleViewNextMonth} sx={{ cursor: "pointer" }}>
       <Icon icon="ArrowRight" height="16px" width="16px" />
     </Box>
   );
@@ -116,8 +125,17 @@ export const NextMonthBtn = () => {
 
 export const PrevMonthBtn = () => {
   const { viewPreviousMonth } = useContext(DatePickerContext);
+
+  const handleViewPrevMonth = useCallback(
+    (e) => {
+      e.stopPropagation();
+      viewPreviousMonth();
+    },
+    [viewPreviousMonth]
+  );
+
   return (
-    <Box onClick={viewPreviousMonth} sx={{ cursor: "pointer" }}>
+    <Box onClick={handleViewPrevMonth} sx={{ cursor: "pointer" }}>
       <Icon icon="ArrowLeft" height="16px" width="16px" />
     </Box>
   );
@@ -146,20 +164,23 @@ const Spacer = () => (
 );
 
 const DatePickerWrapper = ({
-  onSelect,
   value,
+  onSelect,
   disableFuture,
   disablePast,
   currentDate,
+  numberOfMonths,
+  range,
 }: any) => {
   return (
     <DatePickerContextProvider
-      onSelect={onSelect}
-      numberOfMonths={1}
       value={value}
+      onSelect={onSelect}
+      numberOfMonths={numberOfMonths}
       disableFuture={disableFuture}
       disablePast={disablePast}
       currentDate={currentDate}
+      range={range}
     >
       <DatePicker />
     </DatePickerContextProvider>

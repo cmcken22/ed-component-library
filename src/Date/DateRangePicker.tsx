@@ -33,15 +33,15 @@ const DateRangePicker = () => {
     selected,
     viewNextMonth,
     viewPreviousMonth,
-    viewing,
-    ...x
+    // viewing,
+    // ...x
   } = useLilius({
     numberOfMonths: 2,
   });
 
-  const selectedDateStrings = useMemo(() => {
-    return selected?.map((date) => date.toISOString());
-  }, [selected]);
+  // const selectedDateStrings = useMemo(() => {
+  //   return selected?.map((date) => date.toISOString());
+  // }, [selected]);
 
   const selectedDateRange = useMemo(() => {
     const sortedDates = selected?.sort((a, b) => a.getTime() - b.getTime());
@@ -107,23 +107,23 @@ const DateRangePicker = () => {
     [x.select, selected]
   );
 
-  const getDateSelected = useCallback(
-    (date: Date) => {
-      return selected?.includes(date);
-    },
-    [selected]
-  );
+  // const getDateSelected = useCallback(
+  //   (date: Date) => {
+  //     return selected?.includes(date);
+  //   },
+  //   [selected]
+  // );
 
   return (
     <DatePickerContext.Provider
       value={{
         selected,
-        selectedDateStrings,
+        // selectedDateStrings,
         onSelect: handelSelectDate,
         viewNextMonth,
         viewPreviousMonth,
         viewing: new Date(),
-        getDateSelected,
+        // getDateSelected,
         getDateInRange: getDateWithinRange,
       }}
     >

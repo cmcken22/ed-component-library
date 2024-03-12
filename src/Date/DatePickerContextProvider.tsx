@@ -24,31 +24,35 @@ export type DatePickerContext = {
   months: any;
   selected: Date[] | undefined;
   onSelect: (date: Date) => void;
-  selectedDateStrings: string[] | undefined;
+  // selectedDateStrings: string[] | undefined;
   viewNextMonth: () => void;
   viewPreviousMonth: () => void;
   viewing: Date | undefined;
-  getDateSelected: (date: Date) => boolean | undefined;
-  getDateInRange: (date: Date) => boolean | undefined;
+  // getDateSelected: (date: Date) => boolean | undefined;
+  // getDateInRange: (date: Date) => boolean | undefined;
   disableFuture?: boolean;
   disablePast?: boolean;
   currentDate?: Date;
+  range?: boolean;
+  isSelected?: (date: Date) => boolean;
+  inRange?: (date: Date) => boolean;
 };
 
 const defaultContext: DatePickerContext = {
   value: undefined,
   months: [],
   selected: undefined,
-  selectedDateStrings: undefined,
+  // selectedDateStrings: undefined,
   onSelect: () => {},
   viewNextMonth: () => {},
   viewPreviousMonth: () => {},
   viewing: undefined,
-  getDateSelected: () => false,
-  getDateInRange: () => false,
   disableFuture: false,
   disablePast: false,
   currentDate: new Date(),
+  range: false,
+  isSelected: () => false,
+  inRange: () => false,
 };
 
 export const DatePickerContext =
@@ -62,6 +66,7 @@ const DatePickerContextProvider = ({
   disableFuture,
   disablePast,
   currentDate,
+  range,
 }) => {
   const {
     calendar,
@@ -69,22 +74,26 @@ const DatePickerContextProvider = ({
     viewNextMonth,
     viewPreviousMonth,
     select,
+    viewing,
     setViewing,
+    viewToday,
+    isSelected,
+    inRange,
   } = useLilius({
     numberOfMonths: numberOfMonths || 1,
   });
 
   useEffect(() => {
     if (currentDate) setViewing(currentDate);
+    else viewToday();
   }, [currentDate]);
 
   useEffect(() => {
-    if (value) setViewing(value);
     select(value, true);
   }, [value]);
 
   const selectedDateStrings = useMemo(() => {
-    return selected?.map((date) => date?.toISOString());
+    return selected?.filter((date) => date).map((date) => date?.toISOString());
   }, [selected]);
 
   const handelSelectSingleDate = useCallback(
@@ -103,41 +112,92 @@ const DatePickerContextProvider = ({
     [select, selectedDateStrings, onSelect]
   );
 
-  const getDateSelected = useCallback(
+  const handelSelectDateRange = useCallback(
     (date: Date) => {
-      if (!date || !selectedDateStrings?.length) return false;
-      return selectedDateStrings?.includes(date?.toISOString());
+      let nextSelected = selected
+        ?.filter((date) => date)
+        .sort((a, b) => a?.getTime() - b?.getTime());
+
+      if (nextSelected.includes(date)) {
+        nextSelected = nextSelected.filter((d) => d !== date);
+        console.log("nextSelected:", nextSelected);
+        console.log("date:", date);
+        select(nextSelected, true);
+        if (onSelect) onSelect(nextSelected);
+        return;
+      }
+
+      if (nextSelected?.length < 2) {
+        nextSelected.push(date);
+        nextSelected.sort((a, b) => a?.getTime() - b?.getTime());
+        select(nextSelected, true);
+        if (onSelect) onSelect(nextSelected);
+        return;
+      }
+      const smallest = nextSelected?.[0];
+      const largest = nextSelected?.[1];
+
+      if (date === smallest) {
+        select([largest], true);
+        if (onSelect) onSelect([largest]);
+        return;
+      }
+      if (date === largest) {
+        select([smallest], true);
+        if (onSelect) onSelect([smallest]);
+        return;
+      }
+
+      if (date < smallest) {
+        select([date, largest], true);
+        if (onSelect) onSelect([smallest, date]);
+        return;
+      }
+      select([smallest, date], true);
+      if (onSelect) onSelect([smallest, date]);
+      return;
     },
-    [selectedDateStrings]
+    [select, onSelect, selected]
+  );
+
+  const handleCheckInRange = useCallback(
+    (date: Date) => {
+      if (selected?.length < 2) return false;
+      return inRange(date, selected[0], selected[1]);
+    },
+    [selected, inRange]
   );
 
   const context: DatePickerContext = useMemo(() => {
     const context: DatePickerContext = {
       months: calendar,
       selected,
-      selectedDateStrings,
-      onSelect: handelSelectSingleDate,
+      onSelect: range ? handelSelectDateRange : handelSelectSingleDate,
       viewNextMonth,
       viewPreviousMonth,
-      viewing: new Date(),
-      getDateSelected,
-      getDateInRange: () => false,
+      viewing,
       disableFuture,
       disablePast,
-      currentDate,
+      currentDate: currentDate,
+      range,
+      inRange: handleCheckInRange,
+      isSelected,
     };
     return context;
   }, [
     calendar,
     selected,
-    selectedDateStrings,
+    viewing,
+    currentDate,
     handelSelectSingleDate,
+    handelSelectDateRange,
     viewNextMonth,
     viewPreviousMonth,
-    getDateSelected,
     disableFuture,
     disablePast,
-    currentDate,
+    range,
+    handleCheckInRange,
+    isSelected,
   ]);
 
   return (

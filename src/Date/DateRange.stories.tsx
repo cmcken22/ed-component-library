@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import DateField from "./";
+import DateField from "./DateRange";
 
 const meta = {
-  title: "Example/Date",
+  title: "Example/DateRange",
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   component: DateField,
@@ -21,9 +21,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  // render: (args) => {
-  //   return <DateField {...args} currentDate={new Date(args?.currentDate)} />;
-  // },
+  render: (args) => {
+    console.log("args?.currentDate:", args?.currentDate);
+    return <DateField {...args} currentDate={new Date(args?.currentDate)} />;
+  },
   args: {
     ...DateField.defaultProps,
     format: "DD-MM-YYYY",

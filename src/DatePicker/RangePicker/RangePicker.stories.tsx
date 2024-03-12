@@ -47,6 +47,5 @@ export const Default: Story = {
     label: "Range Picker",
     helperText: "Helper Text",
     placeholder: ["Start date", "End date"],
-    disablePast: true,
   },
 };

@@ -6,6 +6,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useCallback, useRef, useState } from "react";
 import BaseInput from "src/BaseInput";
 import { CalendarPicker } from "../Common";
+import { isValidDate, subtractMonths } from "../Common/utils";
 import Popover from "../Popover";
 import { RangePickerProps } from "./RangePicker.types";
 import RangePickerInput from "./RangePickerInput";
@@ -34,7 +35,7 @@ const RangePicker = ({
   disableTextInput,
 }: RangePickerProps) => {
   const anchorRef = useRef<HTMLElement>(null);
-  const popoverRef = useRef(null);
+  const calendarRef = useRef(null);
   const [value, setValue] = useState<Date[] | null>(
     (passedValue ? passedValue : []) as Date[]
   );
@@ -64,16 +65,8 @@ const RangePicker = ({
     [disableCurrent, currentDate, disableFuture, disablePast, dateDisabled]
   );
 
-  // TODO: if change is coming from the calendar,
-  // then we need to have better judgement on which index to update
-  // i.e: if the first date is invalid, then maybe we should update the first date
-  // otherwise, maybe we sort the dates?
   const handleSelect = useCallback(
-    (dateRange: Date[]) => {
-      console.clear();
-      console.log("dateRange:", dateRange);
-      // const sortedRange = dateRange.sort((a, b) => a.getTime() - b.getTime());
-
+    (dateRange: Date[], idx?: number) => {
       let valid = true;
       for (let i = 0; i < dateRange.length; i++) {
         if (checkDateDisabled(dateRange[i])) {
@@ -81,9 +74,28 @@ const RangePicker = ({
           break;
         }
       }
+      // TODO: check if dateRange[0] is after dateRange[1]
+      if (dateRange[0] && dateRange[1]) {
+        if (dateRange[0] > dateRange[1]) {
+          valid = false;
+        }
+      }
       setError(!valid);
       setValue(dateRange);
       if (onChange) onChange(dateRange);
+      setTimeout(() => {
+        if (!isNaN(idx)) {
+          const valid = isValidDate(dateRange[idx]);
+          if (valid && calendarRef.current) {
+            if (idx === 1) {
+              const prevMonth = subtractMonths(dateRange[idx], 1);
+              calendarRef.current.setViewing(prevMonth);
+            } else {
+              calendarRef.current.setViewing(dateRange[idx]);
+            }
+          }
+        }
+      }, 50);
     },
     [setValue, onChange, checkDateDisabled, setError]
   );
@@ -92,6 +104,8 @@ const RangePicker = ({
     if (disabled) return;
     setOpen(true);
   }, [disabled, setOpen]);
+
+  console.log("calendarRef:", calendarRef);
 
   return (
     <div>
@@ -133,7 +147,7 @@ const RangePicker = ({
         }}
       >
         <CalendarPicker
-          ref={popoverRef}
+          ref={calendarRef}
           key={`date-picker2--${key}`}
           onSelect={handleSelect}
           value={value}

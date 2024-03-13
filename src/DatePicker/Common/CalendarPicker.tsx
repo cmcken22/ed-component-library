@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useCallback, useContext, useMemo } from "react";
+import { forwardRef, useCallback, useContext, useMemo } from "react";
 import { Icon, Typography } from "../..";
 import CalendarWrapper from "./CalendarWrapper";
 import DatePickerContextProvider, {
@@ -158,32 +158,38 @@ const CalendarPicker = () => {
   );
 };
 
-const CalendarPickerWrapper = ({
-  value,
-  onSelect,
-  disableFuture,
-  disableCurrent,
-  disablePast,
-  dateDisabled,
-  currentDate,
-  numberOfMonths,
-  range,
-}: any) => {
-  return (
-    <DatePickerContextProvider
-      value={value}
-      onSelect={onSelect}
-      numberOfMonths={numberOfMonths}
-      disableFuture={disableFuture}
-      disableCurrent={disableCurrent}
-      disablePast={disablePast}
-      dateDisabled={dateDisabled}
-      currentDate={currentDate}
-      range={range}
-    >
-      <CalendarPicker />
-    </DatePickerContextProvider>
-  );
-};
+const CalendarPickerWrapper = forwardRef(
+  (
+    {
+      value,
+      onSelect,
+      disableFuture,
+      disableCurrent,
+      disablePast,
+      dateDisabled,
+      currentDate,
+      numberOfMonths,
+      range,
+    }: any,
+    ref: any
+  ) => {
+    return (
+      <DatePickerContextProvider
+        ref={ref}
+        value={value}
+        onSelect={onSelect}
+        numberOfMonths={numberOfMonths}
+        disableFuture={disableFuture}
+        disableCurrent={disableCurrent}
+        disablePast={disablePast}
+        dateDisabled={dateDisabled}
+        currentDate={currentDate}
+        range={range}
+      >
+        <CalendarPicker />
+      </DatePickerContextProvider>
+    );
+  }
+);
 
 export default CalendarPickerWrapper;

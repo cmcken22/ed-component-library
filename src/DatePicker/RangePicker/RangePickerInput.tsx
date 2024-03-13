@@ -94,9 +94,6 @@ const DateRangeInput = ({
   const ref2 = useRef(null);
   const [value, setValue] = useState(passedValue || [null, null]);
 
-  console.log("value:", value);
-  console.log("passedValue:", passedValue);
-
   useEffect(() => {
     setValue(passedValue || [null, null]);
   }, [passedValue]);
@@ -137,7 +134,7 @@ const DateRangeInput = ({
       const nextValue = [...value];
       nextValue[idx] = date;
       setValue(nextValue);
-      if (onChange) onChange(nextValue);
+      if (onChange) onChange(nextValue, idx);
     },
     [value, onChange, setValue]
   );

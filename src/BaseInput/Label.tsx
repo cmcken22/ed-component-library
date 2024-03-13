@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useCallback, useContext, useEffect } from "react";
+import Icon, { IconVariant } from "src/Icon";
 import Typography from "../Typography";
 import { FONT_VARIANT } from "../theme/Typography";
 import { InputContext } from "./BaseInput";
@@ -8,9 +9,10 @@ export interface LabelProps {
   children?: any;
   required?: boolean;
   position?: "top" | "left";
+  tooltip?: string;
 }
 
-const Label = ({ children, required, position }: LabelProps) => {
+const Label = ({ children, required, position, tooltip }: LabelProps) => {
   const { setLabelPosition } = useContext(InputContext);
 
   useEffect(() => {
@@ -31,18 +33,31 @@ const Label = ({ children, required, position }: LabelProps) => {
     );
   }, [required]);
 
+  const renderInfoTooltip = useCallback(() => {
+    if (!tooltip) return null;
+    return (
+      <Icon
+        icon={IconVariant.WarningV2}
+        height="12px"
+        width="12px"
+        sx={{
+          ml: 1,
+          transform: "rotate(180deg)",
+        }}
+      />
+    );
+  }, [tooltip]);
+
   if (!children) return null;
   return (
     <Box
+      className="Input__label"
       sx={{
-        ...(position === "left" && {
-          display: "flex",
-          alignItems: "center",
-        }),
+        display: "flex",
+        alignItems: "center",
       }}
     >
       <Typography
-        className="Input__label"
         variant={FONT_VARIANT.fieldLabel}
         color="text.primary"
         preventTextSelection
@@ -50,6 +65,7 @@ const Label = ({ children, required, position }: LabelProps) => {
         {children}
       </Typography>
       {renderRequiredIndicator()}
+      {renderInfoTooltip()}
     </Box>
   );
 };

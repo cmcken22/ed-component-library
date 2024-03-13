@@ -12,6 +12,9 @@ declare const _default: {
                         padding: number;
                     };
                     "& .MuiMenuItem-root": {
+                        "&:focus": {
+                            backgroundColor: string;
+                        };
                         minHeight: string;
                         padding: string;
                         borderBottomWidth: string;
@@ -20,7 +23,9 @@ declare const _default: {
                         "&:last-child": {
                             borderBottom: string;
                         };
-                        "&:hover": {};
+                        "&:hover": {
+                            backgroundColor: string;
+                        };
                     };
                 };
             };

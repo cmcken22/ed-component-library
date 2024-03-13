@@ -1,0 +1,11 @@
+export declare const checkDateInArray: (date: Date, dates: Date[]) => boolean;
+export declare const nullFilter: (date: Date | null) => boolean;
+export declare const sorteDates: (d1: Date, d2: Date) => number;
+export declare const detectUpdatedIndex: (prev: Date[], next: Date[]) => number;
+export declare const subtractMonths: (date: Date, numberOfMonths?: number) => Date;
+export declare const isValidDate: (date: Date) => boolean;
+export declare const getMonth: (date: Date) => number;
+export declare const getYear: (date: Date) => number;
+export declare const numberToMonth: (num: number) => any;
+export declare const getMonthFromCalendar: (weeks: any) => number;
+export declare const getFirstDay: (weeks: any) => any;

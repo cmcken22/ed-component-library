@@ -22,7 +22,7 @@ declare const BaseInputProvider: {
         labelPosition: string;
         multiline: boolean;
     };
-    Label: ({ children, required, position }: import("./Label").LabelProps) => import("react/jsx-runtime").JSX.Element;
+    Label: ({ children, required, position, tooltip }: import("./Label").LabelProps) => import("react/jsx-runtime").JSX.Element;
     HelperText: ({ children }: import("./HelperText").HelperTextProps) => import("react/jsx-runtime").JSX.Element;
 };
 export default BaseInputProvider;

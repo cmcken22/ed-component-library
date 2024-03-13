@@ -39,6 +39,10 @@ export const Smaple: Story = {
         xxx: "Option 2",
         yyy: "option2",
       },
+      {
+        xxx: "Option 3",
+        yyy: "option3",
+      },
     ],
   },
 };

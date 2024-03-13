@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/material";
-import { useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import { hexToRGBA } from "src/utils";
 import { Typography } from "../..";
 import { DatePickerContext } from "./DatePickerContextProvider";
@@ -9,7 +9,16 @@ const StyledBox = styled(Box, {
   // shouldForwardProp: (prop) => prop !== "src",
   slot: "root",
 })<any>(
-  ({ theme, selected, inRange, disabled, hidden, leftRange, rightRange }) => {
+  ({
+    theme,
+    selected,
+    inRange,
+    inPotentialRange,
+    disabled,
+    hidden,
+    leftRange,
+    rightRange,
+  }) => {
     let backgroundColor = "white";
     let color = theme.palette.charcoal[100];
     if (selected) {
@@ -17,6 +26,10 @@ const StyledBox = styled(Box, {
       color = "white";
     }
     if (inRange) {
+      backgroundColor = hexToRGBA(theme.palette.secondary.main, 0.05);
+    }
+    // TODO: maybe we will change this colour
+    if (inPotentialRange) {
       backgroundColor = hexToRGBA(theme.palette.secondary.main, 0.05);
     }
     let borderStyles = {};
@@ -68,6 +81,8 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
     dateDisabled,
     isSelected,
     range,
+    hoveredDate,
+    setHoveredDate,
   } = useContext(DatePickerContext);
 
   const validSelectedDates = useMemo(() => {
@@ -75,29 +90,81 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
     return values.filter((date) => isValidDate(date));
   }, [selected]);
 
-  const dateSelected = isSelected(day);
-  const dateInRange = dateSelected ? false : inRange(day);
-  const outOfMonth = day.getMonth() !== month;
-  const isToday =
-    currentDate && currentDate?.toDateString() === day?.toDateString();
+  const dateSelected = useMemo(() => isSelected(day), [day, isSelected]);
+  const dateInRange = useMemo(() => {
+    return dateSelected ? false : inRange(day);
+  }, [day, inRange, dateSelected]);
+  const outOfMonth = useMemo(() => day.getMonth() !== month, [day, month]);
+  const isToday = useMemo(() => {
+    return currentDate && currentDate?.toDateString() === day?.toDateString();
+  }, [currentDate, day]);
 
-  let disabled = false;
-  if (outOfMonth) disabled = true;
-  if (disableFuture && day > currentDate) disabled = true;
-  if (disablePast && !isToday && day < currentDate) disabled = true;
-  if (disableCurrent && isToday) disabled = true;
-  if (dateDisabled && dateDisabled(day)) disabled = true;
+  const disabled = useMemo(() => {
+    let disabled = false;
+    if (outOfMonth) disabled = true;
+    if (disableFuture && day > currentDate) disabled = true;
+    if (disablePast && !isToday && day < currentDate) disabled = true;
+    if (disableCurrent && isToday) disabled = true;
+    if (dateDisabled && dateDisabled(day)) disabled = true;
+    return disabled;
+  }, [
+    outOfMonth,
+    disableFuture,
+    currentDate,
+    disablePast,
+    isToday,
+    disableCurrent,
+    dateDisabled,
+  ]);
 
-  let leftRange = false;
-  let rightRange = false;
-  if (range && validSelectedDates?.length === 2) {
-    const values = [...(validSelectedDates || [])];
-    const [start, end] = values.sort((a, b) => a.getTime() - b.getTime());
-    if (selected?.length === 2) {
-      if (day?.getTime() === start.getTime()) leftRange = true;
-      if (day?.getTime() === end?.getTime()) rightRange = true;
+  const [leftRange, rightRange] = useMemo(() => {
+    let leftRange = false;
+    let rightRange = false;
+    if (range && validSelectedDates?.length === 2) {
+      const values = [...(validSelectedDates || [])];
+      const [start, end] = values.sort((a, b) => a.getTime() - b.getTime());
+      if (selected?.length === 2) {
+        if (day?.getTime() === start.getTime()) leftRange = true;
+        if (day?.getTime() === end?.getTime()) rightRange = true;
+      }
     }
-  }
+    return [leftRange, rightRange];
+  }, [range, validSelectedDates]);
+
+  const dateInPotentialRange = useMemo(() => {
+    if (!range || !hoveredDate) return false;
+    if (dateSelected || disabled) return false;
+    if (validSelectedDates?.length !== 1) return false;
+    const values = [...(validSelectedDates || []), hoveredDate];
+    const [start, end] = values.sort((a, b) => a.getTime() - b.getTime());
+    if (inRange(day, start, end)) {
+      return true;
+    }
+    return false;
+  }, [
+    hoveredDate,
+    validSelectedDates,
+    dateSelected,
+    disabled,
+    range,
+    day,
+    inRange,
+  ]);
+
+  console.log("dateInPotentialRange:", dateInPotentialRange);
+
+  const handleMouseEnter = useCallback(
+    (date: Date) => {
+      if (!range || disabled) return;
+      setHoveredDate(date);
+    },
+    [setHoveredDate, range, disabled]
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    if (!range || disabled) return;
+    setHoveredDate(null);
+  }, [setHoveredDate, range, disabled]);
 
   return (
     <StyledBox
@@ -105,11 +172,13 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
       onClick={disabled ? undefined : () => onSelect(day)}
       selected={dateSelected}
       inRange={dateInRange}
+      inPotentialRange={dateInPotentialRange}
       disabled={outOfMonth || disabled}
       hidden={outOfMonth}
       leftRange={leftRange}
       rightRange={rightRange}
-      // TODO: add hover functionality to show potential range
+      onMouseEnter={() => handleMouseEnter(day)}
+      onMouseLeave={handleMouseLeave}
     >
       {isToday && !dateSelected && (
         <Box

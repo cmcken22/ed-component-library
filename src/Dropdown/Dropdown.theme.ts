@@ -12,6 +12,10 @@ export default {
             padding: 0,
           },
           "& .MuiMenuItem-root": {
+            "&:focus": {
+              // I can't figure out how to use the theme here
+              backgroundColor: "#A1F0FB12",
+            },
             minHeight: "36px",
             padding: "5.5px 8px",
             borderBottomWidth: "1px",
@@ -21,7 +25,10 @@ export default {
               borderBottom: "none",
             },
             "&:hover": {
+              // I can't figure out how to use the theme here
+              backgroundColor: "#A1F0FB12",
               // backgroundColor: hexToRGBA(Colors.Bermuda["10"], 0.07),
+              // backgroundColor: alpha("primary.main", 0.07),
             },
           },
         },
@@ -30,7 +37,6 @@ export default {
   },
   styleOverrides: {
     root: ({ theme, ownerState }: any) => {
-      console.log("ownerState:", ownerState?.open);
       return {
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderWidth: "1px !important",

@@ -1,4 +1,10 @@
-import { createContext, useCallback, useEffect, useMemo } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useStateWithPrevious } from "src/Hooks/useStateWithPrevious";
 import { useLilius } from "use-lilius";
 import {
@@ -27,7 +33,9 @@ export type DatePickerContext = {
   currentDate?: Date;
   range?: boolean;
   isSelected?: (date: Date) => boolean;
-  inRange?: (date: Date) => boolean;
+  inRange?: (date: Date, start?: Date, end?: Date) => boolean;
+  hoveredDate?: Date | null;
+  setHoveredDate?: (date: Date | null) => void;
 };
 
 const defaultContext: DatePickerContext = {
@@ -46,6 +54,8 @@ const defaultContext: DatePickerContext = {
   range: false,
   isSelected: () => false,
   inRange: () => false,
+  hoveredDate: null,
+  setHoveredDate: () => {},
 };
 
 export const DatePickerContext =
@@ -78,6 +88,7 @@ const DatePickerContextProvider = ({
     numberOfMonths: numberOfMonths || 1,
   });
   const [prevValue, value, setValue] = useStateWithPrevious(passedValue);
+  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
 
   useEffect(() => {
     setValue(passedValue);
@@ -93,6 +104,8 @@ const DatePickerContextProvider = ({
   const handleUpdateViewing = useCallback(
     (value: Date) => {
       if (!value) return;
+      // TODO: remove this complexity
+      // we can set the view directly when the date is selected
       if (Array.isArray(value)) {
         const updatedIndex = detectUpdatedIndex(prevValue, value);
         if (updatedIndex !== -1) {
@@ -199,7 +212,10 @@ const DatePickerContextProvider = ({
   );
 
   const handleCheckInRange = useCallback(
-    (date: Date) => {
+    (date: Date, start?: Date, end?: Date) => {
+      if (date && start && end) {
+        return inRange(date, start, end);
+      }
       if (selected?.length < 2) return false;
       const sortedValues = [...selected].sort(sorteDates);
       return inRange(date, sortedValues[0], sortedValues[1]);
@@ -223,6 +239,8 @@ const DatePickerContextProvider = ({
       isSelected,
       disableCurrent,
       dateDisabled,
+      hoveredDate,
+      setHoveredDate,
     };
     return context;
   }, [
@@ -241,6 +259,8 @@ const DatePickerContextProvider = ({
     isSelected,
     disableCurrent,
     dateDisabled,
+    hoveredDate,
+    setHoveredDate,
   ]);
 
   return (

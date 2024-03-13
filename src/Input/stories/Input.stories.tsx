@@ -11,6 +11,9 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
+    onChange: {
+      action: "changed",
+    },
     status: {
       options: ["error", "success", "warning"],
       control: { type: "radio" },

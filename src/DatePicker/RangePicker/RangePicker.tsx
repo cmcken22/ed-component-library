@@ -40,6 +40,7 @@ const RangePicker = ({
   );
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState(0);
+  const [error, setError] = useState(false);
 
   const checkDateDisabled = useCallback(
     (date: Date) => {
@@ -63,23 +64,28 @@ const RangePicker = ({
     [disableCurrent, currentDate, disableFuture, disablePast, dateDisabled]
   );
 
+  // TODO: if change is coming from the calendar,
+  // then we need to have better judgement on which index to update
+  // i.e: if the first date is invalid, then maybe we should update the first date
+  // otherwise, maybe we sort the dates?
   const handleSelect = useCallback(
     (dateRange: Date[]) => {
-      const sortedRange = dateRange.sort((a, b) => a.getTime() - b.getTime());
+      console.clear();
+      console.log("dateRange:", dateRange);
+      // const sortedRange = dateRange.sort((a, b) => a.getTime() - b.getTime());
 
       let valid = true;
-      for (let i = 0; i < sortedRange.length; i++) {
-        if (checkDateDisabled(sortedRange[i])) {
+      for (let i = 0; i < dateRange.length; i++) {
+        if (checkDateDisabled(dateRange[i])) {
           valid = false;
           break;
         }
       }
-      if (!valid) return;
-
+      setError(!valid);
       setValue(dateRange);
       if (onChange) onChange(dateRange);
     },
-    [setValue, onChange, checkDateDisabled]
+    [setValue, onChange, checkDateDisabled, setError]
   );
 
   const handleOpenPopover = useCallback(() => {
@@ -89,7 +95,7 @@ const RangePicker = ({
 
   return (
     <div>
-      <BaseInput key={key} id={id} status={status}>
+      <BaseInput key={key} id={id} status={error ? "error" : status}>
         {({ endAdornment }: any) => (
           <>
             <BaseInput.Label required={required} position={labelPosition}>
@@ -103,7 +109,7 @@ const RangePicker = ({
                   onChange={handleSelect}
                   placeholder={placeholder}
                   endAdornment={endAdornment}
-                  status={status}
+                  status={error ? "error" : status}
                   disabled={disabled}
                   disableTextInput={disableTextInput}
                 />

@@ -92,10 +92,13 @@ const DateRangeInput = ({
 }: any) => {
   const ref1 = useRef(null);
   const ref2 = useRef(null);
-  const [value, setValue] = useState(passedValue);
+  const [value, setValue] = useState(passedValue || [null, null]);
+
+  console.log("value:", value);
+  console.log("passedValue:", passedValue);
 
   useEffect(() => {
-    setValue(passedValue);
+    setValue(passedValue || [null, null]);
   }, [passedValue]);
 
   const startAdornment = useCallback(() => {

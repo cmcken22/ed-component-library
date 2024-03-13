@@ -6,45 +6,7 @@ import DatePickerContextProvider, {
   DatePickerContext,
 } from "./DatePickerContextProvider";
 import Day from "./Day";
-
-export const numberToMonth = (num: number) => {
-  const monthMap = {
-    0: "January",
-    1: "February",
-    2: "March",
-    3: "April",
-    4: "May",
-    5: "June",
-    6: "July",
-    7: "August",
-    8: "September",
-    9: "October",
-    10: "November",
-    11: "December",
-  };
-  return monthMap?.[num];
-};
-
-export const getMonth = (weeks: any) => {
-  const firstDayOfMonth = getFirstDay(weeks);
-  const month = new Date(firstDayOfMonth).getMonth();
-  return month;
-};
-
-export const getFirstDay = (weeks: any) => {
-  // for (let m = 0; m < month.length; m++) {
-  //   const weeks = month[m];
-  for (let i = 0; i < weeks.length; i++) {
-    const week = weeks[i];
-    for (let j = 0; j < week.length; j++) {
-      const day = week[j];
-      if (new Date(day).getDate() === 1) {
-        return day;
-      }
-    }
-  }
-  // }
-};
+import { getFirstDay, getMonthFromCalendar, numberToMonth } from "./utils";
 
 export const WeeklyHeader = () => {
   return (
@@ -169,7 +131,7 @@ const CalendarPicker = () => {
   return (
     <CalendarWrapper>
       {months?.map((month, index) => {
-        const monthNumber = getMonth(month);
+        const monthNumber = getMonthFromCalendar(month);
         return (
           <MonthView
             key={`month--${monthNumber}`}

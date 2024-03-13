@@ -1,8 +1,9 @@
 import { Box, styled } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { hexToRGBA } from "src/utils";
 import { Typography } from "../..";
 import { DatePickerContext } from "./DatePickerContextProvider";
+import { isValidDate } from "./utils";
 
 const StyledBox = styled(Box, {
   // shouldForwardProp: (prop) => prop !== "src",
@@ -69,6 +70,11 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
     range,
   } = useContext(DatePickerContext);
 
+  const validSelectedDates = useMemo(() => {
+    const values = [...(selected || [])];
+    return values.filter((date) => isValidDate(date));
+  }, [selected]);
+
   const dateSelected = isSelected(day);
   const dateInRange = dateSelected ? false : inRange(day);
   const outOfMonth = day.getMonth() !== month;
@@ -84,8 +90,8 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
 
   let leftRange = false;
   let rightRange = false;
-  if (range && selected?.length === 2) {
-    const values = [...(selected || [])];
+  if (range && validSelectedDates?.length === 2) {
+    const values = [...(validSelectedDates || [])];
     const [start, end] = values.sort((a, b) => a.getTime() - b.getTime());
     if (selected?.length === 2) {
       if (day?.getTime() === start.getTime()) leftRange = true;
@@ -103,6 +109,7 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
       hidden={outOfMonth}
       leftRange={leftRange}
       rightRange={rightRange}
+      // TODO: add hover functionality to show potential range
     >
       {isToday && !dateSelected && (
         <Box

@@ -1,23 +1,16 @@
-import { createContext, useCallback, useEffect, useMemo, useRef } from "react";
+import { createContext, useCallback, useEffect, useMemo } from "react";
+import { useStateWithPrevious } from "src/Hooks/useStateWithPrevious";
 import { useLilius } from "use-lilius";
-
-export const numberToMonth = (num: number) => {
-  const monthMap = {
-    0: "January",
-    1: "February",
-    2: "March",
-    3: "April",
-    4: "May",
-    5: "June",
-    6: "July",
-    7: "August",
-    8: "September",
-    9: "October",
-    10: "November",
-    11: "December",
-  };
-  return monthMap?.[num];
-};
+import {
+  checkDateInArray,
+  detectUpdatedIndex,
+  getMonth,
+  getYear,
+  isValidDate,
+  nullFilter,
+  sorteDates,
+  subtractMonths,
+} from "./utils";
 
 export type DatePickerContext = {
   value?: Date | null | Date[];
@@ -58,17 +51,10 @@ const defaultContext: DatePickerContext = {
 export const DatePickerContext =
   createContext<DatePickerContext>(defaultContext);
 
-const checkDateInArray = (date: Date, dates: Date[]) => {
-  return dates.some((d) => d.getTime() === date.getTime());
-};
-
-const nullFilter = (date: Date | null) => date !== null;
-const sorteDates = (d1: Date, d2: Date) => d1.getTime() - d2.getTime();
-
 const DatePickerContextProvider = ({
   onSelect,
   numberOfMonths,
-  value,
+  value: passedValue,
   children,
   disableFuture,
   disableCurrent,
@@ -91,8 +77,11 @@ const DatePickerContextProvider = ({
   } = useLilius({
     numberOfMonths: numberOfMonths || 1,
   });
+  const [prevValue, value, setValue] = useStateWithPrevious(passedValue);
 
-  const viewingUpdated = useRef(false);
+  useEffect(() => {
+    setValue(passedValue);
+  }, [passedValue]);
 
   // current date is an object, so it will always be a new reference
   // don't put in the dependency array, only check once on mount
@@ -105,19 +94,37 @@ const DatePickerContextProvider = ({
     (value: Date) => {
       if (!value) return;
       if (Array.isArray(value)) {
-        // if its a date range, only update the viewing date if its not already set
-        if (viewingUpdated.current) return;
-        viewingUpdated.current = true;
-        // @ts-ignore
-        const isDateValid = value?.[0] instanceof Date && !isNaN(value?.[0]);
-        if (value?.length >= 1) {
-          if (isDateValid) setViewing(value?.[0]);
+        const updatedIndex = detectUpdatedIndex(prevValue, value);
+        if (updatedIndex !== -1) {
+          // if the months and years are the same, then no need to update the viewing date
+          // unless the current viewing date is outside the month / year
+          if (
+            getMonth(value?.[0]) === getMonth(value?.[1]) &&
+            getYear(value?.[0]) === getYear(value?.[1])
+          ) {
+            // if they are the same but the viewing month is different, then update the viewing month
+            const viewingMonth = getMonth(viewing);
+            if (viewingMonth !== getMonth(value?.[0])) {
+              setViewing(value?.[0]);
+            }
+            return;
+          }
+          const date = value?.[updatedIndex];
+          if (!isValidDate(date)) return;
+          const dateInPrevMonth = subtractMonths(date, updatedIndex);
+          setViewing(dateInPrevMonth);
+        } else {
+          if (isValidDate(value?.[0])) {
+            setViewing(value?.[0]);
+          } else if (isValidDate(value?.[1])) {
+            setViewing(value?.[1]);
+          }
         }
         return;
       }
       setViewing(value);
     },
-    [value, setViewing]
+    [prevValue, setViewing, viewing]
   );
 
   useEffect(() => {
@@ -145,6 +152,9 @@ const DatePickerContextProvider = ({
     (date: Date) => {
       // TODO: prevent unselecting the min date if the max date is selected
       let nextSelected = [...selected]?.filter(nullFilter).sort(sorteDates);
+      console.clear();
+      console.log("nextSelected:", nextSelected);
+      // return;
 
       if (checkDateInArray(date, nextSelected)) {
         nextSelected = nextSelected.filter(

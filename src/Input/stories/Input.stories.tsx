@@ -2,9 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Input from "../Input";
 
 const meta = {
-  title: "Example/Input/Text",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
+  title: "Example/Input",
   component: Input,
   parameters: {
     layout: "centered",

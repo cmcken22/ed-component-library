@@ -1,14 +1,12 @@
 import { TextField } from "@mui/material";
-import cx from "classnames";
 import _debounce from "lodash.debounce";
-import { useCallback, useEffect, useState } from "react";
-import BaseInput, { BaseInputProps } from "src/BaseInput";
+import { useCallback, useContext, useEffect, useState } from "react";
+import BaseInput, { BaseInputContext, StandardInputProps } from "src/BaseInput";
 import Currency from "./Currency";
 import Percent from "./Percent";
 import TextArea from "./TextArea";
 
-export interface InputProps extends BaseInputProps {
-  id?: string;
+export interface InputProps extends StandardInputProps {
   label?: string;
   placeholder?: string;
   helperText?: string;
@@ -17,8 +15,6 @@ export interface InputProps extends BaseInputProps {
   labelPosition?: "top" | "left";
   onChange?: (value: string) => void;
   endAdornment?: React.ReactNode;
-  fullWidth?: boolean;
-  disabled?: boolean;
   type?: "text" | "password" | "number";
   debounce?: number;
   maxChars?: number;
@@ -26,11 +22,19 @@ export interface InputProps extends BaseInputProps {
   minWidth?: string | number;
 }
 
-const Input = ({
-  id,
+const Input = (props: InputProps) => {
+  const { id, status, ...rest } = props;
+
+  return (
+    <BaseInput id={id} status={status}>
+      <InputComp {...rest} />
+    </BaseInput>
+  );
+};
+
+const InputComp = ({
   label,
   placeholder,
-  status,
   helperText,
   disabled,
   value: passedValue,
@@ -41,9 +45,9 @@ const Input = ({
   onChange,
   debounce,
   maxChars,
-  width,
-  minWidth,
 }: InputProps) => {
+  const { endAdornment } = useContext(BaseInputContext);
+
   const [value, setValue] = useState(passedValue || "");
 
   useEffect(() => {
@@ -73,40 +77,30 @@ const Input = ({
   );
 
   return (
-    <BaseInput id={id} status={status}>
-      {({ endAdornment, className }: any) => (
-        <>
-          <BaseInput.Label required={required} position={labelPosition}>
-            {label}
-          </BaseInput.Label>
-          <TextField
-            className={cx(className)}
-            placeholder={placeholder}
-            type={type}
-            value={value}
-            variant="outlined"
-            disabled={disabled}
-            fullWidth={fullWidth}
-            onChange={handleChange}
-            InputProps={{ endAdornment }}
-            sx={{
-              width,
-              minWidth,
-            }}
-          />
-          <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-        </>
-      )}
-    </BaseInput>
+    <>
+      <BaseInput.Label required={required} position={labelPosition}>
+        {label}
+      </BaseInput.Label>
+      <TextField
+        placeholder={placeholder}
+        type={type}
+        value={value}
+        variant="outlined"
+        disabled={disabled}
+        fullWidth={fullWidth}
+        onChange={handleChange}
+        InputProps={{ endAdornment }}
+      />
+      <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
+    </>
   );
 };
 
 Input.defaultProps = {
   labelPosition: "top",
-  multiline: false,
   type: "text",
   minWidth: "240px",
-};
+} as Partial<InputProps>;
 
 Input.Currency = Currency;
 Input.Percent = Percent;

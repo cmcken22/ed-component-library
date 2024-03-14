@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
 import { useCallback, useContext, useEffect } from "react";
 import Icon, { IconVariant } from "src/Icon";
+import { BaseInputContext } from ".";
 import Typography from "../Typography";
 import { FONT_VARIANT } from "../theme/Typography";
-import { InputContext } from "./BaseInput";
 
 export interface LabelProps {
   children?: any;
@@ -13,7 +13,7 @@ export interface LabelProps {
 }
 
 const Label = ({ children, required, position, tooltip }: LabelProps) => {
-  const { setLabelPosition } = useContext(InputContext);
+  const { setLabelPosition } = useContext(BaseInputContext);
 
   useEffect(() => {
     if (position) setLabelPosition(position);

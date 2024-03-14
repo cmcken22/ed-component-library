@@ -7,31 +7,15 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
-    "@chromatic-com/storybook"
+    "@chromatic-com/storybook",
   ],
   framework: {
     name: "@storybook/react-vite",
     options: {},
   },
-  // async viteFinal(config) {
-  //   console.log("config:", JSON.stringify(config, null, 2));
-  //   // Merge custom configuration into the default config
-  //   return mergeConfig(config, {
-  //     // Add storybook-specific dependencies to pre-optimization
-  //     // optimizeDeps: {
-  //     //   include: ['storybook-addon-designs'],
-  //     // },
-  //     // config.resolve.extensions.push(".ts", ".tsx");
-
-  //     resolve: {
-  //       extentions: [".ts", ".tsx"],
-  //       alias: {
-  //         ...config?.resolve?.alias,
-  //         src: resolve(__dirname, "../src"), // Adjust this path according to your project structure
-  //       },
-  //     },
-  //   });
-  // },
+  typescript: {
+    reactDocgen: "react-docgen-typescript",
+  },
   docs: {
     autodocs: "tag",
   },

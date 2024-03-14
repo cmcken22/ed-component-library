@@ -2,14 +2,14 @@ import { Box } from "@mui/material";
 import { useContext } from "react";
 import Typography from "../Typography";
 import { FONT_VARIANT } from "../theme/Typography";
-import { InputContext } from "./BaseInput";
+import { BaseInputContext } from "./";
 
 export interface HelperTextProps {
   children?: any;
 }
 
 const HelperText = ({ children }: HelperTextProps) => {
-  const { labelPosition } = useContext(InputContext);
+  const { labelPosition } = useContext(BaseInputContext);
 
   if (!children) return null;
   return (

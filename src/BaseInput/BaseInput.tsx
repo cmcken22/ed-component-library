@@ -1,12 +1,7 @@
 import { Box, InputAdornment, styled } from "@mui/material";
 import cx from "classnames";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { useCallback, useMemo, useState } from "react";
+import { BaseInputContext, BaseInputProps } from ".";
 import Icon, { IconVariant } from "../Icon";
 import HelperText from "./HelperText";
 import Label from "./Label";
@@ -14,75 +9,78 @@ import Label from "./Label";
 const StyledWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "status" && prop !== "labelPosition",
   slot: "Root",
-})<{ status?: string; disabled?: boolean; labelPosition?: string }>(
-  ({ theme, status, disabled, labelPosition }) => {
-    const colorMap = {
-      error: theme.palette.error.main,
-      warning: theme.palette.warning.main,
-      success: theme.palette.success.main,
-    };
+})<{ status?: string; disabled?: boolean; labelPosition?: string }>(({
+  theme,
+  status,
+  disabled,
+  labelPosition,
+}) => {
+  const colorMap = {
+    error: theme.palette.error.main,
+    warning: theme.palette.warning.main,
+    success: theme.palette.success.main,
+  };
 
-    let borderColor = colorMap?.[status]
-      ? `${colorMap?.[status]} !important`
-      : theme.palette.charcoal["20"];
-    if (disabled) borderColor = theme.palette.charcoal["20"];
+  let borderColor = colorMap?.[status]
+    ? `${colorMap?.[status]} !important`
+    : theme.palette.charcoal["20"];
+  if (disabled) borderColor = theme.palette.charcoal["20"];
 
-    return {
-      width: "fit-content",
-      display: "flex",
-      flexDirection: "column",
-      color: colorMap?.[status],
-      input: {
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        // "&:-internal-autofill-selected": {
-        //   backgroundColor: "red",
-        // },
-      },
-      // "input:-internal-autofill-selected": {
+  return {
+    width: "fit-content",
+    display: "flex",
+    flexDirection: "column",
+    color: colorMap?.[status],
+    input: {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      // "&:-internal-autofill-selected": {
       //   backgroundColor: "red",
       // },
-      ".MuiInputAdornment-positionEnd .icon-wrapper": {
-        color: colorMap?.[status],
+    },
+    // "input:-internal-autofill-selected": {
+    //   backgroundColor: "red",
+    // },
+    ".MuiInputAdornment-positionEnd .icon-wrapper": {
+      color: colorMap?.[status],
+    },
+    ".Input": {
+      "&__label": {
+        marginBottom: labelPosition === "top" ? theme.spacing(0.5) : 0,
       },
-      ".Input": {
-        "&__label": {
-          marginBottom: labelPosition === "top" ? theme.spacing(0.5) : 0,
-        },
-        "&__helper-text": {
-          marginTop: theme.spacing(0.5),
-          lineHeight: "13.64px",
-        },
-        "&__required-indicator": {
-          marginLeft: theme.spacing(0.25),
-          marginBottom: labelPosition === "top" ? theme.spacing(0.5) : 0,
-        },
+      "&__helper-text": {
+        marginTop: theme.spacing(0.5),
+        lineHeight: "13.64px",
       },
-      "& .MuiInputBase-root:not(.Mui-disabled)": {
+      "&__required-indicator": {
+        marginLeft: theme.spacing(0.25),
+        marginBottom: labelPosition === "top" ? theme.spacing(0.5) : 0,
+      },
+    },
+    "& .MuiInputBase-root:not(.Mui-disabled)": {
+      "& fieldset": {
+        borderColor: borderColor,
+      },
+      "&:hover fieldset": {
+        borderColor: !disabled ? theme.palette.primary.main : "",
+      },
+      "&:focus-within": {
         "& fieldset": {
-          borderColor: borderColor,
-        },
-        "&:hover fieldset": {
-          borderColor: !disabled ? theme.palette.primary.main : "",
-        },
-        "&:focus-within": {
-          "& fieldset": {
-            borderColor: theme.palette.primary.main,
-            // borderColor: borderColor,
-          },
+          borderColor: theme.palette.primary.main,
+          // borderColor: borderColor,
         },
       },
-      "& .MuiInputBase-root.Mui-disabled": {
-        "& fieldset": {
-          borderColor: borderColor,
-        },
-        "&:hover fieldset": {
-          borderColor: theme.palette.charcoal["20"],
-        },
+    },
+    "& .MuiInputBase-root.Mui-disabled": {
+      "& fieldset": {
+        borderColor: borderColor,
       },
-    };
-  }
-);
+      "&:hover fieldset": {
+        borderColor: theme.palette.charcoal["20"],
+      },
+    },
+  };
+});
 
 const PlacementContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== "fullWidth",
@@ -107,100 +105,12 @@ const PlacementContainer = styled(Box, {
   };
 });
 
-export interface BaseInputProps {
-  id?: string;
-  status?: "error" | "warning" | "success";
-  disabled?: boolean;
-  fullWidth?: boolean;
-  children?:
-    | React.ReactNode
-    | React.JSX.Element
-    | ((props: any) => React.ReactNode);
-  containerSx?: any;
-}
-
-type InputContext = {
-  status: "error" | "warning" | "success" | undefined;
-  required?: boolean;
-  disabled?: boolean;
-  labelPosition?: "top" | "left";
-  endAdornment?: React.ReactNode;
-  setLabelPosition: (pos: string) => void;
-};
-
-const defaultContext: InputContext = {
-  status: undefined,
-  required: false,
-  disabled: false,
-  labelPosition: "top",
-  endAdornment: undefined,
-  setLabelPosition: () => {},
-};
-
-export const InputContext = createContext<InputContext>(defaultContext);
-
 const BaseInput = ({
   id,
   status,
   disabled,
   fullWidth,
-  containerSx,
-  children,
-}: BaseInputProps) => {
-  const { labelPosition } = useContext(InputContext);
-
-  const statusIcon = useMemo(() => {
-    if (!status) return null;
-    if (status === "error") return IconVariant.Close1;
-    if (status === "warning") return IconVariant.Warning;
-    if (status === "success") return IconVariant.Success;
-  }, [status]);
-
-  const renderStatusIcon = useCallback(() => {
-    if (!status) return null;
-    return (
-      <InputAdornment position="end">
-        <Icon icon={statusIcon} height="20px" width="20px" />
-      </InputAdornment>
-    );
-  }, [statusIcon]);
-
-  return (
-    <StyledWrapper
-      id={id}
-      status={status}
-      disabled={disabled}
-      labelPosition={labelPosition}
-      data-testid="Input"
-    >
-      <PlacementContainer
-        fullWidth={fullWidth}
-        className={cx("Input-container", {
-          ["Input-container--align-left"]: labelPosition === "left",
-        })}
-        sx={containerSx}
-      >
-        {typeof children === "function"
-          ? children({
-              endAdornment: renderStatusIcon(),
-              className: cx({
-                ["status--error"]: status === "error",
-                ["status--warning"]: status === "warning",
-                ["status--success"]: status === "success",
-              }),
-            })
-          : children}
-      </PlacementContainer>
-    </StyledWrapper>
-  );
-};
-
-const BaseInputProvider = ({
-  id,
-  status,
-  disabled,
-  fullWidth,
-  containerSx,
+  sx,
   children,
 }: BaseInputProps) => {
   const [labelPosition, setLabelPosition] = useState<"top" | "left">("top");
@@ -212,34 +122,54 @@ const BaseInputProvider = ({
     [setLabelPosition]
   );
 
+  const statusIcon = useMemo(() => {
+    if (!status) return null;
+    if (status === "error") return IconVariant.Close1;
+    if (status === "warning") return IconVariant.Warning;
+    if (status === "success") return IconVariant.Success;
+  }, [status]);
+
+  const renderStatusIcon = useCallback(() => {
+    if (!statusIcon) return null;
+    return (
+      <InputAdornment position="end">
+        <Icon icon={statusIcon} height="20px" width="20px" />
+      </InputAdornment>
+    );
+  }, [statusIcon]);
+
   return (
-    <InputContext.Provider
+    <BaseInputContext.Provider
       value={{
         status,
         setLabelPosition: handleSetLabelPosition,
         labelPosition,
         disabled,
+        endAdornment: renderStatusIcon(),
       }}
     >
-      <BaseInput
+      <StyledWrapper
         id={id}
         status={status}
-        fullWidth={fullWidth}
-        containerSx={containerSx}
         disabled={disabled}
+        labelPosition={labelPosition}
+        data-testid="Input"
+        sx={sx}
       >
-        {children}
-      </BaseInput>
-    </InputContext.Provider>
+        <PlacementContainer
+          fullWidth={fullWidth}
+          className={cx("Input-container", {
+            ["Input-container--align-left"]: labelPosition === "left",
+          })}
+        >
+          {children}
+        </PlacementContainer>
+      </StyledWrapper>
+    </BaseInputContext.Provider>
   );
 };
 
-BaseInputProvider.defaultProps = {
-  labelPosition: "top",
-  multiline: false,
-};
+BaseInput.Label = Label;
+BaseInput.HelperText = HelperText;
 
-BaseInputProvider.Label = Label;
-BaseInputProvider.HelperText = HelperText;
-
-export default BaseInputProvider;
+export default BaseInput;

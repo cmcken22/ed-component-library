@@ -9,7 +9,7 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
-  moduleDirectories: ["node_modules", "src"],
+  moduleDirectories: ["node_modules", "src", "utils"],
   testMatch: ["**/*.test.(ts|tsx)"],
   moduleNameMapper: {
     // Mocks out all these file formats when tests are run.
@@ -18,5 +18,6 @@ module.exports = {
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
     "^@mui/styled-engine$": "<rootDir>/node_modules/@mui/styled-engine",
     "^src/(.*)$": "<rootDir>/src/$1",
+    "^test-utils/(.*)$": "<rootDir>/utils/test-utils/$1",
   },
 };

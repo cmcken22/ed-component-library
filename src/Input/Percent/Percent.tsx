@@ -106,8 +106,6 @@ Percent.defaultProps = {
   thousandSeparator: false,
   disabled: false,
   required: false,
-  // width: "73px",
-  // minWidth: "73px",
 };
 
 export default Percent;

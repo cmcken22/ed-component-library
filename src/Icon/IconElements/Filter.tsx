@@ -1,4 +1,3 @@
-
 export default ({ stroke, fill }: { stroke: string; fill: string }) => (
   <svg
     width="24"
@@ -10,23 +9,23 @@ export default ({ stroke, fill }: { stroke: string; fill: string }) => (
     <path
       d="M3 6H21"
       stroke={stroke}
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M7 12L17 12"
       stroke={stroke}
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M11 18L13 18"
       stroke={stroke}
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

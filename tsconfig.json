@@ -7,7 +7,8 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["src/*"],
+      "test-utils/*": ["utils/test-utils/*"]
     },
 
     /* Bundler mode */
@@ -30,6 +31,6 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/*", "./utils/test-utils/**/*"]
   // "references": [{ "path": "./tsconfig.node.json" }]
 }

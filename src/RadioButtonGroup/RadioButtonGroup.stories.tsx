@@ -1,20 +1,17 @@
+import type { Meta, StoryObj } from "@storybook/react";
 import RadioButtonGroup from "./RadioButtonGroup";
-import type { Meta, StoryObj } from '@storybook/react';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Example/Radio Button Group',
+  title: "Example/Radio Button Group",
+  // @ts-expect-error
   component: RadioButtonGroup,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: 'centered',
+    layout: "centered",
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  // argTypes: {
-  //   backgroundColor: { control: 'color' },
-  // },
+  tags: ["autodocs"],
+  argTypes: {
+    onChange: { action: "onChange" },
+  },
 } satisfies Meta<typeof RadioButtonGroup>;
 
 export default meta;
@@ -49,7 +46,7 @@ export const Sample: Story = {
     value: "",
     disabled: false,
     allowDeselect: false,
+    labelPosition: "right",
   },
   // argTypes: {}
 };
-

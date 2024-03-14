@@ -27,7 +27,10 @@ const Icon = ({ icon, color, height, width, className, sx }: BaseIconProps) => {
 
   return (
     <Box
-      className={cx(`icon-wrapper`, { [className]: className })}
+      className={cx(`icon-wrapper`, {
+        [className]: className,
+        [`icon--${icon}`]: typeof icon === "string",
+      })}
       sx={{
         display: "flex",
         color: color ? color : "charcoal.90",

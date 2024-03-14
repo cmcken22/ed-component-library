@@ -1,5 +1,7 @@
 import { Box, styled } from "@mui/material";
+import cx from "classnames";
 import { useCallback, useEffect, useState } from "react";
+import { baseClassName, dataTestId } from ".";
 import RadioButton from "../RadioButton";
 
 const RadioButtonGroupWrapper = styled(Box, {
@@ -33,6 +35,7 @@ export type OptionType = {
 
 export interface RadioButtonGroupProps {
   id?: string;
+  className?: string;
   options: OptionType[] | any[];
   value: any;
   onChange?: (value: any) => void;
@@ -47,6 +50,7 @@ export interface RadioButtonGroupProps {
 
 const RadioButtonGroup = ({
   id,
+  className,
   options,
   value: selectedValue,
   onChange,
@@ -82,7 +86,15 @@ const RadioButtonGroup = ({
   );
 
   return (
-    <RadioButtonGroupWrapper id={id} row={row}>
+    <RadioButtonGroupWrapper
+      id={id}
+      row={row}
+      className={cx(baseClassName, {
+        [className]: className,
+      })}
+      data-testid={dataTestId}
+      data-value={value}
+    >
       {options?.map((option, index) => {
         const label = getOptionLabel ? getOptionLabel(option) : option?.label;
         const value = getOptionValue ? getOptionValue(option) : option?.value;

@@ -19,6 +19,15 @@ const meta = {
       options: ["top", "left"],
       control: { type: "radio" },
     },
+    thousandSeparator: {
+      control: { type: "boolean" },
+    },
+    fixedDecimalScale: {
+      control: { type: "boolean" },
+    },
+    decimalScale: {
+      control: { type: "number" },
+    },
   },
 } satisfies Meta<typeof Input.Percent>;
 

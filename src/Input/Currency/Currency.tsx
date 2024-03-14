@@ -22,6 +22,9 @@ export interface CurrencyInputProps
     formattedValue: string,
     floatValue: number
   ) => void;
+  fixedDecimalScale?: boolean;
+  decimalScale?: number;
+  thousandSeparator?: boolean;
 }
 
 const Currency = ({
@@ -35,6 +38,9 @@ const Currency = ({
   fullWidth,
   required,
   labelPosition = "top",
+  fixedDecimalScale,
+  decimalScale,
+  thousandSeparator,
   onChange,
   width,
   minWidth,
@@ -68,9 +74,9 @@ const Currency = ({
             value={value}
             onValueChange={handleChange}
             placeholder={placeholder}
-            thousandSeparator={true}
-            fixedDecimalScale={true}
-            decimalScale={2}
+            thousandSeparator={thousandSeparator}
+            fixedDecimalScale={fixedDecimalScale}
+            decimalScale={decimalScale}
             customInput={StyledTextField}
             fullWidth={fullWidth}
             disabled={disabled}
@@ -92,10 +98,9 @@ const Currency = ({
 
 Currency.defaultProps = {
   labelPosition: "top",
-  thousandSeparator: true,
-  fixedDecimalScale: true,
+  thousandSeparator: false,
+  fixedDecimalScale: false,
   decimalScale: 2,
-  customInput: TextField,
   fullWidth: true,
   disabled: false,
   required: false,

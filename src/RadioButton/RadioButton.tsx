@@ -1,56 +1,62 @@
 import { Box, FormControlLabel, styled } from "@mui/material";
+import cx from "classnames";
 import { useCallback, useEffect, useState } from "react";
 import { FONTS } from "../theme/Typography";
 import { hexToRGBA } from "../utils";
+import { RadioButtonProps, baseClassName, dataTestId } from "./";
 
 const RadioButtonWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "checked",
   slot: "root",
-})<{ checked?: boolean; disabled?: boolean }>(
-  ({ theme, checked, disabled }) => {
-    return {
-      width: "fit-content",
-      ...(!checked &&
-        !disabled && {
-          "&:hover": {
-            ".RadioButton": {
-              borderColor: theme.palette.primary.main,
-              backgroundColor: hexToRGBA(theme.palette.primary.main, 0.1),
-            },
+})<{ checked?: boolean; disabled?: boolean }>(({
+  theme,
+  checked,
+  disabled,
+}) => {
+  return {
+    width: "fit-content",
+    ...(!checked &&
+      !disabled && {
+        "&:hover": {
+          ".RadioButton": {
+            borderColor: theme.palette.primary.main,
+            backgroundColor: hexToRGBA(theme.palette.primary.main, 0.1),
           },
-        }),
-    };
-  }
-);
+        },
+      }),
+  };
+});
 
 const StyledRadioButton = styled(Box, {
   shouldForwardProp: (prop) => prop !== "checked",
   slot: "root",
-})<{ checked?: boolean; disabled?: boolean }>(
-  ({ theme, checked, disabled }) => {
-    return {
-      height: 16,
-      width: 16,
-      borderRadius: "50%",
-      marginRight: theme.spacing(1),
+})<{ checked?: boolean; disabled?: boolean }>(({
+  theme,
+  checked,
+  disabled,
+}) => {
+  return {
+    height: 16,
+    width: 16,
+    borderRadius: "50%",
+    marginRight: theme.spacing(1),
 
-      border: `${checked ? 4 : 1}px solid ${theme.palette.charcoal.main}`,
-      ...(!checked &&
-        !disabled && {
-          "&:hover": {
-            borderColor: theme.palette.primary.main,
-            backgroundColor: hexToRGBA(theme.palette.primary.main, 0.1),
-          },
-        }),
-      ...(checked && {
-        borderColor: theme.palette.primary.main,
+    border: `${checked ? 4 : 1}px solid ${theme.palette.charcoal.main}`,
+    ...(!checked &&
+      !disabled && {
+        "&:hover": {
+          borderColor: theme.palette.primary.main,
+          backgroundColor: hexToRGBA(theme.palette.primary.main, 0.1),
+        },
       }),
-      ...(disabled && {
-        borderColor: theme.palette.charcoal["30"],
-      }),
-    };
-  }
-);
+    ...(checked && {
+      borderColor: theme.palette.primary.main,
+    }),
+    ...(disabled && {
+      borderColor: theme.palette.charcoal["30"],
+    }),
+  };
+});
 
 const StyledFormControlLabel = styled(FormControlLabel, {
   slot: "root",
@@ -87,17 +93,9 @@ const muiLabelPlacementMap: Record<string, "start" | "end"> = {
   right: "end",
 };
 
-interface RadioButtonProps {
-  checked?: boolean;
-  disabled?: boolean;
-  label: string;
-  value: any;
-  onChange: (value: any, checked: boolean) => void;
-  allowDeselect?: boolean;
-  labelPosition?: "left" | "right";
-}
-
 const RadioButton = ({
+  id,
+  className,
   checked: passedValue,
   disabled,
   label,
@@ -105,6 +103,7 @@ const RadioButton = ({
   onChange,
   allowDeselect,
   labelPosition,
+  sx,
 }: RadioButtonProps) => {
   const [checked, setChecked] = useState(passedValue || false);
 
@@ -125,18 +124,25 @@ const RadioButton = ({
 
   return (
     <RadioButtonWrapper
-      className="RadioButtonWrapper"
+      id={id}
+      className={cx(`${baseClassName}`, {
+        [className]: className,
+      })}
+      data-testid={dataTestId}
+      data-checked={checked}
       checked={checked}
       disabled={disabled}
+      sx={sx}
     >
       <StyledFormControlLabel
+        className={`${baseClassName}__label`}
         label={label}
         value={value}
         onClick={() => handleChange(!checked)}
         labelPlacement={muiLabelPlacementMap[labelPosition] || "end"}
         control={
           <StyledRadioButton
-            className="RadioButton"
+            className={`${baseClassName}__input`}
             checked={checked}
             disabled={disabled}
           />

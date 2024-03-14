@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     libInjectCss(),
     dts({
-      include: ["src", "utils/test-utils"],
+      include: ["src"],
       exclude: ["**/*.stories.tsx"],
     }),
   ],
@@ -34,6 +34,7 @@ export default defineConfig({
   resolve: {
     alias: {
       src: resolve(__dirname, "./src"),
+      "test-utils": resolve(__dirname, "./utils/test-utils"),
     },
   },
 });

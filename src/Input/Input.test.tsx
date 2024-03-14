@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render } from "../../utils/test-utils";
+import { getChildFromContainer } from "test-utils/helper";
+import { fireEvent, render } from "test-utils/index";
 import Input, { InputProps } from "./Input";
 
 describe("Input", () => {
@@ -7,6 +8,7 @@ describe("Input", () => {
 
   beforeEach(() => {
     props = {
+      ...Input.defaultProps,
       id: "test_id",
       label: "This is a label",
       placeholder: "placeholder",
@@ -16,6 +18,8 @@ describe("Input", () => {
       fullWidth: false,
       required: false,
       labelPosition: "top",
+      type: "text",
+      onChange: jest.fn(),
     };
   });
 
@@ -24,14 +28,9 @@ describe("Input", () => {
     return component;
   };
 
-  // test("renders correctly", () => {
-  //   const { container } = renderComponent(props);
-  //   expect(container).toMatchSnapshot("Input test 1");
-  // });
-
   it("should render correctly", () => {
-    const { getByTestId } = renderComponent(props);
-    const component = getByTestId("Input");
+    const { container } = renderComponent(props);
+    const component = getChildFromContainer(container);
     expect(component).toBeInTheDocument();
 
     const InputComponent = component.querySelector("input");
@@ -42,30 +41,34 @@ describe("Input", () => {
   });
 
   it("should update value", () => {
-    const { getByTestId } = renderComponent(props);
-    const component = getByTestId("Input");
+    const { container } = renderComponent(props);
+    const component = getChildFromContainer(container);
+
     const Input = component.querySelector("input");
     expect(Input).toBeInTheDocument();
+
     const nextValue = "5678";
-    fireEvent.change(Input!, { target: { value: nextValue } });
+    fireEvent.change(Input, { target: { value: nextValue } });
+
+    expect(props.onChange).toHaveBeenCalledWith(nextValue);
     expect(Input).toHaveValue(nextValue);
   });
 
-  // it("should have label", () => {
-  //   const { getByTestId } = renderComponent(props);
-  //   const component = getByTestId("Input");
-  //   const label = component.querySelector(".Input__label");
-  //   expect(label).toBeInTheDocument();
-  //   expect(label).toHaveTextContent(props?.label!);
-  // });
+  it("should have label", () => {
+    const { container } = renderComponent(props);
+    const component = getChildFromContainer(container);
+    const label = component.querySelector(".Input__label");
+    expect(label).toBeInTheDocument();
+    expect(label).toHaveTextContent(props?.label);
+  });
 
-  // it("should have helperText", () => {
-  //   const { getByTestId } = renderComponent(props);
-  //   const component = getByTestId("Input");
-  //   const helperText = component.querySelector(".Input__helper-text");
-  //   expect(helperText).toBeInTheDocument();
-  //   expect(helperText).toHaveTextContent(props?.helperText!);
-  // });
+  it("should have helperText", () => {
+    const { container } = renderComponent(props);
+    const component = getChildFromContainer(container);
+    const helperText = component.querySelector(".Input__helper-text");
+    expect(helperText).toBeInTheDocument();
+    expect(helperText).toHaveTextContent(props?.helperText);
+  });
 
   // it("should have success state", () => {
   //   props.status = "success";

@@ -155,37 +155,50 @@ const Dropdown = ({
               IconComponent={(props: any) => (
                 <DropdownIcon endAdornment={endAdornment} {...props} />
               )}
+              // MenuProps={{
+              //   PaperProps: {
+              //     sx: {
+              //       ".MuiList-root": {
+              //         maxHeight: "200px",
+              //         overflow: "auto",
+              //       },
+              //     },
+              //   },
+              // }}
             >
-              {options?.map((opt: StandardDropdownOption | any) => {
-                const optValue = getOptionValue
-                  ? getOptionValue(opt)
-                  : opt?.value;
-                const optDisabled = getOptionDisabled
-                  ? getOptionDisabled(opt)
-                  : opt?.disabled;
-                return (
-                  <MenuItem
-                    key={optValue}
-                    value={optValue}
-                    disabled={optDisabled || disabled}
-                  >
-                    {checkBoxSelection ? (
-                      <Checkbox
-                        label={
-                          getOptionLabel ? getOptionLabel(opt) : opt?.label
-                        }
-                        checked={optValue === value}
-                        disabled={optDisabled || disabled}
-                        typographyVariant="bodyS"
-                      />
-                    ) : (
-                      <Typography variant="bodyS" color="text.primary">
-                        {getOptionLabel ? getOptionLabel(opt) : opt?.label}
-                      </Typography>
-                    )}
-                  </MenuItem>
-                );
-              })}
+              {options?.map(
+                (opt: StandardDropdownOption | any, idx: number) => {
+                  const optValue = getOptionValue
+                    ? getOptionValue(opt)
+                    : opt?.value;
+                  const optDisabled = getOptionDisabled
+                    ? getOptionDisabled(opt)
+                    : opt?.disabled;
+                  return (
+                    <MenuItem
+                      key={optValue}
+                      value={optValue}
+                      disabled={optDisabled || disabled}
+                      data-dropdown-option={idx}
+                    >
+                      {checkBoxSelection ? (
+                        <Checkbox
+                          label={
+                            getOptionLabel ? getOptionLabel(opt) : opt?.label
+                          }
+                          checked={optValue === value}
+                          disabled={optDisabled || disabled}
+                          typographyVariant="bodyS"
+                        />
+                      ) : (
+                        <Typography variant="bodyS" color="text.primary">
+                          {getOptionLabel ? getOptionLabel(opt) : opt?.label}
+                        </Typography>
+                      )}
+                    </MenuItem>
+                  );
+                }
+              )}
             </Select>
           </FormControl>
           <BaseInput.HelperText>{helperText}</BaseInput.HelperText>

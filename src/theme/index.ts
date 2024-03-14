@@ -16,6 +16,9 @@ const theme = createTheme({
     MuiTextField: BaseInputTheme,
     MuiRadio: RadioButtonTheme,
     MuiSelect: DropdownTheme,
+    // TODO: try setting the theme for these components
+    // MuiMenuItem:
+    // MuiMenuList:
   },
 });
 

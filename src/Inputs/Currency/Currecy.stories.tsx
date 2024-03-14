@@ -1,16 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Input from "../Input";
+import Currency from ".";
 
 const meta = {
-  title: "Example/Input/Percent",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  component: Input.Percent,
+  title: "Example/Inputs/Currency",
+  component: Currency,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
   argTypes: {
+    onChange: { action: "changed" },
     status: {
       options: ["error", "success", "warning"],
       control: { type: "radio" },
@@ -19,30 +18,22 @@ const meta = {
       options: ["top", "left"],
       control: { type: "radio" },
     },
-    thousandSeparator: {
-      control: { type: "boolean" },
-    },
-    fixedDecimalScale: {
-      control: { type: "boolean" },
-    },
-    decimalScale: {
-      control: { type: "number" },
-    },
   },
-} satisfies Meta<typeof Input.Percent>;
+} satisfies Meta<typeof Currency>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Sample: Story = {
   args: {
-    id: "Percent",
-    label: "Percent",
-    placeholder: "",
+    ...Currency.defaultProps,
+    id: "Primary",
+    label: "Primary",
+    placeholder: "Enter a value",
     disabled: false,
     helperText: "Helper Text",
     required: false,
-    value: "100",
+    value: "Hello world",
     fullWidth: false,
     labelPosition: "top",
   },

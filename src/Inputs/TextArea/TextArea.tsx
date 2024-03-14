@@ -1,23 +1,22 @@
 import { TextField } from "@mui/material";
 import _debounce from "lodash.debounce";
-import { useCallback, useState } from "react";
-import BaseInput from "src/BaseInput";
-import { InputProps } from "../Input";
+import { useCallback, useContext, useState } from "react";
+import BaseInput, { BaseInputContext } from "src/BaseInput";
+import { TextAreaProps } from ".";
 
-export interface TextAreaProps extends Omit<InputProps, "type"> {
-  maxRows?: number;
-  minRows?: number;
-  onChange?: (value: string) => void;
-  debounce?: number;
-  maxChars?: number;
-  maxWords?: number;
-}
+const TextArea = (props: TextAreaProps) => {
+  const { id, status, fullWidth, ...rest } = props;
 
-const TextArea = ({
-  id,
+  return (
+    <BaseInput id={id} status={status} fullWidth={fullWidth}>
+      <TextAreaComp {...rest} fullWidth={fullWidth} />
+    </BaseInput>
+  );
+};
+
+const TextAreaComp = ({
   label,
   placeholder,
-  status,
   helperText,
   disabled,
   value: passedValue,
@@ -30,9 +29,8 @@ const TextArea = ({
   debounce,
   maxChars,
   maxWords,
-  width,
-  minWidth,
 }: TextAreaProps) => {
+  const { endAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
 
   const debounceOnChange = useCallback(
@@ -61,32 +59,24 @@ const TextArea = ({
   );
 
   return (
-    <BaseInput id={id} status={status} disabled={disabled}>
-      {({ endAdornment }: any) => (
-        <>
-          <BaseInput.Label required={required} position={labelPosition}>
-            {label}
-          </BaseInput.Label>
-          <TextField
-            value={value}
-            placeholder={placeholder}
-            variant="outlined"
-            disabled={disabled}
-            fullWidth={fullWidth}
-            onChange={handleChange}
-            multiline
-            minRows={minRows}
-            maxRows={maxRows}
-            InputProps={{ endAdornment }}
-            sx={{
-              width,
-              minWidth,
-            }}
-          />
-          <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-        </>
-      )}
-    </BaseInput>
+    <>
+      <BaseInput.Label required={required} position={labelPosition}>
+        {label}
+      </BaseInput.Label>
+      <TextField
+        value={value}
+        placeholder={placeholder}
+        variant="outlined"
+        disabled={disabled}
+        fullWidth={fullWidth}
+        onChange={handleChange}
+        multiline
+        minRows={minRows}
+        maxRows={maxRows}
+        InputProps={{ endAdornment }}
+      />
+      <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
+    </>
   );
 };
 
@@ -94,7 +84,6 @@ TextArea.defaultProps = {
   labelPosition: "top",
   minRows: 2,
   maxRows: 4,
-  minWidth: "240px",
-};
+} as Partial<TextAreaProps>;
 
 export default TextArea;

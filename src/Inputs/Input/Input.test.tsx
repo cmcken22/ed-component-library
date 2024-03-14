@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { getChildFromContainer } from "test-utils/helper";
 import { fireEvent, render } from "test-utils/index";
-import Input, { InputProps } from "./Input";
+import Input, { InputProps } from ".";
 
 describe("Input", () => {
   let props: InputProps;
@@ -68,6 +68,15 @@ describe("Input", () => {
     const helperText = component.querySelector(".Input__helper-text");
     expect(helperText).toBeInTheDocument();
     expect(helperText).toHaveTextContent(props?.helperText);
+  });
+
+  it("should be disabled", () => {
+    props.disabled = true;
+    const { container } = renderComponent(props);
+    const component = getChildFromContainer(container);
+    const input = component.querySelector("input");
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute("disabled");
   });
 
   // it("should have success state", () => {

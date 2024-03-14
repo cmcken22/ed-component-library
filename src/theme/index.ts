@@ -27,4 +27,8 @@ const useEllisDonTheme = () => {
   return theme;
 };
 
-export { Colors, palette, theme, useEllisDonTheme };
+const DEFAULT_WIDTHS = {
+  INPUT: "240px",
+};
+
+export { Colors, DEFAULT_WIDTHS, palette, theme, useEllisDonTheme };

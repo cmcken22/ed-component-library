@@ -5,3 +5,8 @@ export function hexToRGBA(hex: string, opacity: number) {
   const b = parseInt(hex.substring(4, 6), 16);
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }
+
+export const shouldNotForwardProp =
+  (invalidList: string[]) => (prop: string) => {
+    return !invalidList.includes(prop);
+  };

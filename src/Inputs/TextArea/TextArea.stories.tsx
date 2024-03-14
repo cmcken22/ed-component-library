@@ -2,16 +2,16 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Input from "../Input";
 
 const meta = {
-  title: "Example/Input/Currency",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  component: Input.Currency,
+  title: "Example/Inputs/TextArea",
+  component: Input.TextArea,
   parameters: {
     layout: "centered",
   },
   tags: ["autodocs"],
   argTypes: {
-    onChange: { action: "changed" },
+    onChange: {
+      action: "changed",
+    },
     status: {
       options: ["error", "success", "warning"],
       control: { type: "radio" },
@@ -21,13 +21,14 @@ const meta = {
       control: { type: "radio" },
     },
   },
-} satisfies Meta<typeof Input.Currency>;
+} satisfies Meta<typeof Input.TextArea>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Sample: Story = {
+export const TextArea: Story = {
   args: {
+    ...Input.TextArea.defaultProps,
     id: "Primary",
     label: "Primary",
     placeholder: "Enter a value",

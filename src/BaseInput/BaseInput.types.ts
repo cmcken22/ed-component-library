@@ -3,6 +3,7 @@ import { createContext } from "react";
 
 export interface BaseInputProps {
   id?: string;
+  className?: string;
   status?: "error" | "warning" | "success";
   disabled?: boolean;
   fullWidth?: boolean;

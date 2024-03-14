@@ -6,7 +6,7 @@ export { default as Chip } from "./Chip";
 export { DatePicker, RangePicker } from "./DatePicker";
 export { default as Dropdown } from "./Dropdown";
 export { default as Icon } from "./Icon";
-export { default as Input } from "./Input";
+export { default as Input } from "./Inputs/Input";
 export {
   default as Snackbar,
   SnackbarProvider,

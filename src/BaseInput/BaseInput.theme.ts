@@ -19,11 +19,12 @@ export default {
         },
         ".MuiInputBase-root": {
           padding: 0,
+          backgroundColor: "white",
         },
         ".MuiInputBase-adornedEnd": {
           paddingRight: "8px",
         },
-        width: ownerState.fullWidth ? "100%" : "240px",
+        width: "100%",
         fieldset: {
           borderWidth: "1px !important",
           borderColor: theme.palette.charcoal["20"],
@@ -46,29 +47,6 @@ export default {
           paddingLeft: theme.typography.pxToRem(8),
           paddingRight: theme.typography.pxToRem(8),
         },
-        // "&:hover": {
-        //   ".MuiOutlinedInput-notchedOutline": {
-        //     borderColor: `${theme.palette.primary.main}`,
-        //   },
-        // },
-        // "& .MuiOutlinedInput-root": {
-        //   "& fieldset": {
-        //     borderColor: `${theme.palette.charcoal["20"]}`,
-        //   },
-        //   "&:hover fieldset": {
-        //     borderColor: `${theme.palette.primary.main}`,
-        //   },
-        // },
-        // ...(ownerState?.disabled && {
-        //   fieldset: {
-        //     pointerEvents: "none",
-        //     opacity: 0.5,
-        //     "&:hover": {
-        //       opacity: 0.5,
-        //       borderColor: "red",
-        //     },
-        //   },
-        // }),
       };
     },
   },

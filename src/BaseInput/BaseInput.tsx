@@ -1,112 +1,16 @@
-import { Box, InputAdornment, styled } from "@mui/material";
+import { InputAdornment } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useMemo, useState } from "react";
 import { BaseInputContext, BaseInputProps } from ".";
 import Icon, { IconVariant } from "../Icon";
 import HelperText from "./HelperText";
 import Label from "./Label";
-
-const StyledWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "status" && prop !== "labelPosition",
-  slot: "Root",
-})<{ status?: string; disabled?: boolean; labelPosition?: string }>(({
-  theme,
-  status,
-  disabled,
-  labelPosition,
-}) => {
-  const colorMap = {
-    error: theme.palette.error.main,
-    warning: theme.palette.warning.main,
-    success: theme.palette.success.main,
-  };
-
-  let borderColor = colorMap?.[status]
-    ? `${colorMap?.[status]} !important`
-    : theme.palette.charcoal["20"];
-  if (disabled) borderColor = theme.palette.charcoal["20"];
-
-  return {
-    width: "fit-content",
-    display: "flex",
-    flexDirection: "column",
-    color: colorMap?.[status],
-    input: {
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      // "&:-internal-autofill-selected": {
-      //   backgroundColor: "red",
-      // },
-    },
-    // "input:-internal-autofill-selected": {
-    //   backgroundColor: "red",
-    // },
-    ".MuiInputAdornment-positionEnd .icon-wrapper": {
-      color: colorMap?.[status],
-    },
-    ".Input": {
-      "&__label": {
-        marginBottom: labelPosition === "top" ? theme.spacing(0.5) : 0,
-      },
-      "&__helper-text": {
-        marginTop: theme.spacing(0.5),
-        lineHeight: "13.64px",
-      },
-      "&__required-indicator": {
-        marginLeft: theme.spacing(0.25),
-        marginBottom: labelPosition === "top" ? theme.spacing(0.5) : 0,
-      },
-    },
-    "& .MuiInputBase-root:not(.Mui-disabled)": {
-      "& fieldset": {
-        borderColor: borderColor,
-      },
-      "&:hover fieldset": {
-        borderColor: !disabled ? theme.palette.primary.main : "",
-      },
-      "&:focus-within": {
-        "& fieldset": {
-          borderColor: theme.palette.primary.main,
-          // borderColor: borderColor,
-        },
-      },
-    },
-    "& .MuiInputBase-root.Mui-disabled": {
-      "& fieldset": {
-        borderColor: borderColor,
-      },
-      "&:hover fieldset": {
-        borderColor: theme.palette.charcoal["20"],
-      },
-    },
-  };
-});
-
-const PlacementContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "fullWidth",
-  slot: "root",
-})<{ fullWidth?: boolean }>(({ fullWidth }) => {
-  return {
-    "&.Input-container": {
-      display: "flex",
-      flexDirection: "column",
-      width: fullWidth ? "100%" : "fit-content",
-      "&--align-left": {
-        display: "grid",
-        gridTemplateColumns: "1fr",
-        gridTemplateRows: "1fr",
-        gap: "0px 8px",
-        gridTemplateAreas: `
-          ". ."
-          ". ."
-        `,
-      },
-    },
-  };
-});
+import PlacementContainer from "./styled/PlacementContainer";
+import StyledWrapper from "./styled/StyledWrapper";
 
 const BaseInput = ({
   id,
+  className,
   status,
   disabled,
   fullWidth,
@@ -150,14 +54,17 @@ const BaseInput = ({
     >
       <StyledWrapper
         id={id}
+        className={cx({
+          [className]: className,
+        })}
         status={status}
         disabled={disabled}
         labelPosition={labelPosition}
+        fullWidth={fullWidth}
         data-testid="Input"
         sx={sx}
       >
         <PlacementContainer
-          fullWidth={fullWidth}
           className={cx("Input-container", {
             ["Input-container--align-left"]: labelPosition === "left",
           })}

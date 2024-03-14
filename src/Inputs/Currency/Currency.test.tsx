@@ -1,14 +1,14 @@
 import "@testing-library/jest-dom";
 import { getChildFromContainer } from "test-utils/helper";
 import { fireEvent, render } from "test-utils/index";
-import Percent, { PercentInputProps } from "./Percent";
+import Currency, { CurrencyProps } from ".";
 
-describe("Percent", () => {
-  let props: PercentInputProps;
+describe("Currency", () => {
+  let props: CurrencyProps;
 
   beforeEach(() => {
     props = {
-      ...Percent.defaultProps,
+      ...Currency.defaultProps,
       id: "test_id",
       label: "This is a label",
       placeholder: "placeholder",
@@ -23,7 +23,7 @@ describe("Percent", () => {
   });
 
   const renderComponent = (props: any) => {
-    const component = render(<Percent {...props} />, {});
+    const component = render(<Currency {...props} />, {});
     return component;
   };
 
@@ -58,17 +58,8 @@ describe("Percent", () => {
     expect(Input).toBeInTheDocument();
 
     const nextValue = "100";
-    const formattedValue = "100";
-    const floatValue = 100;
-    const expectedValue = "100";
     fireEvent.change(Input, { target: { value: nextValue } });
-
-    expect(props.onChange).toHaveBeenCalledWith(
-      nextValue,
-      formattedValue,
-      floatValue
-    );
-    expect(Input).toHaveValue(expectedValue);
+    expect(Input).toHaveValue(nextValue);
   });
 
   it("should have fixed decimal", () => {
@@ -85,17 +76,18 @@ describe("Percent", () => {
     const formattedValue = "100.00";
     const floatValue = 100.0;
     const expectedValue = "100.00";
-    fireEvent.change(Input, { target: { value: nextValue } });
 
+    fireEvent.change(Input, { target: { value: nextValue } });
     expect(props.onChange).toHaveBeenCalledWith(
       formattedValue,
       formattedValue,
       floatValue
     );
+
     expect(Input).toHaveValue(expectedValue);
   });
 
-  it("should not have decimal but not fixed", () => {
+  it("should have decimal but not fixed", () => {
     props = {
       ...props,
       decimalScale: 2,
@@ -120,12 +112,12 @@ describe("Percent", () => {
     floatValue = 100.12;
     expectedValue = "100.12";
     fireEvent.change(Input, { target: { value: nextValue } });
+
     expect(props.onChange).toHaveBeenCalledWith(
       nextValue,
       formattedValue,
       floatValue
     );
-
     expect(Input).toHaveValue(expectedValue);
   });
 
@@ -159,7 +151,7 @@ describe("Percent", () => {
 
     const nextValue = "-100";
     const formattedValue = "-100";
-    const floatValue = -100;
+    const floatValue = -100.0;
     const expectedValue = "-100";
     fireEvent.change(Input, { target: { value: nextValue } });
 
@@ -169,5 +161,14 @@ describe("Percent", () => {
       floatValue
     );
     expect(Input).toHaveValue(expectedValue);
+  });
+
+  it("should be disabled", () => {
+    props.disabled = true;
+    const { container } = renderComponent(props);
+    const component = getChildFromContainer(container);
+    const input = component.querySelector("input");
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute("disabled");
   });
 });

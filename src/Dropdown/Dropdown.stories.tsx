@@ -3,8 +3,6 @@ import Dropdown from "./Dropdown";
 
 const meta = {
   title: "Example/Dropdown",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   component: Dropdown,
   parameters: {
     layout: "centered",
@@ -23,11 +21,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Smaple: Story = {
   args: {
+    ...Dropdown.defaultProps,
     id: "dropdown",
     label: "Label",
     placeholder: "Placeholder",
     labelPosition: "top",
-    // fullWidth: true,
     getOptionLabel: (option: any) => option.xxx,
     getOptionValue: (option: any) => option.yyy,
     options: [

@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import _debounce from "lodash.debounce";
 import { useCallback, useContext, useEffect, useState } from "react";
 import BaseInput, { BaseInputContext } from "src/BaseInput";
@@ -61,7 +61,7 @@ const InputComp = ({
   );
 
   return (
-    <>
+    <Box>
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
@@ -75,7 +75,7 @@ const InputComp = ({
         InputProps={{ endAdornment }}
       />
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-    </>
+    </Box>
   );
 };
 

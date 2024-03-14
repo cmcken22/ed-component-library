@@ -6,6 +6,13 @@ const meta = {
   component: Input,
   parameters: {
     layout: "centered",
+    // docs: {
+    //   source: {
+    //     transform: (code: string) => {
+    //       return code.replace(/<\(props\) => \{(?:[\s\S]*?)\}/, "<Avatar");
+    //     },
+    //   },
+    // },
   },
   tags: ["autodocs"],
   argTypes: {

@@ -1,16 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useMemo } from "react";
 import { IconVariant } from "src/Icon";
+import { sourceCodeFormatter } from "src/utils";
 import Button from "./Button";
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: "Example/Button",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   component: Button,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Button"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

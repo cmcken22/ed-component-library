@@ -1,40 +1,40 @@
-# React + TypeScript + Vite
+# ed-component-library
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<br />
+<br />
+## Getting Started
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
+- Install the repo
 
 ```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json", "./tsconfig.node.json"],
-    tsconfigRootDir: __dirname,
-  },
-};
+npm i @cmckenna/ed-component-library
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Wrap your app in the `ThemeWrapper` and the `SnackbarProvider`
+- Don't forget to import the styles as well.
 
-# ed-componentp-library
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
 
-How to link to local repo for testing
+import { ThemeWrapper, SnackbarProvider } from "@cmckenna/ed-component-library";
+import "@cmckenna/ed-component-library/dist/index.css"; // <-- important to load css for fonts
 
-- npm i -g yalc
-- npm run build
-- yalc publish (or yalc update)
-- cd to the repo you want to install in
-- yalc add @cmckenna/ed-component-library
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
+root.render(
+  <ThemeWrapper>
+    <SnackbarProvider>
+      <App />
+    </SnackbarProvider>
+  </ThemeWrapper>
+);
+```
+
+<br/>
+<br/>
+## Documentation
+- For full documentation please check out the Storybook instance deployed on github pages
+- [https://cmcken22.github.io/ed-component-library](https://cmcken22.github.io/ed-component-library)

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import Currency from ".";
 
 const meta = {
@@ -6,6 +7,11 @@ const meta = {
   component: Currency,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Input.Currency"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

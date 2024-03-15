@@ -125,6 +125,6 @@ RadioButtonGroup.defaultProps = {
   row: false,
   allowDeselect: false,
   labelPosition: "right",
-};
+} as Partial<RadioButtonGroupProps>;
 
 export default RadioButtonGroup;

@@ -29,14 +29,33 @@ export const Default: Story = {
     docs: {
       source: {
         language: "tsx",
-        transform: (code, storyContext) => {
-          const { args } = storyContext;
-          let res = "";
-          for (const key in args) {
+        transform: (code: string, context: any) => {
+          let args = "";
+          for (const key in context.args) {
             if (key === "message") continue;
-            res += `  ${key}: ${JSON.stringify(args[key])};\n`;
+            const value = context.args[key];
+            if (typeof value === "function") {
+              args += `  ${key}={() => {}}\n`;
+            } else if (typeof value === "object") {
+              const formattedValue = JSON.stringify(value, null, 2).replace(
+                /\n/g,
+                "\n  "
+              );
+              args += `  ${key}={${formattedValue}}\n`;
+            } else if (typeof value === "boolean") {
+              args += `  ${key}={${value.toString()}}\n`;
+            } else if (typeof value === "number") {
+              args += `  ${key}={${value.toString()}}\n`;
+            } else {
+              args += `  ${key}="${value}"\n`;
+            }
           }
-          return `enqueueSnackbar("${args.message}", {\n${res}});`;
+
+          return (
+            `enqueueSnackbar("${context?.args?.message}", {\n` +
+            `${args}` +
+            `});`
+          );
         },
       },
     },

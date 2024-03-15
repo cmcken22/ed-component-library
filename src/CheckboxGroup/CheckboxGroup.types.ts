@@ -7,7 +7,7 @@ export type OptionType = {
 export interface CheckboxGroupProps {
   id?: string;
   options: OptionType[] | any[];
-  value: any[];
+  value?: any[];
   onChange?: (value: any[]) => void;
   disabled?: boolean;
   row?: boolean;

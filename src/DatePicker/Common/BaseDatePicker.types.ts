@@ -1,5 +1,6 @@
-export interface BaseDatePickerProps {
-  id?: string;
+import { StandardInputProps } from "src/BaseInput";
+
+export interface BaseDatePickerProps extends StandardInputProps {
   label?: string;
   /**
    * @default top
@@ -40,7 +41,6 @@ export interface BaseDatePickerProps {
    * @default new Date()
    */
   currentDate?: Date;
-  status?: "error" | "success" | "warning";
   /**
    * Controls the calendar open state
    * @default false

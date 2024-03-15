@@ -1,13 +1,23 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import Chip from "./Chip";
-import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Example/Chip',
+  title: "Example/Chip",
   component: Chip,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Chip"),
+      },
+    },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
+  argTypes: {
+    onClick: { action: "onClick" },
+    onHover: { action: "onHover" },
+  },
 } satisfies Meta<typeof Chip>;
 
 export default meta;
@@ -26,5 +36,5 @@ export const Smaple: Story = {
       options: ["positive", "negative", "warning", "pending", "neutral"],
       control: { type: "radio" },
     },
-  }
+  },
 };

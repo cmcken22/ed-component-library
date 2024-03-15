@@ -1,0 +1,166 @@
+import { Meta, Markdown } from "@storybook/blocks";
+
+<Meta title="Instrcutions" />
+
+# How to work the component library
+
+- [Run the repo locally](#run-the-repo-locally)
+- [Component Structure](#component-structure)
+- [Creating a new component](#creating-a-new-component)
+- [Testing the Components with Jest](#testing-the-components-with-jest)
+- [Testing the Components with Chromatic](#testing-the-components-with-chromatic)
+- [Deploying Storybook to Github Pages](#deploying-storybook-to-github-pages)
+- [Using Yalc to preview a release](#using-yalc-to-preview-a-release)
+- [Publishing to NPM](#publishing-to-npm)
+
+<br />
+<br />
+## Run the repo locally
+
+- install the dependencies
+
+```js
+npm install
+```
+
+- run storybook
+
+```js
+npm run sb
+```
+
+<br />
+<br />
+## Component Structure
+
+- Components have a modular structure, with each component isolated to its own folder.
+- Everything pertaining to a component is contained within its folder.
+- Each component should contain the following files
+  - `index.ts` - The main export file
+  - `<ComponentName>.tsx` - The main component file
+  - `<ComponentName>.types.ts` - The types file (i.e: prop type definitions, interfaces, etc.)
+  - `<ComponentName>.stories.tsx` - The storybook file
+  - `<ComponentName>.test.tsx` - The test file
+  - `<ComponentName>.theme.ts` - The MUI theme override file (if applicable)
+
+<br />
+<br />
+## Creating a new component
+
+- To create a new component please use the `generate`
+  command
+- Replacing `<ComponentName>` with the name of the component you want to create
+
+```js
+npm run generate <ComponentName>
+```
+
+- This will create a new folder with the component structure and files mentioned above
+- Make sure to export your component in the `src/index.ts` file in order for it to be included in the npm package
+
+```js
+export { default as Button } from "./Button";
+```
+
+- Only the components exported in the `src/index.ts` file will be included in the npm package!!!
+
+<br />
+<br />
+## Testing the Components with Jest
+
+- We use Jest and React Testing Library for testing component logic
+- Each component should have a test file
+
+```js
+npm run test
+```
+
+- Or to run tests in watch mode
+
+```js
+npm run test:watch
+```
+
+- The unit tests focus on component logic rather than rendering
+- This is because Jest has dificulty access dom styles and testing styles can be very tedious with not much gain
+  - Testing if a background color is red is not as important as testing if a function returns the correct value
+
+* For visual testing we can leverage Chromatic - learn more about Chromatic [here](https://www.chromatic.com/)
+
+<br />
+<br />
+## Testing the Components with Chromatic
+
+- Chromatic is a visual testing & review tool that scans every possible UI state across browsers to catch visual and functional bugs.
+- It is integrated with Storybook and creates a visual snapshot of each component story
+- Learn more about Chromatic [here](https://www.chromatic.com/)
+
+```js
+npm run chromatic
+```
+
+- Once the build is complete you can visit the Chromatic dashboard to review the visual snapshots
+- Chromatic will spit out the url at the end of the build process
+- At the time of writing, the url is [https://www.chromatic.com/builds?appId=65e7ee0213e9571ce1685faa](https://www.chromatic.com/builds?appId=65e7ee0213e9571ce1685faa)
+
+<br />
+<br />
+## Deploying Storybook to Github Pages
+
+- Storybook can be deployed to Github Pages for easy sharing and review
+- To deploy the storybook to Github Pages run the following command
+
+```js
+npm run sb:deploy
+```
+
+- View the updated storybook at [https://cmcken22.github.io/ed-component-library](https://cmcken22.github.io/ed-component-library/)
+
+<br />
+<br />
+## Using Yalc to preview a release
+
+- Before pushing to NPM it is important to test the component in a real world scenario
+- We can use Yalc to publish the component to a local registry and then install it in another project
+- Doing this will allow us to test the component in another repo before pushing to NPM reducing the likelyhood of publishing bugs
+
+- You need to have `yalc` installed globally
+
+```js
+npm install -g yalc
+```
+
+- In the package.json file, update the version number for example from `1.0.0` to `2.0.0`
+  - please follow semantic versioning when updating the version number [docs](https://semver.org/)
+
+```json
+{
+  "version": "2.0.0"
+}
+```
+
+- Then build the repo to create our dist folder with the minified component files
+
+```js
+npm run build
+```
+
+- Then run the following command to publish the package to the local `yalc` registry
+
+```js
+yalc publish
+```
+
+- now navigate to the project you want to test the component in and run the following command
+
+```js
+yalc add @cmckenna/ed-component-library@latest
+```
+
+- You can now use the repo in the project as if it was installed from NPM
+
+<br />
+<br />
+## Publishing to NPM
+
+- TODO

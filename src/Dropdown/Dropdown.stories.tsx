@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import Dropdown from "./Dropdown";
 
 const meta = {
@@ -6,6 +7,11 @@ const meta = {
   component: Dropdown,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Dropdown"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

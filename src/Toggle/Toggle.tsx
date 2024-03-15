@@ -6,70 +6,30 @@ import Typography from "../Typography";
 const ToggleContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== "checked" && prop !== "labelPosition",
   slot: "root",
-})<{ checked?: boolean; disabled?: boolean; labelPosition?: string }>(
-  ({ theme, checked, disabled, labelPosition }) => {
-    return {
-      cursor: disabled ? "default" : "pointer",
-      display: "flex",
-      flexDirection: labelPosition === "right" ? "row-reverse" : "row",
-      gap: "8px",
-      alignItems: "center",
-      width: "fit-content",
-      "& .ToggleLabel": {
-        webkitUserSelect: "none",
-        msUserSelect: "none",
-        userSelect: "none",
-        color: disabled
-          ? theme.palette.charcoal["60"]
-          : theme.palette.charcoal["90"],
-      },
-      ...(!disabled && {
-        "&:hover": {
-          ".ToggleWrapper": {
-            borderColor: theme.palette.primary.main,
-            ".ToggleText--OFF": {
-              color: theme.palette.primary.main,
-            },
-            ...(!checked && {
-              ".ToggleIndicator": {
-                background: theme.palette.primary.main,
-              },
-            }),
-          },
-        },
-      }),
-    };
-  }
-);
-
-const ToggleWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "checked",
-  slot: "root",
-})<{ checked?: boolean; disabled?: boolean }>(
-  ({ theme, checked, disabled }) => {
-    let borderColor = theme.palette.charcoal.main;
-    if (checked) borderColor = theme.palette.primary.main;
-    if (disabled) borderColor = theme.palette.charcoal["30"];
-
-    return {
-      cursor: disabled ? "default" : "pointer",
-      position: "relative",
-      width: "38px",
-      height: "20px",
-      borderRadius: "24px",
-      border: `1px solid ${borderColor}`,
-      backgroundColor: checked ? borderColor : "white",
-      borderColor: borderColor,
-      display: "flex",
-      alignItems: "center",
-      transition: "all 0.2s ease",
-      ".ToggleText": {
-        webkitUserSelect: "none",
-        msUserSelect: "none",
-        userSelect: "none",
-      },
-      ...(!disabled && {
-        "&:hover": {
+})<{ checked?: boolean; disabled?: boolean; labelPosition?: string }>(({
+  theme,
+  checked,
+  disabled,
+  labelPosition,
+}) => {
+  return {
+    cursor: disabled ? "default" : "pointer",
+    display: "flex",
+    flexDirection: labelPosition === "right" ? "row-reverse" : "row",
+    gap: "8px",
+    alignItems: "center",
+    width: "fit-content",
+    "& .ToggleLabel": {
+      webkitUserSelect: "none",
+      msUserSelect: "none",
+      userSelect: "none",
+      color: disabled
+        ? theme.palette.charcoal["60"]
+        : theme.palette.charcoal["90"],
+    },
+    ...(!disabled && {
+      "&:hover": {
+        ".ToggleWrapper": {
           borderColor: theme.palette.primary.main,
           ".ToggleText--OFF": {
             color: theme.palette.primary.main,
@@ -80,29 +40,76 @@ const ToggleWrapper = styled(Box, {
             },
           }),
         },
-      }),
-    };
-  }
-);
+      },
+    }),
+  };
+});
+
+const ToggleWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "checked",
+  slot: "root",
+})<{ checked?: boolean; disabled?: boolean }>(({
+  theme,
+  checked,
+  disabled,
+}) => {
+  let borderColor = theme.palette.charcoal.main;
+  if (checked) borderColor = theme.palette.primary.main;
+  if (disabled) borderColor = theme.palette.charcoal["30"];
+
+  return {
+    cursor: disabled ? "default" : "pointer",
+    position: "relative",
+    width: "38px",
+    height: "20px",
+    borderRadius: "24px",
+    border: `1px solid ${borderColor}`,
+    backgroundColor: checked ? borderColor : "white",
+    borderColor: borderColor,
+    display: "flex",
+    alignItems: "center",
+    transition: "all 0.2s ease",
+    ".ToggleText": {
+      webkitUserSelect: "none",
+      msUserSelect: "none",
+      userSelect: "none",
+    },
+    ...(!disabled && {
+      "&:hover": {
+        borderColor: theme.palette.primary.main,
+        ".ToggleText--OFF": {
+          color: theme.palette.primary.main,
+        },
+        ...(!checked && {
+          ".ToggleIndicator": {
+            background: theme.palette.primary.main,
+          },
+        }),
+      },
+    }),
+  };
+});
 
 const ToggleIndicator = styled(Box, {
   shouldForwardProp: (prop) => prop !== "checked",
   slot: "root",
-})<{ checked?: boolean; disabled?: boolean }>(
-  ({ theme, checked, disabled }) => {
-    let background = checked ? "white" : theme.palette.charcoal.main;
-    if (disabled) background = checked ? "white" : theme.palette.charcoal["30"];
-    return {
-      position: "absolute",
-      width: "16px",
-      height: "16px",
-      background,
-      borderRadius: "50%",
-      left: checked ? "18px" : "1px",
-      transition: "all 0.2s ease",
-    };
-  }
-);
+})<{ checked?: boolean; disabled?: boolean }>(({
+  theme,
+  checked,
+  disabled,
+}) => {
+  let background = checked ? "white" : theme.palette.charcoal.main;
+  if (disabled) background = checked ? "white" : theme.palette.charcoal["30"];
+  return {
+    position: "absolute",
+    width: "16px",
+    height: "16px",
+    background,
+    borderRadius: "50%",
+    left: checked ? "18px" : "1px",
+    transition: "all 0.2s ease",
+  };
+});
 
 const ToggleText = styled(Box, {
   shouldForwardProp: (prop) => prop !== "checked",
@@ -120,7 +127,7 @@ const ToggleText = styled(Box, {
 export interface ToggleProps {
   checked?: boolean;
   disabled?: boolean;
-  onChange: (value: boolean) => void;
+  onChange?: (value: boolean) => void;
   /**
    * Display the text "ON" and "OFF" inside the toggle
    * @default false
@@ -147,7 +154,6 @@ const Toggle = ({
 
   const handleChange = useCallback(
     (value: boolean) => {
-      console.log("__handleChange", value);
       if (disabled) return;
       setChecked(value);
       if (onChange) onChange(value);
@@ -210,5 +216,10 @@ const Toggle = ({
     </ToggleContainer>
   );
 };
+
+Toggle.defaultProps = {
+  displayToggleText: false,
+  labelPosition: "left",
+} as Partial<ToggleProps>;
 
 export default Toggle;

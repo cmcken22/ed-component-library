@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import Input from "../Input";
 
 const meta = {
@@ -6,6 +7,11 @@ const meta = {
   component: Input.TextArea,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Input.TextArea"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

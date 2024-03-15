@@ -157,6 +157,6 @@ RadioButton.defaultProps = {
   disabled: false,
   allowDeselect: false,
   labelPosition: "right",
-};
+} as Partial<RadioButtonProps>;
 
 export default RadioButton;

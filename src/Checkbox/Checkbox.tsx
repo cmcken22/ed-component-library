@@ -111,6 +111,6 @@ Checkbox.defaultProps = {
   disabled: false,
   checked: false,
   typographyVariant: "bodyR",
-};
+} as Partial<CheckboxProps>;
 
 export default Checkbox;

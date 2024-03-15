@@ -1,14 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import RadioButton from "./RadioButton";
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: "Example/Radio Button",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   component: RadioButton,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("RadioButton"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

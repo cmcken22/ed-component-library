@@ -77,6 +77,6 @@ Button.defaultProps = {
   disabled: false,
   onHover: () => {},
   loading: true,
-};
+} as Partial<ButtonProps>;
 
 export default Button;

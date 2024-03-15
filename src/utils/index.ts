@@ -10,3 +10,28 @@ export const shouldNotForwardProp =
   (invalidList: string[]) => (prop: string) => {
     return !invalidList.includes(prop);
   };
+
+export const sourceCodeFormatter =
+  (componentName: string) => (code: string, context: any) => {
+    let args = "";
+    for (const key in context.args) {
+      const value = context.args[key];
+      if (typeof value === "function") {
+        args += `  ${key}={() => {}}\n`;
+      } else if (typeof value === "object") {
+        const formattedValue = JSON.stringify(value, null, 2).replace(
+          /\n/g,
+          "\n  "
+        );
+        args += `  ${key}={${formattedValue}}\n`;
+      } else if (typeof value === "boolean") {
+        args += `  ${key}={${value.toString()}}\n`;
+      } else if (typeof value === "number") {
+        args += `  ${key}={${value.toString()}}\n`;
+      } else {
+        args += `  ${key}="${value}"\n`;
+      }
+    }
+
+    return `<${componentName}\n` + `${args}` + `/>`;
+  };

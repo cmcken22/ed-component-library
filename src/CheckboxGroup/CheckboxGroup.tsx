@@ -100,6 +100,6 @@ CheckboxGroup.defaultProps = {
   disabled: false,
   row: false,
   labelPosition: "right",
-};
+} as Partial<CheckboxGroupProps>;
 
 export default CheckboxGroup;

@@ -3,8 +3,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useCallback, useRef, useState } from "react";
-import BaseInput from "src/BaseInput";
+import { useCallback, useContext, useRef, useState } from "react";
+import BaseInput, { BaseInputContext } from "src/BaseInput";
 import { CalendarPicker } from "../Common";
 import { isValidDate, subtractMonths } from "../Common/utils";
 import Popover from "../Popover";
@@ -12,8 +12,17 @@ import { RangePickerProps } from "./RangePicker.types";
 import RangePickerInput from "./RangePickerInput";
 dayjs.extend(customParseFormat);
 
-const RangePicker = ({
-  id,
+const RangePicker = (props: RangePickerProps) => {
+  const { id, status, fullWidth, ...rest } = props;
+
+  return (
+    <BaseInput id={id} status={status} fullWidth={fullWidth}>
+      <RangePickerComp {...rest} />
+    </BaseInput>
+  );
+};
+
+const RangePickerComp = ({
   label,
   labelPosition,
   required,
@@ -28,12 +37,12 @@ const RangePicker = ({
   disableCurrent,
   disablePast,
   dateDisabled,
-  status,
   numberOfMonths,
   calendarOpen,
   hideCalendar,
   disableTextInput,
 }: RangePickerProps) => {
+  const { endAdornment, status } = useContext(BaseInputContext);
   const anchorRef = useRef<HTMLElement>(null);
   const calendarRef = useRef(null);
   const [value, setValue] = useState<Date[] | null>(
@@ -105,34 +114,30 @@ const RangePicker = ({
     setOpen(true);
   }, [disabled, setOpen]);
 
-  console.log("calendarRef:", calendarRef);
+  console.log("status:", status);
 
   return (
     <div>
-      <BaseInput key={key} id={id} status={error ? "error" : status}>
-        {({ endAdornment }: any) => (
-          <>
-            <BaseInput.Label required={required} position={labelPosition}>
-              {label}
-            </BaseInput.Label>
-            <Box ref={anchorRef} onClick={handleOpenPopover}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <RangePickerInput
-                  format={format}
-                  value={value}
-                  onChange={handleSelect}
-                  placeholder={placeholder}
-                  endAdornment={endAdornment}
-                  status={error ? "error" : status}
-                  disabled={disabled}
-                  disableTextInput={disableTextInput}
-                />
-              </LocalizationProvider>
-            </Box>
-            <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-          </>
-        )}
-      </BaseInput>
+      <>
+        <BaseInput.Label required={required} position={labelPosition}>
+          {label}
+        </BaseInput.Label>
+        <Box ref={anchorRef} onClick={handleOpenPopover}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <RangePickerInput
+              format={format}
+              value={value}
+              onChange={handleSelect}
+              placeholder={placeholder}
+              endAdornment={endAdornment}
+              status={status ? status : error ? "error" : ""}
+              disabled={disabled}
+              disableTextInput={disableTextInput}
+            />
+          </LocalizationProvider>
+        </Box>
+        <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
+      </>
       <Popover
         key={`date-picker--${key}`}
         open={hideCalendar ? false : open || calendarOpen}

@@ -94,6 +94,6 @@ const Avatar = ({ id, size, text, src, onHover, onClick, sx }: AvatarProps) => {
 
 Avatar.defaultProps = {
   size: "default",
-};
+} as Partial<AvatarProps>;
 
 export default Avatar;

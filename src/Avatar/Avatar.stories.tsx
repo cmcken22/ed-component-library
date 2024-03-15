@@ -1,13 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import Avatar from "./";
 
 const meta = {
   title: "Example/Avatar",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   component: Avatar,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Button"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

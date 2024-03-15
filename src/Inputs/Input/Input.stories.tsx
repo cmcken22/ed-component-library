@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import Input from ".";
 
 const meta = {
@@ -6,13 +7,11 @@ const meta = {
   component: Input,
   parameters: {
     layout: "centered",
-    // docs: {
-    //   source: {
-    //     transform: (code: string) => {
-    //       return code.replace(/<\(props\) => \{(?:[\s\S]*?)\}/, "<Avatar");
-    //     },
-    //   },
-    // },
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Input"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

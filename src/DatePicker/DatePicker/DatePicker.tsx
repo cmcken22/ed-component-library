@@ -4,8 +4,8 @@ import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useCallback, useEffect, useRef, useState } from "react";
-import BaseInput from "src/BaseInput";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import BaseInput, { BaseInputContext } from "src/BaseInput";
 import Icon, { IconVariant } from "src/Icon";
 import { CalendarPicker } from "../Common";
 import Popover from "../Popover";
@@ -23,8 +23,17 @@ function isValidDate(d: any) {
   return d instanceof Date && !isNaN(d);
 }
 
-const DatePicker = ({
-  id,
+const DatePicker = (props: DatePickerProps) => {
+  const { id, status, fullWidth, ...rest } = props;
+
+  return (
+    <BaseInput id={id} status={status} fullWidth={fullWidth}>
+      <DatePickerComp {...rest} />
+    </BaseInput>
+  );
+};
+
+const DatePickerComp = ({
   label,
   labelPosition,
   required,
@@ -39,12 +48,12 @@ const DatePicker = ({
   disableCurrent,
   disablePast,
   dateDisabled,
-  status,
   numberOfMonths,
   calendarOpen,
   hideCalendar,
   disableTextInput,
 }: DatePickerProps) => {
+  const { endAdornment } = useContext(BaseInputContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [value, setValue] = useState<Date | null>(
     convertDateString(passedValue)
@@ -99,51 +108,43 @@ const DatePicker = ({
 
   return (
     <>
-      <BaseInput key={key} id={id} status={status}>
-        {({ endAdornment }: any) => (
-          <>
-            <BaseInput.Label required={required} position={labelPosition}>
-              {label}
-            </BaseInput.Label>
-            <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <MuiDatePicker
-                  key={`MuiDatePicker--${disableTextInput}--${key}`}
-                  format={format}
-                  disableOpenPicker
-                  value={dayjs(value)}
-                  disabled={disabled}
-                  sx={{
-                    ".MuiInputBase-root": {
-                      cursor: disableTextInput ? "pointer" : "text",
-                      "& input": {
-                        pointerEvents: disableTextInput ? "none" : "",
-                      },
-                    },
-                  }}
-                  slotProps={{
-                    textField: {
-                      onFocus: disableTextInput
-                        ? (e) => e?.target?.blur()
-                        : null,
-                      InputProps: {
-                        placeholder,
-                        startAdornment: startAdornment(),
-                        endAdornment,
-                      },
-                    },
-                  }}
-                  onChange={(date: any) => {
-                    if (disableTextInput) return;
-                    handleSelect(date.toDate());
-                  }}
-                />
-              </LocalizationProvider>
-            </Box>
-            <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-          </>
-        )}
-      </BaseInput>
+      <BaseInput.Label required={required} position={labelPosition}>
+        {label}
+      </BaseInput.Label>
+      <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <MuiDatePicker
+            key={`MuiDatePicker--${disableTextInput}--${key}`}
+            format={format}
+            disableOpenPicker
+            value={dayjs(value)}
+            disabled={disabled}
+            sx={{
+              ".MuiInputBase-root": {
+                cursor: disableTextInput ? "pointer" : "text",
+                "& input": {
+                  pointerEvents: disableTextInput ? "none" : "",
+                },
+              },
+            }}
+            slotProps={{
+              textField: {
+                onFocus: disableTextInput ? (e) => e?.target?.blur() : null,
+                InputProps: {
+                  placeholder,
+                  startAdornment: startAdornment(),
+                  endAdornment,
+                },
+              },
+            }}
+            onChange={(date: any) => {
+              if (disableTextInput) return;
+              handleSelect(date.toDate());
+            }}
+          />
+        </LocalizationProvider>
+      </Box>
+      <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       <Popover
         key={`date-picker--${key}`}
         open={hideCalendar ? false : open || calendarOpen}
@@ -178,6 +179,6 @@ DatePicker.defaultProps = {
   format: "MM-DD-YYYY",
   placeholder: "MM-DD-YYYY",
   numberOfMonths: 1,
-};
+} as Partial<DatePickerProps>;
 
 export default DatePicker;

@@ -1,12 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import RadioButtonGroup from "./RadioButtonGroup";
 
 const meta = {
   title: "Example/Radio Button Group",
-  // @ts-expect-error
   component: RadioButtonGroup,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("RadioButtonGroup"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

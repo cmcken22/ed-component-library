@@ -1,13 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import RangePicker from "./RangePicker";
 
 const meta = {
   title: "Example/RangePicker",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   component: RangePicker,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("RangePicker"),
+      },
+    },
   },
   tags: ["autodocs"],
   argTypes: {

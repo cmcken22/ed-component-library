@@ -1,15 +1,22 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { sourceCodeFormatter } from "src/utils";
 import Checkbox from "./Checkbox";
 
 const meta = {
   title: "Example/Checkbox",
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   component: Checkbox,
   parameters: {
     layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Checkbox"),
+      },
+    },
   },
   tags: ["autodocs"],
+  argTypes: {
+    onChange: { action: "onChange" },
+  },
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;

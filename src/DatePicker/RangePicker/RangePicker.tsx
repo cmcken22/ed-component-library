@@ -5,9 +5,9 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useCallback, useContext, useRef, useState } from "react";
 import BaseInput, { BaseInputContext } from "src/BaseInput";
-import { CalendarPicker } from "../Common";
 import { isValidDate, subtractMonths } from "../Common/utils";
 import Popover from "../Popover";
+import MultiDatePicker from "./MultiDatePicker";
 import { RangePickerProps } from "./RangePicker.types";
 import RangePickerInput from "./RangePickerInput";
 dayjs.extend(customParseFormat);
@@ -89,6 +89,7 @@ const RangePickerComp = ({
           valid = false;
         }
       }
+      console.log("calendarRef.current:", calendarRef.current);
       setError(!valid);
       setValue(dateRange);
       if (onChange) onChange(dateRange);
@@ -113,8 +114,6 @@ const RangePickerComp = ({
     if (disabled) return;
     setOpen(true);
   }, [disabled, setOpen]);
-
-  console.log("status:", status);
 
   return (
     <div>
@@ -151,18 +150,16 @@ const RangePickerComp = ({
           setKey((prev) => prev + 1);
         }}
       >
-        <CalendarPicker
+        <MultiDatePicker
           ref={calendarRef}
-          key={`date-picker2--${key}`}
           onSelect={handleSelect}
           value={value}
           disableFuture={disableFuture}
-          disableCurrent={disableCurrent}
           disablePast={disablePast}
-          dateDisabled={dateDisabled}
+          disableCurrent={disableCurrent}
           currentDate={currentDate}
+          dateDisabled={dateDisabled}
           numberOfMonths={numberOfMonths}
-          range
         />
       </Popover>
     </div>

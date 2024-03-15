@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { forwardRef, useCallback, useContext, useMemo } from "react";
 import { Icon, Typography } from "../..";
+import MultiDatePicker from "../RangePicker/MultiDatePicker";
 import CalendarWrapper from "./CalendarWrapper";
 import DatePickerContextProvider, {
   DatePickerContext,
@@ -38,7 +39,7 @@ export const WeeklyHeader = () => {
   );
 };
 
-export const WeekView = ({ month, week }: any) => {
+export const WeekView = ({ month, week, onSelect }: any) => {
   return (
     <Box
       display={"flex"}
@@ -49,7 +50,12 @@ export const WeekView = ({ month, week }: any) => {
     >
       {week?.map((day) => {
         return (
-          <Day key={`${month}--${day.toISOString()}`} month={month} day={day} />
+          <Day
+            key={`${month}--${day.toISOString()}`}
+            month={month}
+            day={day}
+            onSelect={onSelect}
+          />
         );
       })}
     </Box>
@@ -103,19 +109,21 @@ export const PrevMonthBtn = () => {
   );
 };
 
-export const MonthView = ({ weeks, month, children }: any) => {
+export const MonthView = ({ weeks, month, children, onSelect }: any) => {
   return (
     <Box>
       {children}
       <WeeklyHeader />
       {weeks?.map((week, i) => {
-        return <WeekView month={month} week={week} key={i} />;
+        return (
+          <WeekView key={i} month={month} week={week} onSelect={onSelect} />
+        );
       })}
     </Box>
   );
 };
 
-const Spacer = () => (
+export const Spacer = () => (
   <Box
     sx={{
       height: "16px",
@@ -161,8 +169,7 @@ const CalendarPicker = () => {
 const CalendarPickerWrapper = forwardRef(
   (
     {
-      value,
-      onSelect,
+      children,
       disableFuture,
       disableCurrent,
       disablePast,
@@ -176,8 +183,8 @@ const CalendarPickerWrapper = forwardRef(
     return (
       <DatePickerContextProvider
         ref={ref}
-        value={value}
-        onSelect={onSelect}
+        // value={value}
+        // onSelect={onSelect}
         numberOfMonths={numberOfMonths}
         disableFuture={disableFuture}
         disableCurrent={disableCurrent}
@@ -186,10 +193,45 @@ const CalendarPickerWrapper = forwardRef(
         currentDate={currentDate}
         range={range}
       >
-        <CalendarPicker />
+        {children}
       </DatePickerContextProvider>
     );
   }
 );
 
+const CalendarPickerWrapper2 = forwardRef(
+  (
+    {
+      value,
+      onSelect,
+      disableFuture,
+      disableCurrent,
+      disablePast,
+      dateDisabled,
+      currentDate,
+      numberOfMonths,
+    }: any,
+    ref: any
+  ) => {
+    console.log("value:", value);
+    return (
+      <DatePickerContextProvider
+        ref={ref}
+        // value={value}
+        // onSelect={onSelect}
+        numberOfMonths={numberOfMonths}
+        disableFuture={disableFuture}
+        disableCurrent={disableCurrent}
+        disablePast={disablePast}
+        dateDisabled={dateDisabled}
+        currentDate={currentDate}
+        range
+      >
+        <MultiDatePicker value={value} onSelect={onSelect} />
+      </DatePickerContextProvider>
+    );
+  }
+);
+
+export { CalendarPickerWrapper2 as Calendar2 };
 export default CalendarPickerWrapper;

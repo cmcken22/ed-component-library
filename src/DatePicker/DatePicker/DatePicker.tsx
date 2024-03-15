@@ -4,12 +4,19 @@ import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import BaseInput, { BaseInputContext } from "src/BaseInput";
 import Icon, { IconVariant } from "src/Icon";
-import { CalendarPicker } from "../Common";
 import Popover from "../Popover";
 import { DatePickerProps } from "./DatePicker.types";
+import SingleDatePicker from "./SingleDatePicker";
 dayjs.extend(customParseFormat);
 
 const convertDateString = (text) => {
@@ -106,6 +113,10 @@ const DatePickerComp = ({
     [setValue, onChange, checkDateDisabled]
   );
 
+  const displayCalendar = useMemo(() => {
+    return hideCalendar ? false : open || calendarOpen;
+  }, [hideCalendar, open, calendarOpen]);
+
   return (
     <>
       <BaseInput.Label required={required} position={labelPosition}>
@@ -147,7 +158,7 @@ const DatePickerComp = ({
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       <Popover
         key={`date-picker--${key}`}
-        open={hideCalendar ? false : open || calendarOpen}
+        open={displayCalendar}
         anchorEl={anchorEl}
         placement="bottom-end"
         onClose={() => {
@@ -158,9 +169,7 @@ const DatePickerComp = ({
           setKey((prev) => prev + 1);
         }}
       >
-        <CalendarPicker
-          ref={popoverRef}
-          key={`date-picker2--${key}`}
+        <SingleDatePicker
           onSelect={handleSelect}
           value={isValidDate(value) ? value : null}
           disableFuture={disableFuture}

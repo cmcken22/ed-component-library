@@ -8,71 +8,77 @@ import { isValidDate } from "./utils";
 const StyledBox = styled(Box, {
   // shouldForwardProp: (prop) => prop !== "src",
   slot: "root",
-})<any>(
-  ({
-    theme,
-    selected,
-    inRange,
-    inPotentialRange,
-    disabled,
-    hidden,
-    leftRange,
-    rightRange,
-  }) => {
-    let backgroundColor = "white";
-    let color = theme.palette.charcoal[100];
-    if (selected) {
-      backgroundColor = theme.palette.secondary.main;
-      color = "white";
-    }
-    if (inRange) {
-      backgroundColor = hexToRGBA(theme.palette.secondary.main, 0.05);
-    }
-    // TODO: maybe we will change this colour
-    if (inPotentialRange) {
-      backgroundColor = hexToRGBA(theme.palette.secondary.main, 0.05);
-    }
-    let borderStyles = {};
-    if (leftRange) {
-      borderStyles = {
-        borderTopLeftRadius: "50%",
-        borderBottomLeftRadius: "50%",
-      };
-    }
-    if (rightRange) {
-      borderStyles = {
-        borderTopRightRadius: "50%",
-        borderBottomRightRadius: "50%",
-      };
-    }
-    let opacity = 1;
-    if (disabled) {
-      opacity = 0.5;
-    }
-    if (hidden) {
-      opacity = 0;
-    }
-
-    return {
-      cursor: disabled || hidden ? "default" : "pointer",
-      opacity,
-      height: "30px",
-      width: "30px",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      color,
-      position: "relative",
-      backgroundColor,
-      ...borderStyles,
+})<any>(({
+  theme,
+  selected,
+  inRange,
+  inPotentialRange,
+  disabled,
+  hidden,
+  leftRange,
+  rightRange,
+}) => {
+  let backgroundColor = "white";
+  let color = theme.palette.charcoal[100];
+  if (selected) {
+    backgroundColor = theme.palette.secondary.main;
+    color = "white";
+  }
+  if (inRange) {
+    backgroundColor = hexToRGBA(theme.palette.secondary.main, 0.05);
+  }
+  // TODO: maybe we will change this colour
+  if (inPotentialRange) {
+    backgroundColor = hexToRGBA(theme.palette.secondary.main, 0.05);
+  }
+  let borderStyles = {};
+  if (leftRange) {
+    borderStyles = {
+      borderTopLeftRadius: "50%",
+      borderBottomLeftRadius: "50%",
     };
   }
-);
+  if (rightRange) {
+    borderStyles = {
+      borderTopRightRadius: "50%",
+      borderBottomRightRadius: "50%",
+    };
+  }
+  let opacity = 1;
+  if (disabled) {
+    opacity = 0.5;
+  }
+  if (hidden) {
+    opacity = 0;
+  }
 
-const Day = ({ day, month }: { day: Date; month: number }) => {
+  return {
+    cursor: disabled || hidden ? "default" : "pointer",
+    opacity,
+    height: "30px",
+    width: "30px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color,
+    position: "relative",
+    backgroundColor,
+    ...borderStyles,
+  };
+});
+
+const Day = ({
+  day,
+  month,
+  onSelect,
+}: {
+  day: Date;
+  month: number;
+  onSelect: any;
+}) => {
   const {
     selected,
-    onSelect,
+    // onSelect,
     inRange,
     currentDate,
     disableFuture,
@@ -151,8 +157,6 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
     inRange,
   ]);
 
-  console.log("dateInPotentialRange:", dateInPotentialRange);
-
   const handleMouseEnter = useCallback(
     (date: Date) => {
       if (!range || disabled) return;
@@ -166,10 +170,18 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
     setHoveredDate(null);
   }, [setHoveredDate, range, disabled]);
 
+  const handleSelect = useCallback(
+    (day: Date) => {
+      if (disabled) return;
+      if (onSelect) onSelect(day);
+    },
+    [disabled, onSelect]
+  );
+
   return (
     <StyledBox
       key={`${month}--${day.toISOString()}`}
-      onClick={disabled ? undefined : () => onSelect(day)}
+      onClick={() => handleSelect(day)}
       selected={dateSelected}
       inRange={dateInRange}
       inPotentialRange={dateInPotentialRange}
@@ -177,8 +189,8 @@ const Day = ({ day, month }: { day: Date; month: number }) => {
       hidden={outOfMonth}
       leftRange={leftRange}
       rightRange={rightRange}
-      onMouseEnter={() => handleMouseEnter(day)}
-      onMouseLeave={handleMouseLeave}
+      // onMouseEnter={() => handleMouseEnter(day)}
+      // onMouseLeave={handleMouseLeave}
     >
       {isToday && !dateSelected && (
         <Box

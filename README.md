@@ -7,33 +7,45 @@
 - This repo was built with [React 18](https://legacy.reactjs.org/blog/2022/03/29/react-v18.html) and [Material UI v5](https://mui.com/)
 - The components are built on top of mui with theme overrides and logical enhancements
 
-#### Peer Dependencies
+### Peer Dependencies
 
 ```js
-"@emotion/react": "^11.11.3",
-"@emotion/styled": "^11.11.0",
-"@mui/material": "^5.15.11",
-"react": "^18.2.0",
-"react-dom": "^18.2.0"
+{
+  "react": "^18.2.0",
+  "react-dom": "^18.2.0",
+  "@emotion/react": "^11.11.3",
+  "@emotion/styled": "^11.11.0",
+  "@mui/x-date-pickers": "^6.19.6",
+  "@mui/material": "^5.15.11"
+}
 ```
 
-#### Dependencies
+### Dependencies
 
 ```js
-"@emotion/react": "^11.11.3",
-"@emotion/styled": "^11.11.0",
-"@mui/material": "^5.15.11",
-"@mui/x-date-pickers": "^6.19.6",
-"classnames": "^2.5.1",
-"dayjs": "^1.11.10",
-"lodash.debounce": "^4.0.8",
-"lodash.isequal": "^4.5.0",
-"notistack": "^3.0.1",
-"react": "^18.2.0",
-"react-dom": "^18.2.0",
-"react-number-format": "^5.3.3",
-"use-lilius": "^2.0.4"
+{
+  "@emotion/react": "^11.11.3",
+  "@emotion/styled": "^11.11.0",
+  "@mui/x-date-pickers": "^6.19.6",
+  "@mui/material": "^5.15.11",
+  "classnames": "^2.5.1",
+  "dayjs": "^1.11.10",
+  "lodash.debounce": "^4.0.8",
+  "lodash.isequal": "^4.5.0",
+  "notistack": "^3.0.1",
+  "react-number-format": "^5.3.3",
+  "use-lilius": "^2.0.4"
+}
 ```
+
+- You may notice that some _dependencies_ are also _peerDependencies_
+- This is because I want to install these packages for you when you install the repo
+- They are also listed as _peerDependencies_ because I want to throw an error if you are using a different version
+- If you absolutely need a different version than what is listed as a peer depdency than you will have to perform a peer depdency resolution or update the component library itself
+- To mitigate this, the component library has been built with the latest versions at the time of writing (March 2024)
+- **TLDR**
+  - If you wish to install any _peerDependencies_ separate from the installation of this repo, make sure you are using the same versions
+  - otherwise, you may encounter unexpected behaviour
 
 <br />
 <br />
@@ -46,7 +58,8 @@ npm i @cmckenna/ed-component-library
 ```
 
 - Wrap your app in the `ThemeWrapper` and the `SnackbarProvider`
-- Don't forget to import the styles as well.
+- Import the css file
+  - the css file will import the required google fonts and some basic styles
 
 ```jsx
 import React from 'react';

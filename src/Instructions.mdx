@@ -2,8 +2,7 @@ import { Meta, Markdown } from "@storybook/blocks";
 
 <Meta title="Instrcutions" />
 
-# How to work the component library
-
+# How to work with the component library
 - [Run the repo locally](#run-the-repo-locally)
 - [Component Structure](#component-structure)
 - [Creating a new component](#creating-a-new-component)
@@ -85,7 +84,7 @@ npm run test:watch
 - This is because Jest has dificulty access dom styles and testing styles can be very tedious with not much gain
   - Testing if a background color is red is not as important as testing if a function returns the correct value
 
-* For visual testing we can leverage Chromatic - learn more about Chromatic [here](https://www.chromatic.com/)
+* For visual testing we can leverage Chromatic - learn more about Chromatic [here](https://www.chromatic.com)
 
 <br />
 <br />
@@ -93,7 +92,7 @@ npm run test:watch
 
 - Chromatic is a visual testing & review tool that scans every possible UI state across browsers to catch visual and functional bugs.
 - It is integrated with Storybook and creates a visual snapshot of each component story
-- Learn more about Chromatic [here](https://www.chromatic.com/)
+- Learn more about Chromatic [here](https://www.chromatic.com)
 
 ```js
 npm run chromatic
@@ -114,7 +113,7 @@ npm run chromatic
 npm run sb:deploy
 ```
 
-- View the updated storybook at [https://cmcken22.github.io/ed-component-library](https://cmcken22.github.io/ed-component-library/)
+- View the updated storybook at [https://cmcken22.github.io/ed-component-library](https://cmcken22.github.io/ed-component-library)
 
 <br />
 <br />
@@ -131,7 +130,7 @@ npm install -g yalc
 ```
 
 - In the package.json file, update the version number for example from `1.0.0` to `2.0.0`
-  - please follow [semantic versioning](https://semver.org/) when updating the version number
+  - please follow [semantic versioning](https://semver.org) when updating the version number
 
 ```json
 {
@@ -157,10 +156,41 @@ yalc publish
 yalc add @cmckenna/ed-component-library@latest
 ```
 
+- Then run the install again to make sure the dependencies have been installed
+
+```js
+npm install
+```
+
 - You can now use the repo in the project as if it were installed from NPM
 
 <br />
 <br />
 ## Publishing to NPM
 
-- TODO
+- The `package.json` has been configured to publish to the NPM registry
+- First we need to bump the version number in the `package.json` file
+  - for example from `2.0.0` to `2.0.1`
+  - please follow [semantic versioning](https://semver.org) when updating the version number
+
+```json
+{
+  "version": "2.0.1"
+}
+```
+
+- Then we need to build the package, sign into NPM and publish the package
+
+```js
+npm run build
+```
+
+```js
+npm login
+```
+
+```js
+npm publish
+```
+
+- That's it! The package is now published to NPM and can be installed in any project

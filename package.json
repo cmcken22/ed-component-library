@@ -1,9 +1,9 @@
 {
   "name": "@cmckenna/ed-component-library",
   "private": false,
-  "version": "0.2.0",
+  "version": "0.1.0",
   "type": "module",
-  "homepage": "http://cmcken22.github.io/ed-component-library",
+  "homepage": "https://cmcken22.github.io/ed-component-library/?path=/docs/read-me--docs",
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
@@ -39,28 +39,29 @@
     "test:watch": "jest --watch"
   },
   "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.11",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@mui/x-date-pickers": "^6.19.6",
+    "@mui/material": "^5.15.11"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.11",
     "@mui/x-date-pickers": "^6.19.6",
+    "@mui/material": "^5.15.11",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.10",
     "lodash.debounce": "^4.0.8",
     "lodash.isequal": "^4.5.0",
     "notistack": "^3.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-number-format": "^5.3.3",
     "use-lilius": "^2.0.4"
   },
   "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-react": "^7.23.3",
     "@chromatic-com/storybook": "^1.2.18",

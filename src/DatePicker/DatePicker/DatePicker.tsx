@@ -4,14 +4,7 @@ import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import BaseInput, { BaseInputContext } from "src/BaseInput";
 import Icon, { IconVariant } from "src/Icon";
 import Popover from "../Popover";
@@ -67,7 +60,7 @@ const DatePickerComp = ({
   );
   const [open, setOpen] = useState(false);
   const [key, setKey] = useState(0);
-  const popoverRef = useRef(null);
+  // const popoverRef = useRef(null);
 
   useEffect(() => {
     setValue(convertDateString(passedValue));
@@ -122,11 +115,16 @@ const DatePickerComp = ({
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
-      <Box onClick={() => setOpen(true)} ref={(r: any) => setAnchorEl(r)}>
+      <Box
+        data-testid="date-picker-box"
+        onClick={() => setOpen(true)}
+        ref={(r: any) => setAnchorEl(r)}
+      >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <MuiDatePicker
             key={`MuiDatePicker--${disableTextInput}--${key}`}
             format={format}
+            // data-testid="date-picker"
             disableOpenPicker
             value={dayjs(value)}
             disabled={disabled}
@@ -140,6 +138,8 @@ const DatePickerComp = ({
             }}
             slotProps={{
               textField: {
+                // @ts-ignore
+                "data-testid": "date-picker",
                 onFocus: disableTextInput ? (e) => e?.target?.blur() : null,
                 InputProps: {
                   placeholder,

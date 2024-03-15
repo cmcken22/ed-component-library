@@ -9,6 +9,10 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
+  coveragePathIgnorePatterns: [
+    "<rootDir>/src/Icon/IconElements",
+    ".*\\.theme\\.(ts|tsx)$",
+  ],
   moduleDirectories: ["node_modules", "src", "utils"],
   testMatch: ["**/*.test.(ts|tsx)"],
   moduleNameMapper: {

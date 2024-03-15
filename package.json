@@ -34,6 +34,7 @@
     "sb:deploy": "npm run sb:build && touch ./storybook-static/.nojekyll && gh-pages -d ./storybook-static -t true",
     "chromatic": "npx chromatic --project-token=chpt_379fdf05d67673d --build-script-name=sb:build",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "test:update": "jest --updateSnapshot",
     "test:watch": "jest --watch"
   },

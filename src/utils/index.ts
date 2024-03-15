@@ -12,7 +12,7 @@ export const shouldNotForwardProp =
   };
 
 export const sourceCodeFormatter =
-  (componentName: string) => (code: string, context: any) => {
+  (componentName: string) => (_, context: any) => {
     let args = "";
     for (const key in context.args) {
       const value = context.args[key];

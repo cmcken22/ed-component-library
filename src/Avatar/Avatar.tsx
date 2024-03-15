@@ -1,7 +1,9 @@
-import { Box, SxProps, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
+import cx from "classnames";
 import { useCallback } from "react";
 import { useOnHover } from "src/Hooks";
 import Typography from "src/Typography";
+import { AvatarProps } from ".";
 
 const StyledWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "src",
@@ -22,17 +24,16 @@ const StyledWrapper = styled(Box, {
   };
 });
 
-export interface AvatarProps {
-  id?: string;
-  size?: "default" | "large" | "small";
-  text?: string;
-  sx?: SxProps;
-  src?: string;
-  onClick?: () => void;
-  onHover?: (hovered: boolean) => void;
-}
-
-const Avatar = ({ id, size, text, src, onHover, onClick, sx }: AvatarProps) => {
+const Avatar = ({
+  id,
+  className,
+  size,
+  text,
+  src,
+  onHover,
+  onClick,
+  sx,
+}: AvatarProps) => {
   const onHoverMethods = useOnHover(onHover);
 
   const getAvatarSize = useCallback(() => {
@@ -70,6 +71,7 @@ const Avatar = ({ id, size, text, src, onHover, onClick, sx }: AvatarProps) => {
   return (
     <StyledWrapper
       id={id}
+      className={cx("avatar", className)}
       {...onHoverMethods}
       onClick={onClick}
       src={src}

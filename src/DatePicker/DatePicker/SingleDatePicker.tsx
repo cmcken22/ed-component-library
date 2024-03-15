@@ -68,7 +68,10 @@ const SingleDatePicker = ({ value, onSelect }: any) => {
   }, [value, selected]);
 
   return (
-    <CalendarWrapper>
+    <CalendarWrapper
+      data-testid="single-date-picker-modal"
+      className="single-date-picker-modal"
+    >
       {months?.map((month, index) => {
         const monthNumber = getMonthFromCalendar(month);
         return (

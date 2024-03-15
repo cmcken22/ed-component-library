@@ -1,12 +1,19 @@
 import { Box, styled } from "@mui/material";
 import { useCallback, useContext, useMemo } from "react";
-import { hexToRGBA } from "src/utils";
+import { hexToRGBA, shouldNotForwardProp } from "src/utils";
 import { Typography } from "../..";
 import { DatePickerContext } from "./DatePickerContextProvider";
 import { isValidDate } from "./utils";
 
 const StyledBox = styled(Box, {
-  // shouldForwardProp: (prop) => prop !== "src",
+  shouldForwardProp: shouldNotForwardProp([
+    "selected",
+    "inRange",
+    "inPotentialRange",
+    "hidden",
+    "leftRange",
+    "rightRange",
+  ]),
   slot: "root",
 })<any>(({
   theme,
@@ -182,6 +189,7 @@ const Day = ({
     <StyledBox
       key={`${month}--${day.toISOString()}`}
       onClick={() => handleSelect(day)}
+      className="day"
       selected={dateSelected}
       inRange={dateInRange}
       inPotentialRange={dateInPotentialRange}
@@ -189,11 +197,13 @@ const Day = ({
       hidden={outOfMonth}
       leftRange={leftRange}
       rightRange={rightRange}
-      // onMouseEnter={() => handleMouseEnter(day)}
-      // onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => handleMouseEnter(day)}
+      onMouseLeave={handleMouseLeave}
+      data-test-outofmonth={outOfMonth}
     >
       {isToday && !dateSelected && (
         <Box
+          className="today-indicator"
           sx={{
             height: "100%",
             width: "100%",

@@ -29,7 +29,7 @@ export const Default: Story = {
     docs: {
       source: {
         language: "tsx",
-        transform: (code: string, context: any) => {
+        transform: (_, context: any) => {
           let args = "";
           for (const key in context.args) {
             if (key === "message") continue;

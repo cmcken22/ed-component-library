@@ -48,8 +48,7 @@ const MultiDatePickerWrapper = forwardRef(
 );
 
 const MulitDatePicker = ({ value, onSelect }: any) => {
-  const { months, select, selected, isSelected, currentDate, setViewing } =
-    useContext(DatePickerContext);
+  const { months, select, selected } = useContext(DatePickerContext);
 
   const prevValue = useRef<Date | null>(null);
 

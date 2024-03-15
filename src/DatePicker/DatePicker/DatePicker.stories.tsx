@@ -54,6 +54,8 @@ export const Sample: Story = {
   },
   args: {
     ...DatePicker.defaultProps,
+    currentDate: new Date("2024-03-17T04:00:00.000Z"),
+    id: "date-picker",
     label: "Date Picker",
     helperText: "Helper Text",
   },

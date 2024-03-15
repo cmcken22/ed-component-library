@@ -158,7 +158,7 @@ const DatePickerComp = ({
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       <Popover
         key={`date-picker--${key}`}
-        open={displayCalendar}
+        open={displayCalendar ? true : false}
         anchorEl={anchorEl}
         placement="bottom-end"
         onClose={() => {

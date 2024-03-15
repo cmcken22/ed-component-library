@@ -10,6 +10,15 @@ import Calendar, {
 } from "../Common/CalendarPicker";
 import { getMonthFromCalendar, isValidDate } from "../Common/utils";
 
+const formatValue = (value: any) => {
+  if (value && isValidDate(value)) {
+    const date = new Date(value);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }
+  return null;
+};
+
 const SingleDatePickerWrapper = ({
   value,
   onSelect,
@@ -29,7 +38,7 @@ const SingleDatePickerWrapper = ({
       currentDate={currentDate}
       numberOfMonths={numberOfMonths}
     >
-      <SingleDatePicker value={value} onSelect={onSelect} />
+      <SingleDatePicker value={formatValue(value)} onSelect={onSelect} />
     </Calendar>
   );
 };
@@ -64,7 +73,7 @@ const SingleDatePicker = ({ value, onSelect }: any) => {
     if (currSelected === value) return;
     if (prevValue.current === value) return;
     prevValue.current = value;
-    handleSelect(value);
+    select(value, true);
   }, [value, selected]);
 
   return (

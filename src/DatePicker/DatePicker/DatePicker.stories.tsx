@@ -40,13 +40,13 @@ export const Sample: Story = {
     let formattedProps = {};
     if (args?.currentDate) {
       formattedProps = {
-        ...args,
+        ...formattedProps,
         currentDate: new Date(args?.currentDate),
       };
     }
     if (args?.value) {
       formattedProps = {
-        ...args,
+        ...formattedProps,
         value: new Date(args?.value),
       };
     }
@@ -54,7 +54,8 @@ export const Sample: Story = {
   },
   args: {
     ...DatePicker.defaultProps,
-    currentDate: new Date("2024-03-17T04:00:00.000Z"),
+    // currentDate: new Date("2024-03-17T04:00:00.000Z"),
+    value: new Date("2024-03-15T07:00:00.000Z"),
     id: "date-picker",
     label: "Date Picker",
     helperText: "Helper Text",

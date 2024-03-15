@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { forwardRef, useCallback, useContext, useMemo } from "react";
 import { Icon, Typography } from "../..";
-import MultiDatePicker from "../RangePicker/MultiDatePicker";
+import MultiDatePicker from "../RangePicker/RangePickerModal/MultiDatePicker";
 import DatePickerContextProvider, {
   DatePickerContext,
 } from "./DatePickerContextProvider";

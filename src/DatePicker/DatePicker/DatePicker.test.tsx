@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { printHtml } from "test-utils/helper";
 import { fireEvent, render } from "test-utils/index";
 import DatePicker, { DatePickerProps } from ".";
 
@@ -25,6 +26,7 @@ describe("DatePicker", () => {
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("Input");
     expect(inputContainer).toBeInTheDocument();
+    printHtml(inputContainer as HTMLElement);
     const component = getByTestId("date-picker");
     expect(component).toBeInTheDocument();
     expect(inputContainer).toHaveAttribute("id", props.id);
@@ -38,6 +40,22 @@ describe("DatePicker", () => {
     expect(component).toBeInTheDocument();
     const expected = "03-15-2024";
     expect(input).toHaveValue(expected);
+
+    const calendarWrapper = getByTestId("date-picker-box");
+    fireEvent.click(calendarWrapper);
+    const calendar = getByTestId("single-date-picker-modal");
+    expect(calendar).toBeInTheDocument();
+
+    const days = calendar.querySelectorAll('.day:not([disabled=""])');
+    expect(days).toHaveLength(31);
+
+    for (let i = 0; i < 31; i++) {
+      if (i === 14) {
+        expect(days[i]).toHaveAttribute("data-test-dateselected", "true");
+      } else {
+        expect(days[i]).not.toHaveAttribute("data-test-dateselected", "true");
+      }
+    }
   });
 
   it("should use alternative format", () => {

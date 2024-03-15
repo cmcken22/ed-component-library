@@ -7,9 +7,9 @@ import { useCallback, useContext, useRef, useState } from "react";
 import BaseInput, { BaseInputContext } from "src/BaseInput";
 import { isValidDate, subtractMonths } from "../Common/utils";
 import Popover from "../Popover";
-import MultiDatePicker from "./MultiDatePicker";
 import { RangePickerProps } from "./RangePicker.types";
 import RangePickerInput from "./RangePickerInput";
+import MultiDatePicker from "./RangePickerModal/MultiDatePicker";
 dayjs.extend(customParseFormat);
 
 const RangePicker = (props: RangePickerProps) => {

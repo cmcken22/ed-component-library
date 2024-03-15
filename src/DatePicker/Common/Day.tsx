@@ -121,6 +121,7 @@ const Day = ({
     if (dateDisabled && dateDisabled(day)) disabled = true;
     return disabled;
   }, [
+    day,
     outOfMonth,
     disableFuture,
     currentDate,
@@ -142,7 +143,7 @@ const Day = ({
       }
     }
     return [leftRange, rightRange];
-  }, [range, validSelectedDates]);
+  }, [range, validSelectedDates, day, selected]);
 
   const dateInPotentialRange = useMemo(() => {
     if (!range || !hoveredDate) return false;
@@ -200,6 +201,7 @@ const Day = ({
       onMouseEnter={() => handleMouseEnter(day)}
       onMouseLeave={handleMouseLeave}
       data-test-outofmonth={outOfMonth}
+      data-test-dateselected={dateSelected}
     >
       {isToday && !dateSelected && (
         <Box

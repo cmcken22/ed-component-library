@@ -3,21 +3,36 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useCallback, useContext, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import BaseInput, { BaseInputContext } from "src/BaseInput";
-import { isValidDate, subtractMonths } from "../Common/utils";
+import { Status } from "src/CommonTypes";
+import { formatDateRange, isValidDate } from "../Common/utils";
 import Popover from "../Popover";
 import { RangePickerProps } from "./RangePicker.types";
+import RangePickerCalendar from "./RangePickerCalendar/RangePickerCalendar";
 import RangePickerInput from "./RangePickerInput";
-import MultiDatePicker from "./RangePickerModal/MultiDatePicker";
 dayjs.extend(customParseFormat);
 
 const RangePicker = (props: RangePickerProps) => {
-  const { id, status, fullWidth, ...rest } = props;
+  const { id, status, fullWidth, value, ...rest } = props;
 
   return (
-    <BaseInput id={id} status={status} fullWidth={fullWidth}>
-      <RangePickerComp {...rest} />
+    <BaseInput
+      id={id}
+      status={status}
+      fullWidth={fullWidth}
+      sx={{
+        width: "400px",
+      }}
+    >
+      <RangePickerComp {...rest} value={formatDateRange(value)} />
     </BaseInput>
   );
 };
@@ -41,16 +56,18 @@ const RangePickerComp = ({
   calendarOpen,
   hideCalendar,
   disableTextInput,
+  onValidation,
 }: RangePickerProps) => {
-  const { endAdornment, status } = useContext(BaseInputContext);
+  const { endAdornment, status, setStatus } = useContext(BaseInputContext);
   const anchorRef = useRef<HTMLElement>(null);
   const calendarRef = useRef(null);
   const [value, setValue] = useState<Date[] | null>(
     (passedValue ? passedValue : []) as Date[]
   );
+
   const [open, setOpen] = useState(false);
-  const [key, setKey] = useState(0);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
+  // const updateCalendarViewTimer = useRef<NodeJS.Timeout | null>(null);
 
   const checkDateDisabled = useCallback(
     (date: Date) => {
@@ -74,46 +91,99 @@ const RangePickerComp = ({
     [disableCurrent, currentDate, disableFuture, disablePast, dateDisabled]
   );
 
-  const handleSelect = useCallback(
-    (dateRange: Date[], idx?: number) => {
+  const handleValidation = useCallback(
+    (dateRange: Date[]) => {
       let valid = true;
       for (let i = 0; i < dateRange.length; i++) {
+        if (!isValidDate(dateRange[i])) {
+          valid = false;
+          break;
+        }
         if (checkDateDisabled(dateRange[i])) {
           valid = false;
           break;
         }
       }
-      // TODO: check if dateRange[0] is after dateRange[1]
       if (dateRange[0] && dateRange[1]) {
         if (dateRange[0] > dateRange[1]) {
           valid = false;
         }
       }
-      console.log("calendarRef.current:", calendarRef.current);
-      setError(!valid);
+      const nextError = !valid;
+      setError(nextError);
+      return valid;
+    },
+    [setError, checkDateDisabled, error]
+  );
+
+  // handle validation on mount
+  useEffect(() => {
+    if (value && Array.isArray(value) && value.length > 0) {
+      handleValidation(value);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (error === null) return;
+    if (setStatus) setStatus(error ? Status.error : undefined);
+    if (onValidation) onValidation(!error);
+  }, [error, onValidation, setStatus]);
+
+  // const updateCalendarView = useCallback((dateRange: Date[], idx: number) => {
+  //   if (isNaN(idx)) return;
+
+  //   if (updateCalendarViewTimer.current) {
+  //     clearTimeout(updateCalendarViewTimer.current);
+  //     updateCalendarViewTimer.current = null;
+  //   }
+
+  //   updateCalendarViewTimer.current = setTimeout(() => {
+  //     const valid = isValidDate(dateRange[idx]);
+  //     if (valid && calendarRef.current) {
+  //       const currentViewing = calendarRef.current.getViewing();
+  //       const monthDiff = numberOfMonthsBetween(dateRange[idx], currentViewing);
+
+  //       const monthDiffRange = numberOfMonthsBetween(
+  //         dateRange[0],
+  //         dateRange[1],
+  //         true
+  //       );
+
+  //       if (monthDiff >= numberOfMonths || monthDiff < 0) {
+  //         const prevMonth = subtractMonths(dateRange[idx], idx);
+  //         calendarRef.current.setViewing(prevMonth);
+  //         return;
+  //       }
+
+  //       if (monthDiffRange < numberOfMonths && monthDiffRange > 0) {
+  //         const smallest = [...dateRange]?.sort(sorteDates)?.[0];
+  //         calendarRef.current.setViewing(smallest);
+  //         return;
+  //       }
+  //     }
+  //   }, 50);
+  // }, []);
+
+  const handleSelect = useCallback(
+    (dateRange: Date[]) => {
       setValue(dateRange);
       if (onChange) onChange(dateRange);
-      setTimeout(() => {
-        if (!isNaN(idx)) {
-          const valid = isValidDate(dateRange[idx]);
-          if (valid && calendarRef.current) {
-            if (idx === 1) {
-              const prevMonth = subtractMonths(dateRange[idx], 1);
-              calendarRef.current.setViewing(prevMonth);
-            } else {
-              calendarRef.current.setViewing(dateRange[idx]);
-            }
-          }
-        }
-      }, 50);
     },
-    [setValue, onChange, checkDateDisabled, setError]
+    [setValue, onChange]
   );
 
   const handleOpenPopover = useCallback(() => {
     if (disabled) return;
     setOpen(true);
   }, [disabled, setOpen]);
+
+  const displayCalendar = useMemo(() => {
+    return hideCalendar ? false : open || calendarOpen;
+  }, [hideCalendar, open, calendarOpen]);
+
+  useEffect(() => {
+    handleValidation(value);
+  }, [value]);
 
   return (
     <div>
@@ -129,7 +199,7 @@ const RangePickerComp = ({
               onChange={handleSelect}
               placeholder={placeholder}
               endAdornment={endAdornment}
-              status={status ? status : error ? "error" : ""}
+              status={status}
               disabled={disabled}
               disableTextInput={disableTextInput}
             />
@@ -138,8 +208,7 @@ const RangePickerComp = ({
         <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       </>
       <Popover
-        key={`date-picker--${key}`}
-        open={hideCalendar ? false : open || calendarOpen}
+        open={displayCalendar ? true : false}
         anchorEl={anchorRef?.current}
         placement="bottom-end"
         onClose={() => {
@@ -147,10 +216,9 @@ const RangePickerComp = ({
           if (anchorRef?.current?.contains(document.activeElement)) return;
           if (document.activeElement === anchorRef?.current) return;
           setOpen(false);
-          setKey((prev) => prev + 1);
         }}
       >
-        <MultiDatePicker
+        <RangePickerCalendar
           ref={calendarRef}
           onSelect={handleSelect}
           value={value}

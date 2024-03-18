@@ -1,23 +1,14 @@
-import { Box } from "@mui/material";
 import { useCallback, useContext, useEffect, useRef } from "react";
-import { CalendarWrapper, DatePickerContext } from "../Common";
-import Calendar, {
-  MonthTitle,
-  MonthView,
-  NextMonthBtn,
-  PrevMonthBtn,
-  Spacer,
-} from "../Common/CalendarPicker";
-import { getMonthFromCalendar, isValidDate } from "../Common/utils";
-
-const formatValue = (value: any) => {
-  if (value && isValidDate(value)) {
-    const date = new Date(value);
-    date.setHours(0, 0, 0, 0);
-    return date;
-  }
-  return null;
-};
+import { CalendarWrapper, Day } from "../Common";
+import CalendarContextProvider, {
+  CalendarContext,
+} from "../Common/CalendarContextProvider";
+import { Month } from "../Common/Month";
+import {
+  convertDateToGMT,
+  getMonthFromCalendar,
+  isValidDate,
+} from "../Common/utils";
 
 const SingleDatePickerWrapper = ({
   value,
@@ -30,7 +21,7 @@ const SingleDatePickerWrapper = ({
   numberOfMonths,
 }: any) => {
   return (
-    <Calendar
+    <CalendarContextProvider
       disableFuture={disableFuture}
       disableCurrent={disableCurrent}
       disablePast={disablePast}
@@ -38,14 +29,14 @@ const SingleDatePickerWrapper = ({
       currentDate={currentDate}
       numberOfMonths={numberOfMonths}
     >
-      <SingleDatePicker value={formatValue(value)} onSelect={onSelect} />
-    </Calendar>
+      <SingleDatePicker value={convertDateToGMT(value)} onSelect={onSelect} />
+    </CalendarContextProvider>
   );
 };
 
 const SingleDatePicker = ({ value, onSelect }: any) => {
   const { months, select, selected, isSelected, currentDate, setViewing } =
-    useContext(DatePickerContext);
+    useContext(CalendarContext);
 
   const prevValue = useRef<Date | null>(null);
 
@@ -77,33 +68,35 @@ const SingleDatePicker = ({ value, onSelect }: any) => {
   }, [value, selected]);
 
   return (
-    <CalendarWrapper
-      data-testid="single-date-picker-modal"
-      className="single-date-picker-modal"
-    >
-      {months?.map((month, index) => {
-        const monthNumber = getMonthFromCalendar(month);
+    <CalendarWrapper>
+      {months?.map((weeks, index) => {
+        const monthNumber = getMonthFromCalendar(weeks);
         return (
-          <MonthView
+          <Month
             key={`month--${monthNumber}`}
-            weeks={month}
-            month={monthNumber}
+            weeks={weeks}
+            monthNumber={monthNumber}
             onSelect={handleSelect}
           >
-            <Box
-              sx={{
-                height: "20px",
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              {index === 0 ? <PrevMonthBtn /> : <Spacer />}
-              <MonthTitle weeks={month} />
-              {index === months.length - 1 ? <NextMonthBtn /> : <Spacer />}
-            </Box>
-          </MonthView>
+            <Month.Header
+              displayPrevMonthBtn={index === 0}
+              displayNextMonthBtn={index === months.length - 1}
+            />
+            <Month.WeeklyHeader />
+            {weeks?.map((week: Date[], weekIdx: number) => {
+              return (
+                <Month.Week key={`${monthNumber}--${weekIdx}`}>
+                  {week?.map((day: Date) => (
+                    <Day
+                      key={`${monthNumber}--${day.toISOString()}`}
+                      day={day}
+                      onSelect={handleSelect}
+                    />
+                  ))}
+                </Month.Week>
+              );
+            })}
+          </Month>
         );
       })}
     </CalendarWrapper>

@@ -1,9 +1,17 @@
-export type { BaseDatePickerProps } from "./BaseDatePicker.types";
-export { default as CalendarPicker } from "./CalendarPicker";
-export { default as CalendarWrapper } from "./CalendarWrapper";
+export type {
+  BaseCalendarProps,
+  BaseDatePickerProps,
+} from "./BaseDatePicker.types";
 export {
-  DatePickerContext,
+  CalendarContext,
   default as DatePickerContextProvider,
-} from "./DatePickerContextProvider";
-export type { DatePickerContextType } from "./DatePickerContextProvider";
+} from "./CalendarContextProvider";
+export type { CalendarContextType } from "./CalendarContextProvider";
+export { default as CalendarWrapper } from "./CalendarWrapper";
 export { default as Day } from "./Day";
+
+export const testIds = {
+  calendar: "calendar",
+  day: "day",
+  month: "month",
+};

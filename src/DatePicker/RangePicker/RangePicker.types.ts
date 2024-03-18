@@ -14,4 +14,5 @@ export interface RangePickerProps extends BaseDatePickerProps {
    * @default 2
    */
   numberOfMonths?: number;
+  onValidation?: (isValid: boolean) => void;
 }

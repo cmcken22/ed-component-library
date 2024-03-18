@@ -58,3 +58,14 @@ export interface BaseDatePickerProps extends StandardInputProps {
    */
   disableTextInput?: boolean;
 }
+
+export interface BaseCalendarProps {
+  children: React.ReactNode;
+  disableFuture?: boolean;
+  disableCurrent?: boolean;
+  disablePast?: boolean;
+  dateDisabled?: (date: Date) => boolean;
+  currentDate?: Date;
+  numberOfMonths?: number;
+  range?: boolean;
+}

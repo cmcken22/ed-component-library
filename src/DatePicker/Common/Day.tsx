@@ -2,7 +2,8 @@ import { Box, styled } from "@mui/material";
 import { useCallback, useContext, useMemo } from "react";
 import { hexToRGBA, shouldNotForwardProp } from "src/utils";
 import { Typography } from "../..";
-import { DatePickerContext } from "./DatePickerContextProvider";
+import { CalendarContext } from "./CalendarContextProvider";
+import { MonthContext } from "./Month";
 import { isValidDate } from "./utils";
 
 const StyledBox = styled(Box, {
@@ -74,18 +75,9 @@ const StyledBox = styled(Box, {
   };
 });
 
-const Day = ({
-  day,
-  month,
-  onSelect,
-}: {
-  day: Date;
-  month: number;
-  onSelect: any;
-}) => {
+const Day = ({ day, onSelect }: { day: Date; onSelect: any }) => {
   const {
     selected,
-    // onSelect,
     inRange,
     currentDate,
     disableFuture,
@@ -96,7 +88,8 @@ const Day = ({
     range,
     hoveredDate,
     setHoveredDate,
-  } = useContext(DatePickerContext);
+  } = useContext(CalendarContext);
+  const { month } = useContext(MonthContext);
 
   const validSelectedDates = useMemo(() => {
     const values = [...(selected || [])];
@@ -105,8 +98,8 @@ const Day = ({
 
   const dateSelected = useMemo(() => isSelected(day), [day, isSelected]);
   const dateInRange = useMemo(() => {
-    return dateSelected ? false : inRange(day);
-  }, [day, inRange, dateSelected]);
+    return inRange(day);
+  }, [day, inRange]);
   const outOfMonth = useMemo(() => day.getMonth() !== month, [day, month]);
   const isToday = useMemo(() => {
     return currentDate && currentDate?.toDateString() === day?.toDateString();
@@ -188,11 +181,10 @@ const Day = ({
 
   return (
     <StyledBox
-      key={`${month}--${day.toISOString()}`}
       onClick={() => handleSelect(day)}
       className="day"
       selected={dateSelected}
-      inRange={dateInRange}
+      inRange={dateInRange && !dateSelected}
       inPotentialRange={dateInPotentialRange}
       disabled={outOfMonth || disabled}
       hidden={outOfMonth}
@@ -201,7 +193,10 @@ const Day = ({
       onMouseEnter={() => handleMouseEnter(day)}
       onMouseLeave={handleMouseLeave}
       data-test-outofmonth={outOfMonth}
-      data-test-dateselected={dateSelected}
+      data-test-selected={dateSelected}
+      data-test-inrange={dateInRange}
+      data-test-today={isToday}
+      data-test-date={day.getDate()}
     >
       {isToday && !dateSelected && (
         <Box
@@ -218,7 +213,7 @@ const Day = ({
         />
       )}
       <Typography variant="bodyXS" preventTextSelection>
-        {new Date(day).getDate()}
+        {day.getDate()}
       </Typography>
     </StyledBox>
   );

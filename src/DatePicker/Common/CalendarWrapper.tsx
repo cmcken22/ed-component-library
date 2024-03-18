@@ -1,9 +1,13 @@
 import { Box, styled } from "@mui/material";
+import { testIds } from ".";
 
-const CalendarWrapper = styled(Box, {
+export const dataTestId = "calendar";
+
+const StyledCalendarWrapper = styled(Box, {
   slot: "root",
 })<any>(({ theme }) => {
   return {
+    backgroundColor: theme.palette.common.white,
     border: "1px solid",
     padding: theme.spacing(2),
     bgcolor: "background.paper",
@@ -14,5 +18,13 @@ const CalendarWrapper = styled(Box, {
     gap: theme.spacing(2),
   };
 });
+
+const CalendarWrapper = ({ children }: any) => {
+  return (
+    <StyledCalendarWrapper className="calendar" data-testid={testIds.calendar}>
+      {children}
+    </StyledCalendarWrapper>
+  );
+};
 
 export default CalendarWrapper;

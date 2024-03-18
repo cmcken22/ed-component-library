@@ -86,3 +86,29 @@ export const getFirstDay = (weeks: any) => {
     }
   }
 };
+
+export const convertDateToGMT = (value: any) => {
+  if (value && isValidDate(value)) {
+    const date = new Date(value);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }
+  return null;
+};
+
+export const numberOfMonthsBetween = (d2: Date, d1: Date, abs = false) => {
+  if (!isValidDate(d1) || !isValidDate(d2)) return NaN;
+  let months;
+  months = (d2.getFullYear() - d1.getFullYear()) * 12;
+  months -= d1.getMonth();
+  months += d2.getMonth();
+  if (abs) return Math.abs(months);
+  return months;
+};
+
+export const formatDateRange = (values: Date[]) => {
+  if (!values) return null;
+  if (!Array.isArray(values)) return null;
+  if (Array.isArray(values) && values.length === 0) return null;
+  return values?.map((date) => convertDateToGMT(date));
+};

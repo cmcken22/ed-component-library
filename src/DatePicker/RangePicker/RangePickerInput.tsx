@@ -22,6 +22,7 @@ const StyledWrapper = styled(Box, {
   if (disabled) borderColor = theme.palette.charcoal["20"];
 
   return {
+    backgroundColor: theme.palette.common.white,
     border: "1px solid",
     borderRadius: "4px",
     display: "flex",
@@ -50,7 +51,6 @@ const findIndicesOfSpecialCharacters = (str) => {
 
   let match;
   while ((match = specialCharRegex.exec(formattedStr)) !== null) {
-    console.log("match:", match);
     indices.push(match.index);
   }
 
@@ -162,8 +162,11 @@ const DateRangeInput = ({
             },
           }}
           disabled={disabled || disableTextInput}
-          onChange={(date: any) => {
-            handleChange(date.toDate(), index);
+          onChange={(date: any, ...x) => {
+            console.clear();
+            console.log("date:", date);
+            console.log("x:", x);
+            handleChange(date ? date.toDate() : null, index);
           }}
         />
       );

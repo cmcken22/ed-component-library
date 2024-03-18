@@ -1,6 +1,7 @@
 import { InputAdornment } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useMemo, useState } from "react";
+import { Status } from "src/CommonTypes";
 import { BaseInputContext, BaseInputProps } from ".";
 import Icon, { IconVariant } from "../Icon";
 import HelperText from "./HelperText";
@@ -18,6 +19,7 @@ const BaseInput = ({
   children,
 }: BaseInputProps) => {
   const [labelPosition, setLabelPosition] = useState<"top" | "left">("top");
+  const [innerStatus, setInnerStatus] = useState<Status>();
 
   const handleSetLabelPosition = useCallback(
     (pos: "top" | "left") => {
@@ -28,9 +30,9 @@ const BaseInput = ({
 
   const statusIcon = useMemo(() => {
     if (!status) return null;
-    if (status === "error") return IconVariant.Close1;
-    if (status === "warning") return IconVariant.Warning;
-    if (status === "success") return IconVariant.Success;
+    if (status === Status.error) return IconVariant.Close1;
+    if (status === Status.warning) return IconVariant.Warning;
+    if (status === Status.success) return IconVariant.Success;
   }, [status]);
 
   const renderStatusIcon = useCallback(() => {
@@ -45,7 +47,8 @@ const BaseInput = ({
   return (
     <BaseInputContext.Provider
       value={{
-        status,
+        status: status || innerStatus,
+        setStatus: setInnerStatus,
         setLabelPosition: handleSetLabelPosition,
         labelPosition,
         disabled,
@@ -57,7 +60,7 @@ const BaseInput = ({
         className={cx({
           [className]: className,
         })}
-        status={status}
+        status={status || innerStatus}
         disabled={disabled}
         labelPosition={labelPosition}
         fullWidth={fullWidth}

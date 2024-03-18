@@ -3,7 +3,7 @@ import { sourceCodeFormatter } from "src/utils";
 import DatePicker from "./DatePicker";
 
 const meta = {
-  title: "Example/DatePicker",
+  title: "Example/Date Picker/DatePicker",
   component: DatePicker,
   parameters: {
     layout: "centered",
@@ -16,10 +16,33 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     onChange: {
-      action: "changed",
+      action: "onChange",
+    },
+    onValidation: {
+      action: "onValidation",
     },
     value: {
       control: { type: "date" },
+    },
+    calendarPlacement: {
+      options: [
+        "auto-end",
+        "auto-start",
+        "auto",
+        "bottom-end",
+        "bottom-start",
+        "bottom",
+        "left-end",
+        "left-start",
+        "left",
+        "right-end",
+        "right-start",
+        "right",
+        "top-end",
+        "top-start",
+        "top",
+      ],
+      control: { type: "select" },
     },
     status: {
       options: ["error", "success", "warning"],
@@ -54,10 +77,13 @@ export const Sample: Story = {
   },
   args: {
     ...DatePicker.defaultProps,
-    // currentDate: new Date("2024-03-17T04:00:00.000Z"),
-    value: new Date("2024-03-15T07:00:00.000Z"),
     id: "date-picker",
     label: "Date Picker",
     helperText: "Helper Text",
+    placeholder: "Please enter date",
+    popoverProps: {
+      arrow: false,
+      offset: [0, 8],
+    },
   },
 };

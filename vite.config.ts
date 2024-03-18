@@ -3,10 +3,12 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import { libInjectCss } from "vite-plugin-lib-inject-css";
+import removeConsole from "vite-plugin-remove-console";
 
 export default defineConfig({
   plugins: [
     react(),
+    removeConsole(),
     libInjectCss(),
     dts({
       include: ["src"],

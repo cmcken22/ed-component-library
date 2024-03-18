@@ -153,6 +153,7 @@ describe("RangePickerCalendar", () => {
     fireEvent.click(march5);
     expect(props.onSelect).toHaveBeenCalledWith([
       new Date("2024-03-05T05:00:00.000Z"),
+      null,
     ]);
 
     fireEvent.click(march30);
@@ -179,11 +180,12 @@ describe("RangePickerCalendar", () => {
 
     fireEvent.click(march15);
     expect(props.onSelect).toHaveBeenCalledWith([
+      null,
       new Date("2024-03-17T04:00:00.000Z"),
     ]);
 
     fireEvent.click(march17);
-    expect(props.onSelect).toHaveBeenCalledWith([]);
+    expect(props.onSelect).toHaveBeenCalledWith([null, null]);
   });
 
   it("should ignore bad values", () => {

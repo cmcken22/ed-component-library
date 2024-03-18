@@ -18,7 +18,8 @@ import {
 } from "./RangePickerCalendar.types";
 
 const findDiffIndex = (prev: Date[], next: Date[]) => {
-  const len = Math.max(prev.length, next.length);
+  const len = Math.max(prev?.length, next?.length);
+  if (isNaN(len)) return -1;
   for (let i = 0; i < len; i++) {
     if (!isEqual(prev?.[i], next?.[i])) return i;
   }
@@ -146,7 +147,7 @@ const RangePickerCalendarComp = ({
         const updatedDate = diffIndex === 0 ? d1 : d2;
         const diff = diffIndex === 0 ? monthDiff1 : monthDiff2;
 
-        if (diff < 0) {
+        if (diff <= 0) {
           setViewing(updatedDate);
           return;
         }
@@ -159,7 +160,7 @@ const RangePickerCalendarComp = ({
         return;
       }
       if (d1 && !d2 && diffIndex === 0) {
-        setDateInCalendarView(d2, viewing);
+        setDateInCalendarView(d1, viewing);
         return;
       }
     },
@@ -172,47 +173,48 @@ const RangePickerCalendarComp = ({
 
   const handleSelect = useCallback(
     (date: Date) => {
-      console.clear();
-      console.log("handleSelect:", date);
-      // TODO: prevent unselecting the min date if the max date is selected
-      let nextSelected = [...selected]?.filter(nullFilter).sort(sorteDates);
-      console.clear();
-      console.log("nextSelected:", nextSelected);
-      console.log("date:", date);
-      // return;
-      // setViewing(date);
+      const filteredValues = [...selected].filter(nullFilter);
+      const nextSelected = [...selected];
 
-      if (checkDateInArray(date, nextSelected)) {
-        nextSelected = nextSelected.filter(
-          (d) => d?.getTime() !== date?.getTime()
+      if (checkDateInArray(date, filteredValues)) {
+        const idx = nextSelected.findIndex(
+          (d) => d?.getTime() === date?.getTime()
         );
+
+        nextSelected[idx] = null;
+        if (nextSelected?.length < 2) {
+          // Add null to the correct position
+          for (let i = 0; i < 2; i++) {
+            if (!nextSelected[i]) {
+              nextSelected[i] = null;
+            }
+          }
+        }
         select(nextSelected, true);
         if (onSelect) onSelect(nextSelected);
         return;
       }
 
-      if (nextSelected?.length < 2) {
-        nextSelected.push(date);
-        nextSelected.sort(sorteDates);
+      const len = filteredValues?.length;
+
+      if (len < 2) {
+        const nullIdx = nextSelected.findIndex((d) => d === null);
+        nextSelected[nullIdx] = date;
+        if (nextSelected?.length < 2) {
+          // Add null to the correct position
+          for (let i = 0; i < 2; i++) {
+            if (!nextSelected[i]) {
+              nextSelected[i] = null;
+            }
+          }
+        }
         select(nextSelected, true);
         if (onSelect) onSelect(nextSelected);
         return;
       }
-      const smallest = nextSelected?.[0];
-      const largest = nextSelected?.[1];
-      console.log("smallest:", smallest);
-      console.log("largest:", largest);
 
-      // if (date === smallest) {
-      //   select([largest], true);
-      //   if (onSelect) onSelect([largest]);
-      //   return;
-      // }
-      // if (date === largest) {
-      //   select([smallest], true);
-      //   if (onSelect) onSelect([smallest]);
-      //   return;
-      // }
+      const smallest = filteredValues?.[0];
+      const largest = filteredValues?.[1];
 
       if (date < smallest) {
         select([date, largest], true);
@@ -227,10 +229,6 @@ const RangePickerCalendarComp = ({
   );
 
   useEffect(() => {
-    // const currSelected = selected;
-    // if (isEqual(currSelected, value)) return;
-    // if (isEqual(prevValue.current, value)) return;
-    // prevValue.current = value;
     select(value, true);
   }, [value]);
 

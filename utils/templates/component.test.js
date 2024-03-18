@@ -1,28 +1,23 @@
-module.exports = (componentName) => ({
+export default (componentName) => ({
   content: `
-import React from "react";
-import { render } from "@testing-library/react";
-
+import { render } from "test-utils/index";
 import ${componentName} from "./${componentName}";
 import { ${componentName}Props } from "./${componentName}.types";
 
-describe("Test Component", () => {
+describe("${componentName}", () => {
   let props: ${componentName}Props;
 
   beforeEach(() => {
     props = {
-      foo: "bar"
+      id: "123"
     };
   });
 
   const renderComponent = () => render(<${componentName} {...props} />);
 
   it("should render foo text correctly", () => {
-    props.foo = "conner was here";
     const { getByTestId } = renderComponent();
-
     const component = getByTestId("${componentName}");
-
     expect(component).toHaveTextContent("conner was here");
   });
 });

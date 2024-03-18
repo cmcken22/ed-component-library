@@ -1,5 +1,5 @@
 export const checkDateInArray = (date: Date, dates: Date[]) => {
-  return dates.some((d) => d.getTime() === date.getTime());
+  return dates.some((d) => d?.getTime() === date?.getTime());
 };
 
 export const nullFilter = (date: Date | null) =>

@@ -1,16 +1,20 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
-import { CalendarWrapper, Day } from "../Common";
+import { CalendarWrapper, Day } from "../../Common";
 import CalendarContextProvider, {
   CalendarContext,
-} from "../Common/CalendarContextProvider";
-import { Month } from "../Common/Month";
+} from "../../Common/CalendarContextProvider";
+import { Month } from "../../Common/Month";
 import {
   convertDateToGMT,
   getMonthFromCalendar,
   isValidDate,
-} from "../Common/utils";
+} from "../../Common/utils";
+import {
+  DatePickerCalendarCompProps,
+  DatePickerCalendarProps,
+} from "./DatePickerCalendar.types";
 
-const SingleDatePickerWrapper = ({
+const DatePickerCalendarWrapper = ({
   value,
   onSelect,
   disableFuture,
@@ -19,7 +23,7 @@ const SingleDatePickerWrapper = ({
   dateDisabled,
   currentDate,
   numberOfMonths,
-}: any) => {
+}: DatePickerCalendarProps) => {
   return (
     <CalendarContextProvider
       disableFuture={disableFuture}
@@ -29,12 +33,15 @@ const SingleDatePickerWrapper = ({
       currentDate={currentDate}
       numberOfMonths={numberOfMonths}
     >
-      <SingleDatePicker value={convertDateToGMT(value)} onSelect={onSelect} />
+      <DatePickerCalendar value={convertDateToGMT(value)} onSelect={onSelect} />
     </CalendarContextProvider>
   );
 };
 
-const SingleDatePicker = ({ value, onSelect }: any) => {
+const DatePickerCalendar = ({
+  value,
+  onSelect,
+}: DatePickerCalendarCompProps) => {
   const { months, select, selected, isSelected, currentDate, setViewing } =
     useContext(CalendarContext);
 
@@ -45,6 +52,10 @@ const SingleDatePicker = ({ value, onSelect }: any) => {
     if (value && isValidDate(value)) setViewing(value);
     else setViewing(currentDate);
   }, []);
+
+  useEffect(() => {
+    if (value && isValidDate(value)) setViewing(value);
+  }, [value]);
 
   const handleSelect = useCallback(
     (date: Date) => {
@@ -58,6 +69,9 @@ const SingleDatePicker = ({ value, onSelect }: any) => {
     },
     [isSelected, onSelect, select]
   );
+
+  // TODO: update current view on date change
+  // check if the date fits in the view
 
   useEffect(() => {
     const currSelected = selected?.[0];
@@ -103,15 +117,16 @@ const SingleDatePicker = ({ value, onSelect }: any) => {
   );
 };
 
-SingleDatePickerWrapper.defaultProps = {
+DatePickerCalendarWrapper.defaultProps = {
   value: null,
   onSelect: () => {},
+  onChange: () => {},
   disableFuture: false,
   disableCurrent: false,
   disablePast: false,
   dateDisabled: () => false,
   currentDate: new Date(),
   numberOfMonths: 1,
-};
+} as Partial<DatePickerCalendarProps>;
 
-export default SingleDatePickerWrapper;
+export default DatePickerCalendarWrapper;

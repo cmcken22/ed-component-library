@@ -4,7 +4,7 @@ export interface DatePickerProps extends BaseDatePickerProps {
   value?: Date | null;
   onChange?: (value: Date) => void;
   /**
-   * @default "MM-DD-YYYY"
+   * @default MMM DD, YYYY
    */
   placeholder?: string;
   /**
@@ -12,4 +12,5 @@ export interface DatePickerProps extends BaseDatePickerProps {
    * @default 1
    */
   numberOfMonths?: number;
+  onValidation?: (isValid: boolean) => void;
 }

@@ -5,7 +5,7 @@ export interface RangePickerProps extends BaseDatePickerProps {
   onChange?: (range: Date[]) => void;
   /**
    * Since there are two inputs, the placeholder can be an array of strings
-   * @default "MM-DD-YYYY"
+   * @default MMM DD, YYYY
    * @example ["Start date", "End date"]
    */
   placeholder?: string | string[];

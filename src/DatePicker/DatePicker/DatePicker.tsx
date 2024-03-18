@@ -4,31 +4,30 @@ import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import isEqual from "lodash.isequal";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import BaseInput, { BaseInputContext } from "src/BaseInput";
+import { Status } from "src/CommonTypes";
 import Icon, { IconVariant } from "src/Icon";
-import Popover from "../Popover";
+import Popover from "src/Popover";
+import { convertDateToGMT, isValidDate } from "../Common/utils";
 import { DatePickerProps } from "./DatePicker.types";
-import SingleDatePicker from "./SingleDatePicker";
+import DatePickerCalendar from "./DatePickerCalendar";
 dayjs.extend(customParseFormat);
 
-const convertDateString = (text) => {
-  if (!text) return null;
-  if (text instanceof Date) return text;
-  return new Date(text);
-};
-
-function isValidDate(d: any) {
-  // @ts-ignore
-  return d instanceof Date && !isNaN(d);
-}
-
 const DatePicker = (props: DatePickerProps) => {
-  const { id, status, fullWidth, ...rest } = props;
+  const { id, status, fullWidth, value, ...rest } = props;
 
   return (
     <BaseInput id={id} status={status} fullWidth={fullWidth}>
-      <DatePickerComp {...rest} />
+      <DatePickerComp {...rest} value={convertDateToGMT(value)} />
     </BaseInput>
   );
 };
@@ -52,34 +51,23 @@ const DatePickerComp = ({
   calendarOpen,
   hideCalendar,
   disableTextInput,
+  onValidation,
+  calendarPlacement,
+  popoverProps,
 }: DatePickerProps) => {
-  const { endAdornment } = useContext(BaseInputContext);
+  const { endAdornment, setStatus } = useContext(BaseInputContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [value, setValue] = useState<Date | null>(
-    convertDateString(passedValue)
-  );
   const [open, setOpen] = useState(false);
-  const [key, setKey] = useState(0);
-  // const popoverRef = useRef(null);
-
-  useEffect(() => {
-    setValue(convertDateString(passedValue));
-  }, [passedValue]);
-
-  const startAdornment = useCallback(() => {
-    return (
-      <InputAdornment position="start" sx={{ ml: "8px" }}>
-        <Icon icon={IconVariant.Calendar} height="20px" width="20px" />
-      </InputAdornment>
-    );
-  }, []);
+  const [error, setError] = useState(null);
+  const [value, setValue] = useState<Date | null>(passedValue);
+  const prevValue = useRef<Date | null>(value);
 
   const checkDateDisabled = useCallback(
     (date: Date) => {
       const formattedCurrentDate = new Date(currentDate);
       formattedCurrentDate.setHours(0, 0, 0, 0);
 
-      if (disableCurrent && date === formattedCurrentDate) {
+      if (disableCurrent && isEqual(date, formattedCurrentDate)) {
         return true;
       }
       if (disableFuture && date > formattedCurrentDate) {
@@ -96,10 +84,45 @@ const DatePickerComp = ({
     [disableCurrent, currentDate, disableFuture, disablePast, dateDisabled]
   );
 
+  const handleValidation = useCallback(
+    (date: Date) => {
+      let valid = true;
+      if (!isValidDate(date)) {
+        valid = false;
+      }
+      if (checkDateDisabled(date)) {
+        valid = false;
+      }
+      const nextError = !valid;
+      setError(nextError);
+      return valid;
+    },
+    [setError, checkDateDisabled]
+  );
+
+  // handle validation on mount
+  useEffect(() => {
+    if (value) {
+      handleValidation(value);
+    }
+  }, []);
+
+  const startAdornment = useCallback(() => {
+    return (
+      <InputAdornment position="start" sx={{ ml: "8px" }}>
+        <Icon icon={IconVariant.Calendar} height="20px" width="20px" />
+      </InputAdornment>
+    );
+  }, []);
+
+  useEffect(() => {
+    if (error === null) return;
+    if (setStatus) setStatus(error ? Status.error : undefined);
+    if (onValidation) onValidation(!error);
+  }, [error, onValidation, setStatus]);
+
   const handleSelect = useCallback(
     (date: Date) => {
-      const dateDisabled = checkDateDisabled(date);
-      if (dateDisabled) return;
       setValue(date);
       if (onChange) onChange(date);
     },
@@ -110,23 +133,28 @@ const DatePickerComp = ({
     return hideCalendar ? false : open || calendarOpen;
   }, [hideCalendar, open, calendarOpen]);
 
+  useEffect(() => {
+    if (isEqual(prevValue.current, value)) return;
+    prevValue.current = value;
+    handleValidation(value);
+  }, [value]);
+
   return (
     <>
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
       <Box
-        data-testid="date-picker-box"
+        data-testid="calendar-input"
         onClick={() => setOpen(true)}
         ref={(r: any) => setAnchorEl(r)}
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <MuiDatePicker
-            key={`MuiDatePicker--${disableTextInput}--${key}`}
+            key={`MuiDatePicker--${disableTextInput}`}
             format={format}
-            // data-testid="date-picker"
             disableOpenPicker
-            value={dayjs(value)}
+            value={value ? dayjs(value) : null}
             disabled={disabled}
             sx={{
               ".MuiInputBase-root": {
@@ -138,8 +166,6 @@ const DatePickerComp = ({
             }}
             slotProps={{
               textField: {
-                // @ts-ignore
-                "data-testid": "date-picker",
                 onFocus: disableTextInput ? (e) => e?.target?.blur() : null,
                 InputProps: {
                   placeholder,
@@ -150,26 +176,25 @@ const DatePickerComp = ({
             }}
             onChange={(date: any) => {
               if (disableTextInput) return;
-              handleSelect(date.toDate());
+              handleSelect(date ? date.toDate() : null);
             }}
           />
         </LocalizationProvider>
       </Box>
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       <Popover
-        key={`date-picker--${key}`}
-        open={displayCalendar ? true : false}
+        open={displayCalendar}
         anchorEl={anchorEl}
-        placement="bottom-end"
+        placement={calendarPlacement}
         onClose={() => {
           if (calendarOpen) return;
           if (anchorEl?.contains(document.activeElement)) return;
           if (document.activeElement === anchorEl) return;
           setOpen(false);
-          setKey((prev) => prev + 1);
         }}
+        {...popoverProps}
       >
-        <SingleDatePicker
+        <DatePickerCalendar
           onSelect={handleSelect}
           value={isValidDate(value) ? value : null}
           disableFuture={disableFuture}
@@ -185,9 +210,13 @@ const DatePickerComp = ({
 };
 
 DatePicker.defaultProps = {
-  format: "MM-DD-YYYY",
-  placeholder: "MM-DD-YYYY",
+  format: "MMM DD, YYYY",
+  placeholder: "MMM DD, YYYY",
   numberOfMonths: 1,
+  disableFuture: false,
+  disableCurrent: false,
+  disablePast: false,
+  calendarPlacement: "bottom-end",
 } as Partial<DatePickerProps>;
 
 export default DatePicker;

@@ -19,6 +19,10 @@ export const sourceCodeFormatter =
       if (typeof value === "function") {
         args += `  ${key}={() => {}}\n`;
       } else if (typeof value === "object") {
+        if (value instanceof Date) {
+          args += `  ${key}={new Date("${value.toISOString()}")}\n`;
+          continue;
+        }
         const formattedValue = JSON.stringify(value, null, 2).replace(
           /\n/g,
           "\n  "

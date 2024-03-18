@@ -3,6 +3,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import isEqual from "lodash.isequal";
 import {
   useCallback,
   useContext,
@@ -13,8 +14,8 @@ import {
 } from "react";
 import BaseInput, { BaseInputContext } from "src/BaseInput";
 import { Status } from "src/CommonTypes";
+import Popover from "src/Popover";
 import { formatDateRange, isValidDate } from "../Common/utils";
-import Popover from "../Popover";
 import { RangePickerProps } from "./RangePicker.types";
 import RangePickerCalendar from "./RangePickerCalendar/RangePickerCalendar";
 import RangePickerInput from "./RangePickerInput";
@@ -57,24 +58,24 @@ const RangePickerComp = ({
   hideCalendar,
   disableTextInput,
   onValidation,
+  calendarPlacement,
+  popoverProps,
 }: RangePickerProps) => {
   const { endAdornment, status, setStatus } = useContext(BaseInputContext);
   const anchorRef = useRef<HTMLElement>(null);
   const calendarRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState(null);
   const [value, setValue] = useState<Date[] | null>(
     (passedValue ? passedValue : []) as Date[]
   );
-
-  const [open, setOpen] = useState(false);
-  const [error, setError] = useState(null);
-  // const updateCalendarViewTimer = useRef<NodeJS.Timeout | null>(null);
 
   const checkDateDisabled = useCallback(
     (date: Date) => {
       const formattedCurrentDate = new Date(currentDate);
       formattedCurrentDate.setHours(0, 0, 0, 0);
 
-      if (disableCurrent && date === formattedCurrentDate) {
+      if (disableCurrent && isEqual(date, formattedCurrentDate)) {
         return true;
       }
       if (disableFuture && date > formattedCurrentDate) {
@@ -129,41 +130,6 @@ const RangePickerComp = ({
     if (onValidation) onValidation(!error);
   }, [error, onValidation, setStatus]);
 
-  // const updateCalendarView = useCallback((dateRange: Date[], idx: number) => {
-  //   if (isNaN(idx)) return;
-
-  //   if (updateCalendarViewTimer.current) {
-  //     clearTimeout(updateCalendarViewTimer.current);
-  //     updateCalendarViewTimer.current = null;
-  //   }
-
-  //   updateCalendarViewTimer.current = setTimeout(() => {
-  //     const valid = isValidDate(dateRange[idx]);
-  //     if (valid && calendarRef.current) {
-  //       const currentViewing = calendarRef.current.getViewing();
-  //       const monthDiff = numberOfMonthsBetween(dateRange[idx], currentViewing);
-
-  //       const monthDiffRange = numberOfMonthsBetween(
-  //         dateRange[0],
-  //         dateRange[1],
-  //         true
-  //       );
-
-  //       if (monthDiff >= numberOfMonths || monthDiff < 0) {
-  //         const prevMonth = subtractMonths(dateRange[idx], idx);
-  //         calendarRef.current.setViewing(prevMonth);
-  //         return;
-  //       }
-
-  //       if (monthDiffRange < numberOfMonths && monthDiffRange > 0) {
-  //         const smallest = [...dateRange]?.sort(sorteDates)?.[0];
-  //         calendarRef.current.setViewing(smallest);
-  //         return;
-  //       }
-  //     }
-  //   }, 50);
-  // }, []);
-
   const handleSelect = useCallback(
     (dateRange: Date[]) => {
       setValue(dateRange);
@@ -191,7 +157,11 @@ const RangePickerComp = ({
         <BaseInput.Label required={required} position={labelPosition}>
           {label}
         </BaseInput.Label>
-        <Box ref={anchorRef} onClick={handleOpenPopover}>
+        <Box
+          data-testid="calendar-input"
+          ref={anchorRef}
+          onClick={handleOpenPopover}
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <RangePickerInput
               format={format}
@@ -208,15 +178,16 @@ const RangePickerComp = ({
         <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       </>
       <Popover
-        open={displayCalendar ? true : false}
+        open={displayCalendar}
         anchorEl={anchorRef?.current}
-        placement="bottom-end"
+        placement={calendarPlacement}
         onClose={() => {
           if (calendarOpen) return;
           if (anchorRef?.current?.contains(document.activeElement)) return;
           if (document.activeElement === anchorRef?.current) return;
           setOpen(false);
         }}
+        {...popoverProps}
       >
         <RangePickerCalendar
           ref={calendarRef}
@@ -235,9 +206,13 @@ const RangePickerComp = ({
 };
 
 RangePicker.defaultProps = {
-  format: "MM/DD/YYYY",
-  placeholder: "MM/DD/YYYY",
+  format: "MMM DD, YYYY",
+  placeholder: "MMM DD, YYYY",
   numberOfMonths: 2,
-};
+  disableFuture: false,
+  disableCurrent: false,
+  disablePast: false,
+  calendarPlacement: "bottom-end",
+} as Partial<RangePickerProps>;
 
 export default RangePicker;

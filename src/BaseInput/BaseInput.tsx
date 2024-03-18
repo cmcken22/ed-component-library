@@ -65,6 +65,7 @@ const BaseInput = ({
         labelPosition={labelPosition}
         fullWidth={fullWidth}
         data-testid="Input"
+        data-test-status={status || innerStatus}
         sx={sx}
       >
         <PlacementContainer

@@ -1,25 +1,26 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render } from "test-utils/index";
-import RangePicker, { RangePickerProps } from ".";
+import DatePicker, { DatePickerProps } from ".";
 
-describe("RangePicker", () => {
-  let props: RangePickerProps;
+describe("DatePicker", () => {
+  let props: DatePickerProps;
 
   beforeEach(() => {
     props = {
-      ...RangePicker.defaultProps,
+      ...DatePicker.defaultProps,
       id: "single_date_picker",
       label: "Calendar",
-      labelPosition: "left",
-      format: "MM/DD/YYYY",
       helperText: "Helper Text",
+      placeholder: "Please enter date",
+      format: "MM/DD/YYYY",
+      labelPosition: "left",
       onChange: jest.fn(),
       onValidation: jest.fn(),
     };
   });
 
   const renderComponent = (props: any) => {
-    const component = render(<RangePicker {...props} />, {});
+    const component = render(<DatePicker {...props} />, {});
     return component;
   };
 
@@ -31,15 +32,13 @@ describe("RangePicker", () => {
   });
 
   it("should have placeholder", () => {
-    props.placeholder = ["Start date", "End date"];
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("Input");
     expect(inputContainer).toBeInTheDocument();
 
     const inputs = inputContainer.querySelectorAll("input");
-    expect(inputs).toHaveLength(2);
-    expect(inputs[0]).toHaveAttribute("placeholder", props.placeholder[0]);
-    expect(inputs[1]).toHaveAttribute("placeholder", props.placeholder[1]);
+    expect(inputs).toHaveLength(1);
+    expect(inputs[0]).toHaveAttribute("placeholder", props.placeholder);
   });
 
   it("should have label", () => {
@@ -58,135 +57,43 @@ describe("RangePicker", () => {
     expect(helperText).toHaveTextContent(props.helperText);
   });
 
-  it("should have formatted values", () => {
-    props.value = [
-      new Date("2024-03-15T04:00:00.000Z"),
-      new Date("2024-03-17T04:00:00.000Z"),
-    ];
+  it("should have value", () => {
+    props.value = new Date("2024-03-15T04:00:00.000Z");
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-
-    const inputs = inputContainer.querySelectorAll("input");
-    expect(inputs).toHaveLength(2);
-    expect(inputs[0]).toHaveAttribute("value", "03/15/2024");
-    expect(inputs[1]).toHaveAttribute("value", "03/17/2024");
+    const component = getByTestId("calendar-input");
+    const input = component.querySelector("input");
+    expect(component).toBeInTheDocument();
+    const expected = "03/15/2024";
+    expect(input).toHaveValue(expected);
   });
 
-  it("should have update range", () => {
-    props.value = [
-      new Date("2024-03-15T04:00:00.000Z"),
-      new Date("2024-03-17T04:00:00.000Z"),
-    ];
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-
-    const inputs = inputContainer.querySelectorAll("input");
-    expect(inputs).toHaveLength(2);
-
-    fireEvent.change(inputs[0], { target: { value: "03/16/2024" } });
-
-    expect(props.onChange).toHaveBeenCalledWith([
-      new Date("2024-03-16T04:00:00.000Z"),
-      new Date("2024-03-17T04:00:00.000Z"),
-    ]);
-
-    fireEvent.change(inputs[1], { target: { value: "03/19/2024" } });
-
-    expect(props.onChange).toHaveBeenCalledWith([
-      new Date("2024-03-16T04:00:00.000Z"),
-      new Date("2024-03-19T04:00:00.000Z"),
-    ]);
-  });
-
-  it("should have error status for incorrect range", () => {
-    props.value = [
-      new Date("2024-03-17T04:00:00.000Z"),
-      new Date("2024-03-15T04:00:00.000Z"),
-    ];
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
-    expect(props.onValidation).toHaveBeenCalledWith(false);
-  });
-
-  it("should disable current date", () => {
+  it("should use alternative format", () => {
     props = {
       ...props,
-      currentDate: new Date("2024-03-15T04:00:00.000Z"),
-      value: [new Date("2024-03-15T04:00:00.000Z")],
-      disableCurrent: true,
+      value: new Date("2024-03-15T04:00:00.000Z"),
+      format: "MM-DD-YYYY",
     };
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
-    expect(props.onValidation).toHaveBeenCalledWith(false);
+    const { container } = renderComponent(props);
+    const input = container.querySelector("input");
+    expect(input).toBeInTheDocument();
+    const expected = "03-15-2024";
+    expect(input).toHaveValue(expected);
   });
 
-  it("should disable past dates", () => {
-    props = {
-      ...props,
-      currentDate: new Date("2024-03-15T04:00:00.000Z"),
-      value: [new Date("2024-03-14T04:00:00.000Z")],
-      disablePast: true,
-    };
+  it("should have label", () => {
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("Input");
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
-    expect(props.onValidation).toHaveBeenCalledWith(false);
+    const label = inputContainer.querySelector(".Input__label");
+    expect(label).toHaveTextContent(props.label);
   });
 
-  it("should disable future dates", () => {
-    props = {
-      ...props,
-      currentDate: new Date("2024-03-15T04:00:00.000Z"),
-      value: [new Date("2024-03-17T04:00:00.000Z")],
-      disableFuture: true,
-    };
+  it("should have helper text", () => {
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("Input");
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
-    expect(props.onValidation).toHaveBeenCalledWith(false);
-  });
-
-  it("should disable dates with custom function", () => {
-    props = {
-      ...props,
-      currentDate: new Date("2024-03-15T04:00:00.000Z"),
-      value: [new Date("2024-03-01T05:00:00.000Z")],
-      dateDisabled: (date: Date) => date.getDate() === 1,
-    };
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
-    expect(props.onValidation).toHaveBeenCalledWith(false);
-  });
-
-  it("should have error state for invalid date", () => {
-    props = {
-      ...props,
-      currentDate: new Date("2024-03-15T04:00:00.000Z"),
-      value: [new Date("2024-03-01T05:00:00.000Z")],
-      dateDisabled: (date: Date) => date.getDate() === 1,
-    };
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-
-    const inputs = inputContainer.querySelectorAll("input");
-    expect(inputs).toHaveLength(2);
-
-    // april 31st is an invalid date
-    fireEvent.change(inputs[1], { target: { value: "04/31/2024" } });
-
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
-    expect(props.onValidation).toHaveBeenCalledWith(false);
+    const helperText = inputContainer.querySelector(".Input__helper-text");
+    expect(helperText).toHaveTextContent(props.helperText);
   });
 
   it("should render the calendar picker", () => {
@@ -228,14 +135,88 @@ describe("RangePicker", () => {
     expect(calendar).not.toBeInTheDocument();
   });
 
-  it("should disable inputs", () => {
+  it("should disable input", () => {
     props.disableTextInput = true;
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("calendar-input");
     expect(inputContainer).toBeInTheDocument();
+    const input = inputContainer.querySelector(".MuiInputBase-root");
+    expect(input).toHaveStyle("cursor: pointer");
+  });
+
+  it("should disable current date", () => {
+    props = {
+      ...props,
+      currentDate: new Date("2024-03-15T04:00:00.000Z"),
+      value: new Date("2024-03-15T04:00:00.000Z"),
+      disableCurrent: true,
+    };
+    const { getByTestId } = renderComponent(props);
+    const inputContainer = getByTestId("Input");
+    expect(inputContainer).toBeInTheDocument();
+    expect(inputContainer).toHaveAttribute("data-test-status", "error");
+    expect(props.onValidation).toHaveBeenCalledWith(false);
+  });
+
+  it("should disable past dates", () => {
+    props = {
+      ...props,
+      currentDate: new Date("2024-03-15T04:00:00.000Z"),
+      value: new Date("2024-03-14T04:00:00.000Z"),
+      disablePast: true,
+    };
+    const { getByTestId } = renderComponent(props);
+    const inputContainer = getByTestId("Input");
+    expect(inputContainer).toBeInTheDocument();
+    expect(inputContainer).toHaveAttribute("data-test-status", "error");
+    expect(props.onValidation).toHaveBeenCalledWith(false);
+  });
+
+  it("should disable future dates", () => {
+    props = {
+      ...props,
+      currentDate: new Date("2024-03-15T04:00:00.000Z"),
+      value: new Date("2024-03-17T04:00:00.000Z"),
+      disableFuture: true,
+    };
+    const { getByTestId } = renderComponent(props);
+    const inputContainer = getByTestId("Input");
+    expect(inputContainer).toBeInTheDocument();
+    expect(inputContainer).toHaveAttribute("data-test-status", "error");
+    expect(props.onValidation).toHaveBeenCalledWith(false);
+  });
+
+  it("should disable dates with custom function", () => {
+    props = {
+      ...props,
+      currentDate: new Date("2024-03-15T04:00:00.000Z"),
+      value: new Date("2024-03-01T05:00:00.000Z"),
+      dateDisabled: (date: Date) => date.getDate() === 1,
+    };
+    const { getByTestId } = renderComponent(props);
+    const inputContainer = getByTestId("Input");
+    expect(inputContainer).toBeInTheDocument();
+    expect(inputContainer).toHaveAttribute("data-test-status", "error");
+    expect(props.onValidation).toHaveBeenCalledWith(false);
+  });
+
+  it("should have error state for invalid date", () => {
+    props = {
+      ...props,
+      currentDate: new Date("2024-03-15T04:00:00.000Z"),
+      value: new Date("2024-03-01T05:00:00.000Z"),
+    };
+    const { getByTestId } = renderComponent(props);
+    const inputContainer = getByTestId("Input");
+    expect(inputContainer).toBeInTheDocument();
+
     const inputs = inputContainer.querySelectorAll("input");
-    expect(inputs).toHaveLength(2);
-    expect(inputs[0]).toHaveAttribute("disabled");
-    expect(inputs[1]).toHaveAttribute("disabled");
+    expect(inputs).toHaveLength(1);
+
+    // april 31st is an invalid date
+    fireEvent.change(inputs[0], { target: { value: "04/31/2024" } });
+
+    expect(inputContainer).toHaveAttribute("data-test-status", "error");
+    expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 });

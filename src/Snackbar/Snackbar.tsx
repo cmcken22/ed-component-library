@@ -35,7 +35,7 @@ const StyledContainer = styled(Box, {
 });
 
 const Snackbar = forwardRef((props: SnackbarProps, ref) => {
-  const { id, message, variant, persist, hideIcon } = props;
+  const { id, message, variant, persist, hideIcon, width } = props;
 
   const getIcon = useCallback((variant?: string) => {
     const iconMap = {
@@ -48,7 +48,7 @@ const Snackbar = forwardRef((props: SnackbarProps, ref) => {
   }, []);
 
   return (
-    <StyledContainer ref={ref} role="alert" variant={variant}>
+    <StyledContainer ref={ref} role="alert" variant={variant} sx={{ width }}>
       {!hideIcon && <Icon icon={getIcon(variant)} height="20px" width="20px" />}
       <Typography variant="bodyR" color="text.main">
         {message}

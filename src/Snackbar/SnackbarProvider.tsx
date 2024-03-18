@@ -1,15 +1,15 @@
-import { SnackbarProvider as SnackbarProviderNotistack } from "notistack";
+import {
+  SnackbarOrigin,
+  SnackbarProvider as SnackbarProviderNotistack,
+} from "notistack";
 import Snackbar from "./";
 
 export interface SnackbarProviderProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   dense?: boolean;
   maxSnack?: number;
   autoHideDuration?: number;
-  anchorOrigin?: {
-    vertical: "top" | "bottom";
-    horizontal: "left" | "center" | "right";
-  };
+  anchorOrigin?: SnackbarOrigin;
 }
 
 const SnackbarProvider = ({
@@ -46,6 +46,6 @@ SnackbarProvider.defaultProps = {
     vertical: "top",
     horizontal: "right",
   },
-};
+} as Partial<SnackbarProviderProps>;
 
 export default SnackbarProvider;

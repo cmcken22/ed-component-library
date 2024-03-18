@@ -1,0 +1,42 @@
+import {
+  ArgTypes,
+  Canvas,
+  Controls,
+  Description,
+  Meta,
+  Stories,
+  Subtitle,
+  Title,
+} from "@storybook/blocks";
+import * as SnackbarStories from "./Snackbar.stories";
+import SnackbarProvider from "./SnackbarProvider";
+
+<Meta of={SnackbarStories} />
+
+<Title>Snackbar Provider</Title>
+
+<Description of={SnackbarStories} />
+
+```jsx
+<SnackbarProvider
+  dense={true}
+  maxSnack={5}
+  autoHideDuration={3000}
+  anchorOrigin={{
+    vertical: "top",
+    horizontal: "right",
+  }}
+>
+  <App />
+</SnackbarProvider>
+```
+
+<ArgTypes of={SnackbarProvider} />
+
+<Title>Snackbar</Title>
+
+<Canvas of={SnackbarStories.Default} />
+
+<Controls of={SnackbarStories.Default} />
+
+<Stories of={SnackbarStories} />

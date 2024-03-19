@@ -10,3 +10,12 @@ export const shouldNotForwardProp =
   (invalidList: string[]) => (prop: string) => {
     return !invalidList.includes(prop);
   };
+
+export const sizeFormat = (value: string | number) => {
+  if (typeof value === "string") {
+    const num = +value;
+    if (!isNaN(num)) return `${num}px`;
+    return value;
+  }
+  return `${value}px`;
+};

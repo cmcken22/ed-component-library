@@ -1,14 +1,15 @@
 {
   "name": "@cmckenna/ed-component-library",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.1.6",
   "type": "module",
   "homepage": "https://cmcken22.github.io/ed-component-library/?path=/docs/read-me--docs",
   "exports": {
     ".": {
       "import": "./dist/index.es.js",
       "require": "./dist/index.cjs.js",
-      "style": "./index.css"
+      "style": "./index.css",
+      "types": "./dist/src/index.d.ts"
     },
     "./dist/index.css": {
       "import": "./dist/index.css",
@@ -36,7 +37,9 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:update": "jest --updateSnapshot",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "yalc:publish": "npm run build && yalc publish",
+    "npm:publish": "npm run build && npm publish"
   },
   "peerDependencies": {
     "@emotion/react": "^11.11.3",
@@ -89,10 +92,11 @@
     "chromatic": "^11.0.3",
     "colors": "^1.4.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "eslint-plugin-storybook": "^0.8.0",
+    "fuse.js": "^7.0.0",
     "gh-pages": "^6.1.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",

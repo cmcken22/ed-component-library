@@ -1,2 +1,3 @@
-export { IconVariant, default } from "./Icon";
-export type { IconVariantType } from "./Icon";
+export { default } from "./Icon";
+export { IconVariant } from "./Icon.types";
+export type { IconProps, IconVariantType } from "./Icon.types";

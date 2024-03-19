@@ -1,15 +1,45 @@
 import { Box } from "@mui/material";
+import type { Meta, StoryObj } from "@storybook/react";
+import Fuse from "fuse.js";
+import { useMemo, useState } from "react";
+import { sourceCodeFormatter } from "sb-utils/index";
+import { Button, Input } from "..";
 import Typography from "../Typography";
-import Icon, { IconVariant } from "./Icon";
-import type { Meta, StoryObj } from '@storybook/react';
+import Icon, { IconVariant } from "./";
 
 const meta = {
-  title: 'Example/Icon',
+  title: "Example/Icon",
   component: Icon,
   parameters: {
-    layout: 'centered',
+    layout: "fullscreen",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Icon"),
+      },
+    },
   },
-  tags: ['autodocs'],
+  argTypes: {
+    onClick: {
+      action: "clicked",
+    },
+    onHover: {
+      action: "hovered",
+    },
+    icon: {
+      options: Object.keys(IconVariant),
+      control: { type: "select" },
+    },
+    size: {
+      control: { type: "text" },
+    },
+    height: {
+      control: { type: "text" },
+    },
+    width: {
+      control: { type: "text" },
+    },
+  },
+  tags: ["autodocs"],
 } satisfies Meta<typeof Icon>;
 
 export default meta;
@@ -27,62 +57,85 @@ const iconList = Object.keys(IconVariant).map((key: IconVariant) => {
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 export const Sample: Story = {
-  render: (args) => (
-    <Box
-      sx={{
-        maxWidth: "800px",
-        display: "flex",
-        flexWrap: "wrap",
-        // justifyContent: "space-evenly",
-        gap: 2,
-        p: 3,
-      }}
-    >
-      {iconList?.map((icon) => {
-        if (!icon.icon) return null;
-        return (
-          <Box
-            key={icon.name}
-            onClick={() => console.log(icon.name)}
-            sx={{
-              width: "60px",
-              mb: 1,
-              overflow: "hidden",
-            }}
-          >
-            <Box
-              sx={{
-                p: 1,
-                borderWidth: "1px",
-                borderStyle: "solid",
-                borderColor: "charcoal.10",
-                borderRadius: "4px",
-                minWidth: "60px",
-                width: "fit-content",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                mb: 0.5,
-              }}
-            >
-              <Icon {...args} icon={icon.icon} />
-            </Box>
-            <Typography
-              variant="errorMessage"
-              sx={{
-                textAlign: "center",
-                width: "100%",
-                display: "block",
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {icon.name}
-            </Typography>
-          </Box>
-        );
-      })}
-    </Box>
-  ),
-}
+  render: (args) => {
+    const [searchValue, setSearchValue] = useState("");
+
+    const filteredList = useMemo(() => {
+      if (!searchValue) return iconList;
+      const options = {
+        keys: ["name"],
+      };
+      const fuse = new Fuse(iconList, options);
+      return fuse.search(searchValue)?.map((result) => result.item) ?? [];
+    }, [iconList, searchValue]);
+
+    return (
+      <Box p={3}>
+        <Box display="flex" alignItems="center" mb={2} gap={1}>
+          <Input
+            placeholder="Search Icons..."
+            value={searchValue}
+            onChange={setSearchValue}
+          />
+          {searchValue && (
+            <Button onClick={() => setSearchValue("")}>Clear Search</Button>
+          )}
+        </Box>
+        <Box
+          sx={{
+            maxWidth: "800px",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 2,
+          }}
+        >
+          {filteredList?.map((icon) => {
+            if (!icon.icon) return null;
+            return (
+              <Box
+                key={icon.name}
+                onClick={() => console.log(icon.name)}
+                sx={{
+                  width: "60px",
+                  mb: 1,
+                  overflow: "hidden",
+                }}
+              >
+                <Box
+                  sx={{
+                    p: 1,
+                    borderWidth: "1px",
+                    borderStyle: "solid",
+                    borderColor: "charcoal.10",
+                    borderRadius: "4px",
+                    minWidth: "60px",
+                    width: "fit-content",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    mb: 0.5,
+                  }}
+                >
+                  <Icon {...args} icon={icon.icon} />
+                </Box>
+                <Typography
+                  variant="errorMessage"
+                  sx={{
+                    textAlign: "center",
+                    width: "100%",
+                    display: "block",
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {icon.name}
+                </Typography>
+              </Box>
+            );
+          })}
+        </Box>
+      </Box>
+    );
+  },
+};

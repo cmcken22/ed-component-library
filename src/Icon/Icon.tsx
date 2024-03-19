@@ -1,70 +1,72 @@
 import { Box } from "@mui/material";
 import cx from "classnames";
-import { forwardRef } from "react";
+import { useMemo } from "react";
+import { useOnHover } from "src/Hooks";
 import { useEllisDonTheme } from "src/theme";
+import { sizeFormat } from "src/utils";
+import { IconProps } from "./";
 import IconMap from "./Icon.map";
 
-export type IconVariantType = keyof typeof IconMap;
+const Icon = ({
+  id,
+  className,
+  icon,
+  color,
+  size,
+  height,
+  width,
+  sx,
+  onClick,
+  onHover,
+}: IconProps) => {
+  const theme = useEllisDonTheme();
+  const onHoverMethods = useOnHover(onHover);
+  const IconComponent =
+    typeof icon === "string" ? IconMap[icon!] : (icon as any);
 
-export const IconVariant: Record<string, IconVariantType> = Object.freeze(
-  Object.fromEntries(Object.keys(IconMap).map((key: any) => [key, key]))
-);
+  const computedSize = useMemo(() => {
+    if (size) {
+      return {
+        height: sizeFormat(size),
+        width: sizeFormat(size),
+      };
+    }
+    return {
+      height: height ? sizeFormat(height) : "24px",
+      width: width ? sizeFormat(width) : "24px",
+    };
+  }, [size, height, width]);
 
-export interface BaseIconProps {
-  icon: IconVariantType | React.ElementType;
-  color?: string;
-  height?: string;
-  width?: string;
-  className?: string;
-  sx?: any;
-}
+  if (!IconComponent) return null;
 
-const Icon = forwardRef(
-  (
-    {
-      icon,
-      color,
-      height,
-      width,
-      className,
-      sx,
-      ...tooltipProps
-    }: BaseIconProps,
-    ref: any
-  ) => {
-    const theme = useEllisDonTheme();
-    const IconComponent =
-      typeof icon === "string" ? IconMap[icon!] : (icon as any);
+  return (
+    <Box
+      id={id}
+      className={cx(`icon-wrapper`, {
+        [className]: className,
+        [`icon--${icon}`]: typeof icon === "string",
+      })}
+      {...onHoverMethods}
+      onClick={onClick}
+      sx={{
+        display: "flex",
+        color: color ? color : "charcoal.90",
+        height: computedSize?.height,
+        width: computedSize?.width,
+        cursor: onClick ? "pointer" : "default",
+        "& > svg": {
+          height: "100%",
+          width: "100%",
+        },
+        transition: `color ${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`,
+        ...sx,
+      }}
+    >
+      <IconComponent fill="transparent" stroke="currentColor" />
+    </Box>
+  );
+};
 
-    if (!IconComponent) return null;
-
-    return (
-      <Box
-        ref={ref}
-        {...tooltipProps}
-        className={cx(`icon-wrapper`, {
-          [className]: className,
-          [`icon--${icon}`]: typeof icon === "string",
-        })}
-        sx={{
-          display: "flex",
-          color: color ? color : "charcoal.90",
-          height: height ? height : "24px",
-          width: width ? width : "24px",
-          "& > svg": {
-            height: "100%",
-            width: "100%",
-          },
-          transition: `color ${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`,
-          ...sx,
-        }}
-      >
-        <IconComponent fill="transparent" stroke="currentColor" />
-      </Box>
-    );
-  }
-);
-
-Icon.defaultProps = {};
+Icon.defaultProps = {} as Partial<IconProps>;
 
 export default Icon;

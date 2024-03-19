@@ -3,10 +3,10 @@ import {
   StyledEngineProvider,
   ThemeProvider,
 } from "@mui/material";
+import { ThemeWrapperProps } from ".";
 import { theme } from "../theme";
-import "../index.css";
 
-const ThemeWrapper = ({ children }: any) => {
+const ThemeWrapper = ({ children }: ThemeWrapperProps) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>

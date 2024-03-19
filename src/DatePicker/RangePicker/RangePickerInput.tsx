@@ -185,14 +185,23 @@ const DateRangeInput = ({
   return (
     <StyledWrapper status={status} disabled={disabled}>
       {startAdornment()}
-      {renderInput(0)}
-      <Icon
-        icon={IconVariant.ArrowRight}
-        height="16px"
-        width="16px"
-        sx={{ flexShrink: 0, mr: "8px" }}
-      />
-      {renderInput(1)}
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+        }}
+      >
+        {renderInput(0)}
+        <Icon
+          icon={IconVariant.ArrowRight}
+          height="16px"
+          width="16px"
+          sx={{ flexShrink: 0 }}
+        />
+        {renderInput(1)}
+      </Box>
       {endAdornment && <Box sx={{ mr: 1 }}>{endAdornment}</Box>}
     </StyledWrapper>
   );

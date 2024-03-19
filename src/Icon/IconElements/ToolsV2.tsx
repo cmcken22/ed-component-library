@@ -6,7 +6,7 @@ export default ({ stroke, fill }: { stroke: string; fill: string }) => (
     fill={fill}
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_41_1540)">
+    <g clipPath="url(#clip0_41_1540)">
       <path
         d="M10.0503 10.6066L2.97919 17.6777C2.19815 18.4587 2.19815 19.7251 2.97919 20.5061V20.5061C3.76024 21.2872 5.02657 21.2872 5.80762 20.5061L12.8787 13.4351"
         stroke={stroke}

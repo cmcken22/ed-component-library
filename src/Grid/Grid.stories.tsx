@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import { Typography } from "..";
+import { Icon, Typography } from "..";
 import Grid from "./";
 
 const useBreakPoint = () => {
@@ -58,8 +58,15 @@ export const Default: Story = {
           Breakpoint: {bp}
         </Typography>
         <Grid {...args}>
-          <Grid.Item xs="auto">
-            <Item>xs=12, sm=8, md={6}</Item>
+          <Grid.Item xs={12} sm={8} md={6}>
+            <Item>
+              <Icon
+                icon="Add"
+                size={50}
+                onClick={() => console.log("Add")}
+                onHover={(hovered) => console.log("Add hovered", hovered)}
+              />
+            </Item>
           </Grid.Item>
           <Grid.Item xs={12} sm={4} md={6}>
             <Item>xs=12, sm=4, md={6}</Item>

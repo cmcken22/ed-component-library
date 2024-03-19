@@ -1,1 +1,0 @@
-import{r as s}from"./index-Dl6G-zuu.js";import{u,T as r,d as n}from"./styled-BHqtc5H1.js";function m(){const e=u(n);return e[r]||e}const o=e=>{const a=s.useCallback(()=>{e&&e(!0)},[e]),t=s.useCallback(()=>{e&&e(!1)},[e]);return{onMouseEnter:a,onMouseLeave:t}};export{o as a,m as u};

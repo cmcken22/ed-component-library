@@ -1,0 +1,1 @@
+function i(r,s){r=r.replace("#","");const t=parseInt(r.substring(0,2),16),n=parseInt(r.substring(2,4),16),o=parseInt(r.substring(4,6),16);return`rgba(${t}, ${n}, ${o}, ${s})`}const a=r=>s=>!r.includes(s),c=r=>{if(typeof r=="string"){const s=+r;return isNaN(s)?r:`${s}px`}return`${r}px`};export{c as a,i as h,a as s};

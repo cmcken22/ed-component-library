@@ -1,14 +1,6 @@
-/// <reference types="react" />
-import IconMap from "./Icon.map";
-export type IconVariantType = keyof typeof IconMap;
-export declare const IconVariant: Record<string, IconVariantType>;
-export interface BaseIconProps {
-    icon: IconVariantType | React.ElementType;
-    color?: string;
-    height?: string;
-    width?: string;
-    className?: string;
-    sx?: any;
-}
-declare const Icon: import('../../node_modules/react').ForwardRefExoticComponent<BaseIconProps & import('../../node_modules/react').RefAttributes<unknown>>;
+import { IconProps } from "./";
+declare const Icon: {
+    ({ id, className, icon, color, size, height, width, sx, onClick, onHover, }: IconProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
+    defaultProps: Partial<IconProps>;
+};
 export default Icon;

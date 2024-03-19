@@ -14,8 +14,9 @@ export interface BaseInputProps {
      */
     sx?: SxProps;
     tooltip?: string;
+    componentType?: string;
 }
-export interface StandardInputProps extends Omit<BaseInputProps, "children"> {
+export interface StandardInputProps extends Omit<BaseInputProps, "children" | "componentType"> {
 }
 export type BaseInputContext = {
     status?: keyof typeof Status | undefined;

@@ -4,6 +4,7 @@ export interface Props {
     disabled?: boolean;
     labelPosition?: string;
     fullWidth?: boolean;
+    componentType?: string;
 }
 declare const StyledWrapper: import("@emotion/styled").StyledComponent<import("@mui/system").BoxOwnProps<import("@mui/material").Theme> & Omit<Omit<import('../../../node_modules/react').DetailedHTMLProps<import('../../../node_modules/react').HTMLAttributes<HTMLDivElement>, HTMLDivElement>, "ref"> & {
     ref?: import('../../../node_modules/react').Ref<HTMLDivElement>;

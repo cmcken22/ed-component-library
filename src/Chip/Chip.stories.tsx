@@ -29,7 +29,6 @@ export const Smaple: Story = {
     text: "Chip",
     hideIcon: false,
     iconPosition: "left",
-    // tooltip: "This is a Chip",
   },
   argTypes: {
     type: {

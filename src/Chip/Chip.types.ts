@@ -1,3 +1,5 @@
+import { SxProps } from "@mui/material";
+
 export type ChipType =
   | "positive"
   | "negative"
@@ -15,4 +17,5 @@ export interface ChipProps {
   onClick?: () => void;
   onHover?: () => void;
   children?: string | React.ReactNode;
+  sx?: SxProps;
 }

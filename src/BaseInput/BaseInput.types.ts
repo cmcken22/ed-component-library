@@ -5,7 +5,7 @@ import { Status } from "src/CommonTypes";
 export interface BaseInputProps {
   id?: string;
   className?: string;
-  status?: Status;
+  status?: keyof typeof Status;
   disabled?: boolean;
   fullWidth?: boolean;
   children?: React.ReactNode;
@@ -19,7 +19,7 @@ export interface BaseInputProps {
 export interface StandardInputProps extends Omit<BaseInputProps, "children"> {}
 
 export type BaseInputContext = {
-  status: Status | undefined;
+  status?: keyof typeof Status | undefined;
   required?: boolean;
   disabled?: boolean;
   labelPosition?: "top" | "left";

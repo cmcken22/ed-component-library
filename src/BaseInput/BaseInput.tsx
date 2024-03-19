@@ -29,11 +29,12 @@ const BaseInput = ({
   );
 
   const statusIcon = useMemo(() => {
-    if (!status) return null;
-    if (status === Status.error) return IconVariant.Close1;
-    if (status === Status.warning) return IconVariant.Warning;
-    if (status === Status.success) return IconVariant.Success;
-  }, [status]);
+    const currentStatus = status || innerStatus;
+    if (!currentStatus) return null;
+    if (currentStatus === Status.error) return IconVariant.Close1;
+    if (currentStatus === Status.warning) return IconVariant.Warning;
+    if (currentStatus === Status.success) return IconVariant.Success;
+  }, [status, innerStatus]);
 
   const renderStatusIcon = useCallback(() => {
     if (!statusIcon) return null;

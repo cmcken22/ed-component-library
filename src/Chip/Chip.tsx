@@ -53,6 +53,7 @@ const Chip = ({
   onClick,
   onHover,
   children,
+  sx,
 }: ChipProps) => {
   const currentIconVariant = useMemo(() => {
     if (type === "positive") return IconVariant.Success;
@@ -62,9 +63,6 @@ const Chip = ({
     if (type === "neutral") return IconVariant.Undetermined;
     return "";
   }, [type]);
-
-  console.log("typeof children", typeof children);
-  console.log("children", children);
 
   return (
     <StyledContainer
@@ -78,6 +76,7 @@ const Chip = ({
       onMouseEnter={onHover}
       sx={{
         cursor: onClick ? "pointer" : "default",
+        ...sx,
       }}
       data-testid="chip"
       data-chip-type={type}

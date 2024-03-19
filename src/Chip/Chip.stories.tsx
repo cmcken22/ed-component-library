@@ -17,6 +17,10 @@ const meta = {
   argTypes: {
     onClick: { action: "onClick" },
     onHover: { action: "onHover" },
+    type: {
+      options: ["positive", "negative", "warning", "pending", "neutral"],
+      control: { type: "radio" },
+    },
   },
 } satisfies Meta<typeof Chip>;
 
@@ -29,11 +33,5 @@ export const Smaple: Story = {
     text: "Chip",
     hideIcon: false,
     iconPosition: "left",
-  },
-  argTypes: {
-    type: {
-      options: ["positive", "negative", "warning", "pending", "neutral"],
-      control: { type: "radio" },
-    },
   },
 };

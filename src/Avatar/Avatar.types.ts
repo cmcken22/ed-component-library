@@ -9,4 +9,5 @@ export interface AvatarProps {
   src?: string;
   onClick?: () => void;
   onHover?: (hovered: boolean) => void;
+  tooltip?: string;
 }

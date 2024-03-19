@@ -43,6 +43,7 @@ export const Text: Story = {
     value: "Hello world",
     fullWidth: false,
     labelPosition: "top",
+    tooltip: "Tooltip",
   },
 };
 

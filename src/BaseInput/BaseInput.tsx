@@ -17,6 +17,7 @@ const BaseInput = ({
   fullWidth,
   sx,
   children,
+  tooltip,
 }: BaseInputProps) => {
   const [labelPosition, setLabelPosition] = useState<"top" | "left">("top");
   const [innerStatus, setInnerStatus] = useState<Status>();
@@ -54,6 +55,7 @@ const BaseInput = ({
         labelPosition,
         disabled,
         endAdornment: renderStatusIcon(),
+        tooltip,
       }}
     >
       <StyledWrapper

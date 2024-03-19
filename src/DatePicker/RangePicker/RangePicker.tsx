@@ -12,7 +12,7 @@ import {
   useRef,
   useState,
 } from "react";
-import BaseInput, { BaseInputContext } from "src/BaseInput";
+import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { Status } from "src/CommonTypes";
 import Popover from "src/Popover";
 import { formatDateRange, isValidDate } from "../Common/utils";
@@ -20,23 +20,6 @@ import { RangePickerProps } from "./RangePicker.types";
 import RangePickerCalendar from "./RangePickerCalendar/RangePickerCalendar";
 import RangePickerInput from "./RangePickerInput";
 dayjs.extend(customParseFormat);
-
-const RangePicker = (props: RangePickerProps) => {
-  const { id, status, fullWidth, value, ...rest } = props;
-
-  return (
-    <BaseInput
-      id={id}
-      status={status}
-      fullWidth={fullWidth}
-      sx={{
-        width: "400px",
-      }}
-    >
-      <RangePickerComp {...rest} value={formatDateRange(value)} />
-    </BaseInput>
-  );
-};
 
 const RangePickerComp = ({
   label,
@@ -205,6 +188,17 @@ const RangePickerComp = ({
   );
 };
 
+const WrappedRangePicker = withBaseInput<RangePickerProps>(
+  RangePickerComp,
+  "RangePicker"
+);
+
+const RangePicker = (props: RangePickerProps) => {
+  return (
+    <WrappedRangePicker {...props} value={formatDateRange(props?.value)} />
+  );
+};
+
 RangePicker.defaultProps = {
   format: "MMM DD, YYYY",
   placeholder: "MMM DD, YYYY",
@@ -215,4 +209,6 @@ RangePicker.defaultProps = {
   calendarPlacement: "bottom-end",
 } as Partial<RangePickerProps>;
 
+// export named component for storybook docgen
+export { RangePicker };
 export default RangePicker;

@@ -39,6 +39,13 @@ describe("Input", () => {
     expect(InputComponent).toHaveValue(props.value);
   });
 
+  it("should accept className", () => {
+    props.className = "test-class";
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId("Input");
+    expect(component).toHaveClass(props.className);
+  });
+
   it("should update value", () => {
     const { container } = renderComponent(props);
     const component = getChildFromContainer(container);

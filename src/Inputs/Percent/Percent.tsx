@@ -1,7 +1,7 @@
 import { Box, InputAdornment, TextField, styled } from "@mui/material";
 import { useCallback, useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import BaseInput, { BaseInputContext } from "src/BaseInput";
+import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import Typography from "src/Typography";
 import { PercentProps } from ".";
 
@@ -15,23 +15,12 @@ const StyledTextField = styled(TextField, {
   };
 });
 
-const Percent = (props: PercentProps) => {
-  const { id, status, fullWidth, ...rest } = props;
-
-  return (
-    <BaseInput id={id} status={status} fullWidth={fullWidth}>
-      <PercentComp {...rest} fullWidth={fullWidth} />
-    </BaseInput>
-  );
-};
-
 const PercentComp = ({
   label,
   placeholder,
   helperText,
   disabled,
   value: passedValue,
-  // fullWidth,
   required,
   labelPosition = "top",
   fixedDecimalScale,
@@ -76,12 +65,7 @@ const PercentComp = ({
         fixedDecimalScale={fixedDecimalScale}
         decimalScale={decimalScale}
         customInput={StyledTextField}
-        // fullWidth={fullWidth}
         disabled={disabled}
-        // sx={{
-        //   width,
-        //   minWidth,
-        // }}
         InputProps={{
           endAdornment: endAdornment || percentAdornment(),
         }}
@@ -91,6 +75,8 @@ const PercentComp = ({
   );
 };
 
+const Percent = withBaseInput<PercentProps>(PercentComp, "Percent");
+
 Percent.defaultProps = {
   labelPosition: "top",
   fixedDecimalScale: false,
@@ -99,4 +85,6 @@ Percent.defaultProps = {
   required: false,
 } as Partial<PercentProps>;
 
+// export named component for storybook docgen
+export { Percent };
 export default Percent;

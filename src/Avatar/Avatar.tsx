@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/material";
+import { Box, Tooltip, styled } from "@mui/material";
 import cx from "classnames";
 import { useCallback } from "react";
 import { useOnHover } from "src/Hooks";
@@ -33,6 +33,7 @@ const Avatar = ({
   onHover,
   onClick,
   sx,
+  tooltip,
 }: AvatarProps) => {
   const onHoverMethods = useOnHover(onHover);
 
@@ -69,28 +70,30 @@ const Avatar = ({
   }, [size]);
 
   return (
-    <StyledWrapper
-      id={id}
-      className={cx("avatar", className)}
-      {...onHoverMethods}
-      onClick={onClick}
-      src={src}
-      sx={{
-        ...getAvatarSize(),
-        cursor: onClick ? "pointer" : "default",
-        ...sx,
-      }}
-    >
-      {!src && (
-        <Typography
-          variant={getFontSize()}
-          color="secondary.dark"
-          preventTextSelection
-        >
-          {text}
-        </Typography>
-      )}
-    </StyledWrapper>
+    <Tooltip title={tooltip} placement="top" arrow>
+      <StyledWrapper
+        id={id}
+        className={cx("avatar", className)}
+        {...onHoverMethods}
+        onClick={onClick}
+        src={src}
+        sx={{
+          ...getAvatarSize(),
+          cursor: onClick ? "pointer" : "default",
+          ...sx,
+        }}
+      >
+        {!src && (
+          <Typography
+            variant={getFontSize()}
+            color="secondary.dark"
+            preventTextSelection
+          >
+            {text}
+          </Typography>
+        )}
+      </StyledWrapper>
+    </Tooltip>
   );
 };
 

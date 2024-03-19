@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { useCallback, useContext, useEffect } from "react";
 import Icon, { IconVariant } from "src/Icon";
 import { BaseInputContext } from ".";
@@ -9,11 +9,10 @@ export interface LabelProps {
   children?: any;
   required?: boolean;
   position?: "top" | "left";
-  tooltip?: string;
 }
 
-const Label = ({ children, required, position, tooltip }: LabelProps) => {
-  const { setLabelPosition } = useContext(BaseInputContext);
+const Label = ({ children, required, position }: LabelProps) => {
+  const { setLabelPosition, tooltip } = useContext(BaseInputContext);
 
   useEffect(() => {
     if (position) setLabelPosition(position);
@@ -36,15 +35,17 @@ const Label = ({ children, required, position, tooltip }: LabelProps) => {
   const renderInfoTooltip = useCallback(() => {
     if (!tooltip) return null;
     return (
-      <Icon
-        icon={IconVariant.WarningV2}
-        height="12px"
-        width="12px"
-        sx={{
-          ml: 1,
-          transform: "rotate(180deg)",
-        }}
-      />
+      <Tooltip title={tooltip} placement="top" arrow>
+        <Icon
+          icon={IconVariant.WarningV2}
+          height="12px"
+          width="12px"
+          sx={{
+            ml: 1,
+            transform: "rotate(180deg)",
+          }}
+        />
+      </Tooltip>
     );
   }, [tooltip]);
 

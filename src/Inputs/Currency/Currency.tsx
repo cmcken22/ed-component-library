@@ -1,7 +1,7 @@
 import { InputAdornment, TextField, styled } from "@mui/material";
 import { useCallback, useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import BaseInput, { BaseInputContext } from "src/BaseInput";
+import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import Icon, { IconVariant } from "src/Icon";
 import { CurrencyProps } from ".";
 
@@ -15,23 +15,12 @@ const StyledTextField = styled(TextField, {
   };
 });
 
-const Currency = (props: CurrencyProps) => {
-  const { id, status, fullWidth, ...rest } = props;
-
-  return (
-    <BaseInput id={id} status={status} fullWidth={fullWidth}>
-      <CurrencyComp {...rest} fullWidth={fullWidth} />
-    </BaseInput>
-  );
-};
-
 const CurrencyComp = ({
   label,
   placeholder,
   helperText,
   disabled,
   value: passedValue,
-  // fullWidth,
   required,
   labelPosition = "top",
   fixedDecimalScale,
@@ -71,7 +60,6 @@ const CurrencyComp = ({
         fixedDecimalScale={fixedDecimalScale}
         decimalScale={decimalScale}
         customInput={StyledTextField}
-        // fullWidth={fullWidth}
         disabled={disabled}
         InputProps={{
           startAdornment: startAdornment(),
@@ -83,6 +71,8 @@ const CurrencyComp = ({
   );
 };
 
+const Currency = withBaseInput<CurrencyProps>(CurrencyComp, "Currency");
+
 Currency.defaultProps = {
   labelPosition: "top",
   thousandSeparator: false,
@@ -92,4 +82,6 @@ Currency.defaultProps = {
   required: false,
 } as Partial<CurrencyProps>;
 
+// export named component for storybook docgen
+export { Currency };
 export default Currency;

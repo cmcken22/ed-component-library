@@ -38,6 +38,13 @@ describe("Currency", () => {
     expect(InputComponent).toHaveValue(props.value);
   });
 
+  it("should accept className", () => {
+    props.className = "test-class";
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId("Input");
+    expect(component).toHaveClass(props.className);
+  });
+
   it("should have label", () => {
     const { container } = renderComponent(props);
     const label = container.querySelector(".Input__label");

@@ -1,21 +1,11 @@
 import { TextField } from "@mui/material";
 import _debounce from "lodash.debounce";
 import { useCallback, useContext, useEffect, useState } from "react";
-import BaseInput, { BaseInputContext } from "src/BaseInput";
+import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { InputProps } from ".";
 import Currency from "../Currency";
 import Percent from "../Percent";
 import TextArea from "../TextArea";
-
-const Input = (props: InputProps) => {
-  const { id, status, fullWidth, ...rest } = props;
-
-  return (
-    <BaseInput id={id} status={status} fullWidth={fullWidth}>
-      <InputComp {...rest} />
-    </BaseInput>
-  );
-};
 
 const InputComp = ({
   label,
@@ -79,13 +69,20 @@ const InputComp = ({
   );
 };
 
+const Input = withBaseInput<InputProps>(InputComp, "Input");
+
 Input.defaultProps = {
   labelPosition: "top",
   type: "text",
 } as Partial<InputProps>;
 
+// @ts-expect-error
 Input.Currency = Currency;
+// @ts-expect-error
 Input.Percent = Percent;
+// @ts-expect-error
 Input.TextArea = TextArea;
 
+// export named component for storybook docgen
+export { Input };
 export default Input;

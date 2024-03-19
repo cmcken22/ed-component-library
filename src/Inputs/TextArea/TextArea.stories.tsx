@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "src/utils";
-import Input from "../Input";
+import TextArea from "./TextArea";
 
 const meta = {
   title: "Example/Inputs/TextArea",
-  component: Input.TextArea,
+  component: TextArea,
   parameters: {
     layout: "centered",
     docs: {
@@ -27,14 +27,14 @@ const meta = {
       control: { type: "radio" },
     },
   },
-} satisfies Meta<typeof Input.TextArea>;
+} satisfies Meta<typeof TextArea>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Sample: Story = {
   args: {
-    ...Input.TextArea.defaultProps,
+    ...TextArea.defaultProps,
     id: "Primary",
     label: "Primary",
     placeholder: "Enter a value",

@@ -1,18 +1,8 @@
 import { TextField } from "@mui/material";
 import _debounce from "lodash.debounce";
 import { useCallback, useContext, useState } from "react";
-import BaseInput, { BaseInputContext } from "src/BaseInput";
+import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { TextAreaProps } from ".";
-
-const TextArea = (props: TextAreaProps) => {
-  const { id, status, fullWidth, ...rest } = props;
-
-  return (
-    <BaseInput id={id} status={status} fullWidth={fullWidth}>
-      <TextAreaComp {...rest} fullWidth={fullWidth} />
-    </BaseInput>
-  );
-};
 
 const TextAreaComp = ({
   label,
@@ -20,7 +10,6 @@ const TextAreaComp = ({
   helperText,
   disabled,
   value: passedValue,
-  fullWidth,
   required,
   labelPosition = "top",
   maxRows,
@@ -68,7 +57,6 @@ const TextAreaComp = ({
         placeholder={placeholder}
         variant="outlined"
         disabled={disabled}
-        fullWidth={fullWidth}
         onChange={handleChange}
         multiline
         minRows={minRows}
@@ -80,10 +68,14 @@ const TextAreaComp = ({
   );
 };
 
+const TextArea = withBaseInput<TextAreaProps>(TextAreaComp, "TextArea");
+
 TextArea.defaultProps = {
   labelPosition: "top",
   minRows: 2,
   maxRows: 4,
 } as Partial<TextAreaProps>;
 
+// export named component for storybook docgen
+export { TextArea };
 export default TextArea;

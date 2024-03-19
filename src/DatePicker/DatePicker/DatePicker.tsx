@@ -13,7 +13,7 @@ import {
   useRef,
   useState,
 } from "react";
-import BaseInput, { BaseInputContext } from "src/BaseInput";
+import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { Status } from "src/CommonTypes";
 import Icon, { IconVariant } from "src/Icon";
 import Popover from "src/Popover";
@@ -21,16 +21,6 @@ import { convertDateToGMT, isValidDate } from "../Common/utils";
 import { DatePickerProps } from "./DatePicker.types";
 import DatePickerCalendar from "./DatePickerCalendar";
 dayjs.extend(customParseFormat);
-
-const DatePicker = (props: DatePickerProps) => {
-  const { id, status, fullWidth, value, ...rest } = props;
-
-  return (
-    <BaseInput id={id} status={status} fullWidth={fullWidth}>
-      <DatePickerComp {...rest} value={convertDateToGMT(value)} />
-    </BaseInput>
-  );
-};
 
 const DatePickerComp = ({
   label,
@@ -209,6 +199,17 @@ const DatePickerComp = ({
   );
 };
 
+const WrappedDatePicker = withBaseInput<DatePickerProps>(
+  DatePickerComp,
+  "DatePicker"
+);
+
+const DatePicker = (props: DatePickerProps) => {
+  return (
+    <WrappedDatePicker {...props} value={convertDateToGMT(props?.value)} />
+  );
+};
+
 DatePicker.defaultProps = {
   format: "MMM DD, YYYY",
   placeholder: "MMM DD, YYYY",
@@ -219,4 +220,6 @@ DatePicker.defaultProps = {
   calendarPlacement: "bottom-end",
 } as Partial<DatePickerProps>;
 
+// export named component for storybook docgen
+export { DatePicker };
 export default DatePicker;

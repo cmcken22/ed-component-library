@@ -9,26 +9,11 @@ import {
   useState,
 } from "react";
 import { useOnHover } from "src/Hooks";
-import BaseInput, { BaseInputContext } from "../BaseInput";
+import BaseInput, { BaseInputContext, withBaseInput } from "../BaseInput";
 import Checkbox from "../Checkbox";
 import Typography from "../Typography";
 import { DropdownProps, StandardDropdownOption } from "./Dropdown.types";
 import DropdownIcon from "./DropdownIcon";
-
-const Dropdown = (props: DropdownProps) => {
-  const { id, status, fullWidth, className, ...rest } = props;
-
-  return (
-    <BaseInput
-      id={id}
-      status={status}
-      fullWidth={fullWidth}
-      className={className}
-    >
-      <DropdownComp {...rest} />
-    </BaseInput>
-  );
-};
 
 const DropdownComp = ({
   label,
@@ -195,6 +180,8 @@ const DropdownComp = ({
   );
 };
 
+const Dropdown = withBaseInput<DropdownProps>(DropdownComp, "Dropdown");
+
 Dropdown.defaultProps = {
   labelPosition: "top",
   options: [],
@@ -203,4 +190,6 @@ Dropdown.defaultProps = {
   },
 } as Partial<DropdownProps>;
 
+// export named component for storybook docgen
+export { Dropdown };
 export default Dropdown;

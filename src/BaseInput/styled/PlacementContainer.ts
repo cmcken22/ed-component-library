@@ -10,7 +10,7 @@ const PlacementContainer = styled(Box, {
       width: "100%",
       "&--align-left": {
         display: "grid",
-        gridTemplateColumns: "1fr",
+        gridTemplateColumns: "auto 1fr",
         gridTemplateRows: "1fr",
         gap: "0px 8px",
         gridTemplateAreas: `

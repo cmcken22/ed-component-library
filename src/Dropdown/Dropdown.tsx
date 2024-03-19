@@ -1,4 +1,4 @@
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import cx from "classnames";
 import {
   useCallback,
@@ -16,10 +16,15 @@ import { DropdownProps, StandardDropdownOption } from "./Dropdown.types";
 import DropdownIcon from "./DropdownIcon";
 
 const Dropdown = (props: DropdownProps) => {
-  const { id, status, fullWidth, ...rest } = props;
+  const { id, status, fullWidth, className, ...rest } = props;
 
   return (
-    <BaseInput id={id} status={status} fullWidth={fullWidth}>
+    <BaseInput
+      id={id}
+      status={status}
+      fullWidth={fullWidth}
+      className={className}
+    >
       <DropdownComp {...rest} />
     </BaseInput>
   );
@@ -42,6 +47,7 @@ const DropdownComp = ({
   onHover,
   defaultActiveFirstOption,
   checkBoxSelection,
+  MenuProps,
 }: DropdownProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
@@ -59,10 +65,12 @@ const DropdownComp = ({
 
   const handleChange = useCallback(
     (e: any) => {
-      setValue(e.target.value);
-      if (onChange) onChange(e.target.value);
+      let nextValue = e.target.value;
+      if (value === nextValue) nextValue = "";
+      setValue(nextValue);
+      if (onChange) onChange(nextValue);
     },
-    [setValue, onChange]
+    [value, setValue, onChange]
   );
 
   const selectedValue = useMemo(() => {
@@ -120,54 +128,68 @@ const DropdownComp = ({
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
-      <FormControl>
-        <Select
-          className={cx("dropdown", {
-            "dropdown--open": open,
-          })}
-          open={open}
-          {...onHoverMethods}
-          onOpen={() => setOpen(true)}
-          onClose={() => setOpen(false)}
-          displayEmpty
-          placeholder={placeholder}
-          value={value}
-          onChange={handleChange}
-          renderValue={(value) => renderSelectedValue(value, selectedValue)}
-          disabled={disabled}
-          IconComponent={(props: any) => (
-            <DropdownIcon endAdornment={endAdornment} {...props} />
-          )}
-        >
-          {options?.map((opt: StandardDropdownOption | any, idx: number) => {
-            const optValue = getOptionValue ? getOptionValue(opt) : opt?.value;
-            const optDisabled = getOptionDisabled
-              ? getOptionDisabled(opt)
-              : opt?.disabled;
-            return (
-              <MenuItem
-                key={optValue}
-                value={optValue}
-                disabled={optDisabled || disabled}
-                data-dropdown-option={idx}
-              >
-                {checkBoxSelection ? (
-                  <Checkbox
-                    label={getOptionLabel ? getOptionLabel(opt) : opt?.label}
-                    checked={optValue === value}
-                    disabled={optDisabled || disabled}
-                    typographyVariant="bodyS"
-                  />
-                ) : (
-                  <Typography variant="bodyS" color="text.primary">
-                    {getOptionLabel ? getOptionLabel(opt) : opt?.label}
-                  </Typography>
-                )}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+      {/* <FormControl> */}
+      <Select
+        className={cx("dropdown", {
+          "dropdown--open": open,
+        })}
+        data-testid="Dropdown"
+        open={open}
+        {...onHoverMethods}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
+        displayEmpty
+        placeholder={placeholder}
+        value={value}
+        renderValue={(value) => renderSelectedValue(value, selectedValue)}
+        disabled={disabled}
+        IconComponent={(props: any) => (
+          <DropdownIcon endAdornment={endAdornment} {...props} />
+        )}
+        MenuProps={{
+          ...MenuProps,
+          sx: {
+            ".MuiPaper-root": {
+              maxHeight: MenuProps?.maxHeight || "144px",
+            },
+          },
+        }}
+      >
+        {options?.map((opt: StandardDropdownOption | any, idx: number) => {
+          const optValue = getOptionValue ? getOptionValue(opt) : opt?.value;
+          const optDisabled = getOptionDisabled
+            ? getOptionDisabled(opt)
+            : opt?.disabled;
+          return (
+            <MenuItem
+              key={optValue}
+              value={optValue}
+              disabled={optDisabled || disabled}
+              data-dropdown-option={idx}
+              onClick={(e) => {
+                if (optDisabled || disabled) return;
+                e.stopPropagation();
+                e.preventDefault();
+                handleChange({ target: { value: optValue } });
+              }}
+            >
+              {checkBoxSelection ? (
+                <Checkbox
+                  label={getOptionLabel ? getOptionLabel(opt) : opt?.label}
+                  checked={optValue === value ? true : false}
+                  disabled={optDisabled || disabled}
+                  typographyVariant="bodyS"
+                />
+              ) : (
+                <Typography variant="bodyS" color="text.primary">
+                  {getOptionLabel ? getOptionLabel(opt) : opt?.label}
+                </Typography>
+              )}
+            </MenuItem>
+          );
+        })}
+      </Select>
+      {/* </FormControl> */}
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
     </>
   );
@@ -176,6 +198,9 @@ const DropdownComp = ({
 Dropdown.defaultProps = {
   labelPosition: "top",
   options: [],
+  MenuProps: {
+    maxHeight: "144px",
+  },
 } as Partial<DropdownProps>;
 
 export default Dropdown;

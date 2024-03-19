@@ -29,8 +29,6 @@ const StyledWrapper = styled(Box, {
   if (disabled) borderColor = theme.palette.charcoal["20"];
 
   return {
-    // width: fullWidth ? "100%" : "240px",
-    // background: hexToRGBA(theme.palette.primary.main, 0.05),
     width: fullWidth ? "100%" : DEFAULT_WIDTHS.INPUT,
     display: "flex",
     flexDirection: "column",

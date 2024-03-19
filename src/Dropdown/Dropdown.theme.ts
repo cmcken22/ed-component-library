@@ -1,6 +1,10 @@
 import { hexToRGBA } from "src/utils";
 
 export const DropdownListTheme = {
+  defaultProps: {
+    className: "dropdown__list",
+    "data-testid": "DropdownList",
+  },
   styleOverrides: {
     root: ({ theme }: any) => {
       return {

@@ -26,4 +26,7 @@ export interface DropdownProps extends StandardInputProps {
   onHover?: (hovered: boolean) => void;
   defaultActiveFirstOption?: boolean;
   checkBoxSelection?: boolean;
+  MenuProps?: {
+    maxHeight?: number | string;
+  };
 }

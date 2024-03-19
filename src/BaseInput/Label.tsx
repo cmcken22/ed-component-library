@@ -55,6 +55,7 @@ const Label = ({ children, required, position, tooltip }: LabelProps) => {
       sx={{
         display: "flex",
         alignItems: "center",
+        whiteSpace: "nowrap",
       }}
     >
       <Typography

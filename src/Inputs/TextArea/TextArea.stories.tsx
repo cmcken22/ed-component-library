@@ -32,7 +32,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const TextArea: Story = {
+export const Sample: Story = {
   args: {
     ...Input.TextArea.defaultProps,
     id: "Primary",
@@ -44,5 +44,12 @@ export const TextArea: Story = {
     value: "Hello world",
     fullWidth: false,
     labelPosition: "top",
+  },
+};
+
+export const LeftLabel: Story = {
+  args: {
+    ...Sample.args,
+    labelPosition: "left",
   },
 };

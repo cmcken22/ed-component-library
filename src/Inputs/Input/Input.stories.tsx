@@ -48,56 +48,25 @@ export const Text: Story = {
 
 export const Success: Story = {
   args: {
-    id: "Primary",
-    label: "Primary",
-    placeholder: "Enter a value",
-    disabled: false,
-    helperText: "Helper Text",
-    required: false,
-    value: "Hello world",
-    fullWidth: false,
-    labelPosition: "top",
+    ...Text.args,
     status: "success",
   },
 };
 export const Warning: Story = {
   args: {
-    id: "Primary",
-    label: "Primary",
-    placeholder: "Enter a value",
-    disabled: false,
-    helperText: "Helper Text",
-    required: false,
-    value: "Hello world",
-    fullWidth: false,
-    labelPosition: "top",
+    ...Text.args,
     status: "warning",
   },
 };
 export const Error: Story = {
   args: {
-    id: "Primary",
-    label: "Primary",
-    placeholder: "Enter a value",
-    disabled: false,
-    helperText: "Helper Text",
-    required: false,
-    value: "Hello world",
-    fullWidth: false,
-    labelPosition: "top",
+    ...Text.args,
     status: "error",
   },
 };
 export const LeftLabel: Story = {
   args: {
-    id: "Primary",
-    label: "Primary",
-    placeholder: "Enter a value",
-    disabled: false,
-    helperText: "Helper Text",
-    required: false,
-    value: "Hello world",
-    fullWidth: false,
+    ...Text.args,
     labelPosition: "left",
   },
 };

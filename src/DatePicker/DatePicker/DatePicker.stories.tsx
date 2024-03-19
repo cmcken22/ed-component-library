@@ -14,6 +14,22 @@ const meta = {
     },
   },
   tags: ["autodocs"],
+  render: (args) => {
+    let formattedProps = {};
+    if (args?.currentDate) {
+      formattedProps = {
+        ...formattedProps,
+        currentDate: new Date(args?.currentDate),
+      };
+    }
+    if (args?.value) {
+      formattedProps = {
+        ...formattedProps,
+        value: new Date(args?.value),
+      };
+    }
+    return <DatePicker {...args} {...formattedProps} />;
+  },
   argTypes: {
     onChange: {
       action: "onChange",
@@ -59,22 +75,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Sample: Story = {
-  render: (args) => {
-    let formattedProps = {};
-    if (args?.currentDate) {
-      formattedProps = {
-        ...formattedProps,
-        currentDate: new Date(args?.currentDate),
-      };
-    }
-    if (args?.value) {
-      formattedProps = {
-        ...formattedProps,
-        value: new Date(args?.value),
-      };
-    }
-    return <DatePicker {...args} {...formattedProps} />;
-  },
   args: {
     ...DatePicker.defaultProps,
     id: "date-picker",
@@ -85,5 +85,12 @@ export const Sample: Story = {
       arrow: false,
       offset: [0, 8],
     },
+  },
+};
+
+export const LeftLabel: Story = {
+  args: {
+    ...Sample.args,
+    labelPosition: "left",
   },
 };

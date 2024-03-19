@@ -22,12 +22,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Smaple: Story = {
+export const Sample: Story = {
   args: {
     ...Checkbox.defaultProps,
     checked: true,
     disabled: false,
     label: "Primary",
     labelPosition: "right",
+  },
+};
+
+export const LabelPositionLeft: Story = {
+  args: {
+    ...Sample.args,
+    labelPosition: "left",
   },
 };

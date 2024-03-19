@@ -58,3 +58,11 @@ export const Smaple: Story = {
     ],
   },
 };
+
+export const LeftLabel: Story = {
+  args: {
+    ...Dropdown.defaultProps,
+    ...Smaple.args,
+    labelPosition: "left",
+  },
+};

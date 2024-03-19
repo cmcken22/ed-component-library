@@ -13,6 +13,23 @@ const meta = {
       },
     },
   },
+  render: (args) => {
+    let formattedProps = {};
+    if (args?.currentDate) {
+      formattedProps = {
+        ...args,
+        currentDate: new Date(args?.currentDate),
+      };
+    }
+    if (args?.value) {
+      const nextValue = args?.value.map((date: any) => new Date(date));
+      formattedProps = {
+        ...formattedProps,
+        value: nextValue,
+      };
+    }
+    return <RangePicker {...args} {...formattedProps} />;
+  },
   tags: ["autodocs"],
   argTypes: {
     onChange: {
@@ -59,23 +76,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: (args) => {
-    let formattedProps = {};
-    if (args?.currentDate) {
-      formattedProps = {
-        ...args,
-        currentDate: new Date(args?.currentDate),
-      };
-    }
-    if (args?.value) {
-      const nextValue = args?.value.map((date: any) => new Date(date));
-      formattedProps = {
-        ...formattedProps,
-        value: nextValue,
-      };
-    }
-    return <RangePicker {...args} {...formattedProps} />;
-  },
   args: {
     ...RangePicker.defaultProps,
     id: "range_picker",
@@ -86,5 +86,12 @@ export const Default: Story = {
       arrow: false,
       offset: [0, 8],
     },
+  },
+};
+
+export const LeftLabel: Story = {
+  args: {
+    ...Default.args,
+    labelPosition: "left",
   },
 };

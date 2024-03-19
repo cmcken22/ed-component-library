@@ -152,7 +152,7 @@ const RangePickerComp = ({
   }, [value]);
 
   return (
-    <div>
+    <>
       <>
         <BaseInput.Label required={required} position={labelPosition}>
           {label}
@@ -201,7 +201,7 @@ const RangePickerComp = ({
           numberOfMonths={numberOfMonths}
         />
       </Popover>
-    </div>
+    </>
   );
 };
 

@@ -22,7 +22,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Sample: Story = {
   args: {
     ...RadioButtonGroup.defaultProps,
@@ -53,5 +52,11 @@ export const Sample: Story = {
     allowDeselect: false,
     labelPosition: "right",
   },
-  // argTypes: {}
+};
+
+export const LabelPositionLeft: Story = {
+  args: {
+    ...Sample.args,
+    labelPosition: "left",
+  },
 };

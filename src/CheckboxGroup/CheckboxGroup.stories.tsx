@@ -22,7 +22,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Sample: Story = {
   args: {
     ...CheckboxGroup.defaultProps,
     value: ["option_1", "option_3"],
@@ -78,5 +78,12 @@ export const CustomList: Story = {
         data: "option_4",
       },
     ],
+  },
+};
+
+export const LabelPositionLeft: Story = {
+  args: {
+    ...Sample.args,
+    labelPosition: "left",
   },
 };

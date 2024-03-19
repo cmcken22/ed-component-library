@@ -29,3 +29,10 @@ export const Sample: Story = {
     label: "Toggle Label",
   },
 };
+
+export const LabelPositionLeft: Story = {
+  args: {
+    ...Sample.args,
+    labelPosition: "left",
+  },
+};

@@ -68,13 +68,13 @@ const StyledFormControlLabel = styled(FormControlLabel, {
     userSelect: "none",
     "&.MuiFormControlLabel": {
       "&-labelPlacementStart": {
-        ".RadioButton": {
+        ".RadioButton__input": {
           marginLeft: theme.spacing(1),
           marginRight: 0,
         },
       },
       "&-labelPlacementEnd": {
-        ".RadioButton": {
+        ".RadioButton__input": {
           marginRight: theme.spacing(1),
           marginLeft: 0,
         },

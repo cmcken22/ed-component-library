@@ -35,3 +35,9 @@ export const Sample: Story = {
     labelPosition: "right",
   },
 };
+export const LabelPositionLeft: Story = {
+  args: {
+    ...Sample.args,
+    labelPosition: "left",
+  },
+};

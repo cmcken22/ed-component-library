@@ -15,7 +15,7 @@ const ToggleContainer = styled(Box, {
   return {
     cursor: disabled ? "default" : "pointer",
     display: "flex",
-    flexDirection: labelPosition === "right" ? "row-reverse" : "row",
+    flexDirection: labelPosition === "right" ? "row" : "row-reverse",
     gap: "8px",
     alignItems: "center",
     width: "fit-content",
@@ -219,7 +219,7 @@ const Toggle = ({
 
 Toggle.defaultProps = {
   displayToggleText: false,
-  labelPosition: "left",
+  labelPosition: "right",
 } as Partial<ToggleProps>;
 
 export default Toggle;

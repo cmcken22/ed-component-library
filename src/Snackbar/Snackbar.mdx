@@ -3,6 +3,7 @@ import {
   Canvas,
   Controls,
   Description,
+  Markdown,
   Meta,
   Stories,
   Subtitle,
@@ -11,13 +12,8 @@ import {
 import * as SnackbarStories from "./Snackbar.stories";
 import SnackbarProvider from "./SnackbarProvider";
 
-<Meta of={SnackbarStories} />
-
-<Title>Snackbar Provider</Title>
-
-<Description of={SnackbarStories} />
-
-```jsx
+export const markdownContent = `
+\`\`\`jsx
 <SnackbarProvider
   dense={true}
   maxSnack={5}
@@ -29,7 +25,16 @@ import SnackbarProvider from "./SnackbarProvider";
 >
   <App />
 </SnackbarProvider>
-```
+\`\`\`
+`;
+
+<Meta of={SnackbarStories} />
+
+<Title>Snackbar Provider</Title>
+
+<Description of={SnackbarStories} />
+
+<Markdown>{markdownContent}</Markdown>
 
 <ArgTypes of={SnackbarProvider} />
 

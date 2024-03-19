@@ -1,7 +1,7 @@
 {
   "name": "@cmckenna/ed-component-library",
   "private": false,
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "homepage": "https://cmcken22.github.io/ed-component-library/?path=/docs/read-me--docs",
   "exports": {

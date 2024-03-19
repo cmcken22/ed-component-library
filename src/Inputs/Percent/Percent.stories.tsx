@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import Input from "../Input";
+import Percent from ".";
 
 const meta = {
   title: "Example/Inputs/Percent",
-  component: Input.Percent,
+  component: Percent,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("Input.Percent"),
+        transform: sourceCodeFormatter("Percent"),
       },
     },
   },
@@ -33,14 +33,14 @@ const meta = {
       control: { type: "number" },
     },
   },
-} satisfies Meta<typeof Input.Percent>;
+} satisfies Meta<typeof Percent>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Sample: Story = {
   args: {
-    ...Input.Percent.defaultProps,
+    ...Percent.defaultProps,
     id: "Percent",
     label: "Percent",
     placeholder: "",

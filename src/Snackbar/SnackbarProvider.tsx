@@ -10,6 +10,10 @@ export interface SnackbarProviderProps {
   maxSnack?: number;
   autoHideDuration?: number;
   anchorOrigin?: SnackbarOrigin;
+  /**
+   * Specify the mounting element for the snackbar
+   */
+  domRoot?: HTMLElement;
 }
 
 const SnackbarProvider = ({
@@ -18,6 +22,7 @@ const SnackbarProvider = ({
   maxSnack,
   autoHideDuration,
   anchorOrigin,
+  domRoot,
 }: SnackbarProviderProps) => {
   return (
     <SnackbarProviderNotistack
@@ -25,6 +30,7 @@ const SnackbarProvider = ({
       maxSnack={maxSnack}
       autoHideDuration={autoHideDuration}
       anchorOrigin={anchorOrigin}
+      domRoot={domRoot}
       Components={{
         success: Snackbar,
         error: Snackbar,

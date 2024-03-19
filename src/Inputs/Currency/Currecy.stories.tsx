@@ -9,7 +9,7 @@ const meta = {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("Input.Currency"),
+        transform: sourceCodeFormatter("Currency"),
       },
     },
   },

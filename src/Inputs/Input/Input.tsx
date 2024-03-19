@@ -3,9 +3,6 @@ import _debounce from "lodash.debounce";
 import { useCallback, useContext, useEffect, useState } from "react";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { InputProps } from ".";
-import Currency from "../Currency";
-import Percent from "../Percent";
-import TextArea from "../TextArea";
 
 const InputComp = ({
   label,
@@ -75,13 +72,6 @@ Input.defaultProps = {
   labelPosition: "top",
   type: "text",
 } as Partial<InputProps>;
-
-// @ts-expect-error
-Input.Currency = Currency;
-// @ts-expect-error
-Input.Percent = Percent;
-// @ts-expect-error
-Input.TextArea = TextArea;
 
 // export named component for storybook docgen
 export { Input };

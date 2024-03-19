@@ -9,7 +9,7 @@ const meta = {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("Input.TextArea"),
+        transform: sourceCodeFormatter("TextArea"),
       },
     },
   },

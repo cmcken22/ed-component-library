@@ -6,9 +6,13 @@ export interface SnackbarProviderProps {
     maxSnack?: number;
     autoHideDuration?: number;
     anchorOrigin?: SnackbarOrigin;
+    /**
+     * Specify the mounting element for the snackbar
+     */
+    domRoot?: HTMLElement;
 }
 declare const SnackbarProvider: {
-    ({ children, dense, maxSnack, autoHideDuration, anchorOrigin, }: SnackbarProviderProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
+    ({ children, dense, maxSnack, autoHideDuration, anchorOrigin, domRoot, }: SnackbarProviderProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
     defaultProps: Partial<SnackbarProviderProps>;
 };
 export default SnackbarProvider;

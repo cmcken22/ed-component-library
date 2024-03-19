@@ -1,4 +1,6 @@
+/// <reference types="react" />
 import { StandardInputProps } from '../../BaseInput';
+import { PopoverProps } from '../../Popover';
 export interface BaseDatePickerProps extends StandardInputProps {
     label?: string;
     /**
@@ -12,7 +14,7 @@ export interface BaseDatePickerProps extends StandardInputProps {
     helperText?: string;
     /**
      * Format of the date, formats come from dayjs
-     * @default MM-DD-YYYY
+     * @default MMM DD, YYYY
      */
     format?: string;
     /**
@@ -56,4 +58,19 @@ export interface BaseDatePickerProps extends StandardInputProps {
      * @default false
      */
     disableTextInput?: boolean;
+    calendarPlacement?: "auto-end" | "auto-start" | "auto" | "bottom-end" | "bottom-start" | "bottom" | "left-end" | "left-start" | "left" | "right-end" | "right-start" | "right" | "top-end" | "top-start" | "top";
+    /**
+     * Popover props to pass to the underlying Popover component
+     */
+    popoverProps?: Omit<PopoverProps, "children" | "open" | "anchorEl" | "onClose">;
+}
+export interface BaseCalendarProps {
+    children: React.ReactNode;
+    disableFuture?: boolean;
+    disableCurrent?: boolean;
+    disablePast?: boolean;
+    dateDisabled?: (date: Date) => boolean;
+    currentDate?: Date;
+    numberOfMonths?: number;
+    range?: boolean;
 }

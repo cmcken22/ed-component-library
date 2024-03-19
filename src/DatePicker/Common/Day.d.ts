@@ -1,5 +1,5 @@
-declare const Day: ({ day, month }: {
+declare const Day: ({ day, onSelect }: {
     day: Date;
-    month: number;
+    onSelect: any;
 }) => import('../../../node_modules/react/jsx-runtime').JSX.Element;
 export default Day;

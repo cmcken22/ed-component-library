@@ -1,4 +1,8 @@
 export declare const DropdownListTheme: {
+    defaultProps: {
+        className: string;
+        "data-testid": string;
+    };
     styleOverrides: {
         root: ({ theme }: any) => {
             "& .MuiPaper-root": {

@@ -9,3 +9,6 @@ export declare const getYear: (date: Date) => number;
 export declare const numberToMonth: (num: number) => any;
 export declare const getMonthFromCalendar: (weeks: any) => number;
 export declare const getFirstDay: (weeks: any) => any;
+export declare const convertDateToGMT: (value: any) => Date;
+export declare const numberOfMonthsBetween: (d2: Date, d1: Date, abs?: boolean) => any;
+export declare const formatDateRange: (values: Date[]) => Date[];

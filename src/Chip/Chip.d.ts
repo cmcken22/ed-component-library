@@ -1,21 +1,6 @@
-/// <reference types="react" />
-type ChipType = "positive" | "negative" | "warning" | "pending" | "neutral";
-export interface ChipProps {
-    id?: string;
-    type: ChipType;
-    text: string;
-    hideIcon?: boolean;
-    iconPosition?: "left" | "right";
-    onClick?: () => void;
-    onHover?: () => void;
-    children?: string | React.ReactNode;
-}
+import { ChipProps } from ".";
 declare const Chip: {
-    ({ id, type, text, hideIcon, iconPosition, onClick, onHover, children, }: ChipProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
-    defaultProps: {
-        type: ChipType;
-        hideIcon: boolean;
-        iconPosition: "right" | "left";
-    };
+    ({ id, type, text, hideIcon, className, iconPosition, onClick, onHover, children, sx, }: ChipProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
+    defaultProps: Partial<ChipProps>;
 };
 export default Chip;

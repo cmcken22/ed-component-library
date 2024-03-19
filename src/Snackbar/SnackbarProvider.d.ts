@@ -1,25 +1,14 @@
 /// <reference types="react" />
+import { SnackbarOrigin } from "notistack";
 export interface SnackbarProviderProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
     dense?: boolean;
     maxSnack?: number;
     autoHideDuration?: number;
-    anchorOrigin?: {
-        vertical: "top" | "bottom";
-        horizontal: "left" | "center" | "right";
-    };
+    anchorOrigin?: SnackbarOrigin;
 }
 declare const SnackbarProvider: {
     ({ children, dense, maxSnack, autoHideDuration, anchorOrigin, }: SnackbarProviderProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
-    defaultProps: {
-        children: any;
-        dense: boolean;
-        maxSnack: number;
-        autoHideDuration: number;
-        anchorOrigin: {
-            vertical: string;
-            horizontal: string;
-        };
-    };
+    defaultProps: Partial<SnackbarProviderProps>;
 };
 export default SnackbarProvider;

@@ -1,15 +1,6 @@
-import { SxProps } from "@mui/material";
-export interface AvatarProps {
-    id?: string;
-    size?: "default" | "large" | "small";
-    text?: string;
-    sx?: SxProps;
-    src?: string;
-    onClick?: () => void;
-    onHover?: (hovered: boolean) => void;
-}
+import { AvatarProps } from ".";
 declare const Avatar: {
-    ({ id, size, text, src, onHover, onClick, sx }: AvatarProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
+    ({ id, className, size, text, src, onHover, onClick, sx, }: AvatarProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
     defaultProps: Partial<AvatarProps>;
 };
 export default Avatar;

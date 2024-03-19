@@ -4,4 +4,5 @@ export interface SnackbarProps {
     variant?: "success" | "warning" | "error" | "info";
     persist?: boolean;
     hideIcon?: boolean;
+    width?: string | number;
 }

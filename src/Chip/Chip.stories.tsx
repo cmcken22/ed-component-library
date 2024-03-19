@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { sourceCodeFormatter } from "src/utils";
+import { sourceCodeFormatter } from "sb-utils/index";
 import Chip from "./Chip";
 
 const meta = {

@@ -49,6 +49,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         src: resolve(__dirname, "./src"),
         "test-utils": resolve(__dirname, "./utils/test-utils"),
+        "sb-utils": resolve(__dirname, "./utils/sb-utils"),
       },
     },
   };

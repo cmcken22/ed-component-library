@@ -2,6 +2,7 @@ import { Box, styled } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useState } from "react";
 import Typography from "../Typography";
+import { ToggleProps } from "./Toggle.types";
 
 const ToggleContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== "checked" && prop !== "labelPosition",
@@ -124,24 +125,9 @@ const ToggleText = styled(Box, {
   };
 });
 
-export interface ToggleProps {
-  checked?: boolean;
-  disabled?: boolean;
-  onChange?: (value: boolean) => void;
-  /**
-   * Display the text "ON" and "OFF" inside the toggle
-   * @default false
-   */
-  displayToggleText?: boolean;
-  label?: string;
-  sx?: any;
-  labelPosition?: "left" | "right";
-  // TODO:
-  // onHover?: () => void;
-  // tooltip?: string;
-}
-
 const Toggle = ({
+  id,
+  className,
   checked: passedValue,
   disabled,
   onChange,
@@ -193,6 +179,12 @@ const Toggle = ({
 
   return (
     <ToggleContainer
+      id={id}
+      className={cx("Toggle", {
+        [className]: className,
+      })}
+      data-testid="Toggle"
+      data-checked={checked}
       disabled={disabled}
       checked={checked}
       onClick={() => handleChange(!checked)}

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { sourceCodeFormatter } from "src/utils";
+import { sourceCodeFormatter } from "sb-utils/index";
 import Avatar from "./";
 
 const meta = {
@@ -9,7 +9,7 @@ const meta = {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("Button"),
+        transform: sourceCodeFormatter("Avatar"),
       },
     },
   },

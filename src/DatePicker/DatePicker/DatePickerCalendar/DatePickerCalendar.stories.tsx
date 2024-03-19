@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
-import { sourceCodeFormatter } from "src/utils";
+import { sourceCodeFormatter } from "sb-utils/index";
 import DatePickerCalendar from ".";
 
 const meta = {

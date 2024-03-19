@@ -11,6 +11,7 @@ module.exports = {
   },
   coveragePathIgnorePatterns: [
     "<rootDir>/src/Icon/IconElements",
+    "<rootDir>/utils/sb-utils/*",
     ".*\\.theme\\.(ts|tsx)$",
   ],
   moduleDirectories: ["node_modules", "src", "utils"],
@@ -23,5 +24,6 @@ module.exports = {
     "^@mui/styled-engine$": "<rootDir>/node_modules/@mui/styled-engine",
     "^src/(.*)$": "<rootDir>/src/$1",
     "^test-utils/(.*)$": "<rootDir>/utils/test-utils/$1",
+    "^sb-utils/(.*)$": "<rootDir>/utils/sb-utils/$1",
   },
 };

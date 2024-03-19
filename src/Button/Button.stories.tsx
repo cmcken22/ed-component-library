@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useMemo } from "react";
+import { sourceCodeFormatter } from "sb-utils/index";
 import { IconVariant } from "src/Icon";
-import { sourceCodeFormatter } from "src/utils";
 import Button from "./Button";
 
 const meta = {

@@ -8,9 +8,9 @@
     "baseUrl": "./",
     "paths": {
       "src/*": ["src/*"],
-      "test-utils/*": ["utils/test-utils/*"]
+      "test-utils/*": ["utils/test-utils/*"],
+      "sb-utils/*": ["utils/sb-utils/*"]
     },
-
     /* Bundler mode */
     // "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -31,6 +31,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false
   },
-  "include": ["./src/**/*", "./utils/test-utils/**/*"]
+  "include": ["./src/**/*", "./utils/test-utils/**/*", "./utils/sb-utils/**/*"],
+  "exclude": ["node_modules"]
   // "references": [{ "path": "./tsconfig.node.json" }]
 }

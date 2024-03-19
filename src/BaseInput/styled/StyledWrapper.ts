@@ -7,6 +7,7 @@ export interface Props {
   disabled?: boolean;
   labelPosition?: string;
   fullWidth?: boolean;
+  componentType?: string;
 }
 
 const StyledWrapper = styled(Box, {
@@ -14,9 +15,17 @@ const StyledWrapper = styled(Box, {
     "status",
     "labelPosition",
     "fullWidth",
+    "componentType",
   ]),
   slot: "root",
-})<Props>(({ theme, status, disabled, labelPosition, fullWidth }) => {
+})<Props>(({
+  theme,
+  status,
+  disabled,
+  labelPosition,
+  fullWidth,
+  componentType,
+}) => {
   const colorMap = {
     error: theme.palette.error.main,
     warning: theme.palette.warning.main,
@@ -29,7 +38,9 @@ const StyledWrapper = styled(Box, {
   if (disabled) borderColor = theme.palette.charcoal["20"];
 
   return {
-    width: fullWidth ? "100%" : DEFAULT_WIDTHS.INPUT,
+    width: fullWidth
+      ? "100%"
+      : DEFAULT_WIDTHS?.[componentType] || DEFAULT_WIDTHS.Input,
     display: "flex",
     flexDirection: "column",
     color: colorMap?.[status],

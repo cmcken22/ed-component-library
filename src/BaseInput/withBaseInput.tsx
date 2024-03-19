@@ -11,6 +11,7 @@ const withBaseInput = <T extends BaseInputProps>(
     return (
       <BaseInput
         id={id}
+        componentType={displayName}
         className={className}
         status={status}
         fullWidth={fullWidth}

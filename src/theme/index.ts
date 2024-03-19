@@ -29,7 +29,8 @@ const useEllisDonTheme = () => {
 };
 
 const DEFAULT_WIDTHS = {
-  INPUT: "240px",
+  RangePicker: "400px",
+  Input: "240px",
 };
 
 export { Colors, DEFAULT_WIDTHS, palette, theme, useEllisDonTheme };

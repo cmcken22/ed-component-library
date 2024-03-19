@@ -27,7 +27,7 @@ const StyledWrapper = styled(Box, {
     borderRadius: "4px",
     display: "flex",
     alignItems: "center",
-    width: "400px",
+    width: "100%",
     borderColor: borderColor,
     ".MuiInputBase-root": {
       width: "auto",
@@ -155,6 +155,9 @@ const DateRangeInput = ({
           }}
           slotProps={{
             textField: {
+              InputProps: {
+                style: { height: "34px", padding: 0 },
+              },
               onKeyDown: (e) => handleKeyDown(e, e.target, index),
               placeholder: Array.isArray(placeholder)
                 ? placeholder?.[index]
@@ -162,10 +165,7 @@ const DateRangeInput = ({
             },
           }}
           disabled={disabled || disableTextInput}
-          onChange={(date: any, ...x) => {
-            console.clear();
-            console.log("date:", date);
-            console.log("x:", x);
+          onChange={(date: any) => {
             handleChange(date ? date.toDate() : null, index);
           }}
         />

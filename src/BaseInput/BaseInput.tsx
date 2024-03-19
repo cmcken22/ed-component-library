@@ -18,6 +18,7 @@ const BaseInput = ({
   sx,
   children,
   tooltip,
+  componentType,
 }: BaseInputProps) => {
   const [labelPosition, setLabelPosition] = useState<"top" | "left">("top");
   const [innerStatus, setInnerStatus] = useState<Status>();
@@ -63,6 +64,7 @@ const BaseInput = ({
         className={cx({
           [className]: className,
         })}
+        componentType={componentType}
         status={status || innerStatus}
         disabled={disabled}
         labelPosition={labelPosition}

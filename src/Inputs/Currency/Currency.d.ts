@@ -1,6 +1,5 @@
+/// <reference types="react" />
 import { CurrencyProps } from ".";
-declare const Currency: {
-    (props: CurrencyProps): import('../../../node_modules/react/jsx-runtime').JSX.Element;
-    defaultProps: Partial<CurrencyProps>;
-};
+declare const Currency: import('../../../node_modules/react').FC<CurrencyProps>;
+export { Currency };
 export default Currency;

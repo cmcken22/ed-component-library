@@ -1,0 +1,1 @@
+function a(s,r){s=s.replace("#","");const n=parseInt(s.substring(0,2),16),t=parseInt(s.substring(2,4),16),o=parseInt(s.substring(4,6),16);return`rgba(${n}, ${t}, ${o}, ${r})`}const u=s=>r=>!s.includes(r);export{a as h,u as s};

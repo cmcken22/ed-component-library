@@ -10,8 +10,5 @@ export interface BaseIconProps {
     className?: string;
     sx?: any;
 }
-declare const Icon: {
-    ({ icon, color, height, width, className, sx }: BaseIconProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
-    defaultProps: {};
-};
+declare const Icon: import('../../node_modules/react').ForwardRefExoticComponent<BaseIconProps & import('../../node_modules/react').RefAttributes<unknown>>;
 export default Icon;

@@ -1,6 +1,5 @@
+/// <reference types="react" />
 import { TextAreaProps } from ".";
-declare const TextArea: {
-    (props: TextAreaProps): import('../../../node_modules/react/jsx-runtime').JSX.Element;
-    defaultProps: Partial<TextAreaProps>;
-};
+declare const TextArea: import('../../../node_modules/react').FC<TextAreaProps>;
+export { TextArea };
 export default TextArea;

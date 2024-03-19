@@ -1,6 +1,5 @@
+/// <reference types="react" />
 import { PercentProps } from ".";
-declare const Percent: {
-    (props: PercentProps): import('../../../node_modules/react/jsx-runtime').JSX.Element;
-    defaultProps: Partial<PercentProps>;
-};
+declare const Percent: import('../../../node_modules/react').FC<PercentProps>;
+export { Percent };
 export default Percent;

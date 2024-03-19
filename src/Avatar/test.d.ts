@@ -3,7 +3,7 @@ import Avatar from "./";
 declare const meta: {
     title: string;
     component: {
-        ({ id, className, size, text, src, onHover, onClick, sx, }: import('./Avatar.types').AvatarProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
+        ({ id, className, size, text, src, onHover, onClick, sx, tooltip, }: import('./Avatar.types').AvatarProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
         defaultProps: Partial<import('./Avatar.types').AvatarProps>;
     };
     parameters: {

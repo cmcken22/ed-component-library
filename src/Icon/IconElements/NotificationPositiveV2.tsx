@@ -8,7 +8,7 @@ export default ({ stroke, fill }: { stroke: string; fill: string }) => (
   >
     <path
       d="M18 8.4C18 6.70261 17.3679 5.07475 16.2426 3.87452C15.1174 2.67428 13.5913 2 12 2C10.4087 2 8.88258 2.67428 7.75736 3.87452C6.63214 5.07475 6 6.70261 6 8.4C6 15.8667 3 18 3 18H21C21 18 18 15.8667 18 8.4Z"
-      fill={fill}
+      fill={stroke}
       stroke={stroke}
       strokeWidth="1.5"
       strokeLinecap="round"
@@ -23,7 +23,7 @@ export default ({ stroke, fill }: { stroke: string; fill: string }) => (
     />
     <path
       d="M17 8C18.6569 8 20 6.65685 20 5C20 3.34315 18.6569 2 17 2C15.3431 2 14 3.34315 14 5C14 6.65685 15.3431 8 17 8Z"
-      fill={fill}
+      fill="#DA4167"
     />
   </svg>
 );

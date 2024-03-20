@@ -154,9 +154,7 @@ const Tabs = ({
   );
 };
 
-TabController.Panel = Panel;
-
-export default function TabController({ children, persistTabs, sx }: any) {
+const TabController = ({ children, persistTabs, sx }: any) => {
   const [tabs, setTabs] = useState<any[]>([]);
   const [tabMap, setTabMap] = useState<any>({});
   const [tabValue, setTabValue] = useState<number | null>(0);
@@ -197,9 +195,6 @@ export default function TabController({ children, persistTabs, sx }: any) {
 
   // if (tabValue === null) return null;
 
-  console.log("tabs", tabs);
-  console.log("tabMap", tabMap);
-
   return (
     <Tabs
       tabs={tabs}
@@ -211,4 +206,8 @@ export default function TabController({ children, persistTabs, sx }: any) {
       {children}
     </Tabs>
   );
-}
+};
+
+TabController.Panel = Panel;
+
+export default TabController;

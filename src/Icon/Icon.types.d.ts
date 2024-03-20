@@ -1,10 +1,10 @@
-/// <reference types="react" />
+import { ReactNode } from '../../node_modules/react';
 import IconMap from "./Icon.map";
 export type IconVariantType = keyof typeof IconMap;
 export declare const IconVariant: Record<string, IconVariantType>;
 export interface IconProps {
     id?: string;
-    icon: IconVariantType | React.ElementType;
+    icon: IconVariantType | ReactNode;
     color?: string;
     size?: string | number;
     height?: string | number;

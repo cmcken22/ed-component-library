@@ -4,6 +4,7 @@ import ButtonTheme from "src/Button/Button.theme";
 import CheckboxTheme from "src/Checkbox/Checkbox.theme";
 import DropdownTheme, { DropdownListTheme } from "src/Dropdown/Dropdown.theme";
 import RadioButtonTheme from "src/RadioButton/RadioButton.theme";
+import TabsTheme from "src/Tabs/Tabs.theme";
 import typography from "./Typography";
 import { Colors, palette } from "./palette";
 
@@ -16,10 +17,8 @@ const theme = createTheme({
     MuiTextField: BaseInputTheme,
     MuiRadio: RadioButtonTheme,
     MuiSelect: DropdownTheme,
-    // MuiMenuItem: DropdownListTheme,
+    MuiTabs: TabsTheme,
     MuiMenu: DropdownListTheme,
-    // MuiMenuList: DropdownListTheme,
-    // TODO: try setting the theme for these components
   },
 });
 

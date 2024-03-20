@@ -12,6 +12,7 @@ const ${componentName} = ({ id, className, sx }: ${componentName}Props) => {
         [className]: className,
       })}
       sx={sx}
+      data-testid="${componentName}"
     >
       TODO: ${componentName}
     </Box>

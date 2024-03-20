@@ -18,7 +18,7 @@ describe("${componentName}", () => {
   it("should render foo text correctly", () => {
     const { getByTestId } = renderComponent();
     const component = getByTestId("${componentName}");
-    expect(component).toHaveTextContent("conner was here");
+    expect(component).toHaveTextContent(props.id);
   });
 });
 `,

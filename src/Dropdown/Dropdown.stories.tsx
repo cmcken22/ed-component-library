@@ -71,8 +71,10 @@ export const CustomList: Story = {
     docs: {
       source: {
         transform: sourceCodeFormatter("Dropdown", {
-          getOptionLabel: "(option: any) => option.customLabel",
-          getOptionValue: "(option: any) => option.customValue",
+          map: {
+            getOptionLabel: "(option: any) => option.customLabel",
+            getOptionValue: "(option: any) => option.customValue",
+          },
         }),
       },
     },

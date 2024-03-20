@@ -1,13 +1,52 @@
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import cx from "classnames";
 import { useMemo } from "react";
-import Tabs from "src/Tabs";
-import { sizeFormat } from "src/utils";
+import { shouldNotForwardProp, sizeFormat } from "src/utils";
 import { Icon, Typography } from "..";
 import { DrawerProps } from "./Drawer.types";
 
 const DEFAULT_DRWAWER_WIDTH = 368;
+
+const DrawerBody = styled(Box)(() => ({
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "nowrap",
+}));
+
+const DrawerHeader = styled(Box, {
+  shouldForwardProp: shouldNotForwardProp(["displayBorder"]),
+  slot: "root",
+})<{ displayBorder?: boolean }>(({ theme, displayBorder }) => ({
+  padding: "18px 16px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  flexShrink: 0,
+  borderBottom: displayBorder ? "1px solid" : "none",
+  borderColor: theme.palette.charcoal["20"],
+}));
+
+const DrawerContent = styled(Box)(() => ({
+  height: "100%",
+  width: "100%",
+  flexGrow: 1,
+  overflow: "auto",
+}));
+
+const DrawerFooter = styled(Box, {
+  shouldForwardProp: shouldNotForwardProp(["displayBorder"]),
+  slot: "root",
+})<{ displayBorder?: boolean }>(({ theme, displayBorder }) => ({
+  borderTop: displayBorder ? "1px solid" : "none",
+  borderColor: theme.palette.charcoal["20"],
+  padding: "18px 16px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  flexShrink: 0,
+}));
 
 const Drawer = ({
   id,
@@ -19,6 +58,12 @@ const Drawer = ({
   marginTop,
   width,
   title,
+  children,
+  footer,
+  hideBackdrop,
+  headerBorder,
+  footerBorder,
+  persistent,
 }: DrawerProps) => {
   const drawerWidth = useMemo(() => {
     if (width) return width;
@@ -44,6 +89,8 @@ const Drawer = ({
         sx={{
           ".MuiDrawer-root, .MuiBackdrop-root": {
             marginTop: sizeFormat(marginTop),
+            ...(hideBackdrop && { backgroundColor: "transparent" }),
+            ...(persistent && { pointerEvents: "none" }),
           },
           "& .MuiDrawer-paper": {
             boxSizing: "border-box",
@@ -51,68 +98,22 @@ const Drawer = ({
             width: drawerWidth,
           },
         }}
-        // hideBackdrop
       >
-        <Box
-          className="Drawer-content"
-          sx={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            flexWrap: "nowrap",
-          }}
-        >
-          <Box
-            sx={{
-              padding: "18px 16px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              // background: "red",
-              flexShrink: 0,
-              // mb: "24px",
-            }}
-          >
+        <DrawerBody className="Drawer__body">
+          <DrawerHeader className="Drawer__header" displayBorder={headerBorder}>
             <Typography variant="h5">{title}</Typography>
             <Icon icon="Close" onClick={onClose} />
-          </Box>
-          <Box
-            sx={{
-              height: "100%",
-              width: "100%",
-              // background: "rgba(255, 0, 255, 0.4)",
-              flexGrow: 1,
-              overflow: "auto",
-            }}
-          >
-            <Tabs>
-              <Tabs.Panel label="Tab 1">
-                <Box p={2}>Tab 1 Content</Box>
-              </Tabs.Panel>
-              <Tabs.Panel label="Tab 2">
-                <Box p={2}>
-                  Tab 2 Content
-                  {Array.from({ length: 100 }, (_, i) => i + 1).map((i) => (
-                    <Box key={`drawer-content--${i}`}>{i}</Box>
-                  ))}
-                </Box>
-              </Tabs.Panel>
-            </Tabs>
-          </Box>
-          {/* <Box
-            sx={{
-              padding: "18px 16px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              // background: "blue",
-              flexShrink: 0,
-              height: "300px",
-            }}
-          >
-            FOOTER
-          </Box> */}
-        </Box>
+          </DrawerHeader>
+          <DrawerContent className="Drawer__content">{children}</DrawerContent>
+          {footer && (
+            <DrawerFooter
+              className="Drawer__footer"
+              displayBorder={footerBorder}
+            >
+              {footer}
+            </DrawerFooter>
+          )}
+        </DrawerBody>
       </MuiDrawer>
     </Box>
   );
@@ -120,6 +121,10 @@ const Drawer = ({
 
 Drawer.defaultProps = {
   anchor: "right",
+  headerBorder: true,
+  footerBorder: true,
+  hideBackdrop: true,
+  persistent: false,
 } as Partial<DrawerProps>;
 
 export default Drawer;

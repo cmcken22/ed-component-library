@@ -10,4 +10,17 @@ export interface DrawerProps {
   marginTop?: number | string;
   width?: number | string;
   title?: string;
+  children?: React.ReactNode;
+  footer?: React.ReactNode;
+  headerBorder?: boolean;
+  footerBorder?: boolean;
+  /**
+   * If true, the backdrop is not displayed.
+   */
+  hideBackdrop?: boolean;
+  /**
+   * If true, the drawer is persistent and does not close on overlay click.
+   * It will remain open until explicitly closed.
+   */
+  persistent?: boolean;
 }

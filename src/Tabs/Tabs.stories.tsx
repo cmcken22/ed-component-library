@@ -1,7 +1,21 @@
 import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import Tabs from "./";
+import Tabs, { Tab, TabContextProvider, TabPanel } from "./";
+
+const Code = (res: string) => `
+<TabContextProvider value={value}>
+  <Tabs${res}  >
+    <Tab label="Tab 1" value="1" />
+    <Tab label="Tab 2" value="2" />
+  </Tabs>
+  <div style={{ marginTop: "8px" }}>
+    <TabPanel tabValue="1">Tab 1 Content</TabPanel>
+    <TabPanel tabValue="2">Tab 2 Content</TabPanel>
+  </div>
+</TabContextProvider>
+`;
 
 const meta = {
   title: "Example/Tabs",
@@ -10,17 +24,34 @@ const meta = {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("Tabs"),
+        transform: (_, args) => {
+          let res = sourceCodeFormatter("Tabs", { indent: 2 })(_, args);
+          res = res?.replace("<Tabs", ``);
+          res = res?.replace("/>", ``);
+          return Code(res);
+        },
       },
     },
   },
   render: (args: any) => {
+    const [value, setValue] = useState("1");
     return (
-      <Box>
-        <Tabs {...args}>
-          <Tabs.Panel label="Tab 1">Tab 1 Content</Tabs.Panel>
-          <Tabs.Panel label="Tab 2">Tab 2 Content</Tabs.Panel>
-        </Tabs>
+      <Box
+        sx={{
+          height: "200px",
+          width: "300px",
+        }}
+      >
+        <TabContextProvider value={value}>
+          <Tabs {...args} onTabChange={setValue}>
+            <Tab label="Tab 1" value="1" />
+            <Tab label="Tab 2" value="2" />
+          </Tabs>
+          <Box mt={1}>
+            <TabPanel tabValue="1">Tab 1 Content</TabPanel>
+            <TabPanel tabValue="2">Tab 2 Content</TabPanel>
+          </Box>
+        </TabContextProvider>
       </Box>
     );
   },
@@ -32,7 +63,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  // @ts-expect-error
   args: {
-    // ...Tabs.defaultProps,
+    ...Tabs.defaultProps,
+    // children: null,
   },
 };

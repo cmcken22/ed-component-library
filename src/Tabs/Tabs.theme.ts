@@ -6,17 +6,16 @@ export default {
     root: () => {
       return {
         // background: "red !important",
-        width: "fit-content",
+        width: "100%",
         minHeight: "unset",
-        // "& .MuiTabs-root": {
-        // },
+        // borderBottom: "1px solid green",
         "& .MuiTab-root": {
           padding: "0px",
           paddingLeft: "2px",
           paddingRight: "2px",
-          // background: "blue",
           minWidth: "unset",
           minHeight: "unset",
+          marginBottom: "4px",
         },
         "& .MuiTabs-flexContainer": {
           gap: "16px",

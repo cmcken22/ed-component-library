@@ -4,6 +4,7 @@ export { default as Button } from "./Button";
 export { default as Checkbox } from "./Checkbox";
 export { default as Chip } from "./Chip";
 export { DatePicker, RangePicker } from "./DatePicker";
+export { default as Drawer } from "./Drawer";
 export { default as Dropdown } from "./Dropdown";
 export { Grid, GridItem } from "./Grid";
 export { default as Icon } from "./Icon";
@@ -17,6 +18,7 @@ export {
   closeSnackbar,
   enqueueSnackbar,
 } from "./Snackbar";
+export { Tab, TabContextProvider, TabPanel, default as Tabs } from "./Tabs";
 export { default as ThemeWrapper } from "./ThemeWrapper";
 export { default as Typography } from "./Typography";
 export { palette, theme, useEllisDonTheme } from "./theme";

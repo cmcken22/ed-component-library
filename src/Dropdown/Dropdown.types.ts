@@ -30,3 +30,9 @@ export interface DropdownProps extends StandardInputProps {
     maxHeight?: number | string;
   };
 }
+
+export interface MultiSelectDropdownProps
+  extends Omit<DropdownProps, "value" | "onChange"> {
+  value?: string[];
+  onChange?: (value: string[]) => void;
+}

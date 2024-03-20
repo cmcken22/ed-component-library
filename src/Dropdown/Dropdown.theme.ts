@@ -38,6 +38,7 @@ export const DropdownListTheme = {
 export default {
   styleOverrides: {
     root: ({ theme, ownerState }: any) => {
+      console.log("ownerState:", ownerState);
       return {
         "&.MuiInputBase-root": {
           background: "white",
@@ -45,7 +46,8 @@ export default {
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderWidth: "1px !important",
         },
-        height: "36px",
+        height: ownerState?.multiple ? "unset" : "36px",
+        minHeight: "36px",
         width: "100%",
         ".MuiSelect-select": {
           display: "flex",
@@ -63,6 +65,15 @@ export default {
           "&.MuiInputBase-root .MuiOutlinedInput-notchedOutline": {
             borderColor: `${theme.palette.primary.main} !important`,
           },
+        },
+        "& .MuiSelect-multiple": {
+          height: "unset",
+          flexWrap: "wrap",
+          gap: "4px",
+          ...(ownerState?.value?.length && {
+            paddingTop: "4px",
+            paddingBottom: "4px",
+          }),
         },
       };
     },

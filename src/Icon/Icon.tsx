@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import cx from "classnames";
-import { useMemo } from "react";
+import { isValidElement, useCallback, useMemo } from "react";
 import { useOnHover } from "src/Hooks";
 import { useEllisDonTheme } from "src/theme";
 import { sizeFormat } from "src/utils";
@@ -21,8 +21,6 @@ const Icon = ({
 }: IconProps) => {
   const theme = useEllisDonTheme();
   const onHoverMethods = useOnHover(onHover);
-  const IconComponent =
-    typeof icon === "string" ? IconMap[icon!] : (icon as any);
 
   const computedSize = useMemo(() => {
     if (size) {
@@ -37,7 +35,15 @@ const Icon = ({
     };
   }, [size, height, width]);
 
-  if (!IconComponent) return null;
+  const renderIcon = useCallback(() => {
+    if (isValidElement(icon)) {
+      return icon;
+    }
+    if (typeof icon === "string") {
+      const IconComponent = IconMap[icon!];
+      return <IconComponent fill="transparent" stroke="currentColor" />;
+    }
+  }, [icon]);
 
   return (
     <Box
@@ -62,7 +68,7 @@ const Icon = ({
         ...sx,
       }}
     >
-      <IconComponent fill="transparent" stroke="currentColor" />
+      {renderIcon()}
     </Box>
   );
 };

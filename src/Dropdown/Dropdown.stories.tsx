@@ -32,28 +32,26 @@ export const Smaple: Story = {
     label: "Label",
     placeholder: "Placeholder",
     labelPosition: "top",
-    getOptionLabel: (option: any) => option.xxx,
-    getOptionValue: (option: any) => option.yyy,
     options: [
       {
-        xxx: "Option 1",
-        yyy: "option1",
+        label: "Option 1",
+        value: "option1",
       },
       {
-        xxx: "Option 2",
-        yyy: "option2",
+        label: "Option 2",
+        value: "option2",
       },
       {
-        xxx: "Option 3",
-        yyy: "option3",
+        label: "Option 3",
+        value: "option3",
       },
       {
-        xxx: "Option 4",
-        yyy: "option4",
+        label: "Option 4",
+        value: "option4",
       },
       {
-        xxx: "Option 5",
-        yyy: "option5",
+        label: "Option 5",
+        value: "option5",
       },
     ],
   },
@@ -64,5 +62,50 @@ export const LeftLabel: Story = {
     ...Dropdown.defaultProps,
     ...Smaple.args,
     labelPosition: "left",
+  },
+};
+
+export const CustomList: Story = {
+  parameters: {
+    layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Dropdown", {
+          getOptionLabel: "(option: any) => option.customLabel",
+          getOptionValue: "(option: any) => option.customValue",
+        }),
+      },
+    },
+  },
+  args: {
+    ...Dropdown.defaultProps,
+    id: "dropdown",
+    label: "Custom List",
+    placeholder: "Placeholder",
+    labelPosition: "top",
+    getOptionLabel: (option: any) => option.customLabel,
+    getOptionValue: (option: any) => option.customValue,
+    options: [
+      {
+        customLabel: "Option 1",
+        customValue: "option1",
+      },
+      {
+        customLabel: "Option 2",
+        customValue: "option2",
+      },
+      {
+        customLabel: "Option 3",
+        customValue: "option3",
+      },
+      {
+        customLabel: "Option 4",
+        customValue: "option4",
+      },
+      {
+        customLabel: "Option 5",
+        customValue: "option5",
+      },
+    ],
   },
 };

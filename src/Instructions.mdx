@@ -7,6 +7,7 @@ import { Markdown, Meta } from "@storybook/blocks";
 - [Run the repo locally](#run-the-repo-locally)
 - [Component Structure](#component-structure)
 - [Creating a new component](#creating-a-new-component)
+- [Adding Icons](#adding-icons)
 - [Testing the Components with Jest](#testing-the-components-with-jest)
 - [Testing the Components with Chromatic](#testing-the-components-with-chromatic)
 - [Deploying Storybook to Github Pages](#deploying-storybook-to-github-pages)
@@ -63,6 +64,83 @@ export { default as Button } from "./Button";
 ```
 
 - Only the components exported in the `src/index.ts` file will be included in the npm package!!!
+
+<br />
+<br />
+## Adding Icons
+
+- To add an icon we need to convert an `svg` file into a `tsx` file
+- `svg` files usually have `stroke` and `fill` values set to a hex code, we need to replace all the instances of `fill` and `stroke` with `currentColor`
+- this will allow us to easily change the color of the icon using css
+- we can use the `convert-svg` script to convert the svg file to a tsx file
+- to run the script use the following command
+
+```js
+npm run convert-svg <directory_path>
+```
+
+- replacing `<directory_path>` with the path to the directory containing the svg files
+- the script will iterate over all svg files and convert them into the tsx format
+- additionally, it will reformat the file name into a more user-friendly format.
+- remember to add the new icons to the IconMap in the `src/Icon/Icon.map.ts` file
+
+**Example:**
+
+```jsx
+// Add.svg
+<svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none" // <- we don't want this, it will make it difficult to change the color
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M8 12H12M16 12H12M12 12V8M12 12V16"
+    stroke="#2E2E2E" // <- we don't want this, it will make it difficult to change the color
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+    stroke="#2E2E2E" // <- we don't want this, it will make it difficult to change the color
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
+```
+
+**will be converted to**
+
+```tsx
+// Add.tsx
+export default ({ stroke, fill }: { stroke: string; fill: string }) => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill={fill} // <- much better
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M8 12H12M16 12H12M12 12V8M12 12V16"
+      stroke={stroke} // <- much better
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+      stroke={stroke} // <- much better
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+```
 
 <br />
 <br />

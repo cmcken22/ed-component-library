@@ -1,8 +1,12 @@
 export const sourceCodeFormatter =
-  (componentName: string) => (_, context: any) => {
+  (componentName: string, map?: any) => (_, context: any) => {
     let args = "";
     for (const key in context.args) {
       const value = context.args[key];
+      if (map && map[key]) {
+        args += `  ${key}={${map[key]}}\n`;
+        continue;
+      }
       if (typeof value === "function") {
         args += `  ${key}={() => {}}\n`;
       } else if (typeof value === "object") {

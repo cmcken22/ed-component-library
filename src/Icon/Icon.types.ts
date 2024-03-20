@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import IconMap from "./Icon.map";
 
 export type IconVariantType = keyof typeof IconMap;
@@ -8,7 +9,7 @@ export const IconVariant: Record<string, IconVariantType> = Object.freeze(
 
 export interface IconProps {
   id?: string;
-  icon: IconVariantType | React.ElementType;
+  icon: IconVariantType | ReactNode;
   color?: string;
   size?: string | number;
   height?: string | number;

@@ -114,7 +114,6 @@ import WarningV3 from "./IconElements/WarningV3";
 const IconMap = {
   AddComment,
   Add,
-  // Arrows,
   Attachment,
   BarGraphDown,
   BarGraphUp,

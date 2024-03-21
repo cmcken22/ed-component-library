@@ -6,7 +6,7 @@ export const sourceCodeFormatter =
   (componentName: string, options?: any) => (_, context: any) => {
     const { map, indent } = options || {
       map: null,
-      indent: 2,
+      indent: 1,
     };
     let args = "";
     for (const key in context.args) {

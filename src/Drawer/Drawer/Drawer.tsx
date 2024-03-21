@@ -2,13 +2,39 @@ import { Box, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import cx from "classnames";
 import { useMemo } from "react";
+import { Icon, Typography } from "src";
 import { shouldNotForwardProp, sizeFormat } from "src/utils";
-import { Icon, Typography } from "..";
 import { DrawerProps } from "./Drawer.types";
 
 const DEFAULT_DRWAWER_WIDTH = 368;
 
-const DrawerBody = styled(Box)(() => ({
+const StyledDrawer = styled(MuiDrawer, {
+  shouldForwardProp: shouldNotForwardProp([
+    "hideBackdrop",
+    "persistent",
+    "marginTop",
+    "drawerWidth",
+  ]),
+  slot: "root",
+})<{
+  hideBackdrop?: boolean;
+  persistent?: boolean;
+  marginTop?: string | number;
+  drawerWidth?: string | number;
+}>(({ hideBackdrop, persistent, marginTop, drawerWidth }) => ({
+  ".MuiDrawer-root, .MuiBackdrop-root": {
+    marginTop: sizeFormat(marginTop),
+    ...(hideBackdrop && { backgroundColor: "transparent" }),
+    ...(persistent && { pointerEvents: "none" }),
+  },
+  "& .MuiDrawer-paper": {
+    boxSizing: "border-box",
+    marginTop: sizeFormat(marginTop),
+    width: drawerWidth,
+  },
+}));
+
+const DrawerContent = styled(Box)(() => ({
   height: "100%",
   display: "flex",
   flexDirection: "column",
@@ -28,7 +54,7 @@ const DrawerHeader = styled(Box, {
   borderColor: theme.palette.charcoal["20"],
 }));
 
-const DrawerContent = styled(Box)(() => ({
+const DrawerBody = styled(Box)(() => ({
   height: "100%",
   width: "100%",
   flexGrow: 1,
@@ -74,48 +100,34 @@ const Drawer = ({
   }, [anchor, width]);
 
   return (
-    <Box
+    <StyledDrawer
       id={id}
       className={cx("Drawer", {
         [className]: className,
       })}
       sx={sx}
       data-testid="Drawer"
+      open={open}
+      onClose={onClose}
+      anchor={anchor}
+      marginTop={marginTop}
+      hideBackdrop={hideBackdrop}
+      persistent={persistent}
+      drawerWidth={drawerWidth}
     >
-      <MuiDrawer
-        open={open}
-        onClose={onClose}
-        anchor={anchor}
-        sx={{
-          ".MuiDrawer-root, .MuiBackdrop-root": {
-            marginTop: sizeFormat(marginTop),
-            ...(hideBackdrop && { backgroundColor: "transparent" }),
-            ...(persistent && { pointerEvents: "none" }),
-          },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            marginTop: sizeFormat(marginTop),
-            width: drawerWidth,
-          },
-        }}
-      >
-        <DrawerBody className="Drawer__body">
-          <DrawerHeader className="Drawer__header" displayBorder={headerBorder}>
-            <Typography variant="h5">{title}</Typography>
-            <Icon icon="Close" onClick={onClose} />
-          </DrawerHeader>
-          <DrawerContent className="Drawer__content">{children}</DrawerContent>
-          {footer && (
-            <DrawerFooter
-              className="Drawer__footer"
-              displayBorder={footerBorder}
-            >
-              {footer}
-            </DrawerFooter>
-          )}
-        </DrawerBody>
-      </MuiDrawer>
-    </Box>
+      <DrawerContent className="Drawer__content">
+        <DrawerHeader className="Drawer__header" displayBorder={headerBorder}>
+          <Typography variant="h5">{title}</Typography>
+          <Icon icon="Close" onClick={onClose} />
+        </DrawerHeader>
+        <DrawerBody className="Drawer__body">{children}</DrawerBody>
+        {footer && (
+          <DrawerFooter className="Drawer__footer" displayBorder={footerBorder}>
+            {footer}
+          </DrawerFooter>
+        )}
+      </DrawerContent>
+    </StyledDrawer>
   );
 };
 

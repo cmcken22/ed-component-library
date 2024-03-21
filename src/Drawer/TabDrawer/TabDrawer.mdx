@@ -1,0 +1,36 @@
+import {
+  Canvas,
+  Controls,
+  Description,
+  Meta,
+  Stories,
+  Subtitle,
+  Title,
+} from "@storybook/blocks";
+import * as TabDrawerStories from "./TabDrawer.stories";
+
+<Meta of={TabDrawerStories} />
+
+<Title>TabDrawer</Title>
+
+- The `TabDrawer` component is a decorated version of the `Drawer` component.
+- It will only accept `Tab` components as children and will render the `Tab` components in the correct location
+- All other children will be ignored
+- Below is an example of how the children are expected to be structured
+
+```jsx
+<TabContextProvider value="1">
+  <Tabs gutter={16}>
+    <Tab label="Tab 1" value="1" />
+    <Tab label="Tab 2" value="2" />
+  </Tabs>
+  <TabPanel tabValue="1">Tab 1 Content</TabPanel>
+  <TabPanel tabValue="2">Tab 2 Content</TabPanel>
+</TabContextProvider>
+```
+
+<Canvas of={TabDrawerStories.Default} />
+
+<Controls of={TabDrawerStories.Default} />
+
+<Stories of={TabDrawerStories} />

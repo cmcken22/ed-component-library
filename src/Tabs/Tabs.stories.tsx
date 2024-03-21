@@ -56,7 +56,13 @@ const meta = {
     );
   },
   tags: ["autodocs"],
-  argTypes: {},
+  argTypes: {
+    gutter: {
+      control: {
+        type: "number",
+      },
+    },
+  },
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
@@ -66,6 +72,5 @@ export const Default: Story = {
   // @ts-expect-error
   args: {
     ...Tabs.defaultProps,
-    // children: null,
   },
 };

@@ -41,6 +41,8 @@ const TabContextProvider = ({
   );
 };
 
+TabContextProvider.displayName = "TabContextProvider";
+
 TabContextProvider.defaultProps = {} as Partial<TabContextProps>;
 
 export default TabContextProvider;

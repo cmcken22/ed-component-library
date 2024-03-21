@@ -37,6 +37,8 @@ const TabPanel = ({
   );
 };
 
+TabPanel.displayName = "TabPanel";
+
 TabPanel.defaultProps = {} as Partial<TabPanelProps>;
 
 export default TabPanel;

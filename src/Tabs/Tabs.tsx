@@ -64,6 +64,8 @@ const Tabs = ({
   );
 };
 
+Tabs.displayName = "Tabs";
+
 Tabs.defaultProps = {
   gutter: 0,
 } as Partial<TabsProps>;

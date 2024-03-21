@@ -4,13 +4,6 @@ import Tabs, { TabContextProvider, TabPanel } from "src/Tabs";
 import Drawer from "../Drawer";
 import { TabDrawerProps } from "./TabDrawer.types";
 
-const TabDrawerContentWrapper = styled(Box)(() => ({
-  height: "100%",
-  display: "flex",
-  flexDirection: "column",
-  flexWrap: "nowrap",
-}));
-
 const TabsWrapper = styled(Box)(() => ({
   flexShrink: 0,
 }));

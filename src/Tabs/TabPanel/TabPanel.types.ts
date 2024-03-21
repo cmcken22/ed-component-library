@@ -6,5 +6,4 @@ export interface TabPanelProps {
   sx?: SxProps;
   children?: React.ReactNode;
   tabValue: string | number;
-  value: number;
 }

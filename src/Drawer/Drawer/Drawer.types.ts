@@ -23,4 +23,13 @@ export interface DrawerProps {
    * It will remain open until explicitly closed.
    */
   persistent?: boolean;
+  /**
+   * To toggle the close button visibility.
+   */
+  allowClose?: boolean;
+
+  /**
+   * To hide the header.
+   */
+  displayHeader?: boolean;
 }

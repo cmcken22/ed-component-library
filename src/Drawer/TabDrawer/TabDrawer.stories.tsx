@@ -8,7 +8,7 @@ import TabDrawer, { TabDrawerProps } from ".";
 
 const Code = (res: string) => `
 <TabDrawer${res}>
-  <TabContextProvider value="1">
+  <TabContextProvider defaultValue="1">
     <Tabs gutter={16}>
       <Tab label="Tab 1" value="1" />
       <Tab label="Tab 2" value="2" />
@@ -57,7 +57,7 @@ const meta = {
           footer={<Typography variant="h5">Example Footer</Typography>}
           headerBorder={false}
         >
-          <TabContextProvider value="1">
+          <TabContextProvider defaultValue="1">
             <Tabs gutter={16}>
               <Tab label="Tab 1" value="1" />
               <Tab label="Tab 2" value="2" />

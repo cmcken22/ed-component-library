@@ -13,15 +13,24 @@ const defaultContext: TabContext = {
 
 export const TabContext = createContext<TabContext>(defaultContext);
 
+// in the case that 0 is provided as a value
+const detectValue = (value: string | number | undefined) => {
+  if (value === undefined) return false;
+  return true;
+};
+
 const TabContextProvider = ({
+  defaultValue,
   value,
   onTabChange,
   children,
 }: TabContextProps) => {
-  const [tabValue, setTabValue] = useState(value);
+  const [tabValue, setTabValue] = useState(
+    detectValue(defaultValue) ? defaultValue : value
+  );
 
   useEffect(() => {
-    setTabValue(value);
+    if (detectValue(value)) setTabValue(value);
   }, [value]);
 
   const handleTabChange = useCallback(

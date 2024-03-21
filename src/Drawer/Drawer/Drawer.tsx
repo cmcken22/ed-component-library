@@ -90,6 +90,8 @@ const Drawer = ({
   headerBorder,
   footerBorder,
   persistent,
+  allowClose,
+  displayHeader,
 }: DrawerProps) => {
   const drawerWidth = useMemo(() => {
     if (width) return width;
@@ -116,10 +118,12 @@ const Drawer = ({
       drawerWidth={drawerWidth}
     >
       <DrawerContent className="Drawer__content">
-        <DrawerHeader className="Drawer__header" displayBorder={headerBorder}>
-          <Typography variant="h5">{title}</Typography>
-          <Icon icon="Close" onClick={onClose} />
-        </DrawerHeader>
+        {displayHeader && (
+          <DrawerHeader className="Drawer__header" displayBorder={headerBorder}>
+            <Typography variant="h5">{title}</Typography>
+            {allowClose && <Icon icon="Close" onClick={onClose} />}
+          </DrawerHeader>
+        )}
         <DrawerBody className="Drawer__body">{children}</DrawerBody>
         {footer && (
           <DrawerFooter className="Drawer__footer" displayBorder={footerBorder}>
@@ -137,6 +141,8 @@ Drawer.defaultProps = {
   footerBorder: true,
   hideBackdrop: true,
   persistent: false,
+  allowClose: true,
+  displayHeader: true,
 } as Partial<DrawerProps>;
 
 export default Drawer;

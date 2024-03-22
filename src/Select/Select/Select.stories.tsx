@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Avatar from "src/Avatar";
+import Icon from "src/Icon";
 import Select from ".";
 
 const meta = {
@@ -200,5 +201,93 @@ export const CustomOptionRenderer: Story = {
       },
     ],
     renderOption: () => <></>,
+  },
+};
+
+const RenderValueCodeSample = `(value: string, selectedOption: any) => (
+    <Box
+      key={value}
+      sx={{
+        height: "40px",
+        display: "flex",
+        gap: "8px",
+        width: "100%",
+        alignItems: "center",
+      }}
+    >
+      <Icon icon={selectedOption?.icon} />
+      {selectedOption?.label}
+    </Box>
+  )`;
+
+export const CustomValueRenderer: Story = {
+  parameters: {
+    layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Select", {
+          map: {
+            renderValue: RenderValueCodeSample,
+          },
+        }),
+      },
+    },
+  },
+  render: (args) => {
+    return (
+      <Select
+        {...args}
+        renderValue={(value: string, selectedOption: any) => (
+          <Box
+            key={value}
+            sx={{
+              height: "40px",
+              display: "flex",
+              gap: "8px",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            <Icon icon={selectedOption?.icon} />
+            {selectedOption?.label}
+          </Box>
+        )}
+      />
+    );
+  },
+  args: {
+    ...Select.defaultProps,
+    id: "Select",
+    label: "Custom Option Renderer",
+    placeholder: "Placeholder",
+    labelPosition: "top",
+    options: [
+      {
+        icon: "HappyEmoji",
+        label: "Option 1",
+        value: "option1",
+      },
+      {
+        icon: "SadEmoji",
+        label: "Option 2",
+        value: "option2",
+      },
+      {
+        icon: "Hammer",
+        label: "Option 3",
+        value: "option3",
+      },
+      {
+        icon: "Star",
+        label: "Option 4",
+        value: "option4",
+      },
+      {
+        icon: "Heart",
+        label: "Option 5",
+        value: "option5",
+      },
+    ],
+    renderValue: () => <></>,
   },
 };

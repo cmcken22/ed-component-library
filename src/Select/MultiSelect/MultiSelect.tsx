@@ -11,6 +11,7 @@ const MultiSelect = (props: MultiSelectProps) => {
     onChange,
     placeholder,
     defaultActiveFirstOption,
+    renderValue,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || []);
@@ -61,10 +62,18 @@ const MultiSelect = (props: MultiSelectProps) => {
       if (empty) return null;
 
       const res = [];
+      const selectedOptions = [];
       for (const val of value) {
         const opt = getOptionFromValue(val);
-        if (opt) res.push(handleGetOptionLabel(opt));
+        if (opt) {
+          selectedOptions.push(opt);
+          res.push(handleGetOptionLabel(opt));
+        }
       }
+      if (renderValue) {
+        return renderValue(value, selectedOptions);
+      }
+
       const str = res?.join(", ");
       return (
         <Typography variant="bodyR" color="text.primary">
@@ -72,7 +81,7 @@ const MultiSelect = (props: MultiSelectProps) => {
         </Typography>
       );
     },
-    [handleGetOptionLabel, placeholder, getOptionFromValue]
+    [handleGetOptionLabel, placeholder, getOptionFromValue, renderValue]
   );
 
   const handleDefaultActiveFirstOption = useCallback(() => {

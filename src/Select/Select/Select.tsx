@@ -11,6 +11,7 @@ const Select = (props: SelectProps) => {
     onChange,
     placeholder,
     defaultActiveFirstOption,
+    renderValue,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || "");
@@ -57,13 +58,17 @@ const Select = (props: SelectProps) => {
       const selectedOption = getOptionFromValue(value);
       if (!selectedOption) return null;
 
+      if (renderValue) {
+        return renderValue(value, selectedOption);
+      }
+
       return (
         <Typography variant="bodyR" color="text.primary">
           {handleGetOptionLabel(selectedOption)}
         </Typography>
       );
     },
-    [handleGetOptionLabel, placeholder, getOptionFromValue]
+    [handleGetOptionLabel, placeholder, getOptionFromValue, renderValue]
   );
 
   const handleDefaultActiveFirstOption = useCallback(() => {

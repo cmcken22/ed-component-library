@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Avatar from "src/Avatar";
+import Icon from "src/Icon";
 import MultiSelect from ".";
 
 const meta = {
@@ -41,25 +42,29 @@ export const Default: Story = {
         label: "Option 3",
         value: "option3",
       },
+      {
+        label: "Option 4",
+        value: "option4",
+      },
     ],
   },
 };
 
 const RenderOptionCodeSample = `(option: any, { label, value }: any) => (
-  <Box
-    key={value}
-    sx={{
-      height: "40px",
-      display: "flex",
-      gap: "8px",
-      width: "100%",
-      alignItems: "center",
-    }}
-  >
-    <Avatar text={option?.user} />
-    {label}
-  </Box>
-)`;
+    <Box
+      key={value}
+      sx={{
+        height: "40px",
+        display: "flex",
+        gap: "8px",
+        width: "100%",
+        alignItems: "center",
+      }}
+    >
+      <Avatar text={option?.user} />
+      {label}
+    </Box>
+  )`;
 
 export const CustomOptionRenderer: Story = {
   parameters: {
@@ -128,5 +133,98 @@ export const CustomOptionRenderer: Story = {
       },
     ],
     renderOption: () => <></>,
+  },
+};
+
+const RenderValueCodeSample = `(value: string[], selectedOptions: any[]) => (
+    <Box
+      key={value?.length}
+      sx={{
+        height: "40px",
+        display: "flex",
+        gap: "8px",
+        width: "100%",
+        alignItems: "center",
+      }}
+    >
+      {selectedOptions?.map((opt: any) => (
+        <Icon key={opt?.icon} icon={opt?.icon} />
+      ))}
+    </Box>
+  )`;
+
+export const CustomValueRenderer: Story = {
+  parameters: {
+    layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("MultiSelect", {
+          map: {
+            renderValue: RenderValueCodeSample,
+          },
+        }),
+      },
+    },
+  },
+  render: (args) => {
+    return (
+      <MultiSelect
+        {...args}
+        renderValue={(value: string[], selectedOptions: any) => {
+          return (
+            <Box
+              key={value?.length}
+              sx={{
+                height: "40px",
+                display: "flex",
+                gap: "8px",
+                width: "100%",
+                alignItems: "center",
+              }}
+            >
+              {selectedOptions?.map((opt: any) => (
+                <Icon key={opt?.icon} icon={opt?.icon} />
+              ))}
+            </Box>
+          );
+        }}
+      />
+    );
+  },
+  args: {
+    ...MultiSelect.defaultProps,
+    id: "Select",
+    label: "Custom Option Renderer",
+    placeholder: "Placeholder",
+    labelPosition: "top",
+    value: ["option1", "option2", "option3", "option4", "option5"],
+    options: [
+      {
+        icon: "HappyEmoji",
+        label: "Option 1",
+        value: "option1",
+      },
+      {
+        icon: "SadEmoji",
+        label: "Option 2",
+        value: "option2",
+      },
+      {
+        icon: "Hammer",
+        label: "Option 3",
+        value: "option3",
+      },
+      {
+        icon: "Star",
+        label: "Option 4",
+        value: "option4",
+      },
+      {
+        icon: "Heart",
+        label: "Option 5",
+        value: "option5",
+      },
+    ],
+    renderValue: () => <></>,
   },
 };

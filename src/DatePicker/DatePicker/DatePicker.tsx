@@ -172,8 +172,8 @@ const DatePickerComp = ({
             />
           </LocalizationProvider>
         </Box>
+        <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       </BaseInput>
-      <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       <Popover
         open={displayCalendar}
         anchorEl={anchorEl}

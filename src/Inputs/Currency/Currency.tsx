@@ -15,6 +15,25 @@ const StyledTextField = styled(TextField, {
   };
 });
 
+const StyledTextIcon = styled(Icon, {
+  slot: "root",
+})(() => {
+  return {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+});
+
+const SymbolMap: Record<string, string | (() => JSX.Element)> = {
+  Dollar: () => <Icon icon={IconVariant.Dollar} size={20} />,
+  $: () => <Icon icon={IconVariant.Dollar} size={20} />,
+  Pound: "£",
+  "£": "£",
+  Euro: "€",
+  "€": "€",
+};
+
 const CurrencyComp = ({
   label,
   placeholder,
@@ -26,9 +45,15 @@ const CurrencyComp = ({
   fixedDecimalScale,
   decimalScale,
   thousandSeparator,
+  decimalSeparator,
+  prefix,
+  suffix,
+  persistSuffix,
+  allowLeadingZeros,
+  allowNegative,
   onChange,
 }: CurrencyProps) => {
-  const { endAdornment } = useContext(BaseInputContext);
+  const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue);
 
   const handleChange = useCallback(
@@ -39,16 +64,46 @@ const CurrencyComp = ({
     [setValue, onChange]
   );
 
-  const startAdornment = useCallback(() => {
+  const renderCustomIcon = useCallback(
+    (symbol: string | (() => JSX.Element)) => {
+      if (!symbol) return null;
+      if (symbol instanceof Function) {
+        return symbol();
+      }
+      return <StyledTextIcon icon={<>{symbol}</>} size={20} />;
+    },
+    []
+  );
+
+  const renderStartAdornment = useCallback(() => {
+    if (prefix && SymbolMap[prefix]) {
+      const symbol = SymbolMap[prefix];
+      return (
+        <InputAdornment position="start" sx={{ ml: "8px" }}>
+          {renderCustomIcon(symbol)}
+        </InputAdornment>
+      );
+    }
+  }, [prefix, renderCustomIcon]);
+
+  const renderEndAdornment = useCallback(() => {
+    if (!suffix) return statusAdornment;
+    const symbol = SymbolMap?.[suffix];
     return (
-      <InputAdornment position="start" sx={{ ml: "8px" }}>
-        <Icon icon={IconVariant.Dollar} height="20px" width="20px" />
+      <InputAdornment
+        position="end"
+        sx={{ ml: "8px", ".status-adornment": { ml: 0 } }}
+      >
+        {!statusAdornment || (statusAdornment && persistSuffix)
+          ? renderCustomIcon(symbol)
+          : null}
+        {statusAdornment && <>{statusAdornment}</>}
       </InputAdornment>
     );
-  }, []);
+  }, [suffix, persistSuffix, statusAdornment]);
 
   return (
-    <>
+    <BaseInput>
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
@@ -57,17 +112,20 @@ const CurrencyComp = ({
         onValueChange={handleChange}
         placeholder={placeholder}
         thousandSeparator={thousandSeparator}
+        decimalSeparator={decimalSeparator}
         fixedDecimalScale={fixedDecimalScale}
         decimalScale={decimalScale}
         customInput={StyledTextField}
+        allowLeadingZeros={allowLeadingZeros}
+        allowNegative={allowNegative}
         disabled={disabled}
         InputProps={{
-          startAdornment: startAdornment(),
-          endAdornment,
+          startAdornment: renderStartAdornment(),
+          endAdornment: renderEndAdornment(),
         }}
       />
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-    </>
+    </BaseInput>
   );
 };
 
@@ -75,11 +133,16 @@ const Currency = withBaseInput<CurrencyProps>(CurrencyComp, "Currency");
 
 Currency.defaultProps = {
   labelPosition: "top",
-  thousandSeparator: false,
+  thousandSeparator: true,
   fixedDecimalScale: false,
+  decimalSeparator: ".",
   decimalScale: 2,
   disabled: false,
   required: false,
+  prefix: "Dollar",
+  persistSuffix: false,
+  allowLeadingZeros: false,
+  allowNegative: true,
 } as Partial<CurrencyProps>;
 
 // export named component for storybook docgen

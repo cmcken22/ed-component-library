@@ -199,7 +199,9 @@ export const CustomIcon: Story = {
     docs: {
       source: {
         transform: sourceCodeFormatter("Icon", {
-          icon: SvgString,
+          map: {
+            icon: SvgString,
+          },
         }),
       },
     },

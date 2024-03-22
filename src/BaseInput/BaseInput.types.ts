@@ -22,6 +22,11 @@ export interface StandardInputProps
   extends Omit<BaseInputProps, "children" | "componentType"> {}
 
 export type BaseInputContext = {
+  id?: string;
+  className?: string;
+  fullWidth?: boolean;
+  componentType?: string;
+  sx?: SxProps;
   status?: keyof typeof Status | undefined;
   required?: boolean;
   disabled?: boolean;
@@ -33,6 +38,10 @@ export type BaseInputContext = {
 };
 
 const defaultContext: BaseInputContext = {
+  id: undefined,
+  className: undefined,
+  fullWidth: false,
+  componentType: undefined,
   status: undefined,
   required: false,
   disabled: false,

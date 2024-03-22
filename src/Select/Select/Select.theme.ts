@@ -1,9 +1,9 @@
 import { hexToRGBA } from "src/utils";
 
-export const DropdownListTheme = {
+export const SelectListTheme = {
   defaultProps: {
-    className: "dropdown__list",
-    "data-testid": "DropdownList",
+    className: "Select__list",
+    "data-testid": "SelectList",
   },
   styleOverrides: {
     root: ({ theme }: any) => {

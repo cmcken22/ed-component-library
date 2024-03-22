@@ -131,46 +131,48 @@ const DatePickerComp = ({
 
   return (
     <>
-      <BaseInput.Label required={required} position={labelPosition}>
-        {label}
-      </BaseInput.Label>
-      <Box
-        data-testid="calendar-input"
-        onClick={() => setOpen(true)}
-        ref={(r: any) => setAnchorEl(r)}
-      >
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <MuiDatePicker
-            key={`MuiDatePicker--${disableTextInput}`}
-            format={format}
-            disableOpenPicker
-            value={value ? dayjs(value) : null}
-            disabled={disabled}
-            sx={{
-              ".MuiInputBase-root": {
-                cursor: disableTextInput ? "pointer" : "text",
-                "& input": {
-                  pointerEvents: disableTextInput ? "none" : "",
+      <BaseInput>
+        <BaseInput.Label required={required} position={labelPosition}>
+          {label}
+        </BaseInput.Label>
+        <Box
+          data-testid="calendar-input"
+          onClick={() => setOpen(true)}
+          ref={(r: any) => setAnchorEl(r)}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <MuiDatePicker
+              key={`MuiDatePicker--${disableTextInput}`}
+              format={format}
+              disableOpenPicker
+              value={value ? dayjs(value) : null}
+              disabled={disabled}
+              sx={{
+                ".MuiInputBase-root": {
+                  cursor: disableTextInput ? "pointer" : "text",
+                  "& input": {
+                    pointerEvents: disableTextInput ? "none" : "",
+                  },
                 },
-              },
-            }}
-            slotProps={{
-              textField: {
-                onFocus: disableTextInput ? (e) => e?.target?.blur() : null,
-                InputProps: {
-                  placeholder,
-                  startAdornment: startAdornment(),
-                  endAdornment,
+              }}
+              slotProps={{
+                textField: {
+                  onFocus: disableTextInput ? (e) => e?.target?.blur() : null,
+                  InputProps: {
+                    placeholder,
+                    startAdornment: startAdornment(),
+                    endAdornment,
+                  },
                 },
-              },
-            }}
-            onChange={(date: any) => {
-              if (disableTextInput) return;
-              handleSelect(date ? date.toDate() : null);
-            }}
-          />
-        </LocalizationProvider>
-      </Box>
+              }}
+              onChange={(date: any) => {
+                if (disableTextInput) return;
+                handleSelect(date ? date.toDate() : null);
+              }}
+            />
+          </LocalizationProvider>
+        </Box>
+      </BaseInput>
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       <Popover
         open={displayCalendar}

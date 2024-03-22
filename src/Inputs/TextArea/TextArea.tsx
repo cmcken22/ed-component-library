@@ -48,7 +48,7 @@ const TextAreaComp = ({
   );
 
   return (
-    <>
+    <BaseInput>
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
@@ -64,7 +64,7 @@ const TextAreaComp = ({
         InputProps={{ endAdornment }}
       />
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-    </>
+    </BaseInput>
   );
 };
 

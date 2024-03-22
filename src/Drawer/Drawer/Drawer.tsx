@@ -2,7 +2,7 @@ import { Box, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import cx from "classnames";
 import { useMemo } from "react";
-import { Icon, Typography } from "src";
+import { Icon, Typography } from "src/index";
 import { shouldNotForwardProp, sizeFormat } from "src/utils";
 import { DrawerProps } from "./Drawer.types";
 

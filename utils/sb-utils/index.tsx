@@ -4,10 +4,7 @@ const ind = (num: number) => {
 
 export const sourceCodeFormatter =
   (componentName: string, options?: any) => (_, context: any) => {
-    const { map, indent } = options || {
-      map: null,
-      indent: 1,
-    };
+    const { map, indent = 1 } = options || { map: {}, indent: 1 };
     let args = "";
     for (const key in context.args) {
       const value = context.args[key];

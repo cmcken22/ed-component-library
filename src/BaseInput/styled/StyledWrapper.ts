@@ -48,7 +48,7 @@ const StyledWrapper = styled(Box, {
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
-    ".MuiInputAdornment-positionEnd .icon-wrapper": {
+    ".MuiInputAdornment-positionEnd.status-adornment .icon-wrapper": {
       color: colorMap?.[status],
     },
     ".Input": {

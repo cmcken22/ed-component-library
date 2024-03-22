@@ -1,6 +1,6 @@
 import { FC } from "react";
-import BaseInput from "./BaseInput";
 import { BaseInputProps } from "./BaseInput.types";
+import BaseInputContextProvider from "./BaseInputContextProivder";
 
 const withBaseInput = <T extends BaseInputProps>(
   Component,
@@ -9,7 +9,7 @@ const withBaseInput = <T extends BaseInputProps>(
   const WithBaseInput = (props: T) => {
     const { id, status, fullWidth, tooltip, className, sx, ...rest } = props;
     return (
-      <BaseInput
+      <BaseInputContextProvider
         id={id}
         componentType={displayName}
         className={className}
@@ -19,7 +19,7 @@ const withBaseInput = <T extends BaseInputProps>(
         sx={sx}
       >
         <Component {...rest} />
-      </BaseInput>
+      </BaseInputContextProvider>
     );
   };
 

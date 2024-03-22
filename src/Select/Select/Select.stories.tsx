@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import Dropdown from "./Dropdown";
+import Select from ".";
 
 const meta = {
-  title: "Example/Dropdown",
-  component: Dropdown,
+  title: "Example/Select/Select",
+  component: Select,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("Dropdown"),
+        transform: sourceCodeFormatter("Select"),
       },
     },
   },
@@ -20,15 +20,15 @@ const meta = {
       control: { type: "radio" },
     },
   },
-} satisfies Meta<typeof Dropdown>;
+} satisfies Meta<typeof Select>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Smaple: Story = {
   args: {
-    ...Dropdown.defaultProps,
-    id: "dropdown",
+    ...Select.defaultProps,
+    id: "Select",
     label: "Label",
     placeholder: "Placeholder",
     labelPosition: "top",
@@ -59,7 +59,7 @@ export const Smaple: Story = {
 
 export const LeftLabel: Story = {
   args: {
-    ...Dropdown.defaultProps,
+    ...Select.defaultProps,
     ...Smaple.args,
     labelPosition: "left",
   },
@@ -70,7 +70,7 @@ export const CustomList: Story = {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("Dropdown", {
+        transform: sourceCodeFormatter("Select", {
           map: {
             getOptionLabel: "(option: any) => option.customLabel",
             getOptionValue: "(option: any) => option.customValue",
@@ -80,8 +80,8 @@ export const CustomList: Story = {
     },
   },
   args: {
-    ...Dropdown.defaultProps,
-    id: "dropdown",
+    ...Select.defaultProps,
+    id: "Select",
     label: "Custom List",
     placeholder: "Placeholder",
     labelPosition: "top",

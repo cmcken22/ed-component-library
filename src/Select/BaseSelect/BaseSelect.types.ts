@@ -1,32 +1,35 @@
 import { StandardInputProps } from "src/BaseInput";
 
-export interface StandardDropdownOption {
+export interface StandardSelectOption {
   label: string;
   value: string;
   disabled?: boolean;
 }
 
-export interface DropdownProps extends StandardInputProps {
+export interface BaseSelectProps extends StandardInputProps {
   label?: string;
   placeholder?: string;
   open?: boolean;
   helperText?: string;
-  value?: string;
+  value?: string | string[];
   required?: boolean;
   labelPosition?: "top" | "left";
   /**
-   * StandardDropdownOption accepts label, value, and disabled,
+   * StandardSelectOption accepts label, value, and disabled,
    * or you can provide a custom list of options and utilize the getOptionLabel, getOptionValue, and getOptionDisabled methods.
    */
-  options: StandardDropdownOption[] | any[];
-  onChange?: (value: string) => void;
-  getOptionLabel?: (option: any) => string;
-  getOptionValue?: (option: any) => string;
-  getOptionDisabled?: (option: any) => boolean;
+  options: StandardSelectOption[] | any[];
+  onChange: (value: string | string[]) => void;
+  getOptionLabel: (option: any) => string;
+  getOptionValue: (option: any) => string;
+  getOptionDisabled: (option: any) => boolean;
   onHover?: (hovered: boolean) => void;
   defaultActiveFirstOption?: boolean;
   checkBoxSelection?: boolean;
   MenuProps?: {
     maxHeight?: number | string;
   };
+  multiple?: boolean;
+  renderSelectedValue?: (value: string | string[]) => any;
+  getValueSelected?: (value: string) => boolean;
 }

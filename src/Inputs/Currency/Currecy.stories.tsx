@@ -14,8 +14,46 @@ const meta = {
     },
   },
   tags: ["autodocs"],
+  render: (args) => {
+    let thousandSeparator = args.thousandSeparator;
+    if (thousandSeparator === "true") {
+      thousandSeparator = true;
+    }
+    if (thousandSeparator === "false") {
+      thousandSeparator = false;
+    }
+    let prefix = args.prefix;
+    // @ts-expect-error
+    if (prefix === "null") {
+      prefix = null;
+    }
+    let suffix = args.suffix;
+    // @ts-expect-error
+    if (suffix === "null") {
+      suffix = null;
+    }
+    return (
+      <Currency
+        {...args}
+        thousandSeparator={thousandSeparator}
+        prefix={prefix}
+        suffix={suffix}
+      />
+    );
+  },
   argTypes: {
     onChange: { action: "changed" },
+    thousandSeparator: {
+      control: { type: "text" },
+    },
+    prefix: {
+      options: ["null", "Dollar", "Pound", "Euro", "$", "£", "€"],
+      control: { type: "select" },
+    },
+    suffix: {
+      options: ["null", "Dollar", "Pound", "Euro", "$", "£", "€"],
+      control: { type: "select" },
+    },
     status: {
       options: ["error", "success", "warning"],
       control: { type: "radio" },

@@ -1,10 +1,11 @@
 import { Box, styled } from "@mui/material";
+import { BaseInputMeta } from "../BaseInput";
 
 const PlacementContainer = styled(Box, {
   slot: "root",
 })(() => {
   return {
-    "&.Input-container": {
+    [`&.${BaseInputMeta.className}__placement-container`]: {
       display: "flex",
       flexDirection: "column",
       width: "100%",

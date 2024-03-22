@@ -136,7 +136,7 @@ const RangePickerComp = ({
 
   return (
     <>
-      <>
+      <BaseInput>
         <BaseInput.Label required={required} position={labelPosition}>
           {label}
         </BaseInput.Label>
@@ -159,7 +159,7 @@ const RangePickerComp = ({
           </LocalizationProvider>
         </Box>
         <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-      </>
+      </BaseInput>
       <Popover
         open={displayCalendar}
         anchorEl={anchorRef?.current}

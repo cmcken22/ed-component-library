@@ -94,7 +94,7 @@ const Checkbox = ({
           key={`Checkbox--${checked}`}
           className="Checkbox"
           checked={checked}
-          defaultChecked={checked}
+          // defaultChecked={checked}
           onChange={handleChange}
           disableFocusRipple
           disableTouchRipple

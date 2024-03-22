@@ -13,8 +13,8 @@ export interface ButtonProps {
   color?: any;
   onClick?: () => void;
   disabled?: boolean;
-  iconLeft?: IconVariantType | React.FC<React.SVGProps<SVGSVGElement>>;
-  iconRight?: IconVariantType | React.FC<React.SVGProps<SVGSVGElement>>;
+  iconLeft?: IconVariantType | ReactNode;
+  iconRight?: IconVariantType | ReactNode;
   loading?: boolean;
   onHover?: () => void;
   sx?: SxProps;

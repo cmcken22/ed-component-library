@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import Icon, { IconVariant } from "../Icon";
+import Icon, { IconVariant } from "../../Icon";
 
 const DropdownIcon = ({ endAdornment, ...props }: any) => {
   if (endAdornment) {

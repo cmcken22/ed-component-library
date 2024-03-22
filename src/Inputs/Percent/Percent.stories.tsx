@@ -23,8 +23,12 @@ const meta = {
       options: ["top", "left"],
       control: { type: "radio" },
     },
+    iconPlacement: {
+      options: ["prefix", "suffix"],
+      control: { type: "radio" },
+    },
     thousandSeparator: {
-      control: { type: "boolean" },
+      control: { type: "text" },
     },
     fixedDecimalScale: {
       control: { type: "boolean" },

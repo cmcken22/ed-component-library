@@ -6,7 +6,7 @@ const meta = {
   title: "Example/Date Picker/DatePicker",
   component: DatePicker,
   parameters: {
-    layout: "fullscreen",
+    layout: "centered",
     docs: {
       source: {
         transform: sourceCodeFormatter("DatePicker"),

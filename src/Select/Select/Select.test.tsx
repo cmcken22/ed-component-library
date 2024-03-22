@@ -1,21 +1,24 @@
 import "@testing-library/jest-dom";
-import { printHtml } from "test-utils/helper";
+import { BaseInputMeta } from "src/BaseInput/BaseInput";
 import { fireEvent, render } from "test-utils/index";
-import Dropdown, { DropdownProps } from ".";
+import Select, { SelectProps } from ".";
+import { BaseSelectMeta } from "../BaseSelect";
+
+const { className, dataTestId } = BaseSelectMeta;
 
 const getDropdownTrigger = (getByTestId: any) => {
-  const wrapperNode = getByTestId("Dropdown");
+  const wrapperNode = getByTestId(dataTestId);
   const selectNode = wrapperNode?.childNodes?.[0]?.childNodes?.[0];
   return selectNode;
 };
 
-describe("Dropdown", () => {
-  let props: DropdownProps;
+describe("Select", () => {
+  let props: SelectProps;
 
   beforeEach(() => {
     props = {
-      ...Dropdown.defaultProps,
-      id: "Dropdown",
+      ...Select.defaultProps,
+      id: "Select",
       label: "Label",
       labelPosition: "top",
       helperText: "Helper Text",
@@ -38,52 +41,55 @@ describe("Dropdown", () => {
   });
 
   const renderComponent = (props: any) => {
-    const component = render(<Dropdown {...props} />, {});
+    const component = render(<Select {...props} />, {});
     return component;
   };
 
   it("should render correctly", () => {
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId("Input");
+    const component = getByTestId(BaseInputMeta.dataTestId);
     expect(component).toHaveAttribute("id", props.id);
   });
 
   it("should accept className", () => {
     props.className = "test-class";
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId("Input");
+    const component = getByTestId(BaseInputMeta.dataTestId);
     expect(component).toHaveClass(props.className);
   });
 
   it("should have label", () => {
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
     expect(inputContainer).toBeInTheDocument();
-    const label = inputContainer.querySelector(".Input__label");
+    const label = inputContainer.querySelector(
+      `.${BaseInputMeta.className}__label`
+    );
     expect(label).toHaveTextContent(props.label);
   });
 
   it("should have placeholder", () => {
     props.placeholder = "Placeholder";
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
     const input = inputContainer.querySelector("input");
     expect(input).toHaveAttribute("placeholder", props.placeholder);
   });
 
   it("should have helper text", () => {
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
     expect(inputContainer).toBeInTheDocument();
-    const helperText = inputContainer.querySelector(".Input__helper-text");
+    const helperText = inputContainer.querySelector(
+      `.${BaseInputMeta.className}__helper-text`
+    );
     expect(helperText).toHaveTextContent(props.helperText);
   });
 
   it("should have list", () => {
     props.open = true;
     const { baseElement } = renderComponent(props);
-    printHtml(baseElement as HTMLElement);
-    const list = baseElement.querySelector(".dropdown__list");
+    const list = baseElement.querySelector(`.${className}__list`);
     expect(list).toBeInTheDocument();
   });
 
@@ -91,7 +97,7 @@ describe("Dropdown", () => {
     const { baseElement, getByTestId } = renderComponent(props);
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);
-    const list = baseElement.querySelector(".dropdown__list");
+    const list = baseElement.querySelector(`.${className}__list`);
     expect(list).toBeInTheDocument();
   });
 
@@ -99,7 +105,7 @@ describe("Dropdown", () => {
     const { baseElement, getByTestId } = renderComponent(props);
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);
-    const list = baseElement.querySelector(".dropdown__list");
+    const list = baseElement.querySelector(`.${className}__list`);
     expect(list).toBeInTheDocument();
 
     const listItems = list?.querySelectorAll("li");
@@ -125,7 +131,7 @@ describe("Dropdown", () => {
     const { baseElement, getByTestId } = renderComponent(props);
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);
-    const list = baseElement.querySelector(".dropdown__list");
+    const list = baseElement.querySelector(`.${className}__list`);
     expect(list).toBeInTheDocument();
 
     const listItems = list?.querySelectorAll("li");
@@ -138,12 +144,12 @@ describe("Dropdown", () => {
 
   it("should select item", () => {
     const { baseElement, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
     const input = inputContainer.querySelector("input");
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);
 
-    const list = baseElement.querySelector(".dropdown__list");
+    const list = baseElement.querySelector(`.${className}__list`);
     expect(list).toBeInTheDocument();
 
     const listItems = list?.querySelectorAll("li");
@@ -156,14 +162,14 @@ describe("Dropdown", () => {
 
   it("should deselect item", () => {
     const { baseElement, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
     expect(inputContainer).toBeInTheDocument();
 
     const input = inputContainer.querySelector("input");
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);
 
-    const list = baseElement.querySelector(".dropdown__list");
+    const list = baseElement.querySelector(`.${className}__list`);
     expect(list).toBeInTheDocument();
 
     const listItems = list?.querySelectorAll("li");
@@ -182,13 +188,13 @@ describe("Dropdown", () => {
   it("second option should be disabled", () => {
     props.options[1].disabled = true;
     const { baseElement, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
     expect(inputContainer).toBeInTheDocument();
 
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);
 
-    const list = baseElement.querySelector(".dropdown__list");
+    const list = baseElement.querySelector(`.${className}__list`);
     expect(list).toBeInTheDocument();
 
     const listItems = list?.querySelectorAll("li");
@@ -200,20 +206,20 @@ describe("Dropdown", () => {
   it("should select first item by default", () => {
     props.defaultActiveFirstOption = true;
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
     const input = inputContainer.querySelector("input");
     expect(inputContainer).toBeInTheDocument();
     expect(input).toHaveValue(props.options[0].value);
     expect(props.onChange).toHaveBeenCalledWith(props.options[0].value);
   });
 
-  it("should render with checkbozes", () => {
+  it("should render with checkboxes", () => {
     props.checkBoxSelection = true;
     const { baseElement, getByTestId } = renderComponent(props);
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);
 
-    const list = baseElement.querySelector(".dropdown__list");
+    const list = baseElement.querySelector(`.${className}__list`);
     expect(list).toBeInTheDocument();
 
     const listItems = list?.querySelectorAll("li");

@@ -1,4 +1,3 @@
-
 import { render } from "test-utils/index";
 import Grid from "./Grid";
 import { GridProps } from "./Grid.types";
@@ -8,15 +7,15 @@ describe("Grid", () => {
 
   beforeEach(() => {
     props = {
-      id: "123"
+      id: "123",
     };
   });
 
   const renderComponent = () => render(<Grid {...props} />);
 
-  it("should render foo text correctly", () => {
+  it("should render correctly", () => {
     const { getByTestId } = renderComponent();
     const component = getByTestId("Grid");
-    expect(component).toHaveTextContent("conner was here");
+    expect(component).toHaveTextContent(props.id);
   });
 });

@@ -1,8 +1,8 @@
-import { Box, InputAdornment, TextField, styled } from "@mui/material";
+import { InputAdornment, TextField, styled } from "@mui/material";
 import { useCallback, useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
-import Typography from "src/Typography";
+import Icon from "src/Icon";
 import { PercentProps } from ".";
 
 const StyledTextField = styled(TextField, {
@@ -12,6 +12,16 @@ const StyledTextField = styled(TextField, {
     "& input": {
       textAlign: "left",
     },
+  };
+});
+
+const StyledTextIcon = styled(Icon, {
+  slot: "root",
+})(() => {
+  return {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   };
 });
 
@@ -26,9 +36,14 @@ const PercentComp = ({
   fixedDecimalScale,
   decimalScale,
   thousandSeparator,
+  decimalSeparator,
+  iconPlacement,
+  persistSuffix,
+  allowLeadingZeros,
+  allowNegative,
   onChange,
 }: PercentProps) => {
-  const { endAdornment } = useContext(BaseInputContext);
+  const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue);
 
   const handleChange = useCallback(
@@ -40,20 +55,34 @@ const PercentComp = ({
     [setValue, onChange]
   );
 
-  const percentAdornment = useCallback(() => {
+  const renderStartAdornment = useCallback(() => {
+    if (iconPlacement !== "prefix") return null;
     return (
-      <InputAdornment position="end" sx={{ mr: 0 }}>
-        <Box sx={{ width: "15px" }}>
-          <Typography variant="bodyR" color="charcoal.90">
-            %
-          </Typography>
-        </Box>
+      <InputAdornment position="start" sx={{ ml: "8px" }}>
+        <StyledTextIcon icon={<>%</>} size={20} />
       </InputAdornment>
     );
-  }, []);
+  }, [iconPlacement]);
+
+  const renderEndAdornment = useCallback(() => {
+    if (iconPlacement !== "suffix") {
+      return statusAdornment;
+    }
+    return (
+      <InputAdornment
+        position="end"
+        sx={{ ml: "8px", ".status-adornment": { ml: 0 } }}
+      >
+        {!statusAdornment || (statusAdornment && persistSuffix) ? (
+          <StyledTextIcon icon={<>%</>} size={20} />
+        ) : null}
+        {statusAdornment}
+      </InputAdornment>
+    );
+  }, [iconPlacement, persistSuffix, statusAdornment]);
 
   return (
-    <>
+    <BaseInput>
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
@@ -64,14 +93,18 @@ const PercentComp = ({
         thousandSeparator={thousandSeparator}
         fixedDecimalScale={fixedDecimalScale}
         decimalScale={decimalScale}
+        decimalSeparator={decimalSeparator}
         customInput={StyledTextField}
+        allowLeadingZeros={allowLeadingZeros}
+        allowNegative={allowNegative}
         disabled={disabled}
         InputProps={{
-          endAdornment: endAdornment || percentAdornment(),
+          startAdornment: renderStartAdornment(),
+          endAdornment: renderEndAdornment(),
         }}
       />
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-    </>
+    </BaseInput>
   );
 };
 
@@ -81,8 +114,13 @@ Percent.defaultProps = {
   labelPosition: "top",
   fixedDecimalScale: false,
   thousandSeparator: false,
+  decimalSeparator: ".",
   disabled: false,
   required: false,
+  iconPlacement: "suffix",
+  persistSuffix: false,
+  allowLeadingZeros: false,
+  allowNegative: true,
 } as Partial<PercentProps>;
 
 // export named component for storybook docgen

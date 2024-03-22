@@ -18,7 +18,6 @@ export const SelectListTheme = {
           "&:focus": {
             backgroundColor: hexToRGBA(theme.palette.primary["10"], 0.07),
           },
-          minHeight: "36px",
           padding: "5.5px 8px",
           borderBottomWidth: "1px",
           borderBottomStyle: "solid",
@@ -45,7 +44,7 @@ export default {
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderWidth: "1px !important",
         },
-        height: "36px",
+        minHeight: "36px",
         width: "100%",
         ".MuiSelect-select": {
           display: "flex",
@@ -55,9 +54,17 @@ export default {
           paddingTop: 0,
           paddingBottom: 0,
         },
-        "&.MuiFormControl-root": {
-          height: "400px",
-          backgroundColor: ownerState?.open ? "blue" : "red",
+        "& .MuiSelect-multiple": {
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          height: "unset",
+          gap: theme.spacing(0.5),
+          ...(ownerState?.value &&
+            ownerState?.value.length > 0 && {
+              paddingTop: theme.spacing(0.5),
+              paddingBottom: theme.spacing(0.5),
+            }),
         },
         "&.dropdown--open": {
           "&.MuiInputBase-root .MuiOutlinedInput-notchedOutline": {

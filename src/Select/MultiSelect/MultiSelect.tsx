@@ -3,6 +3,7 @@ import { Typography } from "src/index";
 import BaseSelect from "../BaseSelect";
 import { useCommonMethods } from "../Common";
 import { MultiSelectProps } from "./MultiSelect.types";
+import SelectedItemChip from "./SelectItemChip";
 
 const MultiSelect = (props: MultiSelectProps) => {
   const {
@@ -67,21 +68,28 @@ const MultiSelect = (props: MultiSelectProps) => {
         const opt = getOptionFromValue(val);
         if (opt) {
           selectedOptions.push(opt);
-          res.push(handleGetOptionLabel(opt));
+          res.push(
+            <SelectedItemChip
+              key={val}
+              label={handleGetOptionLabel(opt)}
+              onRemove={() => handleChange(val)}
+            />
+          );
         }
       }
       if (renderValue) {
         return renderValue(value, selectedOptions);
       }
 
-      const str = res?.join(", ");
-      return (
-        <Typography variant="bodyR" color="text.primary">
-          {str}
-        </Typography>
-      );
+      return res;
     },
-    [handleGetOptionLabel, placeholder, getOptionFromValue, renderValue]
+    [
+      handleGetOptionLabel,
+      placeholder,
+      getOptionFromValue,
+      renderValue,
+      handleChange,
+    ]
   );
 
   const handleDefaultActiveFirstOption = useCallback(() => {

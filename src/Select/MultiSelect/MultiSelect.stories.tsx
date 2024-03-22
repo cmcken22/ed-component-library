@@ -29,6 +29,7 @@ export const Default: Story = {
     label: "Multi Select",
     placeholder: "Select many options",
     helperText: "Select many options",
+    value: ["option1", "option2", "option3", "option4"],
     options: [
       {
         label: "Option 1",

@@ -71,6 +71,7 @@ const BaseSelectComp = ({
 
       return (
         <MenuItem
+          key={optValue}
           value={optValue}
           disabled={optDisabled || disabled}
           data-select-option={index}

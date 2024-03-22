@@ -9,6 +9,7 @@ declare const _default: {
                 paddingRight: string;
                 minWidth: string;
                 minHeight: string;
+                marginBottom: string;
             };
             "& .MuiTabs-flexContainer": {
                 gap: string;

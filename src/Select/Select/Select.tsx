@@ -107,9 +107,7 @@ const Select = (props: SelectProps) => {
 Select.defaultProps = {
   labelPosition: "top",
   options: [],
-  MenuProps: {
-    maxHeight: "144px",
-  },
+  maxListHeight: 144,
 } as Partial<SelectProps>;
 
 export default Select;

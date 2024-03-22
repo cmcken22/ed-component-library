@@ -1,5 +1,7 @@
+import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
+import Avatar from "src/Avatar";
 import Select from ".";
 
 const meta = {
@@ -31,6 +33,7 @@ export const Smaple: Story = {
     id: "Select",
     label: "Label",
     placeholder: "Placeholder",
+    helperText: "Helper Text",
     labelPosition: "top",
     options: [
       {
@@ -109,5 +112,93 @@ export const CustomList: Story = {
         customValue: "option5",
       },
     ],
+  },
+};
+
+const RenderOptionCodeSample = `(option: any, { label, value }: any) => (
+    <Box
+      key={value}
+      sx={{
+        height: "40px",
+        display: "flex",
+        gap: "8px",
+        width: "100%",
+        alignItems: "center",
+      }}
+    >
+      <Avatar text={option?.user} />
+      {label}
+    </Box>
+  )`;
+
+export const CustomOptionRenderer: Story = {
+  parameters: {
+    layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("Select", {
+          map: {
+            renderOption: RenderOptionCodeSample,
+          },
+        }),
+      },
+    },
+  },
+  render: (args) => {
+    return (
+      <Select
+        {...args}
+        renderOption={(option: any, { label, value }: any) => (
+          <Box
+            key={value}
+            sx={{
+              height: "40px",
+              display: "flex",
+              gap: "8px",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            <Avatar text={option?.user} />
+            {label}
+          </Box>
+        )}
+      />
+    );
+  },
+  args: {
+    ...Select.defaultProps,
+    id: "Select",
+    label: "Custom Option Renderer",
+    placeholder: "Placeholder",
+    labelPosition: "top",
+    options: [
+      {
+        user: "JD",
+        label: "Option 1",
+        value: "option1",
+      },
+      {
+        user: "CD",
+        label: "Option 2",
+        value: "option2",
+      },
+      {
+        user: "MZ",
+        label: "Option 3",
+        value: "option3",
+      },
+      {
+        user: "KN",
+        label: "Option 4",
+        value: "option4",
+      },
+      {
+        user: "SE",
+        label: "Option 5",
+        value: "option5",
+      },
+    ],
+    renderOption: () => <></>,
   },
 };

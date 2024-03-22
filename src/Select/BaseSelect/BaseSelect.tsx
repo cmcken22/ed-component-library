@@ -1,7 +1,8 @@
 import { MenuItem, Select as MuiSelect } from "@mui/material";
 import cx from "classnames";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useOnHover } from "src/Hooks";
+import { sizeFormat } from "src/utils";
 import BaseInput, { BaseInputContext, withBaseInput } from "../../BaseInput";
 import Checkbox from "../../Checkbox";
 import Typography from "../../Typography";
@@ -16,7 +17,7 @@ const BaseSelectComp = ({
   disabled,
   value,
   required,
-  labelPosition = "top",
+  labelPosition,
   onChange,
   options,
   getOptionLabel,
@@ -25,9 +26,10 @@ const BaseSelectComp = ({
   getValueSelected,
   onHover,
   checkBoxSelection,
-  MenuProps,
+  maxListHeight,
   multiple,
   renderSelectedValue,
+  renderOption,
 }: BaseSelectProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [open, setOpen] = useState(defaultOpen || false);
@@ -36,6 +38,64 @@ const BaseSelectComp = ({
   useEffect(() => {
     setOpen(defaultOpen || false);
   }, [defaultOpen]);
+
+  const renderMenuItem = useCallback(
+    (opt: any, index: number) => {
+      const optLabel = getOptionLabel(opt);
+      const optValue = getOptionValue(opt);
+      const optDisabled = getOptionDisabled(opt);
+      const selected = getValueSelected(optValue);
+
+      const renderChildren = () => {
+        if (renderOption) {
+          return renderOption(opt, {
+            index,
+            label: optLabel,
+            value: optValue,
+            selected,
+            disabled: optDisabled || disabled,
+          });
+        }
+        if (checkBoxSelection) {
+          return (
+            <Checkbox
+              label={optLabel}
+              checked={selected}
+              disabled={optDisabled || disabled}
+              typographyVariant="bodyS"
+            />
+          );
+        }
+        return <Typography variant="bodyS">{optLabel}</Typography>;
+      };
+
+      return (
+        <MenuItem
+          value={`${optValue}--${index}`}
+          disabled={optDisabled || disabled}
+          data-select-option={index}
+          onClick={(e) => {
+            if (optDisabled || disabled) return;
+            e.stopPropagation();
+            e.preventDefault();
+            if (onChange) onChange(optValue);
+          }}
+        >
+          {renderChildren()}
+        </MenuItem>
+      );
+    },
+    [
+      renderOption,
+      disabled,
+      onChange,
+      getOptionLabel,
+      getOptionValue,
+      getOptionDisabled,
+      getValueSelected,
+      checkBoxSelection,
+    ]
+  );
 
   return (
     <BaseInput>
@@ -61,45 +121,15 @@ const BaseSelectComp = ({
           <SelectIcon endAdornment={endAdornment} {...props} />
         )}
         MenuProps={{
-          // ...MenuProps,
           sx: {
             ".MuiPaper-root": {
-              maxHeight: MenuProps?.maxHeight || "144px",
+              maxHeight: sizeFormat(maxListHeight),
             },
           },
         }}
       >
         {options?.map((opt: StandardSelectOption | any, idx: number) => {
-          const optValue = getOptionValue(opt);
-          const optDisabled = getOptionDisabled(opt);
-          const selected = getValueSelected(optValue);
-          return (
-            <MenuItem
-              key={optValue}
-              value={optValue}
-              disabled={optDisabled || disabled}
-              data-select-option={idx}
-              onClick={(e) => {
-                if (optDisabled || disabled) return;
-                e.stopPropagation();
-                e.preventDefault();
-                if (onChange) onChange(optValue);
-              }}
-            >
-              {checkBoxSelection ? (
-                <Checkbox
-                  label={getOptionLabel(opt)}
-                  checked={selected}
-                  disabled={optDisabled || disabled}
-                  typographyVariant="bodyS"
-                />
-              ) : (
-                <Typography variant="bodyS" color="text.primary">
-                  {getOptionLabel(opt)}
-                </Typography>
-              )}
-            </MenuItem>
-          );
+          return renderMenuItem(opt, idx);
         })}
       </MuiSelect>
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
@@ -112,9 +142,7 @@ const BaseSelect = withBaseInput<BaseSelectProps>(BaseSelectComp, "BaseSelect");
 BaseSelect.defaultProps = {
   labelPosition: "top",
   options: [],
-  MenuProps: {
-    maxHeight: "144px",
-  },
+  maxListHeight: 144,
 } as Partial<BaseSelectProps>;
 
 BaseSelect.displayName = "BaseSelect";

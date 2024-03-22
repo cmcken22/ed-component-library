@@ -26,10 +26,24 @@ export interface BaseSelectProps extends StandardInputProps {
   onHover?: (hovered: boolean) => void;
   defaultActiveFirstOption?: boolean;
   checkBoxSelection?: boolean;
-  MenuProps?: {
-    maxHeight?: number | string;
-  };
+  maxListHeight?: number | string;
   multiple?: boolean;
   renderSelectedValue?: (value: string | string[]) => any;
   getValueSelected?: (value: string) => boolean;
+  renderOption?: (
+    option: any,
+    {
+      index,
+      label,
+      value,
+      selected,
+      disabled,
+    }: {
+      index: number;
+      label: string;
+      value: string;
+      selected: boolean;
+      disabled: boolean;
+    }
+  ) => React.ReactNode;
 }

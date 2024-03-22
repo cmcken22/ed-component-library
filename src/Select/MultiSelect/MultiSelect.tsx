@@ -117,9 +117,7 @@ const MultiSelect = (props: MultiSelectProps) => {
 MultiSelect.defaultProps = {
   labelPosition: "top",
   options: [],
-  MenuProps: {
-    maxHeight: "144px",
-  },
+  maxListHeight: 144,
 } as Partial<MultiSelectProps>;
 
 export default MultiSelect;

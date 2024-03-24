@@ -14,6 +14,7 @@ import {
   useState,
 } from "react";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
+import { VariantMap, getFontColor } from "src/BaseInput/helpers";
 import { Status } from "src/CommonTypes";
 import Icon, { IconVariant } from "src/Icon";
 import Popover from "src/Popover";
@@ -44,6 +45,8 @@ const DatePickerComp = ({
   onValidation,
   calendarPlacement,
   popoverProps,
+  variant,
+  color,
 }: DatePickerProps) => {
   const { endAdornment, setStatus } = useContext(BaseInputContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -157,8 +160,10 @@ const DatePickerComp = ({
               }}
               slotProps={{
                 textField: {
+                  variant: VariantMap[variant] as any,
                   onFocus: disableTextInput ? (e) => e?.target?.blur() : null,
                   InputProps: {
+                    sx: { "& input": { color: getFontColor(color, value) } },
                     placeholder,
                     startAdornment: startAdornment(),
                     endAdornment,

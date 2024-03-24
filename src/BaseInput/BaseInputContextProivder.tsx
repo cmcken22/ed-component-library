@@ -14,6 +14,7 @@ const BaseInputContextProvider = ({
   children,
   tooltip,
   componentType,
+  variant,
 }: BaseInputProps) => {
   const [labelPosition, setLabelPosition] = useState<"top" | "left">("top");
   const [innerStatus, setInnerStatus] = useState<Status>();
@@ -57,6 +58,7 @@ const BaseInputContextProvider = ({
         disabled,
         endAdornment: renderStatusIcon(),
         tooltip,
+        variant,
       }}
     >
       {children}

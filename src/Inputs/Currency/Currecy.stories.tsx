@@ -89,3 +89,9 @@ export const LeftLabel: Story = {
     labelPosition: "left",
   },
 };
+export const TableVariant: Story = {
+  args: {
+    ...Sample.args,
+    labelPosition: "left",
+  },
+};

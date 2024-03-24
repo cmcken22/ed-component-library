@@ -16,6 +16,7 @@ export interface BaseInputProps {
   sx?: SxProps;
   tooltip?: string;
   componentType?: string;
+  variant?: "standard" | "outlined" | "table";
 }
 
 export interface StandardInputProps
@@ -35,6 +36,7 @@ export type BaseInputContext = {
   setLabelPosition: (pos: string) => void;
   setStatus?: (status: Status | undefined) => void;
   tooltip?: string;
+  variant?: "standard" | "outlined" | "table";
 };
 
 const defaultContext: BaseInputContext = {
@@ -50,6 +52,7 @@ const defaultContext: BaseInputContext = {
   setLabelPosition: () => {},
   setStatus: () => {},
   tooltip: undefined,
+  variant: "outlined",
 };
 
 export const BaseInputContext = createContext<BaseInputContext>(defaultContext);

@@ -16,6 +16,7 @@ const BaseInput = ({ children }: { children: ReactNode }) => {
     status,
     disabled,
     componentType,
+    variant,
   } = useContext(BaseInputContext);
 
   return (
@@ -31,7 +32,15 @@ const BaseInput = ({ children }: { children: ReactNode }) => {
       fullWidth={fullWidth}
       data-testid={BaseInputMeta.dataTestId}
       data-test-status={status}
-      sx={sx}
+      // sx={sx}
+      sx={{
+        ...sx,
+        ...(variant === "table" &&
+          {
+            // backgroundColor: "red",
+          }),
+      }}
+      // variant={variant}
     >
       <PlacementContainer
         className={cx(`${BaseInputMeta.className}__placement-container`, {

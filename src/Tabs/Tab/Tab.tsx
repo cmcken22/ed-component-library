@@ -28,6 +28,7 @@ const StyledBox = styled(Box, {
     opacity: 1,
     ...(disabled && {
       opacity: 0.5,
+      cursor: "default",
     }),
   };
 });

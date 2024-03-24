@@ -2,6 +2,7 @@ import { InputAdornment, TextField, styled } from "@mui/material";
 import { useCallback, useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
+import { VariantMap, getFontColor } from "src/BaseInput/helpers";
 import Icon, { IconVariant } from "src/Icon";
 import { CurrencyProps } from ".";
 
@@ -52,6 +53,8 @@ const CurrencyComp = ({
   allowLeadingZeros,
   allowNegative,
   onChange,
+  variant,
+  color,
 }: CurrencyProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue);
@@ -119,7 +122,9 @@ const CurrencyComp = ({
         allowLeadingZeros={allowLeadingZeros}
         allowNegative={allowNegative}
         disabled={disabled}
+        variant={VariantMap?.[variant] as any}
         InputProps={{
+          sx: { "& input": { color: getFontColor(color, value) } },
           startAdornment: renderStartAdornment(),
           endAdornment: renderEndAdornment(),
         }}

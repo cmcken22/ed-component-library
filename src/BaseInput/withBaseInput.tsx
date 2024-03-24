@@ -20,7 +20,7 @@ const withBaseInput = <T extends BaseInputProps>(
         sx={sx}
         variant={variant}
       >
-        <Component {...rest} />
+        <Component {...rest} variant={variant} />
       </BaseInputContextProvider>
     );
   };

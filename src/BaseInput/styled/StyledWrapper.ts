@@ -8,6 +8,7 @@ export interface Props {
   labelPosition?: string;
   fullWidth?: boolean;
   componentType?: string;
+  variant?: string;
 }
 
 const StyledWrapper = styled(Box, {
@@ -16,6 +17,7 @@ const StyledWrapper = styled(Box, {
     "labelPosition",
     "fullWidth",
     "componentType",
+    "variant",
   ]),
   slot: "root",
 })<Props>(({
@@ -25,6 +27,7 @@ const StyledWrapper = styled(Box, {
   labelPosition,
   fullWidth,
   componentType,
+  variant,
 }) => {
   const colorMap = {
     error: theme.palette.error.main,
@@ -84,6 +87,27 @@ const StyledWrapper = styled(Box, {
       "&:hover fieldset": {
         borderColor: theme.palette.charcoal["20"],
       },
+    },
+    ".MuiInputBase-root": {
+      ...(variant === "table" && {
+        transition: `background-color ${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`,
+        "&:hover": {
+          backgroundColor: theme.palette.charcoal["5"],
+        },
+        minHeight: "58px",
+        ".icon-wrapper": {
+          color: theme.palette.charcoal["50"],
+        },
+        "&:before": {
+          borderBottom: `1px solid ${theme.palette.charcoal?.["20"]} !important`,
+        },
+        "&:hover:before": {
+          borderBottom: `1px solid ${theme.palette.charcoal?.["20"]} !important`,
+        },
+        "&:after": {
+          border: "none !important",
+        },
+      }),
     },
   };
 });

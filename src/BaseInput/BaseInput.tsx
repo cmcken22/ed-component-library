@@ -32,15 +32,8 @@ const BaseInput = ({ children }: { children: ReactNode }) => {
       fullWidth={fullWidth}
       data-testid={BaseInputMeta.dataTestId}
       data-test-status={status}
-      // sx={sx}
-      sx={{
-        ...sx,
-        ...(variant === "table" &&
-          {
-            // backgroundColor: "red",
-          }),
-      }}
-      // variant={variant}
+      sx={sx}
+      variant={variant}
     >
       <PlacementContainer
         className={cx(`${BaseInputMeta.className}__placement-container`, {

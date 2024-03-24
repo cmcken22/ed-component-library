@@ -2,6 +2,7 @@ import { TextField } from "@mui/material";
 import _debounce from "lodash.debounce";
 import { useCallback, useContext, useState } from "react";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
+import { VariantMap, getFontColor } from "src/BaseInput/helpers";
 import { TextAreaProps } from ".";
 
 const TextAreaComp = ({
@@ -18,6 +19,8 @@ const TextAreaComp = ({
   debounce,
   maxChars,
   maxWords,
+  variant,
+  color,
 }: TextAreaProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
@@ -55,13 +58,16 @@ const TextAreaComp = ({
       <TextField
         value={value}
         placeholder={placeholder}
-        variant="outlined"
         disabled={disabled}
         onChange={handleChange}
         multiline
         minRows={minRows}
         maxRows={maxRows}
-        InputProps={{ endAdornment }}
+        variant={VariantMap[variant] as any}
+        InputProps={{
+          sx: { "& input": { color: getFontColor(color, value) } },
+          endAdornment,
+        }}
       />
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
     </BaseInput>

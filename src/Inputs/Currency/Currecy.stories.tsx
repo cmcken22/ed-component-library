@@ -77,7 +77,7 @@ export const Sample: Story = {
     disabled: false,
     helperText: "Helper Text",
     required: false,
-    value: "Hello world",
+    value: "",
     fullWidth: false,
     labelPosition: "top",
   },
@@ -89,9 +89,13 @@ export const LeftLabel: Story = {
     labelPosition: "left",
   },
 };
+
 export const TableVariant: Story = {
   args: {
     ...Sample.args,
-    labelPosition: "left",
+    variant: "table",
+    label: "",
+    helperText: "",
+    color: "success.main",
   },
 };

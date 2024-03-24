@@ -17,6 +17,7 @@ export interface BaseInputProps {
   tooltip?: string;
   componentType?: string;
   variant?: "standard" | "outlined" | "table";
+  color?: string;
 }
 
 export interface StandardInputProps

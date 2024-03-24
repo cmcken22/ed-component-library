@@ -71,3 +71,13 @@ export const LeftLabel: Story = {
     labelPosition: "left",
   },
 };
+
+export const TableVariant: Story = {
+  args: {
+    ...Text.args,
+    variant: "table",
+    label: "",
+    helperText: "",
+    color: "success.main",
+  },
+};

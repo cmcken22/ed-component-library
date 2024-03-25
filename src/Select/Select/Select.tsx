@@ -12,6 +12,7 @@ const Select = (props: SelectProps) => {
     placeholder,
     defaultActiveFirstOption,
     renderValue,
+    variant,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || "");
@@ -105,6 +106,7 @@ const Select = (props: SelectProps) => {
       renderSelectedValue={renderSelectedValue}
       getValueSelected={handleGetValueSelected}
       placeholder={placeholder}
+      variant={variant}
     />
   );
 };
@@ -115,4 +117,5 @@ Select.defaultProps = {
   maxListHeight: 144,
 } as Partial<SelectProps>;
 
+export { Select };
 export default Select;

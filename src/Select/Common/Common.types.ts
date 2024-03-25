@@ -19,6 +19,7 @@ export interface CommonSelectProps
     | "getOptionLabel"
     | "getOptionValue"
     | "getOptionDisabled"
+    | "wrap"
   > {
   getOptionLabel?: (option: any) => string;
   getOptionValue?: (option: any) => string;

@@ -57,6 +57,18 @@ export const Smaple: Story = {
         label: "Option 5",
         value: "option5",
       },
+      {
+        label: "Option 6",
+        value: "option6",
+      },
+      {
+        label: "Option 7",
+        value: "option7",
+      },
+      {
+        label: "Option 8",
+        value: "option8",
+      },
     ],
   },
 };
@@ -289,5 +301,41 @@ export const CustomValueRenderer: Story = {
       },
     ],
     renderValue: () => <></>,
+  },
+};
+
+export const TableVariant: Story = {
+  // parameters: {
+  //   layout: "centered",
+  //   docs: {
+  //     source: {
+  //       transform: sourceCodeFormatter("Select", {
+  //         map: {
+  //           renderValue: RenderValueCodeSample,
+  //         },
+  //       }),
+  //     },
+  //   },
+  // },
+  render: (args) => (
+    <Box
+      sx={{
+        height: "100px",
+        width: "300px",
+        // backgroundColor: "rgba(255, 0, 255, 0.1)",
+      }}
+    >
+      <Select {...args} />
+    </Box>
+  ),
+  args: {
+    ...Smaple.args,
+    id: "Select",
+    label: "",
+    helperText: "",
+    placeholder: "Placeholder",
+    labelPosition: "top",
+    variant: "table",
+    fullWidth: true,
   },
 };

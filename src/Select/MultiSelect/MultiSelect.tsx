@@ -13,6 +13,7 @@ const MultiSelect = (props: MultiSelectProps) => {
     placeholder,
     defaultActiveFirstOption,
     renderValue,
+    wrap,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || []);
@@ -127,6 +128,7 @@ const MultiSelect = (props: MultiSelectProps) => {
       renderSelectedValue={renderSelectedValue}
       getValueSelected={handleGetValueSelected}
       placeholder={placeholder}
+      wrap={wrap}
     />
   );
 };
@@ -135,6 +137,8 @@ MultiSelect.defaultProps = {
   labelPosition: "top",
   options: [],
   maxListHeight: 144,
+  wrap: true,
 } as Partial<MultiSelectProps>;
 
+export { MultiSelect };
 export default MultiSelect;

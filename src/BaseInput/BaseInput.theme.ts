@@ -20,7 +20,7 @@ export default {
         ".MuiInputBase-root": {
           padding: 0,
           backgroundColor: "white",
-          height: "100%",
+          // height: "36px !important",
         },
         ".MuiInputBase-adornedEnd": {
           paddingRight: "8px",

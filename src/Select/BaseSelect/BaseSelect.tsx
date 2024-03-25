@@ -1,13 +1,41 @@
-import { MenuItem, Select as MuiSelect } from "@mui/material";
+import { MenuItem, Select as MuiSelect, styled } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { VariantMap } from "src/BaseInput/helpers";
 import { useOnHover } from "src/Hooks";
-import { sizeFormat } from "src/utils";
+import { shouldNotForwardProp, sizeFormat } from "src/utils";
 import BaseInput, { BaseInputContext, withBaseInput } from "../../BaseInput";
 import Checkbox from "../../Checkbox";
 import Typography from "../../Typography";
 import { BaseSelectProps, StandardSelectOption } from "./BaseSelect.types";
 import SelectIcon from "./SelectIcon";
+
+const StyledSelect = styled(MuiSelect, {
+  shouldForwardProp: shouldNotForwardProp(["styleVariant"]),
+  slot: "root",
+})<{ styleVariant: string; wrap?: boolean }>(({
+  theme,
+  styleVariant,
+  wrap,
+}) => {
+  return {
+    "& .MuiSelect-select": {
+      ...(styleVariant === "table" && {
+        boxSizing: "border-box",
+        maxHeight: "100%",
+        overflow: "auto !important",
+        height: "fit-content !important",
+        background: "transparent !important",
+        padding: theme.spacing(1),
+        paddingLeft: 0,
+        ...(!wrap && {
+          flexWrap: "nowrap",
+          height: "100% !important",
+        }),
+      }),
+    },
+  };
+});
 
 const BaseSelectComp = ({
   label,
@@ -30,6 +58,8 @@ const BaseSelectComp = ({
   multiple,
   renderSelectedValue,
   renderOption,
+  variant,
+  wrap,
 }: BaseSelectProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [open, setOpen] = useState(defaultOpen || false);
@@ -103,7 +133,7 @@ const BaseSelectComp = ({
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
-      <MuiSelect
+      <StyledSelect
         className={cx(BaseSelectMeta.className, {
           [`${BaseSelectMeta.className}--open`]: open,
         })}
@@ -118,6 +148,9 @@ const BaseSelectComp = ({
         value={value}
         renderValue={renderSelectedValue}
         disabled={disabled}
+        styleVariant={variant}
+        wrap={wrap}
+        variant={VariantMap[variant] as any}
         IconComponent={(props: any) => (
           <SelectIcon endAdornment={endAdornment} {...props} />
         )}
@@ -132,7 +165,7 @@ const BaseSelectComp = ({
         {options?.map((opt: StandardSelectOption | any, idx: number) => {
           return renderMenuItem(opt, idx);
         })}
-      </MuiSelect>
+      </StyledSelect>
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
     </BaseInput>
   );

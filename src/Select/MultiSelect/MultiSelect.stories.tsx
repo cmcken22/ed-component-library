@@ -47,6 +47,38 @@ export const Default: Story = {
         label: "Option 4",
         value: "option4",
       },
+      {
+        label: "Option 5",
+        value: "option5",
+      },
+      {
+        label: "Option 6",
+        value: "option6",
+      },
+      {
+        label: "Option 7",
+        value: "option7",
+      },
+      {
+        label: "Option 8",
+        value: "option8",
+      },
+      {
+        label: "Option 9",
+        value: "option9",
+      },
+      {
+        label: "Option 10",
+        value: "option10",
+      },
+      {
+        label: "Option 11",
+        value: "option11",
+      },
+      {
+        label: "Option 12",
+        value: "option12",
+      },
     ],
   },
 };
@@ -227,5 +259,56 @@ export const CustomValueRenderer: Story = {
       },
     ],
     renderValue: () => <></>,
+  },
+};
+
+export const TableVariant: Story = {
+  // parameters: {
+  //   layout: "centered",
+  //   docs: {
+  //     source: {
+  //       transform: sourceCodeFormatter("Select", {
+  //         map: {
+  //           renderValue: RenderValueCodeSample,
+  //         },
+  //       }),
+  //     },
+  //   },
+  // },
+  render: (args) => (
+    <Box
+      sx={{
+        height: "100px",
+        width: "300px",
+        // backgroundColor: "rgba(255, 0, 255, 0.1)",
+      }}
+    >
+      <MultiSelect {...args} />
+    </Box>
+  ),
+  args: {
+    ...Default.args,
+    value: [
+      "option1",
+      "option2",
+      "option3",
+      "option4",
+      "option5",
+      "option6",
+      "option7",
+      "option8",
+      "option9",
+      "option10",
+      "option11",
+      "option12",
+    ],
+    fullWidth: true,
+    id: "Select",
+    label: "",
+    helperText: "",
+    placeholder: "Placeholder",
+    labelPosition: "top",
+    variant: "table",
+    wrap: !false,
   },
 };

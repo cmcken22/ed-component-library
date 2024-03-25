@@ -66,6 +66,9 @@ const StyledWrapper = styled(Box, {
       "&__required-indicator": {
         marginLeft: theme.spacing(0.25),
       },
+      "&__placement-container": {
+        height: "100%",
+      },
     },
     "& .MuiInputBase-root:not(.Mui-disabled)": {
       "& fieldset": {
@@ -88,21 +91,43 @@ const StyledWrapper = styled(Box, {
         borderColor: theme.palette.charcoal["20"],
       },
     },
+    ...(variant === "table" && {
+      height: "100%",
+    }),
+    ".MuiTextField-root": {
+      ...(variant === "table" && {
+        height: "100%",
+      }),
+    },
+    ".MuiInputAdornment-positionStart": {
+      ...(variant === "table" && {
+        marginLeft: 0,
+      }),
+    },
+    ".MuiInputAdornment-positionEnd": {
+      ...(variant === "table" && {
+        marginRight: 0,
+      }),
+    },
+    ".MuiInputBase-input": {
+      ...(variant === "table" && {
+        paddingRight: 0,
+        paddingLeft: 0,
+      }),
+    },
     ".MuiInputBase-root": {
       ...(variant === "table" && {
-        transition: `background-color ${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`,
-        "&:hover": {
-          backgroundColor: theme.palette.charcoal["5"],
-        },
-        minHeight: "58px",
+        backgroundColor: "transparent !important",
+        minHeight: "100%",
+        height: "100% !important",
         ".icon-wrapper": {
           color: theme.palette.charcoal["50"],
         },
         "&:before": {
-          borderBottom: `1px solid ${theme.palette.charcoal?.["20"]} !important`,
+          border: "none !important",
         },
         "&:hover:before": {
-          borderBottom: `1px solid ${theme.palette.charcoal?.["20"]} !important`,
+          border: "none !important",
         },
         "&:after": {
           border: "none !important",

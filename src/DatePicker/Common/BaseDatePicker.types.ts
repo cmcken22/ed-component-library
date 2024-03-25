@@ -83,8 +83,9 @@ export interface BaseDatePickerProps extends StandardInputProps {
     PopoverProps,
     "children" | "open" | "anchorEl" | "onClose"
   >;
-  tools?: string[];
-  previewBar?: boolean;
+  tools?: boolean;
+  toolFilter?: (val: string) => boolean;
+  previewSelection?: boolean;
 }
 
 export interface BaseCalendarProps {
@@ -98,6 +99,8 @@ export interface BaseCalendarProps {
   currentDate?: Date;
   numberOfMonths?: number;
   range?: boolean;
-  tools?: string[];
-  previewBar?: boolean;
+  tools?: boolean;
+  toolFilter?: (val: string) => boolean;
+  previewSelection?: boolean;
+  format?: string;
 }

@@ -111,13 +111,13 @@ const DatePickerCalendarComp = ({
 
   const handleViewThisYear = useCallback(() => {
     setViewing(new Date());
-  }, [setViewing, viewing]);
+  }, [setViewing]);
 
   const handleViewLastYear = useCallback(() => {
     const lastYear = new Date();
     lastYear.setFullYear(lastYear.getFullYear() - 1);
     setViewing(lastYear);
-  }, [setViewing, viewing]);
+  }, [setViewing]);
 
   const toolsList = useMemo(() => {
     const toolsMap = [

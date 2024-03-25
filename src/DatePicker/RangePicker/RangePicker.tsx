@@ -43,6 +43,8 @@ const RangePickerComp = ({
   onValidation,
   calendarPlacement,
   popoverProps,
+  tools,
+  previewSelection,
 }: RangePickerProps) => {
   const { endAdornment, status, setStatus } = useContext(BaseInputContext);
   const anchorRef = useRef<HTMLElement>(null);
@@ -180,6 +182,9 @@ const RangePickerComp = ({
           currentDate={currentDate}
           dateDisabled={dateDisabled}
           numberOfMonths={numberOfMonths}
+          tools={tools}
+          previewSelection={previewSelection}
+          format={format}
         />
       </Popover>
     </>
@@ -205,6 +210,8 @@ RangePicker.defaultProps = {
   disableCurrent: false,
   disablePast: false,
   calendarPlacement: "bottom-end",
+  tools: true,
+  previewSelection: true,
 } as Partial<RangePickerProps>;
 
 // export named component for storybook docgen

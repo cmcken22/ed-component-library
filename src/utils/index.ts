@@ -1,4 +1,5 @@
 import { useMediaQuery, useTheme } from "@mui/material";
+import { Children } from "react";
 
 export function hexToRGBA(hex: string, opacity: number) {
   hex = hex.replace("#", "");
@@ -36,4 +37,14 @@ export const useBreakPoint = () => {
   if (sm) return "sm";
   if (xs) return "xs";
   return "";
+};
+
+export const getChildByDisplayName = (children, displayName) => {
+  const child = Children.map(children, (child: any) => {
+    if (child?.type?.displayName === displayName) {
+      return child;
+    }
+    return null;
+  });
+  return child;
 };

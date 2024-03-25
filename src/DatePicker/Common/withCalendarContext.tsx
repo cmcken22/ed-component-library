@@ -38,6 +38,7 @@ const withCalendarContext = <T extends BaseCalendarProps>(
       dateDisabled,
       currentDate,
       numberOfMonths,
+      format,
       ...rest
     } = props;
     return (
@@ -48,6 +49,7 @@ const withCalendarContext = <T extends BaseCalendarProps>(
         dateDisabled={dateDisabled}
         currentDate={currentDate}
         numberOfMonths={numberOfMonths}
+        format={format}
         {...options}
       >
         <Wrapper>
@@ -55,6 +57,7 @@ const withCalendarContext = <T extends BaseCalendarProps>(
             {...rest}
             value={sanitizeValue(value)}
             onSelect={onSelect}
+            format={format}
           />
         </Wrapper>
       </CalendarContextProvider>

@@ -12,7 +12,7 @@ export interface LabelProps {
 }
 
 const Label = ({ children, required, position }: LabelProps) => {
-  const { setLabelPosition, tooltip } = useContext(BaseInputContext);
+  const { setLabelPosition, tooltip, variant } = useContext(BaseInputContext);
 
   useEffect(() => {
     if (position) setLabelPosition(position);
@@ -50,6 +50,8 @@ const Label = ({ children, required, position }: LabelProps) => {
   }, [tooltip]);
 
   if (!children) return null;
+  if (variant === "table") return null;
+
   return (
     <Box
       className="Input__label"

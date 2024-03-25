@@ -138,6 +138,7 @@ MultiSelect.defaultProps = {
   options: [],
   maxListHeight: 144,
   wrap: true,
+  variant: "outlined",
 } as Partial<MultiSelectProps>;
 
 export { MultiSelect };

@@ -148,6 +148,7 @@ Currency.defaultProps = {
   persistSuffix: false,
   allowLeadingZeros: false,
   allowNegative: true,
+  variant: "outlined",
 } as Partial<CurrencyProps>;
 
 // export named component for storybook docgen

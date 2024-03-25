@@ -9,9 +9,11 @@ export interface HelperTextProps {
 }
 
 const HelperText = ({ children }: HelperTextProps) => {
-  const { labelPosition } = useContext(BaseInputContext);
+  const { labelPosition, variant } = useContext(BaseInputContext);
 
   if (!children) return null;
+  if (variant === "table") return null;
+
   return (
     <>
       {/* render box here to push helper text into next column under the input */}

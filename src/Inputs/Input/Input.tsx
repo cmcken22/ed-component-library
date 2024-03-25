@@ -77,6 +77,7 @@ const Input = withBaseInput<InputProps>(InputComp, "Input");
 Input.defaultProps = {
   labelPosition: "top",
   type: "text",
+  variant: "outlined",
 } as Partial<InputProps>;
 
 // export named component for storybook docgen

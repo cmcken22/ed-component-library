@@ -115,6 +115,7 @@ Select.defaultProps = {
   labelPosition: "top",
   options: [],
   maxListHeight: 144,
+  variant: "outlined",
 } as Partial<SelectProps>;
 
 export { Select };

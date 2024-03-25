@@ -80,6 +80,7 @@ TextArea.defaultProps = {
   labelPosition: "top",
   minRows: 2,
   maxRows: 4,
+  variant: "outlined",
 } as Partial<TextAreaProps>;
 
 // export named component for storybook docgen

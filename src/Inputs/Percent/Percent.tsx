@@ -127,6 +127,7 @@ Percent.defaultProps = {
   allowLeadingZeros: false,
   allowNegative: true,
   decimalScale: 2,
+  variant: "outlined",
 } as Partial<PercentProps>;
 
 // export named component for storybook docgen

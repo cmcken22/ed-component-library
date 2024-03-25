@@ -21,6 +21,9 @@ const StyledSelect = styled(MuiSelect, {
   return {
     "& .MuiSelect-select": {
       ...(styleVariant === "table" && {
+        "&:focus": {
+          background: "transparent !important",
+        },
         boxSizing: "border-box",
         maxHeight: "100%",
         overflow: "auto !important",
@@ -28,10 +31,11 @@ const StyledSelect = styled(MuiSelect, {
         background: "transparent !important",
         padding: theme.spacing(1),
         paddingLeft: 0,
-        ...(!wrap && {
-          flexWrap: "nowrap",
-          height: "100% !important",
-        }),
+      }),
+      ...(!wrap && {
+        overflow: "auto",
+        flexWrap: "nowrap",
+        height: "100% !important",
       }),
     },
   };

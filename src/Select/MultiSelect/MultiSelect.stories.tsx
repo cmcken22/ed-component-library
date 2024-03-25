@@ -280,7 +280,7 @@ export const TableVariant: Story = {
       sx={{
         height: "100px",
         width: "300px",
-        // backgroundColor: "rgba(255, 0, 255, 0.1)",
+        backgroundColor: "rgba(255, 0, 255, 0.1)",
       }}
     >
       <MultiSelect {...args} />
@@ -309,6 +309,6 @@ export const TableVariant: Story = {
     placeholder: "Placeholder",
     labelPosition: "top",
     variant: "table",
-    wrap: !false,
+    wrap: true,
   },
 };

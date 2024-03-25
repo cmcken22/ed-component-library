@@ -4,14 +4,29 @@ import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import Button from "src/Button";
 import { CalendarContext } from "src/DatePicker/Common";
+import { isValidDate } from "src/DatePicker/Common/utils";
 import Icon from "src/Icon";
+import useUpdateView from "./useUpdateView";
 dayjs.extend(customParseFormat);
 
 const PreviewSelectionBar = ({ onApply, onCancel }: any) => {
-  const { selected, format } = useContext(CalendarContext);
+  const { selected, format, select } = useContext(CalendarContext);
+  const handleUpdateView = useUpdateView();
+
+  const handleChange = useCallback(
+    (date: Date, idx: number) => {
+      if (!isValidDate(date)) return;
+      const nextSelected = [...selected];
+      nextSelected[idx] = date;
+      select(nextSelected, true);
+      handleUpdateView(nextSelected);
+    },
+    [selected, select, handleUpdateView]
+  );
+
   return (
     <Box
       sx={{
@@ -31,7 +46,7 @@ const PreviewSelectionBar = ({ onApply, onCancel }: any) => {
               disableOpenPicker
               value={selected?.[0] ? dayjs(selected?.[0]) : null}
               onChange={(date: any) => {
-                console.log("date:", date);
+                handleChange(date ? date.toDate() : null, 0);
               }}
             />
           </LocalizationProvider>
@@ -46,7 +61,7 @@ const PreviewSelectionBar = ({ onApply, onCancel }: any) => {
               disableOpenPicker
               value={selected?.[1] ? dayjs(selected?.[1]) : null}
               onChange={(date: any) => {
-                console.log("date:", date);
+                handleChange(date ? date.toDate() : null, 1);
               }}
             />
           </LocalizationProvider>

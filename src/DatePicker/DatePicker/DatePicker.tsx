@@ -229,8 +229,8 @@ DatePicker.defaultProps = {
   disableCurrent: false,
   disablePast: false,
   calendarPlacement: "bottom-end",
-  tools: true,
-  previewSelection: true,
+  tools: false,
+  previewSelection: false,
 } as Partial<DatePickerProps>;
 
 // export named component for storybook docgen

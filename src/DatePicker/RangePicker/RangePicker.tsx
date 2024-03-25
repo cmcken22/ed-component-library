@@ -210,8 +210,8 @@ RangePicker.defaultProps = {
   disableCurrent: false,
   disablePast: false,
   calendarPlacement: "bottom-end",
-  tools: true,
-  previewSelection: true,
+  tools: false,
+  previewSelection: false,
 } as Partial<RangePickerProps>;
 
 // export named component for storybook docgen

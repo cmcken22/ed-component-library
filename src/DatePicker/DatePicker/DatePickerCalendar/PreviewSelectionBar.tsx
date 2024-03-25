@@ -4,13 +4,26 @@ import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import Button from "src/Button";
 import { CalendarContext } from "src/DatePicker/Common";
+import { isValidDate } from "src/DatePicker/Common/utils";
+import useUpdateView from "./useUpdateView";
 dayjs.extend(customParseFormat);
 
 const PreviewSelectionBar = ({ onApply, onCancel }: any) => {
-  const { selected } = useContext(CalendarContext);
+  const { selected, format, select } = useContext(CalendarContext);
+  const handleUpdateView = useUpdateView();
+
+  const handleChange = useCallback(
+    (date: Date) => {
+      if (!isValidDate(date)) return;
+      select(date, true);
+      handleUpdateView(date);
+    },
+    [handleUpdateView]
+  );
+
   return (
     <Box
       sx={{
@@ -25,43 +38,21 @@ const PreviewSelectionBar = ({ onApply, onCancel }: any) => {
       <Box sx={{ width: "137px" }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <MuiDatePicker
-            // key={`MuiDatePicker--${disableTextInput}`}
-            // format={format}
+            format={format}
             disableOpenPicker
             value={selected?.[0] ? dayjs(selected?.[0]) : null}
-            // disabled={disabled}
-            sx={{
-              ".MuiInputBase-root": {
-                // cursor: disableTextInput ? "pointer" : "text",
-                "& input": {
-                  // pointerEvents: disableTextInput ? "none" : "",
-                },
-              },
-            }}
-            slotProps={{
-              textField: {
-                // variant: VariantMap[variant] as any,
-                // onFocus: disableTextInput ? (e) => e?.target?.blur() : null,
-                InputProps: {
-                  // sx: { "& input": { color: getFontColor(color, value) } },
-                  // placeholder,
-                  // startAdornment: startAdornment(),
-                  // endAdornment,
-                },
-              },
-            }}
             onChange={(date: any) => {
-              console.log("date:", date);
-              // if (disableTextInput) return;
-              // handleSelect(date ? date.toDate() : null);
+              handleChange(date ? date.toDate() : null);
             }}
           />
         </LocalizationProvider>
       </Box>
-      <Button variant="outlined" onClick={onCancel}>
-        Cancel
-      </Button>
-      <Button onClick={() => onApply(selected?.[0])}>Apply</Button>
+      <Box display="flex" flexDirection="row" gap="11px" ml={3}>
+        <Button variant="outlined" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button onClick={() => onApply(selected?.[0])}>Apply</Button>
+      </Box>
     </Box>
   );
 };

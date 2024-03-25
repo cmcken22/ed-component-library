@@ -123,3 +123,56 @@ export const findDiffIndex = (prev: Date[], next: Date[]) => {
   }
   return -1;
 };
+
+export const getThisWeek = (date: Date) => {
+  const currentDate = convertDateToGMT(date);
+
+  // Get the day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+  const currentDayOfWeek = currentDate.getDay();
+
+  // Calculate the difference between the current day of the week and Sunday (0)
+  const differenceToSunday = currentDayOfWeek;
+
+  // Calculate the difference to Saturday (6)
+  const differenceToSaturday = 6 - currentDayOfWeek;
+
+  // Clone the current date to avoid mutating it
+  const firstDayOfWeek = new Date(currentDate);
+  firstDayOfWeek.setDate(currentDate.getDate() - differenceToSunday);
+
+  // Clone the current date to avoid mutating it
+  const lastDayOfWeek = new Date(currentDate);
+  lastDayOfWeek.setDate(currentDate.getDate() + differenceToSaturday);
+  return [firstDayOfWeek, lastDayOfWeek];
+};
+
+export const getThisMonth = (date: Date) => {
+  const currentDate = convertDateToGMT(date);
+
+  // Get the year and month of the input date
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  // Create a new date object for the first day of the month
+  const firstDayOfMonth = new Date(year, month, 1);
+
+  // Get the last day of the month by setting the date to 0 (which is the last day of the previous month)
+  const lastDayOfMonth = new Date(year, month + 1, 0);
+
+  return [firstDayOfMonth, lastDayOfMonth];
+};
+
+export const getThisYear = (date: Date) => {
+  const currentDate = convertDateToGMT(date);
+
+  // Get the year of the input date
+  const year = currentDate.getFullYear();
+
+  // Create a new date object for the first day of the year
+  const firstDayOfYear = new Date(year, 0, 1);
+
+  // Get the last day of the year by setting the month to 11 (December) and the date to 31
+  const lastDayOfYear = new Date(year, 11, 31);
+
+  return [firstDayOfYear, lastDayOfYear];
+};

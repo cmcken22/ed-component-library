@@ -98,8 +98,6 @@ export const LeftLabel: Story = {
 export const TableVariant: Story = {
   args: {
     ...Sample.args,
-    label: "",
-    helperText: "",
     variant: "table",
   },
 };

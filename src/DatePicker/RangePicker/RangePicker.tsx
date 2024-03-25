@@ -1,6 +1,4 @@
 import { Box } from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import isEqual from "lodash.isequal";
@@ -45,6 +43,8 @@ const RangePickerComp = ({
   popoverProps,
   tools,
   previewSelection,
+  variant,
+  color,
 }: RangePickerProps) => {
   const { endAdornment, status, setStatus } = useContext(BaseInputContext);
   const anchorRef = useRef<HTMLElement>(null);
@@ -145,19 +145,20 @@ const RangePickerComp = ({
           data-testid="calendar-input"
           ref={anchorRef}
           onClick={handleOpenPopover}
+          sx={{ height: "100%" }}
         >
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <RangePickerInput
-              format={format}
-              value={value}
-              onChange={handleSelect}
-              placeholder={placeholder}
-              endAdornment={endAdornment}
-              status={status}
-              disabled={disabled}
-              disableTextInput={disableTextInput}
-            />
-          </LocalizationProvider>
+          <RangePickerInput
+            format={format}
+            value={value}
+            onChange={handleSelect}
+            placeholder={placeholder}
+            endAdornment={endAdornment}
+            status={status}
+            disabled={disabled}
+            disableTextInput={disableTextInput}
+            variant={variant}
+            color={color}
+          />
         </Box>
         <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       </BaseInput>

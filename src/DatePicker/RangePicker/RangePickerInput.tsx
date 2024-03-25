@@ -1,15 +1,24 @@
 import { Box, InputAdornment, styled } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { getFontColor } from "src/BaseInput/helpers";
 import Icon, { IconVariant } from "src/Icon";
+import { shouldNotForwardProp } from "src/utils";
 dayjs.extend(customParseFormat);
 
 const StyledWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "row",
+  shouldForwardProp: shouldNotForwardProp(["row", "status", "variant"]),
   slot: "root",
-})<{ status?: string; disabled?: boolean }>(({ theme, status, disabled }) => {
+})<{ status?: string; disabled?: boolean; variant?: string }>(({
+  theme,
+  status,
+  disabled,
+  variant,
+}) => {
   const colorMap = {
     error: theme.palette.error.main,
     warning: theme.palette.warning.main,
@@ -41,6 +50,11 @@ const StyledWrapper = styled(Box, {
     "&:focus-within": {
       borderColor: !disabled ? theme.palette.primary.main : "",
     },
+    ...(variant === "table" && {
+      height: "100%",
+      border: "none",
+      backgroundColor: "transparent",
+    }),
   };
 });
 
@@ -89,6 +103,8 @@ const DateRangeInput = ({
   status,
   disabled,
   disableTextInput,
+  variant,
+  color,
 }: any) => {
   const ref1 = useRef(null);
   const ref2 = useRef(null);
@@ -156,7 +172,11 @@ const DateRangeInput = ({
           slotProps={{
             textField: {
               InputProps: {
-                style: { height: "34px", padding: 0 },
+                style: {
+                  height: "34px",
+                  padding: 0,
+                  color: getFontColor(color, value?.[index]),
+                },
               },
               onKeyDown: (e) => handleKeyDown(e, e.target, index),
               placeholder: Array.isArray(placeholder)
@@ -179,30 +199,33 @@ const DateRangeInput = ({
       placeholder,
       disabled,
       disableTextInput,
+      color,
     ]
   );
 
   return (
-    <StyledWrapper status={status} disabled={disabled}>
-      {startAdornment()}
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          gap: "4px",
-        }}
-      >
-        {renderInput(0)}
-        <Icon
-          icon={IconVariant.ArrowRight}
-          height="16px"
-          width="16px"
-          sx={{ flexShrink: 0 }}
-        />
-        {renderInput(1)}
-      </Box>
-      {endAdornment && <Box sx={{ mr: 1 }}>{endAdornment}</Box>}
+    <StyledWrapper status={status} disabled={disabled} variant={variant}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        {startAdornment()}
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
+          }}
+        >
+          {renderInput(0)}
+          <Icon
+            icon={IconVariant.ArrowRight}
+            height="16px"
+            width="16px"
+            sx={{ flexShrink: 0 }}
+          />
+          {renderInput(1)}
+        </Box>
+        {endAdornment && <Box sx={{ mr: 1 }}>{endAdornment}</Box>}
+      </LocalizationProvider>
     </StyledWrapper>
   );
 };

@@ -1,12 +1,11 @@
 import isEqual from "lodash.isequal";
-import { forwardRef, useCallback, useContext, useEffect, useRef } from "react";
-import CalendarContextProvider from "src/DatePicker/Common/CalendarContextProvider";
-import { CalendarContext, CalendarWrapper, Day } from "../../Common";
-import { Month } from "../../Common/Month";
+import { useCallback, useContext, useEffect, useRef } from "react";
+import Calendar from "src/DatePicker/Common/Calendar";
+import withCalendarContext from "src/DatePicker/Common/withCalendarContext";
+import { CalendarContext } from "../../Common";
 import {
   checkDateInArray,
-  formatDateRange,
-  getMonthFromCalendar,
+  findDiffIndex,
   nullFilter,
   numberOfMonthsBetween,
   sorteDates,
@@ -16,49 +15,6 @@ import {
   RangePickerCalendarCompProps,
   RangePickerCalendarProps,
 } from "./RangePickerCalendar.types";
-
-const findDiffIndex = (prev: Date[], next: Date[]) => {
-  const len = Math.max(prev?.length, next?.length);
-  if (isNaN(len)) return -1;
-  for (let i = 0; i < len; i++) {
-    if (!isEqual(prev?.[i], next?.[i])) return i;
-  }
-  return -1;
-};
-
-const RangePickerCalendar = forwardRef(
-  (
-    {
-      value,
-      onSelect,
-      disableFuture,
-      disableCurrent,
-      disablePast,
-      dateDisabled,
-      currentDate,
-      numberOfMonths,
-    }: RangePickerCalendarProps,
-    ref: any
-  ) => {
-    return (
-      <CalendarContextProvider
-        ref={ref}
-        numberOfMonths={numberOfMonths}
-        disableFuture={disableFuture}
-        disableCurrent={disableCurrent}
-        disablePast={disablePast}
-        dateDisabled={dateDisabled}
-        currentDate={currentDate}
-        range
-      >
-        <RangePickerCalendarComp
-          value={formatDateRange(value)}
-          onSelect={onSelect}
-        />
-      </CalendarContextProvider>
-    );
-  }
-);
 
 const RangePickerCalendarComp = ({
   value,
@@ -232,41 +188,14 @@ const RangePickerCalendarComp = ({
     select(value, true);
   }, [value]);
 
-  return (
-    <CalendarWrapper>
-      {months?.map((weeks, index) => {
-        const monthNumber = getMonthFromCalendar(weeks);
-        return (
-          <Month
-            key={`month--${monthNumber}`}
-            weeks={weeks}
-            monthNumber={monthNumber}
-            onSelect={handleSelect}
-          >
-            <Month.Header
-              displayPrevMonthBtn={index === 0}
-              displayNextMonthBtn={index === months.length - 1}
-            />
-            <Month.WeeklyHeader />
-            {weeks?.map((week: Date[], weekIdx: number) => {
-              return (
-                <Month.Week key={`${monthNumber}--${weekIdx}`}>
-                  {week?.map((day: Date) => (
-                    <Day
-                      key={`${monthNumber}--${day.toISOString()}`}
-                      day={day}
-                      onSelect={handleSelect}
-                    />
-                  ))}
-                </Month.Week>
-              );
-            })}
-          </Month>
-        );
-      })}
-    </CalendarWrapper>
-  );
+  return <Calendar months={months} onSelect={handleSelect} />;
 };
+
+const RangePickerCalendar = withCalendarContext<RangePickerCalendarProps>(
+  RangePickerCalendarComp,
+  "RangePickerCalendar",
+  { range: true }
+);
 
 RangePickerCalendar.defaultProps = {
   onSelect: () => {},
@@ -278,4 +207,5 @@ RangePickerCalendar.defaultProps = {
   numberOfMonths: 2,
 } as Partial<RangePickerCalendarProps>;
 
+export { RangePickerCalendar };
 export default RangePickerCalendar;

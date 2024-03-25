@@ -1,3 +1,5 @@
+import isEqual from "lodash.isequal";
+
 export const checkDateInArray = (date: Date, dates: Date[]) => {
   return dates.some((d) => d?.getTime() === date?.getTime());
 };
@@ -111,4 +113,13 @@ export const formatDateRange = (values: Date[]) => {
   if (!Array.isArray(values)) return null;
   if (Array.isArray(values) && values.length === 0) return null;
   return values?.map((date) => convertDateToGMT(date));
+};
+
+export const findDiffIndex = (prev: Date[], next: Date[]) => {
+  const len = Math.max(prev?.length, next?.length);
+  if (isNaN(len)) return -1;
+  for (let i = 0; i < len; i++) {
+    if (!isEqual(prev?.[i], next?.[i])) return i;
+  }
+  return -1;
 };

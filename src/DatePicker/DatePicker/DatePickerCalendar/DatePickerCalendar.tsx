@@ -1,45 +1,14 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
-import { CalendarWrapper, Day } from "../../Common";
-import CalendarContextProvider, {
-  CalendarContext,
-} from "../../Common/CalendarContextProvider";
-import { Month } from "../../Common/Month";
-import {
-  convertDateToGMT,
-  getMonthFromCalendar,
-  isValidDate,
-  numberOfMonthsBetween,
-} from "../../Common/utils";
+import Calendar from "src/DatePicker/Common/Calendar";
+import withCalendarContext from "src/DatePicker/Common/withCalendarContext";
+import { CalendarContext } from "../../Common/CalendarContextProvider";
+import { isValidDate, numberOfMonthsBetween } from "../../Common/utils";
 import {
   DatePickerCalendarCompProps,
   DatePickerCalendarProps,
 } from "./DatePickerCalendar.types";
 
-const DatePickerCalendarWrapper = ({
-  value,
-  onSelect,
-  disableFuture,
-  disableCurrent,
-  disablePast,
-  dateDisabled,
-  currentDate,
-  numberOfMonths,
-}: DatePickerCalendarProps) => {
-  return (
-    <CalendarContextProvider
-      disableFuture={disableFuture}
-      disableCurrent={disableCurrent}
-      disablePast={disablePast}
-      dateDisabled={dateDisabled}
-      currentDate={currentDate}
-      numberOfMonths={numberOfMonths}
-    >
-      <DatePickerCalendar value={convertDateToGMT(value)} onSelect={onSelect} />
-    </CalendarContextProvider>
-  );
-};
-
-const DatePickerCalendar = ({
+const DatePickerCalendarComp = ({
   value,
   onSelect,
 }: DatePickerCalendarCompProps) => {
@@ -98,9 +67,6 @@ const DatePickerCalendar = ({
     [isSelected, onSelect, select]
   );
 
-  // TODO: update current view on date change
-  // check if the date fits in the view
-
   useEffect(() => {
     const currSelected = selected?.[0];
     if (currSelected === value) return;
@@ -110,43 +76,16 @@ const DatePickerCalendar = ({
     handleUpdateView(value);
   }, [value, selected, handleUpdateView, select]);
 
-  return (
-    <CalendarWrapper>
-      {months?.map((weeks, index) => {
-        const monthNumber = getMonthFromCalendar(weeks);
-        return (
-          <Month
-            key={`month--${monthNumber}`}
-            weeks={weeks}
-            monthNumber={monthNumber}
-            onSelect={handleSelect}
-          >
-            <Month.Header
-              displayPrevMonthBtn={index === 0}
-              displayNextMonthBtn={index === months.length - 1}
-            />
-            <Month.WeeklyHeader />
-            {weeks?.map((week: Date[], weekIdx: number) => {
-              return (
-                <Month.Week key={`${monthNumber}--${weekIdx}`}>
-                  {week?.map((day: Date) => (
-                    <Day
-                      key={`${monthNumber}--${day.toISOString()}`}
-                      day={day}
-                      onSelect={handleSelect}
-                    />
-                  ))}
-                </Month.Week>
-              );
-            })}
-          </Month>
-        );
-      })}
-    </CalendarWrapper>
-  );
+  return <Calendar months={months} onSelect={handleSelect} />;
 };
 
-DatePickerCalendarWrapper.defaultProps = {
+const DatePickerCalendar = withCalendarContext<DatePickerCalendarProps>(
+  DatePickerCalendarComp,
+  "DatePickerCalendar",
+  { range: false }
+);
+
+DatePickerCalendar.defaultProps = {
   value: null,
   onSelect: () => {},
   onChange: () => {},
@@ -158,4 +97,5 @@ DatePickerCalendarWrapper.defaultProps = {
   numberOfMonths: 1,
 } as Partial<DatePickerCalendarProps>;
 
-export default DatePickerCalendarWrapper;
+export { DatePickerCalendar };
+export default DatePickerCalendar;

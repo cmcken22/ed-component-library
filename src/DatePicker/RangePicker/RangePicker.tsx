@@ -46,7 +46,6 @@ const RangePickerComp = ({
 }: RangePickerProps) => {
   const { endAdornment, status, setStatus } = useContext(BaseInputContext);
   const anchorRef = useRef<HTMLElement>(null);
-  const calendarRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const [value, setValue] = useState<Date[] | null>(
@@ -173,7 +172,6 @@ const RangePickerComp = ({
         {...popoverProps}
       >
         <RangePickerCalendar
-          ref={calendarRef}
           onSelect={handleSelect}
           value={value}
           disableFuture={disableFuture}

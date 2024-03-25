@@ -86,7 +86,9 @@ export interface BaseDatePickerProps extends StandardInputProps {
 }
 
 export interface BaseCalendarProps {
-  children: React.ReactNode;
+  value?: Date | Date[];
+  onSelect?: (date: Date | Date[]) => void;
+  children?: React.ReactNode;
   disableFuture?: boolean;
   disableCurrent?: boolean;
   disablePast?: boolean;

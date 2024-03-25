@@ -1,10 +1,4 @@
-import {
-  createContext,
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useState,
-} from "react";
+import { createContext, useCallback, useState } from "react";
 import { useLilius } from "use-lilius";
 import { BaseCalendarProps } from "./BaseDatePicker.types";
 import { nullFilter, sorteDates } from "./utils";
@@ -56,78 +50,73 @@ const defaultContext: CalendarContextType = {
 export const CalendarContext =
   createContext<CalendarContextType>(defaultContext);
 
-const CalendarContextProvider = forwardRef(
-  (
-    {
-      numberOfMonths,
-      children,
-      disableFuture,
-      disableCurrent,
-      disablePast,
-      dateDisabled,
-      currentDate,
-      range,
-    }: BaseCalendarProps,
-    ref: any
-  ) => {
-    const {
-      calendar,
-      selected,
-      viewNextMonth,
-      viewPreviousMonth,
-      select,
-      viewing,
-      setViewing,
-      isSelected,
-      inRange,
-    } = useLilius({
-      numberOfMonths: numberOfMonths || 1,
-    });
-    const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
+interface CalendarContextProviderProps
+  extends Omit<BaseCalendarProps, "value" | "onSelect"> {}
 
-    const handleCheckInRange = useCallback(
-      (date: Date, start?: Date, end?: Date) => {
-        if (date && start && end) {
-          return inRange(date, start, end);
-        }
-        if (selected?.length < 2) return false;
-        const sortedValues = [...selected].filter(nullFilter).sort(sorteDates);
-        if (sortedValues.length < 2) return false;
-        return inRange(date, sortedValues[0], sortedValues[1]);
-      },
-      [selected, inRange]
-    );
+const CalendarContextProvider = ({
+  numberOfMonths,
+  children,
+  disableFuture,
+  disableCurrent,
+  disablePast,
+  dateDisabled,
+  currentDate,
+  range,
+}: CalendarContextProviderProps) => {
+  const {
+    calendar,
+    selected,
+    viewNextMonth,
+    viewPreviousMonth,
+    select,
+    viewing,
+    setViewing,
+    isSelected,
+    inRange,
+  } = useLilius({
+    numberOfMonths: numberOfMonths || 1,
+  });
+  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
 
-    // TODO: only expose certain methods
-    useImperativeHandle(ref, () => ({ setViewing, getViewing: () => viewing }));
+  const handleCheckInRange = useCallback(
+    (date: Date, start?: Date, end?: Date) => {
+      if (date && start && end) {
+        return inRange(date, start, end);
+      }
+      if (selected?.length < 2) return false;
+      const sortedValues = [...selected].filter(nullFilter).sort(sorteDates);
+      if (sortedValues.length < 2) return false;
+      return inRange(date, sortedValues[0], sortedValues[1]);
+    },
+    [selected, inRange]
+  );
 
-    return (
-      <CalendarContext.Provider
-        value={{
-          months: calendar,
-          selected,
-          select,
-          viewNextMonth,
-          viewPreviousMonth,
-          viewing,
-          disableFuture,
-          disablePast,
-          currentDate: currentDate,
-          range,
-          inRange: handleCheckInRange,
-          isSelected,
-          disableCurrent,
-          dateDisabled,
-          hoveredDate,
-          setHoveredDate,
-          setViewing,
-          numberOfMonths,
-        }}
-      >
-        {children}
-      </CalendarContext.Provider>
-    );
-  }
-);
+  return (
+    <CalendarContext.Provider
+      value={{
+        months: calendar,
+        selected,
+        select,
+        viewNextMonth,
+        viewPreviousMonth,
+        viewing,
+        disableFuture,
+        disablePast,
+        currentDate: currentDate,
+        range,
+        inRange: handleCheckInRange,
+        isSelected,
+        disableCurrent,
+        dateDisabled,
+        hoveredDate,
+        setHoveredDate,
+        setViewing,
+        numberOfMonths,
+      }}
+    >
+      {children}
+    </CalendarContext.Provider>
+  );
+};
 
 export default CalendarContextProvider;

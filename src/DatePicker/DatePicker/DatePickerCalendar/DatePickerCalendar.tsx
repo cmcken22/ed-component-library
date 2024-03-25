@@ -8,6 +8,7 @@ import {
   convertDateToGMT,
   getMonthFromCalendar,
   isValidDate,
+  numberOfMonthsBetween,
 } from "../../Common/utils";
 import {
   DatePickerCalendarCompProps,
@@ -42,8 +43,16 @@ const DatePickerCalendar = ({
   value,
   onSelect,
 }: DatePickerCalendarCompProps) => {
-  const { months, select, selected, isSelected, currentDate, setViewing } =
-    useContext(CalendarContext);
+  const {
+    months,
+    select,
+    selected,
+    isSelected,
+    currentDate,
+    setViewing,
+    numberOfMonths,
+    viewing,
+  } = useContext(CalendarContext);
 
   const prevValue = useRef<Date | null>(null);
 
@@ -53,9 +62,28 @@ const DatePickerCalendar = ({
     else setViewing(currentDate);
   }, []);
 
-  useEffect(() => {
-    if (value && isValidDate(value)) setViewing(value);
-  }, [value]);
+  const handleUpdateView = useCallback(
+    (value: Date) => {
+      if (!value || !isValidDate(value)) return;
+
+      // if the number of months is 1, always set the viewing to the value
+      if (numberOfMonths === 1) {
+        setViewing(value);
+        return;
+      }
+      // otherwise, check of the view needs to be updated or not
+      const monthDiff = numberOfMonthsBetween(value, viewing);
+      if (monthDiff < 0) {
+        setViewing(value);
+        return;
+      }
+      if (monthDiff < numberOfMonths) {
+        return;
+      }
+      setViewing(value);
+    },
+    [viewing, numberOfMonths, setViewing]
+  );
 
   const handleSelect = useCallback(
     (date: Date) => {
@@ -79,7 +107,8 @@ const DatePickerCalendar = ({
     if (prevValue.current === value) return;
     prevValue.current = value;
     select(value, true);
-  }, [value, selected]);
+    handleUpdateView(value);
+  }, [value, selected, handleUpdateView, select]);
 
   return (
     <CalendarWrapper>

@@ -305,24 +305,12 @@ export const CustomValueRenderer: Story = {
 };
 
 export const TableVariant: Story = {
-  // parameters: {
-  //   layout: "centered",
-  //   docs: {
-  //     source: {
-  //       transform: sourceCodeFormatter("Select", {
-  //         map: {
-  //           renderValue: RenderValueCodeSample,
-  //         },
-  //       }),
-  //     },
-  //   },
-  // },
   render: (args) => (
     <Box
       sx={{
         height: "100px",
         width: "300px",
-        backgroundColor: "rgba(255, 0, 255, 0.1)",
+        // backgroundColor: "rgba(255, 0, 255, 0.1)",
       }}
     >
       <Select {...args} />

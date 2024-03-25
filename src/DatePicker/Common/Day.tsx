@@ -97,6 +97,7 @@ const Day = ({ day, onSelect }: { day: Date; onSelect: any }) => {
   }, [selected]);
 
   const dateSelected = useMemo(() => isSelected(day), [day, isSelected]);
+
   const dateInRange = useMemo(() => {
     return inRange(day);
   }, [day, inRange]);

@@ -58,7 +58,7 @@ const useTools = ({ tools, toolFilter }: any) => {
     ];
 
     if (toolFilter) {
-      return toolsMap.filter(toolFilter);
+      return toolsMap.filter((tool) => toolFilter(tool?.label));
     }
     return toolsMap;
   }, [

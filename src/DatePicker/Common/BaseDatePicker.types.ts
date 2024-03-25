@@ -83,8 +83,17 @@ export interface BaseDatePickerProps extends StandardInputProps {
     PopoverProps,
     "children" | "open" | "anchorEl" | "onClose"
   >;
+  /**
+   * Enable tools in the calendar picker
+   */
   tools?: boolean;
+  /**
+   * Filter the tools in the calendar picker
+   */
   toolFilter?: (val: string) => boolean;
+  /**
+   * Render the preview selection bar
+   */
   previewSelection?: boolean;
 }
 

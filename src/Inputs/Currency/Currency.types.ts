@@ -7,7 +7,6 @@ export interface CurrencyProps extends StandardInputProps {
   value?: string | number;
   required?: boolean;
   labelPosition?: "top" | "left";
-  endAdornment?: React.ReactNode;
   debounce?: number;
   onChange?: (
     value: string,
@@ -35,8 +34,8 @@ export interface CurrencyProps extends StandardInputProps {
    * @default .
    */
   decimalSeparator?: string;
-  prefix?: "Dollar" | "Pound" | "Euro" | "$" | "£" | "€";
-  suffix?: "Dollar" | "Pound" | "Euro" | "$" | "£" | "€";
+  prefix?: "Dollar" | "Pound" | "Euro";
+  suffix?: "Dollar" | "Pound" | "Euro";
   allowLeadingZeros?: boolean;
   allowNegative?: boolean;
 }

@@ -85,7 +85,7 @@ update_files() {
             temp_content=$(replace_stroke_attribute "$temp_content")
 
             # Wrap content with React component structure
-            new_content="import React from \"react\";\n\nexport default ({ stroke, fill }: { stroke: string, fill: string }) => (\n$temp_content\n);"
+            new_content="export default ({ stroke, fill }: { stroke: string, fill: string }) => (\n$temp_content\n);"
 
             # Write the updated content to a new tsx file in the updated directory
             echo "$new_content" > "$new_file_path"

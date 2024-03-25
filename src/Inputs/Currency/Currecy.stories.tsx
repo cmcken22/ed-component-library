@@ -47,11 +47,11 @@ const meta = {
       control: { type: "text" },
     },
     prefix: {
-      options: ["null", "Dollar", "Pound", "Euro", "$", "£", "€"],
+      options: ["null", "Dollar", "Pound", "Euro"],
       control: { type: "select" },
     },
     suffix: {
-      options: ["null", "Dollar", "Pound", "Euro", "$", "£", "€"],
+      options: ["null", "Dollar", "Pound", "Euro"],
       control: { type: "select" },
     },
     status: {

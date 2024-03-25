@@ -3,4 +3,5 @@ declare const Select: {
     (props: SelectProps): import('../../../node_modules/react/jsx-runtime').JSX.Element;
     defaultProps: Partial<SelectProps>;
 };
+export { Select };
 export default Select;

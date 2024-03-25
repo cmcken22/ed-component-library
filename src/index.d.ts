@@ -10,7 +10,7 @@ export { default as Currency } from "./Inputs/Currency";
 export { default as Input } from "./Inputs/Input";
 export { default as Percent } from "./Inputs/Percent";
 export { default as TextArea } from "./Inputs/TextArea";
-export { default as Dropdown } from "./Select/Select";
+export { MultiSelect, Select } from "./Select";
 export { default as Snackbar, SnackbarProvider, closeSnackbar, enqueueSnackbar, } from "./Snackbar";
 export { Tab, TabContextProvider, TabPanel, default as Tabs } from "./Tabs";
 export { default as ThemeWrapper } from "./ThemeWrapper";

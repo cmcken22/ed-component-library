@@ -7,7 +7,7 @@ export interface RenderOptionProps {
     selected: boolean;
     disabled: boolean;
 }
-export interface CommonSelectProps extends Omit<BaseSelectProps, "value" | "multiple" | "renderSelectedValue" | "getValueSelected" | "onChange" | "getOptionLabel" | "getOptionValue" | "getOptionDisabled"> {
+export interface CommonSelectProps extends Omit<BaseSelectProps, "value" | "multiple" | "renderSelectedValue" | "getValueSelected" | "onChange" | "getOptionLabel" | "getOptionValue" | "getOptionDisabled" | "wrap"> {
     getOptionLabel?: (option: any) => string;
     getOptionValue?: (option: any) => string;
     getOptionDisabled?: (option: any) => boolean;

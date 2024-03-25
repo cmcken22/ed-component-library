@@ -15,6 +15,8 @@ export interface BaseInputProps {
     sx?: SxProps;
     tooltip?: string;
     componentType?: string;
+    variant?: "standard" | "outlined" | "table";
+    color?: string;
 }
 export interface StandardInputProps extends Omit<BaseInputProps, "children" | "componentType"> {
 }
@@ -32,5 +34,6 @@ export type BaseInputContext = {
     setLabelPosition: (pos: string) => void;
     setStatus?: (status: Status | undefined) => void;
     tooltip?: string;
+    variant?: "standard" | "outlined" | "table";
 };
 export declare const BaseInputContext: import('../../node_modules/react').Context<BaseInputContext>;

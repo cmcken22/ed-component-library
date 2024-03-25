@@ -27,6 +27,7 @@ export interface BaseSelectProps extends StandardInputProps {
     checkBoxSelection?: boolean;
     maxListHeight?: number | string;
     multiple?: boolean;
+    wrap?: boolean;
     renderSelectedValue?: (value: string | string[]) => any;
     getValueSelected?: (value: string) => boolean;
     renderOption?: (option: any, { index, label, value, selected, disabled, }: {

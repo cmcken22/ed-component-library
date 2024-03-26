@@ -6,4 +6,7 @@ export interface DatePickerCalendarProps extends Omit<BaseCalendarProps, "range"
 export interface DatePickerCalendarCompProps {
     value?: Date;
     onSelect?: (date: Date) => void;
+    tools?: boolean;
+    toolFilter?: (val: string) => boolean;
+    previewSelection?: boolean;
 }

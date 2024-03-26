@@ -63,9 +63,23 @@ export interface BaseDatePickerProps extends StandardInputProps {
      * Popover props to pass to the underlying Popover component
      */
     popoverProps?: Omit<PopoverProps, "children" | "open" | "anchorEl" | "onClose">;
+    /**
+     * Enable tools in the calendar picker
+     */
+    tools?: boolean;
+    /**
+     * Filter the tools in the calendar picker
+     */
+    toolFilter?: (val: string) => boolean;
+    /**
+     * Render the preview selection bar
+     */
+    previewSelection?: boolean;
 }
 export interface BaseCalendarProps {
-    children: React.ReactNode;
+    value?: Date | Date[];
+    onSelect?: (date: Date | Date[]) => void;
+    children?: React.ReactNode;
     disableFuture?: boolean;
     disableCurrent?: boolean;
     disablePast?: boolean;
@@ -73,4 +87,8 @@ export interface BaseCalendarProps {
     currentDate?: Date;
     numberOfMonths?: number;
     range?: boolean;
+    tools?: boolean;
+    toolFilter?: (val: string) => boolean;
+    previewSelection?: boolean;
+    format?: string;
 }

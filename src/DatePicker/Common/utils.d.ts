@@ -12,3 +12,7 @@ export declare const getFirstDay: (weeks: any) => any;
 export declare const convertDateToGMT: (value: any) => Date;
 export declare const numberOfMonthsBetween: (d2: Date, d1: Date, abs?: boolean) => any;
 export declare const formatDateRange: (values: Date[]) => Date[];
+export declare const findDiffIndex: (prev: Date[], next: Date[]) => number;
+export declare const getThisWeek: (date: Date) => Date[];
+export declare const getThisMonth: (date: Date) => Date[];
+export declare const getThisYear: (date: Date) => Date[];

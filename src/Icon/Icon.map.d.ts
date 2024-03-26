@@ -447,5 +447,17 @@ declare const IconMap: {
         stroke: string;
         fill: string;
     }) => import('../../node_modules/react/jsx-runtime').JSX.Element;
+    Percentage: ({ stroke, fill }: {
+        stroke: string;
+        fill: string;
+    }) => import('../../node_modules/react/jsx-runtime').JSX.Element;
+    Euro: ({ stroke, fill }: {
+        stroke: string;
+        fill: string;
+    }) => import('../../node_modules/react/jsx-runtime').JSX.Element;
+    Pound: ({ stroke, fill }: {
+        stroke: string;
+        fill: string;
+    }) => import('../../node_modules/react/jsx-runtime').JSX.Element;
 };
 export default IconMap;

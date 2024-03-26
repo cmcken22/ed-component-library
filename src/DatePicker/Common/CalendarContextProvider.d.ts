@@ -19,7 +19,10 @@ export type CalendarContextType = {
     hoveredDate?: Date | null;
     setHoveredDate?: (date: Date | null) => void;
     setViewing?: (date: Date) => void;
+    format?: string;
 };
 export declare const CalendarContext: import('../../../node_modules/react').Context<CalendarContextType>;
-declare const CalendarContextProvider: import('../../../node_modules/react').ForwardRefExoticComponent<BaseCalendarProps & import('../../../node_modules/react').RefAttributes<unknown>>;
+interface CalendarContextProviderProps extends Omit<BaseCalendarProps, "value" | "onSelect"> {
+}
+declare const CalendarContextProvider: ({ numberOfMonths, children, disableFuture, disableCurrent, disablePast, dateDisabled, currentDate, range, format, }: CalendarContextProviderProps) => import('../../../node_modules/react/jsx-runtime').JSX.Element;
 export default CalendarContextProvider;

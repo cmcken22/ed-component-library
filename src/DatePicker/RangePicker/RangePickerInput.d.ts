@@ -1,5 +1,5 @@
 declare const DateRangeInput: {
-    ({ format, value: passedValue, onChange, placeholder, endAdornment, status, disabled, disableTextInput, }: any): import('../../../node_modules/react/jsx-runtime').JSX.Element;
+    ({ format, value: passedValue, onChange, placeholder, endAdornment, status, disabled, disableTextInput, variant, color, }: any): import('../../../node_modules/react/jsx-runtime').JSX.Element;
     defaultProps: {
         format: string;
         value: Date;

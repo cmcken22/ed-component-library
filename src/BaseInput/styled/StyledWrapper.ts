@@ -37,8 +37,8 @@ const StyledWrapper = styled(Box, {
 
   let borderColor = colorMap?.[status]
     ? `${colorMap?.[status]} !important`
-    : theme.palette.charcoal["20"];
-  if (disabled) borderColor = theme.palette.charcoal["20"];
+    : theme.palette.border.main;
+  if (disabled) borderColor = theme.palette.border.main;
 
   return {
     width: fullWidth

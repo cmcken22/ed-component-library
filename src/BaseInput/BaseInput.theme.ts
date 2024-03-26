@@ -7,6 +7,10 @@ export default {
       const endAdornment = ownerState?.InputProps?.endAdornment;
 
       return {
+        "input::placeholder": {
+          color: theme.palette.text.placeholder,
+          opacity: 1,
+        },
         "input::-webkit-outer-spin-button": {
           margin: 0,
         },
@@ -28,7 +32,9 @@ export default {
         width: "100%",
         fieldset: {
           borderWidth: "1px !important",
-          borderColor: theme.palette.charcoal["20"],
+          // borderColor: theme.palette.charcoal["20"],
+          // borderColor: "theme.border.main",
+          borderColor: theme.palette.border.main,
         },
         input: {
           ...theme.typography["bodyR"],

@@ -21,7 +21,7 @@ export const SelectListTheme = {
           padding: "5.5px 8px",
           borderBottomWidth: "1px",
           borderBottomStyle: "solid",
-          borderBottomColor: theme.palette.charcoal[20],
+          borderBottomColor: theme.palette.border.main,
           "&:last-child": {
             borderBottom: "none",
           },

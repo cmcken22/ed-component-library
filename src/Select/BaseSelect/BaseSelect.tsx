@@ -156,7 +156,7 @@ const BaseSelectComp = ({
         wrap={wrap}
         variant={VariantMap[variant] as any}
         IconComponent={(props: any) => (
-          <SelectIcon endAdornment={endAdornment} {...props} />
+          <SelectIcon endAdornment={endAdornment} {...props} open={open} />
         )}
         MenuProps={{
           sx: {

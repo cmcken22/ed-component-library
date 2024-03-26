@@ -1,6 +1,5 @@
 import { Box, styled } from "@mui/material";
 import { forwardRef, useCallback } from "react";
-import { hexToRGBA } from "src/utils";
 import Icon from "../Icon";
 import Typography from "../Typography";
 import { closeSnackbar } from "./";
@@ -18,7 +17,7 @@ const StyledContainer = styled(Box, {
   };
   const formattedVariant = variantMap?.[variant] || "primary";
   return {
-    backgroundColor: hexToRGBA(theme.palette?.[formattedVariant].main, 0.05),
+    backgroundColor: theme.palette?.[formattedVariant].extraLight,
     border: `1px solid ${theme.palette?.[formattedVariant].main}`,
     padding: theme.spacing(2),
     gap: theme.spacing(2),

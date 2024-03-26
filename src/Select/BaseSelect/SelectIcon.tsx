@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Icon, { IconVariant } from "../../Icon";
 
-const DropdownIcon = ({ endAdornment, ...props }: any) => {
+const SelectIcon = ({ endAdornment, open, ...props }: any) => {
   if (endAdornment) {
     return (
       <Box
@@ -23,18 +23,21 @@ const DropdownIcon = ({ endAdornment, ...props }: any) => {
       </Box>
     );
   }
+
   return (
     <Icon
-      className={props?.className}
       icon={IconVariant.NavArrowDown}
-      height="20px"
-      width="20px"
-      color="charcoal.dark"
+      size={20}
+      color="border.dark"
       sx={{
+        pointerEvents: "none",
         top: "calc(50% - 10px) !important",
+        position: "absolute",
+        right: "7px",
+        transform: `rotate(${open ? "180deg" : "0deg"})`,
       }}
     />
   );
 };
 
-export default DropdownIcon;
+export default SelectIcon;

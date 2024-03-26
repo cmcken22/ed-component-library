@@ -1,20 +1,23 @@
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import Typography from "src/Typography";
+
+const StyledWrapper = styled(Box, {
+  slot: "root",
+})<any>(({ theme }) => {
+  return {
+    padding: 2,
+    width: "100px",
+    ".toolbar-item": {
+      cursor: "pointer",
+    },
+    borderRight: `${theme.shape.borderWidth} solid`,
+    borderColor: theme.palette.charcoal["20"],
+  };
+});
 
 const Tools = ({ tools }: any) => {
   return (
-    <Box
-      data-testid="toolbar"
-      sx={{
-        p: 2,
-        width: "100px",
-        ".toolbar-item": {
-          cursor: "pointer",
-        },
-        borderRight: "1px solid",
-        borderColor: "charcoal.20",
-      }}
-    >
+    <StyledWrapper data-testid="toolbar">
       {tools?.map((tool: any) => (
         <Box
           key={tool.label}
@@ -25,7 +28,7 @@ const Tools = ({ tools }: any) => {
           <Typography variant="bodyXS">{tool.label}</Typography>
         </Box>
       ))}
-    </Box>
+    </StyledWrapper>
   );
 };
 

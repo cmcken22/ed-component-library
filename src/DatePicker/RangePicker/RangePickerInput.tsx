@@ -13,7 +13,7 @@ dayjs.extend(customParseFormat);
 const StyledWrapper = styled(Box, {
   shouldForwardProp: shouldNotForwardProp(["row", "status", "variant"]),
   slot: "root",
-})<{ status?: string; disabled?: boolean; variant?: string }>(({
+})<{ status?: string; disabled?: boolean; variant?: string; theme?: any }>(({
   theme,
   status,
   disabled,
@@ -38,6 +38,7 @@ const StyledWrapper = styled(Box, {
     alignItems: "center",
     width: "100%",
     borderColor: borderColor,
+    borderWidth: theme.shape.borderWidth,
     ".MuiInputBase-root": {
       width: "auto",
     },

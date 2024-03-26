@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -11,6 +11,19 @@ import { isValidDate } from "src/DatePicker/Common/utils";
 import Icon from "src/Icon";
 import useUpdateView from "./useUpdateView";
 dayjs.extend(customParseFormat);
+
+const StyledWrapper = styled(Box, {
+  slot: "root",
+})<any>(({ theme }) => {
+  return {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 2,
+    borderTop: `${theme.shape.borderWidth} solid`,
+    borderColor: theme.palette.charcoal["20"],
+  };
+});
 
 const PreviewSelectionBar = ({ onApply, onCancel }: any) => {
   const { selected, format, select } = useContext(CalendarContext);
@@ -28,16 +41,7 @@ const PreviewSelectionBar = ({ onApply, onCancel }: any) => {
   );
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        p: 2,
-        borderTop: "1px solid",
-        borderColor: "charcoal.20",
-      }}
-    >
+    <StyledWrapper>
       <Box display="flex" flexDirection="row">
         <Box sx={{ width: "137px" }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -73,7 +77,7 @@ const PreviewSelectionBar = ({ onApply, onCancel }: any) => {
         </Button>
         <Button onClick={() => onApply(selected)}>Apply</Button>
       </Box>
-    </Box>
+    </StyledWrapper>
   );
 };
 

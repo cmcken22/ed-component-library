@@ -136,8 +136,6 @@ declare module "@mui/material/styles/createPalette" {
   }
 }
 
-// const { palette: p1 } = createTheme();
-
 const theme = createTheme({
   palette: {
     primary: Colors.Bermuda,

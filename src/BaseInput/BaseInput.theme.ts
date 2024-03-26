@@ -31,7 +31,7 @@ export default {
         },
         width: "100%",
         fieldset: {
-          borderWidth: "1px !important",
+          borderWidth: `${theme.shape.borderWidth} !important`,
           // borderColor: theme.palette.charcoal["20"],
           // borderColor: "theme.border.main",
           borderColor: theme.palette.border.main,

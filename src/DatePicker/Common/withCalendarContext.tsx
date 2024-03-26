@@ -19,6 +19,7 @@ const Wrapper = styled(Box, {
     border: "1px solid",
     bgcolor: "background.paper",
     borderColor: theme.palette.charcoal["20"],
+    borderWidth: theme.shape.borderWidth,
     borderRadius: "2px",
   };
 });

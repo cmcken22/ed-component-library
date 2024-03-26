@@ -1,4 +1,4 @@
-import { createTheme, useTheme } from "@mui/material";
+import { Theme, createTheme, useTheme } from "@mui/material";
 import BaseInputTheme from "src/BaseInput/BaseInput.theme";
 import ButtonTheme from "src/Button/Button.theme";
 import CheckboxTheme from "src/Checkbox/Checkbox.theme";
@@ -20,6 +20,10 @@ const theme = createTheme({
     MuiTabs: TabsTheme,
     MuiMenu: SelectListTheme,
   },
+  shape: {
+    borderRadius: 4,
+    borderWidth: "1px",
+  } as Partial<Theme["shape"]>,
 });
 
 const useEllisDonTheme = () => {

@@ -2,6 +2,7 @@ import { Box, styled } from "@mui/material";
 import cx from "classnames";
 import { useEffect, useMemo, useState } from "react";
 import { useStateWithPrevious } from "src/Hooks/useStateWithPrevious";
+import { useEllisDonTheme } from "..";
 
 const StyledWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "color",
@@ -25,39 +26,48 @@ const StyledWrapper = styled(Box, {
   };
 });
 
-const ClipSvg = ({ width, height }: { width: number; height: number }) => (
-  <svg
-    width={width}
-    height={height}
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      zIndex: 1,
-    }}
-  >
-    <defs>
-      <mask
-        id="loading-indicator__clip-mask"
-        x="0"
-        y="0"
-        width={width}
-        height={height}
-      >
-        <rect width="100%" height="100%" fill="white" rx="4" ry="4" />
-        <rect
-          width="calc(100% - 2px)"
-          height="calc(100% - 2px)"
-          fill="black"
-          rx="4"
-          ry="4"
-          x="1"
-          y="1"
-        />
-      </mask>
-    </defs>
-  </svg>
-);
+const ClipSvg = ({ width, height }: { width: number; height: number }) => {
+  const theme = useEllisDonTheme();
+
+  const borderRadius = useMemo(() => {
+    const halfHeight = height / 2;
+    if (theme.shape.borderRadius >= halfHeight) return halfHeight;
+    return theme.shape.borderRadius;
+  }, [height, theme.shape.borderRadius]);
+
+  return (
+    <svg
+      width={width}
+      height={height}
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 1,
+      }}
+    >
+      <defs>
+        <mask
+          id="loading-indicator__clip-mask"
+          x="0"
+          y="0"
+          width={width}
+          height={height}
+        >
+          <rect width="100%" height="100%" fill="white" ry={borderRadius} />
+          <rect
+            width="calc(100% - 2px)"
+            height="calc(100% - 2px)"
+            fill="black"
+            ry={borderRadius}
+            x="1"
+            y="1"
+          />
+        </mask>
+      </defs>
+    </svg>
+  );
+};
 
 export interface LoadingIdicatorProps {
   buttonRef?: any;
@@ -93,9 +103,6 @@ const LoadingIdicator = ({
   }, [buttonRef?.current]);
 
   if (!loading && !active && !complete) return null;
-
-  console.log("width:", width);
-  console.log("height:", height);
 
   return (
     <StyledWrapper

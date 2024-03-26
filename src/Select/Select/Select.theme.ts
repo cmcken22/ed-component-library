@@ -19,7 +19,7 @@ export const SelectListTheme = {
             backgroundColor: hexToRGBA(theme.palette.primary["10"], 0.07),
           },
           padding: "5.5px 8px",
-          borderBottomWidth: "1px",
+          borderBottomWidth: theme.shape.borderWidth,
           borderBottomStyle: "solid",
           borderBottomColor: theme.palette.border.main,
           "&:last-child": {
@@ -42,7 +42,7 @@ export default {
           background: "white",
         },
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-          borderWidth: "1px !important",
+          borderWidth: `${theme.shape.borderWidth} !important`,
         },
         minHeight: "36px",
         width: "100%",
@@ -50,9 +50,13 @@ export default {
           display: "flex",
           alignItems: "center",
           borderColor: theme.palette.primary.main,
+          borderWidth: `${theme.shape.borderWidth} !important`,
           height: "36px",
           paddingTop: 0,
           paddingBottom: 0,
+        },
+        fieldset: {
+          borderWidth: `${theme.shape.borderWidth} !important`,
         },
         "& .MuiSelect-multiple": {
           display: "flex",
@@ -69,6 +73,7 @@ export default {
         "&.dropdown--open": {
           "&.MuiInputBase-root .MuiOutlinedInput-notchedOutline": {
             borderColor: `${theme.palette.primary.main} !important`,
+            borderWidth: `${theme.shape.borderWidth} !important`,
           },
         },
       };

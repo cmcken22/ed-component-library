@@ -3,6 +3,7 @@ import {
   Checkbox as MuiCheckbox,
   styled,
 } from "@mui/material";
+import cx from "classnames";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { CheckboxProps } from "./Checkbox.types";
 
@@ -14,18 +15,18 @@ const StyledFormControlLabel = styled(FormControlLabel, {
     msUserSelect: "none",
     userSelect: "none",
     margin: 0,
-    ".Checkbox": {
+    ".checkbox__input": {
       zIndex: 1,
     },
     "&.MuiFormControlLabel": {
       "&-labelPlacementStart": {
-        ".Checkbox": {
+        ".checkbox__input": {
           marginLeft: theme.spacing(1),
           marginRight: 0,
         },
       },
       "&-labelPlacementEnd": {
-        ".Checkbox": {
+        ".checkbox__input": {
           marginRight: theme.spacing(1),
           marginLeft: 0,
         },
@@ -54,6 +55,7 @@ const muiLabelPlacementMap: Record<string, "start" | "end"> = {
 
 const Checkbox = ({
   id,
+  className,
   label,
   checked: passedValue,
   disabled,
@@ -65,7 +67,7 @@ const Checkbox = ({
 
   useEffect(() => {
     setChecked(passedValue || false);
-  }, [passedValue, setChecked]);
+  }, [passedValue]);
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,9 +82,13 @@ const Checkbox = ({
   return (
     <StyledFormControlLabel
       id={id}
-      className="CheckboxWrapper"
+      className={cx("checkbox", {
+        [className]: className,
+      })}
       label={label}
       labelPlacement={muiLabelPlacementMap[labelPosition] || "end"}
+      data-testid="Checkbox"
+      data-checked={checked}
       componentsProps={{
         typography: {
           // @ts-expect-error
@@ -91,8 +97,8 @@ const Checkbox = ({
       }}
       control={
         <StyledCheckbox
-          key={`Checkbox--${checked}`}
-          className="Checkbox"
+          key={`checkbox--${checked}`}
+          className="checkbox__input"
           checked={checked}
           onChange={handleChange}
           disableFocusRipple

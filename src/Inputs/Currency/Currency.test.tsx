@@ -1,25 +1,28 @@
 import "@testing-library/jest-dom";
+import { testInputRendering } from "test-utils/commonTestCases";
 import { getChildFromContainer } from "test-utils/helper";
 import { fireEvent, render } from "test-utils/index";
 import Currency, { CurrencyProps } from ".";
 
+const initialProps: CurrencyProps = {
+  ...Currency.defaultProps,
+  id: "test_id",
+  label: "This is a label",
+  placeholder: "placeholder",
+  helperText: "helperText",
+  disabled: false,
+  value: "",
+  fullWidth: false,
+  required: false,
+  labelPosition: "top",
+  onChange: jest.fn(),
+};
+
 describe("Currency", () => {
-  let props: CurrencyProps;
+  let props: CurrencyProps = { ...initialProps };
 
   beforeEach(() => {
-    props = {
-      ...Currency.defaultProps,
-      id: "test_id",
-      label: "This is a label",
-      placeholder: "placeholder",
-      helperText: "helperText",
-      disabled: false,
-      value: "",
-      fullWidth: false,
-      required: false,
-      labelPosition: "top",
-      onChange: jest.fn(),
-    };
+    props = { ...initialProps };
   });
 
   const renderComponent = (props: any) => {
@@ -27,37 +30,7 @@ describe("Currency", () => {
     return component;
   };
 
-  it("should render correctly", () => {
-    const { container } = renderComponent(props);
-    const component = getChildFromContainer(container);
-
-    const InputComponent = component.querySelector("input");
-    expect(InputComponent).toBeInTheDocument();
-
-    expect(component).toHaveAttribute("id", props.id);
-    expect(InputComponent).toHaveValue(props.value);
-  });
-
-  it("should accept className", () => {
-    props.className = "test-class";
-    const { getByTestId } = renderComponent(props);
-    const component = getByTestId("Input");
-    expect(component).toHaveClass(props.className);
-  });
-
-  it("should have label", () => {
-    const { container } = renderComponent(props);
-    const label = container.querySelector(".Input__label");
-    expect(label).toBeInTheDocument();
-    expect(label).toHaveTextContent(props?.label);
-  });
-
-  it("should have helperText", () => {
-    const { container } = renderComponent(props);
-    const helperText = container.querySelector(".Input__helper-text");
-    expect(helperText).toBeInTheDocument();
-    expect(helperText).toHaveTextContent(props?.helperText);
-  });
+  testInputRendering(renderComponent, props);
 
   it("should update value", () => {
     const { container } = renderComponent(props);

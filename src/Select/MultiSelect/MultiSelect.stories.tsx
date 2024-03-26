@@ -17,7 +17,11 @@ const meta = {
     },
   },
   tags: ["autodocs"],
-  argTypes: {},
+  argTypes: {
+    onChange: {
+      action: "onChange",
+    },
+  },
 } satisfies Meta<typeof MultiSelect>;
 
 export default meta;

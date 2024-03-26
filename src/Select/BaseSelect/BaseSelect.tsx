@@ -11,7 +11,7 @@ import { BaseSelectProps, StandardSelectOption } from "./BaseSelect.types";
 import SelectIcon from "./SelectIcon";
 
 const StyledSelect = styled(MuiSelect, {
-  shouldForwardProp: shouldNotForwardProp(["styleVariant"]),
+  shouldForwardProp: shouldNotForwardProp(["styleVariant", "wrap"]),
   slot: "root",
 })<{ styleVariant: string; wrap?: boolean }>(({
   theme,

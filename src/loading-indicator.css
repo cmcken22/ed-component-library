@@ -9,7 +9,7 @@
   overflow: hidden;
   pointer-events: none;
   /* clip-path: url(#mySVG); */
-  mask: url(#myMask);
+  mask: url(#loading-indicator__clip-mask);
 }
 .loading-indicator::after {
   background: inherit;

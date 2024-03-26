@@ -26,11 +26,7 @@ const Button = ({
   }, [onClick]);
 
   return (
-    <Box
-      sx={{
-        position: "relative",
-      }}
-    >
+    <Box sx={{ position: "relative" }}>
       <LoadingIdicator buttonRef={buttonRef} loading={loading} />
       <MuiButton
         id={id}
@@ -52,7 +48,6 @@ const Button = ({
           position: "relative",
         }}
       >
-        {/* <LoadingIdicator buttonRef={buttonRef} loading={loading} /> */}
         {iconLeft && (
           <Box mr={1}>
             <Icon

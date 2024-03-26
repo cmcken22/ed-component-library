@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { BaseInputMeta } from "src/BaseInput/BaseInput";
+import { testInputRendering } from "test-utils/commonTestCases";
 import { fireEvent, render } from "test-utils/index";
 import Select, { SelectProps } from ".";
 import { BaseSelectMeta } from "../BaseSelect";
@@ -12,32 +13,34 @@ const getDropdownTrigger = (getByTestId: any) => {
   return selectNode;
 };
 
+const initialProps: SelectProps = {
+  ...Select.defaultProps,
+  id: "Select",
+  label: "Label",
+  labelPosition: "top",
+  helperText: "Helper Text",
+  onChange: jest.fn(),
+  options: [
+    {
+      label: "Option 1",
+      value: "option1",
+    },
+    {
+      label: "Option 2",
+      value: "option2",
+    },
+    {
+      label: "Option 3",
+      value: "option3",
+    },
+  ],
+};
+
 describe("Select", () => {
-  let props: SelectProps;
+  let props: SelectProps = { ...initialProps };
 
   beforeEach(() => {
-    props = {
-      ...Select.defaultProps,
-      id: "Select",
-      label: "Label",
-      labelPosition: "top",
-      helperText: "Helper Text",
-      onChange: jest.fn(),
-      options: [
-        {
-          label: "Option 1",
-          value: "option1",
-        },
-        {
-          label: "Option 2",
-          value: "option2",
-        },
-        {
-          label: "Option 3",
-          value: "option3",
-        },
-      ],
-    };
+    props = { ...initialProps };
   });
 
   const renderComponent = (props: any) => {
@@ -45,28 +48,7 @@ describe("Select", () => {
     return component;
   };
 
-  it("should render correctly", () => {
-    const { getByTestId } = renderComponent(props);
-    const component = getByTestId(BaseInputMeta.dataTestId);
-    expect(component).toHaveAttribute("id", props.id);
-  });
-
-  it("should accept className", () => {
-    props.className = "test-class";
-    const { getByTestId } = renderComponent(props);
-    const component = getByTestId(BaseInputMeta.dataTestId);
-    expect(component).toHaveClass(props.className);
-  });
-
-  it("should have label", () => {
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
-    expect(inputContainer).toBeInTheDocument();
-    const label = inputContainer.querySelector(
-      `.${BaseInputMeta.className}__label`
-    );
-    expect(label).toHaveTextContent(props.label);
-  });
+  testInputRendering(renderComponent, props);
 
   it("should have placeholder", () => {
     props.placeholder = "Placeholder";
@@ -76,16 +58,6 @@ describe("Select", () => {
     expect(input).toHaveAttribute("placeholder", props.placeholder);
   });
 
-  it("should have helper text", () => {
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId(BaseInputMeta.dataTestId);
-    expect(inputContainer).toBeInTheDocument();
-    const helperText = inputContainer.querySelector(
-      `.${BaseInputMeta.className}__helper-text`
-    );
-    expect(helperText).toHaveTextContent(props.helperText);
-  });
-
   it("should have list", () => {
     props.open = true;
     const { baseElement } = renderComponent(props);
@@ -93,7 +65,7 @@ describe("Select", () => {
     expect(list).toBeInTheDocument();
   });
 
-  it("should have after focusing on input", () => {
+  it("should have list after focusing on input", () => {
     const { baseElement, getByTestId } = renderComponent(props);
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);

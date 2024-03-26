@@ -9,4 +9,7 @@ export interface DatePickerCalendarProps
 export interface DatePickerCalendarCompProps {
   value?: Date;
   onSelect?: (date: Date) => void;
+  tools?: boolean;
+  toolFilter?: (val: string) => boolean;
+  previewSelection?: boolean;
 }

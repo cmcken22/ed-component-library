@@ -12,14 +12,14 @@ const CheckboxGroupWrapper = styled(Box, {
       ? {
           display: "flex",
           flexDirection: "column",
-          ".CheckboxWrapper": {
+          ".checkbox": {
             marginBottom: theme.spacing(2),
           },
         }
       : {
           display: "flex",
           flexDirection: "row",
-          ".CheckboxWrapper": {
+          ".checkbox": {
             marginRight: theme.spacing(2),
           },
         }),

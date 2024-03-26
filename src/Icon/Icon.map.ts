@@ -43,6 +43,7 @@ import Download from "./IconElements/Download";
 import DownloadV2 from "./IconElements/DownloadV2";
 import Edit from "./IconElements/Edit";
 import Error from "./IconElements/Error";
+import Euro from "./IconElements/Euro";
 import Files from "./IconElements/Files";
 import Filter from "./IconElements/Filter";
 import FilterV2 from "./IconElements/FilterV2";
@@ -82,8 +83,10 @@ import PageDown from "./IconElements/PageDown";
 import PageLeft from "./IconElements/PageLeft";
 import PageRight from "./IconElements/PageRight";
 import PageUp from "./IconElements/PageUp";
+import Percentage from "./IconElements/Percentage";
 import Phone from "./IconElements/Phone";
 import Plus from "./IconElements/Plus";
+import Pound from "./IconElements/Pound";
 import ReadEmail from "./IconElements/ReadEmail";
 import Refresh from "./IconElements/Refresh";
 import RefreshV2 from "./IconElements/RefreshV2";
@@ -224,6 +227,9 @@ const IconMap = {
   PageLeft,
   PageRight,
   PageUp,
+  Percentage,
+  Euro,
+  Pound,
 };
 
 export default IconMap;

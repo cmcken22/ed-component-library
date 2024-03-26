@@ -16,6 +16,7 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
+    onSelect: { action: "onChange" },
     currentDate: {
       control: {
         type: "date",

@@ -8,6 +8,8 @@
   max-width: 100%;
   overflow: hidden;
   pointer-events: none;
+  /* clip-path: url(#mySVG); */
+  mask: url(#loading-indicator__clip-mask);
 }
 .loading-indicator::after {
   background: inherit;

@@ -3,7 +3,7 @@ import { useCallback, useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { VariantMap, getFontColor } from "src/BaseInput/helpers";
-import Icon from "src/Icon";
+import Icon, { IconVariant } from "src/Icon";
 import { PercentProps } from ".";
 
 const StyledTextField = styled(TextField, {
@@ -16,15 +16,15 @@ const StyledTextField = styled(TextField, {
   };
 });
 
-const StyledTextIcon = styled(Icon, {
-  slot: "root",
-})(() => {
-  return {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-});
+// const StyledTextIcon = styled(Icon, {
+//   slot: "root",
+// })(() => {
+//   return {
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//   };
+// });
 
 const PercentComp = ({
   label,
@@ -62,7 +62,7 @@ const PercentComp = ({
     if (iconPlacement !== "prefix") return null;
     return (
       <InputAdornment position="start" sx={{ ml: "8px" }}>
-        <StyledTextIcon icon={<>%</>} size={20} />
+        <Icon icon={IconVariant.Percentage} size={20} />
       </InputAdornment>
     );
   }, [iconPlacement]);
@@ -77,7 +77,7 @@ const PercentComp = ({
         sx={{ ml: "8px", ".status-adornment": { ml: 0 } }}
       >
         {!statusAdornment || (statusAdornment && persistSuffix) ? (
-          <StyledTextIcon icon={<>%</>} size={20} />
+          <Icon icon={IconVariant.Percentage} size={20} />
         ) : null}
         {statusAdornment}
       </InputAdornment>

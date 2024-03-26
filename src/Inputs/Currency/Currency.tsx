@@ -16,23 +16,20 @@ const StyledTextField = styled(TextField, {
   };
 });
 
-const StyledTextIcon = styled(Icon, {
-  slot: "root",
-})(() => {
-  return {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-});
+// const StyledTextIcon = styled(Icon, {
+//   slot: "root",
+// })(() => {
+//   return {
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//   };
+// });
 
 const SymbolMap: Record<string, string | (() => JSX.Element)> = {
   Dollar: () => <Icon icon={IconVariant.Dollar} size={20} />,
-  $: () => <Icon icon={IconVariant.Dollar} size={20} />,
-  Pound: "£",
-  "£": "£",
-  Euro: "€",
-  "€": "€",
+  Pound: () => <Icon icon={IconVariant.Pound} size={20} />,
+  Euro: () => <Icon icon={IconVariant.Euro} size={20} />,
 };
 
 const CurrencyComp = ({
@@ -73,7 +70,7 @@ const CurrencyComp = ({
       if (symbol instanceof Function) {
         return symbol();
       }
-      return <StyledTextIcon icon={<>{symbol}</>} size={20} />;
+      return null;
     },
     []
   );

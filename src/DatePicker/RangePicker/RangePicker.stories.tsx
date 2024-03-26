@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
 import RangePicker from "./RangePicker";
@@ -93,5 +94,23 @@ export const LeftLabel: Story = {
   args: {
     ...Default.args,
     labelPosition: "left",
+  },
+};
+
+export const TableVariant: Story = {
+  render: (args) => (
+    <Box
+      sx={{
+        height: "100px",
+        width: "300px",
+        // backgroundColor: "rgba(255, 0, 255, 0.1)",
+      }}
+    >
+      <RangePicker {...args} />
+    </Box>
+  ),
+  args: {
+    ...Default.args,
+    variant: "table",
   },
 };

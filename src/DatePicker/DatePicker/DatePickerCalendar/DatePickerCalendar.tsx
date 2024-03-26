@@ -1,29 +1,29 @@
 import { useCallback, useContext, useEffect, useRef } from "react";
 import Calendar from "src/DatePicker/Common/Calendar";
+import Tools from "src/DatePicker/Common/Tools";
 import withCalendarContext from "src/DatePicker/Common/withCalendarContext";
 import { CalendarContext } from "../../Common/CalendarContextProvider";
-import { isValidDate, numberOfMonthsBetween } from "../../Common/utils";
+import { isValidDate } from "../../Common/utils";
 import {
   DatePickerCalendarCompProps,
   DatePickerCalendarProps,
 } from "./DatePickerCalendar.types";
+import PreviewSelectionBar from "./PreviewSelectionBar";
+import useTools from "./useTools";
+import useUpdateView from "./useUpdateView";
 
 const DatePickerCalendarComp = ({
   value,
   onSelect,
+  tools,
+  toolFilter,
+  previewSelection,
 }: DatePickerCalendarCompProps) => {
-  const {
-    months,
-    select,
-    selected,
-    isSelected,
-    currentDate,
-    setViewing,
-    numberOfMonths,
-    viewing,
-  } = useContext(CalendarContext);
+  const { months, select, selected, isSelected, currentDate, setViewing } =
+    useContext(CalendarContext);
 
   const prevValue = useRef<Date | null>(null);
+  const handleUpdateView = useUpdateView();
 
   // on mount
   useEffect(() => {
@@ -31,28 +31,18 @@ const DatePickerCalendarComp = ({
     else setViewing(currentDate);
   }, []);
 
-  const handleUpdateView = useCallback(
-    (value: Date) => {
-      if (!value || !isValidDate(value)) return;
-
-      // if the number of months is 1, always set the viewing to the value
-      if (numberOfMonths === 1) {
-        setViewing(value);
-        return;
-      }
-      // otherwise, check of the view needs to be updated or not
-      const monthDiff = numberOfMonthsBetween(value, viewing);
-      if (monthDiff < 0) {
-        setViewing(value);
-        return;
-      }
-      if (monthDiff < numberOfMonths) {
-        return;
-      }
-      setViewing(value);
+  const handleSelectCallback = useCallback(
+    (date: Date) => {
+      if (onSelect && !previewSelection) onSelect(date);
     },
-    [viewing, numberOfMonths, setViewing]
+    [onSelect, previewSelection]
   );
+
+  const toolItems = useTools({
+    tools,
+    toolFilter,
+    onSelect: handleSelectCallback,
+  });
 
   const handleSelect = useCallback(
     (date: Date) => {
@@ -62,9 +52,9 @@ const DatePickerCalendarComp = ({
         return;
       }
       select(date, true);
-      if (onSelect) onSelect(date);
+      handleSelectCallback(date);
     },
-    [isSelected, onSelect, select]
+    [isSelected, onSelect, select, handleSelectCallback]
   );
 
   useEffect(() => {
@@ -76,7 +66,25 @@ const DatePickerCalendarComp = ({
     handleUpdateView(value);
   }, [value, selected, handleUpdateView, select]);
 
-  return <Calendar months={months} onSelect={handleSelect} />;
+  const handleApply = useCallback(
+    (date: Date) => {
+      if (onSelect) onSelect(date);
+    },
+    [onSelect]
+  );
+
+  const handleCancel = useCallback(() => {
+    if (onSelect) onSelect(value);
+  }, [value, onSelect]);
+
+  return (
+    <Calendar months={months} onSelect={handleSelect}>
+      {toolItems?.length && <Tools tools={toolItems} />}
+      {previewSelection && (
+        <PreviewSelectionBar onApply={handleApply} onCancel={handleCancel} />
+      )}
+    </Calendar>
+  );
 };
 
 const DatePickerCalendar = withCalendarContext<DatePickerCalendarProps>(
@@ -95,6 +103,8 @@ DatePickerCalendar.defaultProps = {
   dateDisabled: () => false,
   currentDate: new Date(),
   numberOfMonths: 1,
+  tools: false,
+  previewSelection: false,
 } as Partial<DatePickerCalendarProps>;
 
 export { DatePickerCalendar };

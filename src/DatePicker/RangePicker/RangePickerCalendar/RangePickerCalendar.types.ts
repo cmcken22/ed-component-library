@@ -9,4 +9,7 @@ export interface RangePickerCalendarProps
 export interface RangePickerCalendarCompProps {
   value?: Date[];
   onSelect?: (date: Date[]) => void;
+  tools?: boolean;
+  toolFilter?: (val: string) => boolean;
+  previewSelection?: boolean;
 }

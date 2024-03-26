@@ -47,6 +47,8 @@ const DatePickerComp = ({
   popoverProps,
   variant,
   color,
+  tools,
+  previewSelection,
 }: DatePickerProps) => {
   const { endAdornment, setStatus } = useContext(BaseInputContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -200,6 +202,8 @@ const DatePickerComp = ({
           currentDate={currentDate}
           dateDisabled={dateDisabled}
           numberOfMonths={numberOfMonths}
+          tools={tools}
+          previewSelection={previewSelection}
         />
       </Popover>
     </>
@@ -225,6 +229,8 @@ DatePicker.defaultProps = {
   disableCurrent: false,
   disablePast: false,
   calendarPlacement: "bottom-end",
+  tools: false,
+  previewSelection: false,
 } as Partial<DatePickerProps>;
 
 // export named component for storybook docgen

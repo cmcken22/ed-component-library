@@ -1,3 +1,4 @@
+import { Box, styled } from "@mui/material";
 import { FC } from "react";
 import { BaseCalendarProps } from "./BaseDatePicker.types";
 import CalendarContextProvider from "./CalendarContextProvider";
@@ -9,6 +10,18 @@ const sanitizeValue = (value: Date | Date[] | null) => {
   }
   return convertDateToGMT(value);
 };
+
+const Wrapper = styled(Box, {
+  slot: "root",
+})<any>(({ theme }) => {
+  return {
+    backgroundColor: theme.palette.common.white,
+    border: "1px solid",
+    bgcolor: "background.paper",
+    borderColor: theme.palette.charcoal["20"],
+    borderRadius: "2px",
+  };
+});
 
 const withCalendarContext = <T extends BaseCalendarProps>(
   Component,
@@ -25,6 +38,7 @@ const withCalendarContext = <T extends BaseCalendarProps>(
       dateDisabled,
       currentDate,
       numberOfMonths,
+      format,
       ...rest
     } = props;
     return (
@@ -35,9 +49,17 @@ const withCalendarContext = <T extends BaseCalendarProps>(
         dateDisabled={dateDisabled}
         currentDate={currentDate}
         numberOfMonths={numberOfMonths}
+        format={format}
         {...options}
       >
-        <Component {...rest} value={sanitizeValue(value)} onSelect={onSelect} />
+        <Wrapper>
+          <Component
+            {...rest}
+            value={sanitizeValue(value)}
+            onSelect={onSelect}
+            format={format}
+          />
+        </Wrapper>
       </CalendarContextProvider>
     );
   };

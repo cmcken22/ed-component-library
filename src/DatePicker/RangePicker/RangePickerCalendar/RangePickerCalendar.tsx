@@ -1,34 +1,33 @@
-import isEqual from "lodash.isequal";
-import { useCallback, useContext, useEffect, useRef } from "react";
+import { useCallback, useContext, useEffect } from "react";
 import Calendar from "src/DatePicker/Common/Calendar";
+import Tools from "src/DatePicker/Common/Tools";
 import withCalendarContext from "src/DatePicker/Common/withCalendarContext";
 import { CalendarContext } from "../../Common";
 import {
   checkDateInArray,
-  findDiffIndex,
   nullFilter,
   numberOfMonthsBetween,
   sorteDates,
-  subtractMonths,
 } from "../../Common/utils";
+import PreviewSelectionBar from "./PreviewSelectionBar";
 import {
   RangePickerCalendarCompProps,
   RangePickerCalendarProps,
 } from "./RangePickerCalendar.types";
+import useTools from "./useTools";
+import useUpdateView from "./useUpdateView";
 
 const RangePickerCalendarComp = ({
   value,
   onSelect,
+  tools,
+  toolFilter,
+  previewSelection,
 }: RangePickerCalendarCompProps) => {
-  const {
-    months,
-    select,
-    selected,
-    setViewing,
-    currentDate,
-    numberOfMonths,
-    viewing,
-  } = useContext(CalendarContext);
+  const { months, select, selected, setViewing, currentDate, numberOfMonths } =
+    useContext(CalendarContext);
+
+  const handleUpdateView = useUpdateView();
 
   // on mount
   useEffect(() => {
@@ -50,82 +49,22 @@ const RangePickerCalendarComp = ({
     setViewing(currentDate);
   }, []);
 
-  const prevValue = useRef<Date[]>(value);
-
-  const setDateInCalendarView = useCallback(
-    (date: Date, viewing: Date) => {
-      const monthDiff = numberOfMonthsBetween(date, viewing);
-      if (monthDiff >= 0 && monthDiff < numberOfMonths) {
-        return;
-      }
-      if (monthDiff > 0) {
-        const prevMonth = subtractMonths(date, numberOfMonths - 1);
-        setViewing(prevMonth);
-        return;
-      }
-      setViewing(date);
-    },
-    [setViewing]
-  );
-
-  const handleUpdateView = useCallback(
-    (value: Date[]) => {
-      if (isEqual(prevValue.current, value)) return;
-      const diffIndex = findDiffIndex(prevValue.current, value);
-      prevValue.current = value;
-
-      const d1 = value?.[0];
-      const d2 = value?.[1];
-
-      if (d1 && d2) {
-        const monthDiff1 = numberOfMonthsBetween(d1, viewing);
-        const monthDiff2 = numberOfMonthsBetween(d2, viewing);
-
-        let count = 0;
-        if (monthDiff1 >= 0 && monthDiff1 < numberOfMonths) {
-          count++;
-        }
-        if (monthDiff2 >= 0 && monthDiff2 < numberOfMonths) {
-          count++;
-        }
-        if (count === 2) {
-          return;
-        }
-
-        // can they both fit in the range?
-        const monthDiffRange = numberOfMonthsBetween(d1, d2, true);
-        if (monthDiffRange < numberOfMonths) {
-          const smallest = [...value]?.sort(sorteDates)?.[0];
-          setViewing(smallest);
-          return;
-        }
-
-        const updatedDate = diffIndex === 0 ? d1 : d2;
-        const diff = diffIndex === 0 ? monthDiff1 : monthDiff2;
-
-        if (diff <= 0) {
-          setViewing(updatedDate);
-          return;
-        }
-        const prevMonth = subtractMonths(updatedDate, numberOfMonths - 1);
-        setViewing(prevMonth);
-      }
-
-      if (d2 && !d1 && diffIndex === 1) {
-        setDateInCalendarView(d2, viewing);
-        return;
-      }
-      if (d1 && !d2 && diffIndex === 0) {
-        setDateInCalendarView(d1, viewing);
-        return;
-      }
-    },
-    [numberOfMonths, setViewing, viewing]
-  );
-
   useEffect(() => {
     handleUpdateView(value);
   }, [value]);
+
+  const handleSelectCallback = useCallback(
+    (date: Date[]) => {
+      if (onSelect && !previewSelection) onSelect(date);
+    },
+    [onSelect, previewSelection]
+  );
+
+  const toolItems = useTools({
+    tools,
+    toolFilter,
+    onSelect: handleSelectCallback,
+  });
 
   const handleSelect = useCallback(
     (date: Date) => {
@@ -147,7 +86,7 @@ const RangePickerCalendarComp = ({
           }
         }
         select(nextSelected, true);
-        if (onSelect) onSelect(nextSelected);
+        handleSelectCallback(nextSelected);
         return;
       }
 
@@ -165,7 +104,7 @@ const RangePickerCalendarComp = ({
           }
         }
         select(nextSelected, true);
-        if (onSelect) onSelect(nextSelected);
+        handleSelectCallback(nextSelected);
         return;
       }
 
@@ -174,21 +113,41 @@ const RangePickerCalendarComp = ({
 
       if (date < smallest) {
         select([date, largest], true);
-        if (onSelect) onSelect([date, largest]);
+        handleSelectCallback([date, largest]);
         return;
       }
       select([smallest, date], true);
-      if (onSelect) onSelect([smallest, date]);
+      handleSelectCallback([smallest, date]);
       return;
     },
-    [select, onSelect, selected]
+    [select, handleSelectCallback, selected]
   );
 
   useEffect(() => {
     select(value, true);
   }, [value]);
 
-  return <Calendar months={months} onSelect={handleSelect} />;
+  const handleApply = useCallback(
+    (date: Date[]) => {
+      console.clear();
+      console.log("handleApply:", date);
+      if (onSelect) onSelect(date);
+    },
+    [onSelect]
+  );
+
+  const handleCancel = useCallback(() => {
+    if (onSelect) onSelect(value || [null, null]);
+  }, [value, onSelect]);
+
+  return (
+    <Calendar months={months} onSelect={handleSelect}>
+      {toolItems?.length && <Tools tools={toolItems} />}
+      {previewSelection && (
+        <PreviewSelectionBar onApply={handleApply} onCancel={handleCancel} />
+      )}
+    </Calendar>
+  );
 };
 
 const RangePickerCalendar = withCalendarContext<RangePickerCalendarProps>(
@@ -205,6 +164,8 @@ RangePickerCalendar.defaultProps = {
   dateDisabled: () => false,
   currentDate: new Date(),
   numberOfMonths: 2,
+  tools: false,
+  previewSelection: false,
 } as Partial<RangePickerCalendarProps>;
 
 export { RangePickerCalendar };

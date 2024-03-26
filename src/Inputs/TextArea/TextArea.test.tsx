@@ -1,25 +1,28 @@
 import "@testing-library/jest-dom";
+import { testInputRendering } from "test-utils/commonTestCases";
 import { getChildFromContainer } from "test-utils/helper";
 import { fireEvent, render } from "test-utils/index";
 import TextArea, { TextAreaProps } from ".";
 
+const initialProps: TextAreaProps = {
+  ...TextArea.defaultProps,
+  id: "test_id",
+  label: "This is a label",
+  placeholder: "placeholder",
+  helperText: "helperText",
+  disabled: false,
+  value: "12345",
+  fullWidth: false,
+  required: false,
+  labelPosition: "top",
+  onChange: jest.fn(),
+};
+
 describe("Input", () => {
-  let props: TextAreaProps;
+  let props: TextAreaProps = { ...initialProps };
 
   beforeEach(() => {
-    props = {
-      ...TextArea.defaultProps,
-      id: "test_id",
-      label: "This is a label",
-      placeholder: "placeholder",
-      helperText: "helperText",
-      disabled: false,
-      value: "12345",
-      fullWidth: false,
-      required: false,
-      labelPosition: "top",
-      onChange: jest.fn(),
-    };
+    props = { ...initialProps };
   });
 
   const renderComponent = (props: any) => {
@@ -27,24 +30,7 @@ describe("Input", () => {
     return component;
   };
 
-  it("should render correctly", () => {
-    const { container } = renderComponent(props);
-    const component = getChildFromContainer(container);
-    expect(component).toBeInTheDocument();
-
-    const InputComponent = component.querySelector("textarea");
-    expect(InputComponent).toBeInTheDocument();
-
-    expect(component).toHaveAttribute("id", props.id);
-    expect(InputComponent).toHaveValue(props.value);
-  });
-
-  it("should accept className", () => {
-    props.className = "test-class";
-    const { getByTestId } = renderComponent(props);
-    const component = getByTestId("Input");
-    expect(component).toHaveClass(props.className);
-  });
+  testInputRendering(renderComponent, props);
 
   it("should update value", () => {
     const { container } = renderComponent(props);
@@ -58,22 +44,6 @@ describe("Input", () => {
 
     expect(props.onChange).toHaveBeenCalledWith(nextValue);
     expect(Input).toHaveValue(nextValue);
-  });
-
-  it("should have label", () => {
-    const { container } = renderComponent(props);
-    const component = getChildFromContainer(container);
-    const label = component.querySelector(".Input__label");
-    expect(label).toBeInTheDocument();
-    expect(label).toHaveTextContent(props?.label);
-  });
-
-  it("should have helperText", () => {
-    const { container } = renderComponent(props);
-    const component = getChildFromContainer(container);
-    const helperText = component.querySelector(".Input__helper-text");
-    expect(helperText).toBeInTheDocument();
-    expect(helperText).toHaveTextContent(props?.helperText);
   });
 
   it("should be disabled", () => {

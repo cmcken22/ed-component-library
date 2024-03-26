@@ -1,7 +1,6 @@
 import { Box, styled } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useMemo, useState } from "react";
 import { useStateWithPrevious } from "src/Hooks/useStateWithPrevious";
 
 const StyledWrapper = styled(Box, {
@@ -26,6 +25,40 @@ const StyledWrapper = styled(Box, {
   };
 });
 
+const ClipSvg = ({ width, height }: { width: number; height: number }) => (
+  <svg
+    width={width}
+    height={height}
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      zIndex: 1,
+    }}
+  >
+    <defs>
+      <mask
+        id="loading-indicator__clip-mask"
+        x="0"
+        y="0"
+        width={width}
+        height={height}
+      >
+        <rect width="100%" height="100%" fill="white" rx="4" ry="4" />
+        <rect
+          width="calc(100% - 2px)"
+          height="calc(100% - 2px)"
+          fill="black"
+          rx="4"
+          ry="4"
+          x="1"
+          y="1"
+        />
+      </mask>
+    </defs>
+  </svg>
+);
+
 export interface LoadingIdicatorProps {
   buttonRef?: any;
   loading?: boolean;
@@ -39,13 +72,6 @@ const LoadingIdicator = ({
 }: LoadingIdicatorProps) => {
   const [prevActive, active, setActive] = useStateWithPrevious(false);
   const [complete, setComplete] = useState(false);
-  const [position, setPosition] = useState({
-    top: 0,
-    left: 0,
-    width: 0,
-    height: 0,
-  });
-  const listeners = useRef([]);
 
   useEffect(() => {
     setActive(loading);
@@ -60,47 +86,28 @@ const LoadingIdicator = ({
     }
   }, [active, prevActive]);
 
-  const calcPosition = useCallback(() => {
-    if (!buttonRef?.current) return null;
-    const { top, left, width, height } =
-      buttonRef.current.getBoundingClientRect();
-    return setPosition({ top, left, width, height });
-  }, [setPosition]);
-
-  useEffect(() => {
-    if (!buttonRef?.current) return null;
-    const resizeObserver = new ResizeObserver(() => calcPosition());
-    resizeObserver.observe(buttonRef?.current);
-    listeners.current.push(resizeObserver);
-
-    const windowResizeObserver = new ResizeObserver(() => calcPosition());
-    windowResizeObserver.observe(window.document.body);
-    listeners.current.push(windowResizeObserver);
-    calcPosition();
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (!listeners.current.length) return;
-      const currentListeners = listeners.current;
-      currentListeners.forEach((listener) => listener.disconnect());
-      listeners.current = [];
-    };
-  }, []);
+  const [width, height] = useMemo(() => {
+    if (!buttonRef?.current) return [0, 0];
+    const { width, height } = buttonRef.current.getBoundingClientRect();
+    return [width + 2, height + 2];
+  }, [buttonRef?.current]);
 
   if (!loading && !active && !complete) return null;
 
-  return createPortal(
+  console.log("width:", width);
+  console.log("height:", height);
+
+  return (
     <StyledWrapper
       className="loading-indicator__wrapper"
       color={color}
       sx={{
-        top: position?.top - 1,
-        left: position?.left - 1,
-        width: position?.width + 2,
-        height: position?.height + 2,
+        width: `${width}px`,
+        height: `${height}px`,
       }}
     >
+      {/* the svg here is used to clip the inner content */}
+      <ClipSvg width={width} height={height} />
       <Box
         className={cx("loading-indicator", {
           "loading-indicator--active": active,
@@ -111,8 +118,7 @@ const LoadingIdicator = ({
           borderRadius: "inherit",
         }}
       />
-    </StyledWrapper>,
-    document.body
+    </StyledWrapper>
   );
 };
 

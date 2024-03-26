@@ -10,8 +10,8 @@ const Button = ({
   className,
   children,
   onClick,
-  color = "primary",
-  variant = "contained",
+  color,
+  variant,
   disabled,
   iconLeft,
   iconRight,
@@ -26,7 +26,8 @@ const Button = ({
   }, [onClick]);
 
   return (
-    <Box>
+    <Box sx={{ position: "relative" }}>
+      <LoadingIdicator buttonRef={buttonRef} loading={loading} />
       <MuiButton
         id={id}
         className={cx(baseClassName, {
@@ -42,9 +43,11 @@ const Button = ({
         disabled={disabled}
         disableTouchRipple
         onMouseEnter={onHover}
-        sx={sx}
+        sx={{
+          ...sx,
+          position: "relative",
+        }}
       >
-        <LoadingIdicator buttonRef={buttonRef} loading={loading} />
         {iconLeft && (
           <Box mr={1}>
             <Icon

@@ -24,6 +24,7 @@ export type CalendarContextType = {
   hoveredDate?: Date | null;
   setHoveredDate?: (date: Date | null) => void;
   setViewing?: (date: Date) => void;
+  format?: string;
 };
 
 const defaultContext: CalendarContextType = {
@@ -45,6 +46,7 @@ const defaultContext: CalendarContextType = {
   hoveredDate: null,
   setHoveredDate: () => {},
   setViewing: () => {},
+  format: "MM/dd/yyyy",
 };
 
 export const CalendarContext =
@@ -62,6 +64,7 @@ const CalendarContextProvider = ({
   dateDisabled,
   currentDate,
   range,
+  format,
 }: CalendarContextProviderProps) => {
   const {
     calendar,
@@ -112,6 +115,7 @@ const CalendarContextProvider = ({
         setHoveredDate,
         setViewing,
         numberOfMonths,
+        format,
       }}
     >
       {children}

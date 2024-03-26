@@ -59,6 +59,7 @@ export const Sample: Story = {
     children: "Sample Button",
     variant: "contained",
     color: "primary",
+    loading: false,
   },
 };
 

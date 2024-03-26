@@ -1,22 +1,25 @@
 import "@testing-library/jest-dom";
+import { testInputRendering } from "test-utils/commonTestCases";
 import { fireEvent, render } from "test-utils/index";
 import DatePicker, { DatePickerProps } from ".";
 
+const initialProps: DatePickerProps = {
+  ...DatePicker.defaultProps,
+  id: "single_date_picker",
+  label: "Calendar",
+  helperText: "Helper Text",
+  placeholder: "Please enter date",
+  format: "MM/DD/YYYY",
+  labelPosition: "left",
+  onChange: jest.fn(),
+  onValidation: jest.fn(),
+};
+
 describe("DatePicker", () => {
-  let props: DatePickerProps;
+  let props: DatePickerProps = { ...initialProps };
 
   beforeEach(() => {
-    props = {
-      ...DatePicker.defaultProps,
-      id: "single_date_picker",
-      label: "Calendar",
-      helperText: "Helper Text",
-      placeholder: "Please enter date",
-      format: "MM/DD/YYYY",
-      labelPosition: "left",
-      onChange: jest.fn(),
-      onValidation: jest.fn(),
-    };
+    props = { ...initialProps };
   });
 
   const renderComponent = (props: any) => {
@@ -24,12 +27,7 @@ describe("DatePicker", () => {
     return component;
   };
 
-  it("should render correctly", () => {
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("id", props.id);
-  });
+  testInputRendering(renderComponent, props);
 
   it("should have placeholder", () => {
     const { getByTestId } = renderComponent(props);
@@ -39,22 +37,6 @@ describe("DatePicker", () => {
     const inputs = inputContainer.querySelectorAll("input");
     expect(inputs).toHaveLength(1);
     expect(inputs[0]).toHaveAttribute("placeholder", props.placeholder);
-  });
-
-  it("should have label", () => {
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    const label = inputContainer.querySelector(".Input__label");
-    expect(label).toHaveTextContent(props.label);
-  });
-
-  it("should have helper text", () => {
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    const helperText = inputContainer.querySelector(".Input__helper-text");
-    expect(helperText).toHaveTextContent(props.helperText);
   });
 
   it("should have value", () => {

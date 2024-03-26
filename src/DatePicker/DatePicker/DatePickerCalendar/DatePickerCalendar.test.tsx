@@ -1,22 +1,22 @@
 import "@testing-library/jest-dom";
 import { testIds } from "src/DatePicker/Common";
 import { fireEvent, render } from "test-utils/index";
-import RangePickerCalendar, { RangePickerCalendarProps } from ".";
+import DatePickerCalendar, { DatePickerCalendarProps } from ".";
 
-describe("RangePickerCalendar", () => {
-  let props: RangePickerCalendarProps;
+describe("DatePickerCalendar", () => {
+  let props: DatePickerCalendarProps;
 
   beforeEach(() => {
     props = {
-      ...RangePickerCalendar.defaultProps,
+      ...DatePickerCalendar.defaultProps,
       currentDate: new Date("2024-03-15T04:00:00.000Z"),
       onSelect: jest.fn(),
-      value: [],
+      value: undefined,
     };
   });
 
   const renderComponent = (props: any) => {
-    const component = render(<RangePickerCalendar {...props} />, {});
+    const component = render(<DatePickerCalendar {...props} />, {});
     return component;
   };
 
@@ -25,9 +25,9 @@ describe("RangePickerCalendar", () => {
     const calendar = getByTestId(testIds.calendar);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
+    expect(months).toHaveLength(1);
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       const month = months[i];
       const monthTitle = month.querySelector(".month-title");
       expect(monthTitle).toBeInTheDocument();
@@ -37,9 +37,6 @@ describe("RangePickerCalendar", () => {
       if (i === 0) {
         expect(monthTitle).toHaveTextContent("March 2024");
         expect(days).toHaveLength(31);
-      } else {
-        expect(monthTitle).toHaveTextContent("April 2024");
-        expect(days).toHaveLength(30);
       }
     }
 
@@ -48,144 +45,80 @@ describe("RangePickerCalendar", () => {
     expect(today).toHaveAttribute("data-test-date", "15");
   });
 
-  it("should have range selected", () => {
-    props.value = [
-      new Date("2024-04-15T04:00:00.000Z"),
-      new Date("2024-04-17T04:00:00.000Z"),
-    ];
+  it("should have date selected", () => {
+    props.value = new Date("2024-03-15T04:00:00.000Z");
     const { getByTestId } = renderComponent(props);
     const calendar = getByTestId(testIds.calendar);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
-
-    const april = months[1];
-    const days = april.querySelectorAll(`[data-test-inrange="true"]`);
-    expect(days).toHaveLength(3);
-
-    const firstDay = days[0];
-    const lastDay = days[2];
-
-    expect(firstDay).toHaveAttribute("data-test-date", "15");
-    expect(firstDay).toHaveAttribute("data-test-selected", "true");
-    expect(lastDay).toHaveAttribute("data-test-date", "17");
-    expect(lastDay).toHaveAttribute("data-test-selected", "true");
-  });
-
-  it("should display month according to selection", () => {
-    props.value = [
-      new Date("2024-05-15T04:00:00.000Z"),
-      new Date("2024-05-17T04:00:00.000Z"),
-    ];
-    const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
-    expect(calendar).toBeInTheDocument();
-    const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
-
-    for (let i = 0; i < 2; i++) {
-      const month = months[i];
-      const monthTitle = month.querySelector(".month-title");
-      expect(monthTitle).toBeInTheDocument();
-      const days = month.querySelectorAll(
-        '.day:not([data-test-outofmonth="true"])'
-      );
-      if (i === 0) {
-        expect(monthTitle).toHaveTextContent("May 2024");
-        expect(days).toHaveLength(31);
-      } else {
-        expect(monthTitle).toHaveTextContent("June 2024");
-        expect(days).toHaveLength(30);
-      }
-    }
-  });
-
-  it("should update value", () => {
-    props.value = [
-      new Date("2024-03-15T04:00:00.000Z"),
-      new Date("2024-03-17T04:00:00.000Z"),
-    ];
-    const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
-    expect(calendar).toBeInTheDocument();
-    const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
-
-    const march = months[0];
-    const march5 = march.querySelector(`[data-test-date="5"]`);
-    const march30 = march.querySelector(`[data-test-date="30"]`);
-    fireEvent.click(march30);
-
-    expect(props.onSelect).toHaveBeenCalledWith([
-      new Date("2024-03-15T04:00:00.000Z"),
-      new Date("2024-03-30T04:00:00.000Z"),
-    ]);
-
-    fireEvent.click(march5);
-    expect(props.onSelect).toHaveBeenCalledWith([
-      new Date("2024-03-05T05:00:00.000Z"),
-      new Date("2024-03-30T04:00:00.000Z"),
-    ]);
-
-    const days = march.querySelectorAll(`[data-test-inrange="true"]`);
-    expect(days).toHaveLength(26);
-
-    const firstDay = days[0];
-    const lastDay = days[25];
-
-    expect(firstDay).toHaveAttribute("data-test-date", "5");
-    expect(firstDay).toHaveAttribute("data-test-selected", "true");
-    expect(lastDay).toHaveAttribute("data-test-date", "30");
-    expect(lastDay).toHaveAttribute("data-test-selected", "true");
-  });
-
-  it("should select range", () => {
-    const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
-    expect(calendar).toBeInTheDocument();
-    const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
-
-    const march = months[0];
-    const march5 = march.querySelector(`[data-test-date="5"]`);
-    const march30 = march.querySelector(`[data-test-date="30"]`);
-
-    fireEvent.click(march5);
-    expect(props.onSelect).toHaveBeenCalledWith([
-      new Date("2024-03-05T05:00:00.000Z"),
-      null,
-    ]);
-
-    fireEvent.click(march30);
-    expect(props.onSelect).toHaveBeenCalledWith([
-      new Date("2024-03-05T05:00:00.000Z"),
-      new Date("2024-03-30T04:00:00.000Z"),
-    ]);
-  });
-
-  it("should unselect range", () => {
-    props.value = [
-      new Date("2024-03-15T04:00:00.000Z"),
-      new Date("2024-03-17T04:00:00.000Z"),
-    ];
-    const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
-    expect(calendar).toBeInTheDocument();
-    const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
+    expect(months).toHaveLength(1);
 
     const march = months[0];
     const march15 = march.querySelector(`[data-test-date="15"]`);
-    const march17 = march.querySelector(`[data-test-date="17"]`);
+
+    expect(march15).toHaveAttribute("data-test-selected", "true");
+  });
+
+  it("should display month according to selection", () => {
+    props.value = new Date("2024-04-15T04:00:00.000Z");
+    const { getByTestId } = renderComponent(props);
+    const calendar = getByTestId(testIds.calendar);
+    expect(calendar).toBeInTheDocument();
+    const months = calendar.querySelectorAll(`.month`);
+    expect(months).toHaveLength(1);
+
+    const month = months[0];
+    const monthTitle = month.querySelector(".month-title");
+    expect(monthTitle).toBeInTheDocument();
+    const days = month.querySelectorAll(
+      '.day:not([data-test-outofmonth="true"])'
+    );
+    expect(monthTitle).toHaveTextContent("April 2024");
+    expect(days).toHaveLength(30);
+  });
+
+  it("should update value", () => {
+    props.value = new Date("2024-03-15T04:00:00.000Z");
+    // new Date("2024-03-17T04:00:00.000Z")
+    const { getByTestId } = renderComponent(props);
+    const calendar = getByTestId(testIds.calendar);
+    expect(calendar).toBeInTheDocument();
+    const months = calendar.querySelectorAll(`.month`);
+    expect(months).toHaveLength(1);
+
+    const march = months[0];
+    const march5 = march.querySelector(`[data-test-date="5"]`);
+    const march30 = march.querySelector(`[data-test-date="30"]`);
+    fireEvent.click(march30);
+
+    expect(props.onSelect).toHaveBeenCalledWith(
+      new Date("2024-03-30T04:00:00.000Z")
+    );
+    expect(march30).toHaveAttribute("data-test-selected", "true");
+
+    fireEvent.click(march5);
+    expect(props.onSelect).toHaveBeenCalledWith(
+      new Date("2024-03-05T05:00:00.000Z")
+    );
+
+    expect(march5).toHaveAttribute("data-test-selected", "true");
+  });
+
+  it("should unselect range", () => {
+    props.value = new Date("2024-03-15T04:00:00.000Z");
+    const { getByTestId } = renderComponent(props);
+    const calendar = getByTestId(testIds.calendar);
+    expect(calendar).toBeInTheDocument();
+    const months = calendar.querySelectorAll(`.month`);
+    expect(months).toHaveLength(1);
+
+    const march = months[0];
+    const march15 = march.querySelector(`[data-test-date="15"]`);
+    expect(march15).toHaveAttribute("data-test-selected", "true");
 
     fireEvent.click(march15);
-    expect(props.onSelect).toHaveBeenCalledWith([
-      null,
-      new Date("2024-03-17T04:00:00.000Z"),
-    ]);
-
-    fireEvent.click(march17);
-    expect(props.onSelect).toHaveBeenCalledWith([null, null]);
+    expect(props.onSelect).toHaveBeenCalledWith(null);
+    expect(march15).toHaveAttribute("data-test-selected", "false");
   });
 
   it("should ignore bad values", () => {
@@ -196,9 +129,9 @@ describe("RangePickerCalendar", () => {
     const calendar = getByTestId(testIds.calendar);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
+    expect(months).toHaveLength(1);
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       const month = months[i];
       const monthTitle = month.querySelector(".month-title");
       expect(monthTitle).toBeInTheDocument();
@@ -208,9 +141,6 @@ describe("RangePickerCalendar", () => {
       if (i === 0) {
         expect(monthTitle).toHaveTextContent("March 2024");
         expect(days).toHaveLength(31);
-      } else {
-        expect(monthTitle).toHaveTextContent("April 2024");
-        expect(days).toHaveLength(30);
       }
     }
 
@@ -226,9 +156,9 @@ describe("RangePickerCalendar", () => {
     const calendar = getByTestId(testIds.calendar);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
+    expect(months).toHaveLength(1);
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       const month = months[i];
       const monthTitle = month.querySelector(".month-title");
       expect(monthTitle).toBeInTheDocument();
@@ -238,9 +168,6 @@ describe("RangePickerCalendar", () => {
       if (i === 0) {
         expect(monthTitle).toHaveTextContent("March 2024");
         expect(days).toHaveLength(31);
-      } else {
-        expect(monthTitle).toHaveTextContent("April 2024");
-        expect(days).toHaveLength(30);
       }
     }
 
@@ -255,9 +182,9 @@ describe("RangePickerCalendar", () => {
     const calendar = getByTestId(testIds.calendar);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
+    expect(months).toHaveLength(1);
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       const month = months[i];
       const monthTitle = month.querySelector(".month-title");
       expect(monthTitle).toBeInTheDocument();
@@ -276,13 +203,6 @@ describe("RangePickerCalendar", () => {
             expect(day).not.toHaveAttribute("disabled");
           }
         }
-      } else {
-        expect(monthTitle).toHaveTextContent("April 2024");
-        expect(days).toHaveLength(30);
-        for (let j = 0; j < 30; j++) {
-          const day = days[j];
-          expect(day).not.toHaveAttribute("disabled");
-        }
       }
     }
   });
@@ -293,9 +213,9 @@ describe("RangePickerCalendar", () => {
     const calendar = getByTestId(testIds.calendar);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
+    expect(months).toHaveLength(1);
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       const month = months[i];
       const monthTitle = month.querySelector(".month-title");
       expect(monthTitle).toBeInTheDocument();
@@ -314,13 +234,6 @@ describe("RangePickerCalendar", () => {
             expect(day).toHaveAttribute("disabled");
           }
         }
-      } else {
-        expect(monthTitle).toHaveTextContent("April 2024");
-        expect(days).toHaveLength(30);
-        for (let j = 0; j < 30; j++) {
-          const day = days[j];
-          expect(day).toHaveAttribute("disabled");
-        }
       }
     }
   });
@@ -331,7 +244,7 @@ describe("RangePickerCalendar", () => {
     const calendar = getByTestId(testIds.calendar);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
+    expect(months).toHaveLength(1);
 
     const month = months[0];
     const monthTitle = month.querySelector(".month-title");
@@ -349,10 +262,13 @@ describe("RangePickerCalendar", () => {
     const today = getByTestId("toolbar-item--Today");
     expect(today).toHaveTextContent("Today");
     fireEvent.click(today);
+    expect(props.onSelect).toHaveBeenCalledWith(
+      new Date("2024-03-15T04:00:00.000Z")
+    );
 
     const calendar = getByTestId(testIds.calendar);
     const months = calendar.querySelectorAll(`.month`);
-    expect(months).toHaveLength(2);
+    expect(months).toHaveLength(1);
 
     const month = months[0];
     const march15 = month.querySelector(`[data-test-date="15"]`);
@@ -361,9 +277,8 @@ describe("RangePickerCalendar", () => {
     const yesterday = getByTestId("toolbar-item--Yesterday");
     expect(yesterday).toHaveTextContent("Yesterday");
     fireEvent.click(yesterday);
-    expect(props.onSelect).toHaveBeenCalledWith([
-      new Date("2024-03-14T04:00:00.000Z"),
-      null,
-    ]);
+    expect(props.onSelect).toHaveBeenCalledWith(
+      new Date("2024-03-14T04:00:00.000Z")
+    );
   });
 });

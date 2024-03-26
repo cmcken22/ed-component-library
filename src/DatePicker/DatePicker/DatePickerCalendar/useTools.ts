@@ -4,22 +4,24 @@ import { convertDateToGMT } from "src/DatePicker/Common/utils";
 import useUpdateView from "./useUpdateView";
 // import useUpdateView from "./useUpdateView";
 
-const useTools = ({ tools, toolFilter }: any) => {
+const useTools = ({ tools, toolFilter, onSelect }: any) => {
   const { select, currentDate } = useContext(CalendarContext);
   const handleUpdateView = useUpdateView();
 
   const handleViewToday = useCallback(() => {
     const today = convertDateToGMT(currentDate);
     select(today, true);
+    onSelect(today);
     handleUpdateView(today);
-  }, [select, handleUpdateView, currentDate]);
+  }, [select, handleUpdateView, currentDate, onSelect]);
 
   const handleViewYesterday = useCallback(() => {
     const yesterday = convertDateToGMT(currentDate);
     yesterday.setDate(yesterday.getDate() - 1);
     select(yesterday, true);
+    onSelect(yesterday);
     handleUpdateView(yesterday);
-  }, [select, handleUpdateView, currentDate]);
+  }, [select, handleUpdateView, currentDate, onSelect]);
 
   const handleViewThisWeek = useCallback(() => {
     handleUpdateView(convertDateToGMT(currentDate));

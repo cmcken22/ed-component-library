@@ -28,7 +28,6 @@ const RangePickerCalendarComp = ({
     useContext(CalendarContext);
 
   const handleUpdateView = useUpdateView();
-  const toolItems = useTools({ tools, toolFilter });
 
   // on mount
   useEffect(() => {
@@ -60,6 +59,12 @@ const RangePickerCalendarComp = ({
     },
     [onSelect, previewSelection]
   );
+
+  const toolItems = useTools({
+    tools,
+    toolFilter,
+    onSelect: handleSelectCallback,
+  });
 
   const handleSelect = useCallback(
     (date: Date) => {

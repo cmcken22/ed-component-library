@@ -23,7 +23,6 @@ const DatePickerCalendarComp = ({
     useContext(CalendarContext);
 
   const prevValue = useRef<Date | null>(null);
-  const toolItems = useTools({ tools, toolFilter });
   const handleUpdateView = useUpdateView();
 
   // on mount
@@ -38,6 +37,12 @@ const DatePickerCalendarComp = ({
     },
     [onSelect, previewSelection]
   );
+
+  const toolItems = useTools({
+    tools,
+    toolFilter,
+    onSelect: handleSelectCallback,
+  });
 
   const handleSelect = useCallback(
     (date: Date) => {

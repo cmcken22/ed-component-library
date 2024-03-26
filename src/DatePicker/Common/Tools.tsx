@@ -4,6 +4,7 @@ import Typography from "src/Typography";
 const Tools = ({ tools }: any) => {
   return (
     <Box
+      data-testid="toolbar"
       sx={{
         p: 2,
         width: "100px",
@@ -15,7 +16,12 @@ const Tools = ({ tools }: any) => {
       }}
     >
       {tools?.map((tool: any) => (
-        <Box key={tool.label} onClick={tool.onClick} className="toolbar-item">
+        <Box
+          key={tool.label}
+          onClick={tool.onClick}
+          className="toolbar-item"
+          data-testid={`toolbar-item--${tool.label}`}
+        >
           <Typography variant="bodyXS">{tool.label}</Typography>
         </Box>
       ))}

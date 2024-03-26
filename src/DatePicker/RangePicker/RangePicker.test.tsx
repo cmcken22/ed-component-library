@@ -1,21 +1,24 @@
 import "@testing-library/jest-dom";
+import { testInputRendering } from "test-utils/commonTestCases";
 import { fireEvent, render } from "test-utils/index";
 import RangePicker, { RangePickerProps } from ".";
 
+const initialProps: RangePickerProps = {
+  ...RangePicker.defaultProps,
+  id: "single_date_picker",
+  label: "Calendar",
+  labelPosition: "left",
+  format: "MM/DD/YYYY",
+  helperText: "Helper Text",
+  onChange: jest.fn(),
+  onValidation: jest.fn(),
+};
+
 describe("RangePicker", () => {
-  let props: RangePickerProps;
+  let props: RangePickerProps = { ...initialProps };
 
   beforeEach(() => {
-    props = {
-      ...RangePicker.defaultProps,
-      id: "single_date_picker",
-      label: "Calendar",
-      labelPosition: "left",
-      format: "MM/DD/YYYY",
-      helperText: "Helper Text",
-      onChange: jest.fn(),
-      onValidation: jest.fn(),
-    };
+    props = { ...initialProps };
   });
 
   const renderComponent = (props: any) => {
@@ -23,12 +26,7 @@ describe("RangePicker", () => {
     return component;
   };
 
-  it("should render correctly", () => {
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("id", props.id);
-  });
+  testInputRendering(renderComponent, props);
 
   it("should have placeholder", () => {
     props.placeholder = ["Start date", "End date"];
@@ -40,22 +38,6 @@ describe("RangePicker", () => {
     expect(inputs).toHaveLength(2);
     expect(inputs[0]).toHaveAttribute("placeholder", props.placeholder[0]);
     expect(inputs[1]).toHaveAttribute("placeholder", props.placeholder[1]);
-  });
-
-  it("should have label", () => {
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    const label = inputContainer.querySelector(".Input__label");
-    expect(label).toHaveTextContent(props.label);
-  });
-
-  it("should have helper text", () => {
-    const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
-    expect(inputContainer).toBeInTheDocument();
-    const helperText = inputContainer.querySelector(".Input__helper-text");
-    expect(helperText).toHaveTextContent(props.helperText);
   });
 
   it("should have formatted values", () => {

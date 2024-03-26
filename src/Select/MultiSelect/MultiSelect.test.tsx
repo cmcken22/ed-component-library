@@ -1,8 +1,17 @@
 import "@testing-library/jest-dom";
 import { testInputRendering } from "test-utils/commonTestCases";
-import { render } from "test-utils/index";
+import { fireEvent, render } from "test-utils/index";
+import { BaseSelectMeta } from "../BaseSelect";
 import MultiSelect from "./MultiSelect";
 import { MultiSelectProps } from "./MultiSelect.types";
+
+const { className, dataTestId } = BaseSelectMeta;
+
+const getDropdownTrigger = (getByTestId: any) => {
+  const wrapperNode = getByTestId(dataTestId);
+  const selectNode = wrapperNode?.childNodes?.[0]?.childNodes?.[0];
+  return selectNode;
+};
 
 const initialProps: MultiSelectProps = {
   ...MultiSelect.defaultProps,
@@ -10,6 +19,7 @@ const initialProps: MultiSelectProps = {
   label: "Multi Select",
   placeholder: "Select many options",
   helperText: "Select many options",
+  onChange: jest.fn(),
   options: [
     {
       label: "Option 1",
@@ -74,4 +84,104 @@ describe("MultiSelect", () => {
   const renderComponent = (props) => render(<MultiSelect {...props} />);
 
   testInputRendering(renderComponent, props);
+
+  it("should have placeholder", () => {
+    props.placeholder = "Placeholder";
+    const { getByTestId } = renderComponent(props);
+    const inputContainer = getByTestId(dataTestId);
+    const input = inputContainer.querySelector("input");
+    expect(input).toHaveAttribute("placeholder", props.placeholder);
+  });
+
+  it("should have list", () => {
+    props.open = true;
+    const { baseElement } = renderComponent(props);
+    const list = baseElement.querySelector(`.${className}__list`);
+    expect(list).toBeInTheDocument();
+  });
+
+  it("should have list after focusing on input", () => {
+    const { baseElement, getByTestId } = renderComponent(props);
+    const selectNode = getDropdownTrigger(getByTestId);
+    fireEvent.mouseDown(selectNode);
+    const list = baseElement.querySelector(`.${className}__list`);
+    expect(list).toBeInTheDocument();
+  });
+
+  it("should render list items", () => {
+    const { baseElement, getByTestId } = renderComponent(props);
+    const selectNode = getDropdownTrigger(getByTestId);
+    fireEvent.mouseDown(selectNode);
+    const list = baseElement.querySelector(`.${className}__list`);
+    expect(list).toBeInTheDocument();
+
+    const listItems = list?.querySelectorAll("li");
+    expect(listItems).toHaveLength(props.options.length);
+
+    for (let i = 0; i < listItems.length; i++) {
+      expect(listItems[i]).toHaveTextContent(props.options[i].label);
+    }
+  });
+
+  it("should render custom list", () => {
+    props = {
+      ...props,
+      options: [
+        {
+          customLabel: "Option 1",
+          customValue: "option1",
+        },
+      ],
+      getOptionLabel: (option) => option?.customLabel,
+      getOptionValue: (option) => option?.customValue,
+    };
+    const { baseElement, getByTestId } = renderComponent(props);
+    const selectNode = getDropdownTrigger(getByTestId);
+    fireEvent.mouseDown(selectNode);
+    const list = baseElement.querySelector(`.${className}__list`);
+    expect(list).toBeInTheDocument();
+
+    const listItems = list?.querySelectorAll("li");
+    expect(listItems).toHaveLength(props.options.length);
+
+    for (let i = 0; i < listItems.length; i++) {
+      expect(listItems[i]).toHaveTextContent(props.options[i].customLabel);
+    }
+  });
+
+  it("should select items", () => {
+    const { baseElement, getByTestId } = renderComponent(props);
+    const selectNode = getDropdownTrigger(getByTestId);
+    fireEvent.mouseDown(selectNode);
+    const list = baseElement.querySelector(`.${className}__list`);
+    expect(list).toBeInTheDocument();
+
+    const listItems = list?.querySelectorAll("li");
+    expect(listItems).toHaveLength(props.options.length);
+    const firstItem = listItems[0];
+    const secondItem = listItems[1];
+    const thirdItem = listItems[2];
+
+    fireEvent.click(firstItem);
+    expect(props.onChange).toHaveBeenCalledWith([props.options[0].value]);
+
+    fireEvent.click(secondItem);
+    expect(props.onChange).toHaveBeenCalledWith([
+      props.options[0].value,
+      props.options[1].value,
+    ]);
+
+    fireEvent.click(thirdItem);
+    expect(props.onChange).toHaveBeenCalledWith([
+      props.options[0].value,
+      props.options[1].value,
+      props.options[2].value,
+    ]);
+
+    fireEvent.click(secondItem);
+    expect(props.onChange).toHaveBeenCalledWith([
+      props.options[0].value,
+      props.options[2].value,
+    ]);
+  });
 });

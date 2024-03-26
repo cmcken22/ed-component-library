@@ -65,7 +65,7 @@ describe("Select", () => {
     expect(list).toBeInTheDocument();
   });
 
-  it("should have after focusing on input", () => {
+  it("should have list after focusing on input", () => {
     const { baseElement, getByTestId } = renderComponent(props);
     const selectNode = getDropdownTrigger(getByTestId);
     fireEvent.mouseDown(selectNode);

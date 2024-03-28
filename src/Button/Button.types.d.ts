@@ -1,6 +1,7 @@
-import { SxProps } from "@mui/material";
-import { ReactNode } from '../../node_modules/react';
 import { IconVariantType } from '../Icon';
+import { ReactNode } from '../../node_modules/react';
+import { SxProps } from '@mui/material';
+
 export declare const dataTestId = "Button";
 export declare const baseClassName = "Button";
 export interface ButtonProps {

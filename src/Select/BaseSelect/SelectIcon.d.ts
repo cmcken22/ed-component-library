@@ -1,2 +1,2 @@
-declare const DropdownIcon: ({ endAdornment, ...props }: any) => import('../../../node_modules/react/jsx-runtime').JSX.Element;
-export default DropdownIcon;
+declare const SelectIcon: ({ endAdornment, open, ...props }: any) => import("react/jsx-runtime").JSX.Element;
+export default SelectIcon;

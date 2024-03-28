@@ -1,5 +1,6 @@
+import { default as IconMap } from './Icon.map';
 import { ReactNode } from '../../node_modules/react';
-import IconMap from "./Icon.map";
+
 export type IconVariantType = keyof typeof IconMap;
 export declare const IconVariant: Record<string, IconVariantType>;
 export interface IconProps {

@@ -3,5 +3,5 @@ export interface LabelProps {
     required?: boolean;
     position?: "top" | "left";
 }
-declare const Label: ({ children, required, position }: LabelProps) => import('../../node_modules/react/jsx-runtime').JSX.Element;
+declare const Label: ({ children, required, position }: LabelProps) => import("react/jsx-runtime").JSX.Element;
 export default Label;

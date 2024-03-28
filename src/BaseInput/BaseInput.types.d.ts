@@ -1,6 +1,6 @@
-/// <reference types="react" />
-import { SxProps } from "@mui/material";
 import { Status } from '../CommonTypes';
+import { SxProps } from '@mui/material';
+
 export interface BaseInputProps {
     id?: string;
     className?: string;

@@ -1,5 +1,5 @@
-/// <reference types="react" />
-import { CommonSelectProps } from "../Common/Common.types";
+import { CommonSelectProps } from '../Common/Common.types';
+
 export interface SelectProps extends CommonSelectProps {
     value?: string;
     onChange?: (value: string) => void;

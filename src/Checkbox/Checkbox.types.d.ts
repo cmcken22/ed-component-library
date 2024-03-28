@@ -1,4 +1,5 @@
 import { FontVariant } from '../theme/Typography';
+
 export interface CheckboxProps {
     id?: string;
     className?: string;

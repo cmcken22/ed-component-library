@@ -18,7 +18,7 @@ export interface RadioButtonGroupProps {
     labelPosition?: "left" | "right";
 }
 declare const RadioButtonGroup: {
-    ({ id, className, options, value: selectedValue, onChange, disabled, row, allowDeselect, getOptionValue, getOptionLabel, getOptionDisabled, labelPosition, }: RadioButtonGroupProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
+    ({ id, className, options, value: selectedValue, onChange, disabled, row, allowDeselect, getOptionValue, getOptionLabel, getOptionDisabled, labelPosition, }: RadioButtonGroupProps): import("react/jsx-runtime").JSX.Element;
     defaultProps: Partial<RadioButtonGroupProps>;
 };
 export default RadioButtonGroup;

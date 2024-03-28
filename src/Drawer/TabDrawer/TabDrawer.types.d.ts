@@ -1,3 +1,4 @@
-import { DrawerProps } from "../";
+import { DrawerProps } from '../';
+
 export interface TabDrawerProps extends DrawerProps {
 }

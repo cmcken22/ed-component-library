@@ -4,7 +4,7 @@ export interface LoadingIdicatorProps {
     color?: string;
 }
 declare const LoadingIdicator: {
-    ({ buttonRef, loading, color, }: LoadingIdicatorProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
+    ({ buttonRef, loading, color, }: LoadingIdicatorProps): import("react/jsx-runtime").JSX.Element;
     defaultProps: {
         color: string;
     };

@@ -1,5 +1,5 @@
-/// <reference types="react" />
-import { BaseCalendarProps } from "./BaseDatePicker.types";
+import { BaseCalendarProps } from './BaseDatePicker.types';
+
 export type CalendarContextType = {
     months: any;
     selected: Date[] | undefined;
@@ -24,5 +24,5 @@ export type CalendarContextType = {
 export declare const CalendarContext: import('../../../node_modules/react').Context<CalendarContextType>;
 interface CalendarContextProviderProps extends Omit<BaseCalendarProps, "value" | "onSelect"> {
 }
-declare const CalendarContextProvider: ({ numberOfMonths, children, disableFuture, disableCurrent, disablePast, dateDisabled, currentDate, range, format, }: CalendarContextProviderProps) => import('../../../node_modules/react/jsx-runtime').JSX.Element;
+declare const CalendarContextProvider: ({ numberOfMonths, children, disableFuture, disableCurrent, disablePast, dateDisabled, currentDate, range, format, }: CalendarContextProviderProps) => import("react/jsx-runtime").JSX.Element;
 export default CalendarContextProvider;

@@ -1,2 +1,2 @@
-declare const Calendar: ({ months, onSelect, children }: any) => import('../../../node_modules/react/jsx-runtime').JSX.Element;
+declare const Calendar: ({ months, onSelect, children }: any) => import("react/jsx-runtime").JSX.Element;
 export default Calendar;

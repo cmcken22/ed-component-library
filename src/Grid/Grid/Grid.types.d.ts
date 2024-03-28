@@ -1,5 +1,5 @@
-/// <reference types="react" />
-import { SxProps } from "@mui/material";
+import { SxProps } from '@mui/material';
+
 export interface GridProps {
     id?: string;
     className?: string;

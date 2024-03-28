@@ -50,5 +50,5 @@ declare module "@mui/material/styles/createTypography" {
         [FONT_VARIANT.fieldLabel]: any;
     }
 }
-declare const _default: import("@mui/material").TypographyVariants;
+declare const _default: import('@mui/material').TypographyVariants;
 export default _default;

@@ -1,6 +1,10 @@
 declare const _default: {
     styleOverrides: {
         root: ({ theme, ownerState }: any) => {
+            "input::placeholder": {
+                color: any;
+                opacity: number;
+            };
             "input::-webkit-outer-spin-button": {
                 margin: number;
             };

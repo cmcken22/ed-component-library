@@ -1,5 +1,5 @@
-/// <reference types="react" />
-import { SnackbarOrigin } from "notistack";
+import { SnackbarOrigin } from 'notistack';
+
 export interface SnackbarProviderProps {
     children?: React.ReactNode;
     dense?: boolean;
@@ -12,7 +12,7 @@ export interface SnackbarProviderProps {
     domRoot?: HTMLElement;
 }
 declare const SnackbarProvider: {
-    ({ children, dense, maxSnack, autoHideDuration, anchorOrigin, domRoot, }: SnackbarProviderProps): import('../../node_modules/react/jsx-runtime').JSX.Element;
+    ({ children, dense, maxSnack, autoHideDuration, anchorOrigin, domRoot, }: SnackbarProviderProps): import("react/jsx-runtime").JSX.Element;
     defaultProps: Partial<SnackbarProviderProps>;
 };
 export default SnackbarProvider;

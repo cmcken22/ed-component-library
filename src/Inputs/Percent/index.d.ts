@@ -1,2 +1,2 @@
-export { default } from "./Percent";
-export type { PercentProps } from "./Percent.types";
+export { default } from './Percent';
+export type { PercentProps } from './Percent.types';

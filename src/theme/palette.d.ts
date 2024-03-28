@@ -1,7 +1,8 @@
-export declare const Colors: {
+declare const Colors: {
     Bermuda: {
-        main: string;
+        extraLight: string;
         light: string;
+        main: string;
         dark: string;
         contrastText: string;
         10: string;
@@ -16,8 +17,8 @@ export declare const Colors: {
         100: string;
     };
     Cabaret: {
-        main: string;
         light: string;
+        main: string;
         dark: string;
         contrastText: string;
         10: string;
@@ -32,8 +33,8 @@ export declare const Colors: {
         100: string;
     };
     Resolver: {
-        main: string;
         light: string;
+        main: string;
         dark: string;
         contrastText: string;
         10: string;
@@ -48,8 +49,8 @@ export declare const Colors: {
         100: string;
     };
     Charcoal: {
-        main: string;
         light: string;
+        main: string;
         dark: string;
         contrastText: string;
         1: string;
@@ -67,41 +68,63 @@ export declare const Colors: {
         100: string;
     };
     Success: {
-        main: string;
+        extraLight: string;
         light: string;
+        main: string;
         dark: string;
-        contrastText: string;
     };
     Warning: {
-        main: string;
+        extraLight: string;
         light: string;
+        main: string;
         dark: string;
-        contrastText: string;
     };
     Danger: {
-        main: string;
+        extraLight: string;
         light: string;
+        main: string;
         dark: string;
-        contrastText: string;
     };
     text: {
-        main: string;
+        placeholder: string;
         primary: string;
         secondary: string;
         disabled: string;
+    };
+    info: {
+        extraLight: string;
+        light: string;
+        main: string;
+        dark: string;
         contrastText: string;
+        10: string;
+        20: string;
+        30: string;
+        40: string;
+        50: string;
+        60: string;
+        70: string;
+        80: string;
+        90: string;
+        100: string;
+    };
+    common: {
+        white: string;
+        black: string;
     };
 };
 declare module "@mui/material/styles/createPalette" {
     interface Palette {
         danger: any;
         charcoal: any;
-        grey: any;
+        border: any;
     }
     interface PaletteOptions {
         danger: any;
         charcoal: any;
-        grey: any;
+        border: any;
     }
 }
-export declare const palette: import("@mui/material").Palette;
+declare const palette: import('@mui/material').Palette;
+export { Colors, palette };
+export default palette;

@@ -1,2 +1,2 @@
-export { default } from "./Currency";
-export type { CurrencyProps } from "./Currency.types";
+export { default } from './Currency';
+export type { CurrencyProps } from './Currency.types';

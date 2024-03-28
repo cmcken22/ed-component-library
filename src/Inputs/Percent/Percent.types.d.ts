@@ -1,4 +1,5 @@
 import { StandardInputProps } from '../../BaseInput';
+
 export interface PercentProps extends StandardInputProps {
     label?: string;
     placeholder?: string;

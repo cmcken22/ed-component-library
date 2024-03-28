@@ -1,5 +1,5 @@
 declare const Tools: {
-    ({ tools }: any): import('../../../node_modules/react/jsx-runtime').JSX.Element;
+    ({ tools }: any): import("react/jsx-runtime").JSX.Element;
     displayName: string;
 };
 export default Tools;

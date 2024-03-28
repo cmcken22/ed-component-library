@@ -1,5 +1,5 @@
-/// <reference types="react" />
-import { SxProps } from "@mui/material";
+import { SxProps } from '@mui/material';
+
 export type ChipType = "positive" | "negative" | "warning" | "pending" | "neutral";
 export interface ChipProps {
     id?: string;

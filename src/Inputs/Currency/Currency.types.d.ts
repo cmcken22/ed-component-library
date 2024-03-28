@@ -1,4 +1,5 @@
 import { StandardInputProps } from '../../BaseInput';
+
 export interface CurrencyProps extends StandardInputProps {
     label?: string;
     placeholder?: string;

@@ -1,4 +1,5 @@
-import { SxProps } from "@mui/material";
+import { SxProps } from '@mui/material';
+
 export declare const dataTestId = "RadioButton";
 export declare const baseClassName = "RadioButton";
 export interface RadioButtonProps {

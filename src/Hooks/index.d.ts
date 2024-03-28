@@ -1,2 +1,2 @@
-export { default as useConditionalDelay } from "./useConditionalDelay";
-export { default as useOnHover } from "./useOnHover";
+export { default as useConditionalDelay } from './useConditionalDelay';
+export { default as useOnHover } from './useOnHover';

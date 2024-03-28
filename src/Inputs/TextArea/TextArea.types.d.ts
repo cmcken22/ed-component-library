@@ -1,5 +1,5 @@
-/// <reference types="react" />
 import { StandardInputProps } from '../../BaseInput';
+
 export interface TextAreaProps extends StandardInputProps {
     label?: string;
     placeholder?: string;

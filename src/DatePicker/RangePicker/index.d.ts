@@ -1,2 +1,2 @@
-export { default } from "./RangePicker";
-export type { RangePickerProps } from "./RangePicker.types";
+export { default } from './RangePicker';
+export type { RangePickerProps } from './RangePicker.types';

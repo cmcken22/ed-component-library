@@ -1,6 +1,6 @@
-/// <reference types="react" />
-import { StandardInputProps } from '../../BaseInput';
 import { PopoverProps } from '../../Popover';
+import { StandardInputProps } from '../../BaseInput';
+
 export interface BaseDatePickerProps extends StandardInputProps {
     label?: string;
     /**

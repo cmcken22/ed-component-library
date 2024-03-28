@@ -1,5 +1,5 @@
-/// <reference types="react" />
-import { BaseSelectProps } from "../BaseSelect";
+import { BaseSelectProps } from '../BaseSelect';
+
 export interface RenderOptionProps {
     index: number;
     label: string;

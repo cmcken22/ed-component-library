@@ -1,4 +1,4 @@
-import { MenuItem, Select as MuiSelect, styled } from "@mui/material";
+import { Box, MenuItem, Select as MuiSelect, styled } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { VariantMap } from "src/BaseInput/helpers";
@@ -139,39 +139,46 @@ const BaseSelectComp = ({
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
-      <StyledSelect
-        className={cx(BaseSelectMeta.className, {
-          [`${BaseSelectMeta.className}--open`]: open,
-        })}
-        data-testid={BaseSelectMeta.dataTestId}
-        open={open}
-        {...onHoverMethods}
-        multiple={multiple}
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
-        displayEmpty
-        placeholder={placeholder}
-        value={value}
-        renderValue={renderSelectedValue}
-        disabled={disabled}
-        styleVariant={variant}
-        wrap={wrap}
-        variant={VariantMap[variant] as any}
-        IconComponent={(props: any) => (
-          <SelectIcon endAdornment={endAdornment} {...props} open={open} />
-        )}
-        MenuProps={{
-          sx: {
-            ".MuiPaper-root": {
-              maxHeight: sizeFormat(maxListHeight),
-            },
-          },
+      <Box
+        sx={{
+          width: "100%",
+          overflow: "hidden",
         }}
       >
-        {options?.map((opt: StandardSelectOption | any, idx: number) => {
-          return renderMenuItem(opt, idx);
-        })}
-      </StyledSelect>
+        <StyledSelect
+          className={cx(BaseSelectMeta.className, {
+            [`${BaseSelectMeta.className}--open`]: open,
+          })}
+          data-testid={BaseSelectMeta.dataTestId}
+          open={open}
+          {...onHoverMethods}
+          multiple={multiple}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          displayEmpty
+          placeholder={placeholder}
+          value={value}
+          renderValue={renderSelectedValue}
+          disabled={disabled}
+          styleVariant={variant}
+          wrap={wrap}
+          variant={VariantMap[variant] as any}
+          IconComponent={(props: any) => (
+            <SelectIcon endAdornment={endAdornment} {...props} open={open} />
+          )}
+          MenuProps={{
+            sx: {
+              ".MuiPaper-root": {
+                maxHeight: sizeFormat(maxListHeight),
+              },
+            },
+          }}
+        >
+          {options?.map((opt: StandardSelectOption | any, idx: number) => {
+            return renderMenuItem(opt, idx);
+          })}
+        </StyledSelect>
+      </Box>
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
     </BaseInput>
   );

@@ -175,20 +175,11 @@ export const CustomOptionRenderer: Story = {
 };
 
 const RenderValueCodeSample = `(value: string[], selectedOptions: any[]) => (
-    <Box
-      key={value?.length}
-      sx={{
-        height: "40px",
-        display: "flex",
-        gap: "8px",
-        width: "100%",
-        alignItems: "center",
-      }}
-    >
+    <OverflowRowCounter>
       {selectedOptions?.map((opt: any) => (
         <Icon key={opt?.icon} icon={opt?.icon} />
       ))}
-    </Box>
+    </OverflowRowCounter>
   )`;
 
 export const CustomValueRenderer: Story = {

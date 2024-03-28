@@ -6,4 +6,5 @@ export interface OverflowRowCounterProps {
   sx?: SxProps;
   gap?: string | number;
   children?: React.ReactNode;
+  counterPosition?: "left" | "right";
 }

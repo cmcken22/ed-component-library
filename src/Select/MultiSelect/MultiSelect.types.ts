@@ -5,4 +5,5 @@ export interface MultiSelectProps extends CommonSelectProps {
   onChange?: (value: string[]) => void;
   renderValue?: (value: string[], selectedOptions: any[]) => React.ReactNode;
   wrap?: boolean;
+  counterPosition?: "left" | "right";
 }

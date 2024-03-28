@@ -29,6 +29,7 @@ const OverflowRowCounter = ({
   sx,
   gap,
   children,
+  counterPosition,
 }: OverflowRowCounterProps) => {
   const [count, setCount] = useState(0);
 
@@ -43,12 +44,42 @@ const OverflowRowCounter = ({
       data-testid="OverflowRowCounter"
     >
       <OverflowCounter onOverflow={setCount}>
-        {count > 0 ? <Counter count={count} /> : null}
+        {count > 0 ? (
+          <Counter
+            count={count}
+            gap={gap}
+            sx={{
+              opacity: counterPosition === "left" ? 0 : 1,
+              position: "absolute",
+              right: 0,
+            }}
+          />
+        ) : null}
         {Children.map(children, (element: any, idx: number) => {
           if (!element) return null;
+          const childCount = Children.map(children, () => "x").length;
+          const visibleCount = childCount - count;
           return (
-            <span key={`overflow-row-counter--${idx}`}>
+            <span
+              key={`overflow-row-counter--${idx}`}
+              style={{
+                position: "relative",
+              }}
+            >
               {cloneElement(element)}
+              <Counter
+                key={`overflow-row-counter__counter--${idx}`}
+                count={count}
+                gap={gap}
+                sx={{
+                  opacity: 0,
+                  position: "absolute",
+                  left: "100%",
+                  ...(idx + 1 === visibleCount && {
+                    opacity: counterPosition === "left" ? 1 : 0,
+                  }),
+                }}
+              />
             </span>
           );
         })}
@@ -59,6 +90,7 @@ const OverflowRowCounter = ({
 
 OverflowRowCounter.defaultProps = {
   gap: 8,
+  counterPosition: "right",
 } as Partial<OverflowRowCounterProps>;
 
 export default OverflowRowCounter;

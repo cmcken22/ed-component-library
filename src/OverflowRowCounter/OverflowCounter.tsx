@@ -50,7 +50,7 @@ const OverflowCounter = ({ children, onOverflow }: any) => {
       {Children.map(children, (element, idx) => {
         if (!element) return null;
         return cloneElement(element, {
-          ref: (ref) => (refs.current[idx] = ref),
+          ref: (ref: any) => (refs.current[idx] = ref),
         });
       })}
     </>

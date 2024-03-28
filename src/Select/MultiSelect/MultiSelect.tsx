@@ -15,6 +15,7 @@ const MultiSelect = (props: MultiSelectProps) => {
     defaultActiveFirstOption,
     renderValue,
     wrap,
+    counterPosition,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || []);
@@ -83,7 +84,11 @@ const MultiSelect = (props: MultiSelectProps) => {
         return renderValue(value, selectedOptions);
       }
 
-      return <OverflowRowCounter>{res}</OverflowRowCounter>;
+      return (
+        <OverflowRowCounter counterPosition={counterPosition}>
+          {res}
+        </OverflowRowCounter>
+      );
     },
     [
       handleGetOptionLabel,
@@ -91,6 +96,7 @@ const MultiSelect = (props: MultiSelectProps) => {
       getOptionFromValue,
       renderValue,
       handleChange,
+      counterPosition,
     ]
   );
 
@@ -140,6 +146,7 @@ MultiSelect.defaultProps = {
   maxListHeight: 144,
   wrap: true,
   variant: "outlined",
+  counterPosition: "right",
 } as Partial<MultiSelectProps>;
 
 export { MultiSelect };

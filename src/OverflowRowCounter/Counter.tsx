@@ -1,13 +1,15 @@
 import { Box, SxProps } from "@mui/material";
 import { forwardRef } from "react";
+import { sizeFormat } from "src/utils";
 import { Typography } from "..";
 
 interface CounterProps {
   count?: number;
   sx?: SxProps;
+  gap?: string | number;
 }
 
-const Counter = forwardRef(({ count, sx }: CounterProps, ref: any) => {
+const Counter = forwardRef(({ count, sx, gap }: CounterProps, ref: any) => {
   if (count === 0) return null;
 
   return (
@@ -24,10 +26,8 @@ const Counter = forwardRef(({ count, sx }: CounterProps, ref: any) => {
         borderRadius: "40px",
         flexShrink: 0,
         boxSizing: "border-box",
-        ml: 0.5,
+        ml: sizeFormat(gap),
         top: "calc(50% - 11px)",
-        position: "absolute",
-        right: 0,
         ...sx,
       }}
     >
@@ -42,6 +42,7 @@ Counter.displayName = "Counter";
 
 Counter.defaultProps = {
   count: 0,
+  gap: 8,
 } as Partial<CounterProps>;
 
 export default Counter;

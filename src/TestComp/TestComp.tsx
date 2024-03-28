@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import cx from "classnames";
 import {
   Children,
@@ -19,7 +19,7 @@ const OverflowCounter = ({ children, onOverflow }: any) => {
     let overflowCount = 0;
 
     Children.forEach(children, (child: any, idx: number) => {
-      if (child?.type?.displayName === "__Item__") {
+      if (child?.type?.displayName !== Counter.displayName) {
         const domNode = refs.current[idx];
         if (!domNode) return;
         const parent = domNode.parentElement.getBoundingClientRect();
@@ -72,6 +72,49 @@ const Item = forwardRef(({ hidden, option }: any, ref: any) => {
 
 Item.displayName = "__Item__";
 
+const Counter = forwardRef(({ count, sx }: any, ref: any) => {
+  if (count === 0) return null;
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        height: "22px",
+        width: "fit-content",
+        display: "flex",
+        alignItems: "center",
+        background: "black",
+        padding: "8px",
+        borderRadius: "40px",
+        flexShrink: 0,
+        mr: 1,
+        ...sx,
+      }}
+    >
+      <Typography variant="bodyXS" color="white">
+        +{count}
+      </Typography>
+    </Box>
+  );
+});
+
+Counter.displayName = "__Counter__";
+
+const StyledContainer = styled(Box, {
+  slot: "root",
+})(() => {
+  return {
+    // opacity: 0,
+    width: "100%",
+    height: "100%",
+    // backgroundColor: "rgba(255, 0, 255, 0.4)",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    gap: "8px",
+    overflow: "hidden",
+  };
+});
+
 const TestComp = ({ id, className, options }: any) => {
   const [selectedOptions, setSelectedOptions] = useState<any>([]);
   const [count, setCount] = useState(0);
@@ -87,95 +130,37 @@ const TestComp = ({ id, className, options }: any) => {
           position: "relative",
         }}
       >
-        <Box
+        <StyledContainer
           sx={{
             opacity: 0,
-            // height: 200,
-            width: 300,
-            backgroundColor: "rgba(255, 0, 255, 0.4)",
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "row",
-            gap: "8px",
-            // position: "relative",
-            overflow: "hidden",
-            // background: "red",
           }}
-          data-testid="TestComp"
         >
           <OverflowCounter onOverflow={setCount}>
-            {count > 0 ? (
-              <Box
-                sx={{
-                  height: "22px",
-                  width: "fit-content",
-                  display: "flex",
-                  alignItems: "center",
-                  background: "black",
-                  // position: "absolute",
-                  right: "8px",
-                  padding: "8px",
-                  borderRadius: "40px",
-                  flexShrink: 0,
-                  mr: 1,
-                }}
-              >
-                <Typography variant="bodyXS" color="white">
-                  +{count}
-                </Typography>
-              </Box>
-            ) : null}
+            <Counter count={count} />
             {selectedOptions?.map((option) => (
               <Item key={`${option}--hidden`} option={option} />
             ))}
           </OverflowCounter>
-        </Box>
-        <Box
+        </StyledContainer>
+        <StyledContainer
           sx={{
-            width: "100%",
             position: "absolute",
             left: 0,
             top: 0,
-            background: "rgba(255, 0, 255, 0.4)",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: "8px",
-            overflow: "hidden",
           }}
         >
           {selectedOptions?.map((option, i) => {
-            console.log("\n\n------------");
-            console.log("i:", i);
-            console.log("selectedOptions.length:", selectedOptions.length - 1);
-            console.log("count:", count);
-            console.log("------------\n\n");
-
             if (i > selectedOptions.length - 1 - count) return null;
             return <Item key={option} option={option} />;
           })}
-          {count > 0 && (
-            <Box
-              sx={{
-                height: "22px",
-                width: "fit-content",
-                display: "flex",
-                alignItems: "center",
-                background: "black",
-                padding: "8px",
-                borderRadius: "40px",
-                flexShrink: 0,
-                mr: 1,
-                position: "absolute",
-                right: 16,
-              }}
-            >
-              <Typography variant="bodyXS" color="white">
-                +{count}
-              </Typography>
-            </Box>
-          )}
-        </Box>
+          <Counter
+            count={count}
+            sx={{
+              position: "absolute",
+              right: 16,
+            }}
+          />
+        </StyledContainer>
       </Box>
 
       <Box>

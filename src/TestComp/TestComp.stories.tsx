@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
 import TestComp from "./";
@@ -21,6 +22,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  render: (args) => (
+    <Box
+      sx={{
+        width: "300px",
+      }}
+    >
+      <TestComp {...args} />
+    </Box>
+  ),
   args: {
     ...TestComp.defaultProps,
     options: [

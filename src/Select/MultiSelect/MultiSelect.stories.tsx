@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Avatar from "src/Avatar";
 import Icon from "src/Icon";
+import OverflowRowCounter from "src/OverflowRowCounter";
 import MultiSelect from ".";
 
 const meta = {
@@ -207,22 +208,13 @@ export const CustomValueRenderer: Story = {
     return (
       <MultiSelect
         {...args}
-        renderValue={(value: string[], selectedOptions: any) => {
+        renderValue={(_, selectedOptions: any) => {
           return (
-            <Box
-              key={value?.length}
-              sx={{
-                height: "40px",
-                display: "flex",
-                gap: "8px",
-                width: "100%",
-                alignItems: "center",
-              }}
-            >
+            <OverflowRowCounter>
               {selectedOptions?.map((opt: any) => (
                 <Icon key={opt?.icon} icon={opt?.icon} />
               ))}
-            </Box>
+            </OverflowRowCounter>
           );
         }}
       />
@@ -260,6 +252,16 @@ export const CustomValueRenderer: Story = {
         icon: "Heart",
         label: "Option 5",
         value: "option5",
+      },
+      {
+        icon: "Heart",
+        label: "Option 6",
+        value: "option6",
+      },
+      {
+        icon: "Heart",
+        label: "Option 7",
+        value: "option7",
       },
     ],
     renderValue: () => <></>,

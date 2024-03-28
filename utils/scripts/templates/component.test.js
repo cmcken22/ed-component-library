@@ -19,6 +19,7 @@ describe("${componentName}", () => {
   const renderComponent = (props: ${componentName}Props) => render(<${componentName} {...props} />);
 
   it("should render correctly", () => {
+    props.id = "test";
     const { getByTestId } = renderComponent();
     const component = getByTestId("${componentName}");
     expect(component).toHaveTextContent(props.id);

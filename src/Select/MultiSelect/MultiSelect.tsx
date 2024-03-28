@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import OverflowRowCounter from "src/OverflowRowCounter";
 import { Typography } from "src/index";
 import BaseSelect from "../BaseSelect";
 import { useCommonMethods } from "../Common";
@@ -82,7 +83,7 @@ const MultiSelect = (props: MultiSelectProps) => {
         return renderValue(value, selectedOptions);
       }
 
-      return res;
+      return <OverflowRowCounter>{res}</OverflowRowCounter>;
     },
     [
       handleGetOptionLabel,

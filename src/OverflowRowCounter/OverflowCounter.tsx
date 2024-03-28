@@ -1,4 +1,5 @@
-import { Children, cloneElement, useEffect, useRef } from "react";
+import debounce from "lodash.debounce";
+import { Children, cloneElement, useCallback, useEffect, useRef } from "react";
 import Counter from "./Counter";
 
 interface OverflowCounterProps {
@@ -9,7 +10,7 @@ interface OverflowCounterProps {
 const OverflowCounter = ({ children, onOverflow }: any) => {
   const refs = useRef<any>({});
 
-  useEffect(() => {
+  const handleDetectOverflow = useCallback(() => {
     if (!onOverflow) return;
     let overflowCount = 0;
     let counterWidth = 0;
@@ -44,6 +45,22 @@ const OverflowCounter = ({ children, onOverflow }: any) => {
 
     onOverflow(overflowCount);
   }, [children, onOverflow]);
+
+  const debouncedDetectOverflow = useCallback(
+    debounce(() => {
+      handleDetectOverflow();
+    }, 500),
+    [handleDetectOverflow]
+  );
+
+  useEffect(() => {
+    handleDetectOverflow();
+  }, [children, handleDetectOverflow]);
+
+  useEffect(() => {
+    window.addEventListener("resize", debouncedDetectOverflow);
+    return () => window.removeEventListener("resize", debouncedDetectOverflow);
+  }, [debouncedDetectOverflow]);
 
   return (
     <>

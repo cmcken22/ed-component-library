@@ -17,6 +17,9 @@ const StyledContainer = styled(Box, {
     gap: sizeFormat(gap),
     overflow: "hidden",
     position: "relative",
+    height: "100%",
+    alignItems: "center",
+    // background: "rgba(0, 255, 255, 0.4)",
   };
 });
 

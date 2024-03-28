@@ -31,6 +31,8 @@ const StyledSelect = styled(MuiSelect, {
         background: "transparent !important",
         padding: theme.spacing(1),
         paddingLeft: 0,
+        paddingRight: `${theme.spacing(4)} !important`,
+        backgroundColor: "red",
       }),
       ...(!wrap && {
         overflow: "auto",

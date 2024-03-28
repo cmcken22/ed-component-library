@@ -11,6 +11,7 @@ export { default as Currency } from "./Inputs/Currency";
 export { default as Input } from "./Inputs/Input";
 export { default as Percent } from "./Inputs/Percent";
 export { default as TextArea } from "./Inputs/TextArea";
+export { default as OverflowRowCounter } from "./OverflowRowCounter";
 export { MultiSelect, Select } from "./Select";
 export {
   default as Snackbar,

@@ -226,7 +226,15 @@ export const CustomValueRenderer: Story = {
     label: "Custom Option Renderer",
     placeholder: "Placeholder",
     labelPosition: "top",
-    value: ["option1", "option2", "option3", "option4", "option5"],
+    value: [
+      "option1",
+      "option2",
+      "option3",
+      "option4",
+      "option5",
+      "option6",
+      "option7",
+    ],
     options: [
       {
         icon: "HappyEmoji",
@@ -254,12 +262,12 @@ export const CustomValueRenderer: Story = {
         value: "option5",
       },
       {
-        icon: "Heart",
+        icon: "User",
         label: "Option 6",
         value: "option6",
       },
       {
-        icon: "Heart",
+        icon: "ToolsV2",
         label: "Option 7",
         value: "option7",
       },

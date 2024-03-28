@@ -3,7 +3,9 @@ import BaseInputTheme from "src/BaseInput/BaseInput.theme";
 import ButtonTheme from "src/Button/Button.theme";
 import CheckboxTheme from "src/Checkbox/Checkbox.theme";
 import RadioButtonTheme from "src/RadioButton/RadioButton.theme";
-import SelectTheme, { SelectListTheme } from "src/Select/Select/Select.theme";
+import SelectTheme, {
+  SelectListTheme,
+} from "src/Select/BaseSelect/BaseSelect.theme";
 import TabsTheme from "src/Tabs/Tabs.theme";
 import typography from "./Typography";
 import { Colors, palette } from "./palette";

@@ -9,15 +9,17 @@ interface CounterProps {
 
 const Counter = forwardRef(({ count, sx }: CounterProps, ref: any) => {
   if (count === 0) return null;
+
   return (
     <Box
       ref={ref}
+      className="counter"
       sx={{
         height: "22px",
         width: "fit-content",
         display: "flex",
         alignItems: "center",
-        background: "black",
+        background: (theme) => theme.palette.secondary.main,
         padding: "8px",
         borderRadius: "40px",
         flexShrink: 0,

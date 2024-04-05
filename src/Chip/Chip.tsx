@@ -39,6 +39,7 @@ const StyledContainer = styled(Box, {
     },
     ".MuiTypography-root": {
       color: colorMap[type],
+      lineHeight: "normal",
     },
   };
 });

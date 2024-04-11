@@ -51,7 +51,11 @@ export interface BaseDatePickerProps extends StandardInputProps {
    * To use the text field without the calendar
    * @default false
    */
-  hideCalendar?: boolean;
+  hideCalendarPicker?: boolean;
+  /**
+   * To hide the calendar icon
+   */
+  hideCalendarIcon?: boolean;
   /**
    * To force the user to select from the calendar,
    * we can disable the text input

@@ -65,7 +65,6 @@ const DateFieldComp = ({
           value={value ? dayjs(value) : null}
           disabled={disabled}
           readOnly={readOnly}
-          // fullWidth={fullWidth}
           slotProps={{
             textField: {
               variant: VariantMap[variant] as any,
@@ -79,6 +78,12 @@ const DateFieldComp = ({
                 endAdornment,
               },
             },
+          }}
+          // this is required because mui does not support MMM due to lack of locale support.
+          // although, it seems to be working fine. I think its more of an issue outside of North America
+          // link to issue: https://github.com/mui/mui-x/issues/9509#issuecomment-1612965715
+          localeText={{
+            fieldMonthPlaceholder: () => "MMM",
           }}
           onChange={(date: any) => {
             if (readOnly || disabled) return;

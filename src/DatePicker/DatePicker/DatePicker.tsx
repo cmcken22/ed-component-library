@@ -16,7 +16,7 @@ const DatePickerComp = ({
   dateDisabled,
   numberOfMonths,
   calendarOpen,
-  hideCalendar,
+  hideCalendarPicker,
   disableTextInput,
   onValidation,
   calendarPlacement,
@@ -88,8 +88,8 @@ const DatePickerComp = ({
   );
 
   const displayCalendar = useMemo(() => {
-    return hideCalendar ? false : open || calendarOpen;
-  }, [hideCalendar, open, calendarOpen]);
+    return hideCalendarPicker ? false : open || calendarOpen;
+  }, [hideCalendarPicker, open, calendarOpen]);
 
   return (
     <>

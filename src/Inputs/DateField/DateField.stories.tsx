@@ -26,5 +26,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     ...DateField.defaultProps,
+    label: "Date Field",
+    tooltip: "This is a date field",
+    helperText: "Helper Text",
   },
 };

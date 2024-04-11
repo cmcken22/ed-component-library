@@ -10,7 +10,7 @@ import { PercentSelectorProps } from "./PercentSelector.types";
 
 const PercentSelectorModal = ({ onSubmit, onCancel }: any) => {
   const theme: any = useEllisDonTheme();
-  const [operand, setOperand] = useState("");
+  const [operand, setOperand] = useState("Equal to");
   const [val1, setVal1] = useState<any>(0);
   const [val2, setVal2] = useState<any>(0);
   const val1Ref = useRef<any>(0);
@@ -71,6 +71,7 @@ const PercentSelectorModal = ({ onSubmit, onCancel }: any) => {
       >
         <Box className="item">
           <Select
+            key={operand}
             fullWidth
             defaultActiveFirstOption
             sx={{
@@ -79,13 +80,11 @@ const PercentSelectorModal = ({ onSubmit, onCancel }: any) => {
               },
             }}
             renderValue={(value) => (
-              <Typography variant="bodyS" color="secondary.main">
-                {value}
-              </Typography>
+              <Typography variant="bodyS">{value}</Typography>
             )}
             allowDeselect={false}
             value={operand}
-            disablePortal={false}
+            disablePortal
             onChange={setOperand}
             options={[
               {

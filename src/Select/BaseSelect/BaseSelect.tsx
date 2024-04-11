@@ -1,5 +1,4 @@
 import {
-  Box,
   ClickAwayListener,
   MenuItem,
   Select as MuiSelect,
@@ -246,46 +245,38 @@ const BaseSelectComp = ({
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
-      <Box
-        sx={{
-          display: "flex",
-          width: "100%",
-          overflow: "hidden",
-        }}
-      >
-        <ClickAwayListener onClickAway={handleClickOutside}>
-          <StyledSelect
-            ref={selectRef}
-            className={cx(BaseSelectMeta.className, {
-              [`${BaseSelectMeta.className}--open`]: open,
-            })}
-            data-testid={BaseSelectMeta.dataTestId}
-            open={open}
-            {...onHoverMethods}
-            multiple={multiple}
-            onOpen={() => setOpen(true)}
-            onClose={() => setOpen(false)}
-            displayEmpty
-            placeholder={placeholder}
-            value={value}
-            renderValue={renderSelectedValue}
-            disabled={disabled}
-            styleVariant={variant}
-            wrap={wrap}
-            variant={VariantMap[variant] as any}
-            IconComponent={(props: any) => (
-              <SelectIcon endAdornment={endAdornment} {...props} open={open} />
-            )}
-            MenuProps={{
-              ...menuProps,
-            }}
-          >
-            {options?.map((opt: StandardSelectOption | any, idx: number) => {
-              return renderMenuItem(opt, idx);
-            })}
-          </StyledSelect>
-        </ClickAwayListener>
-      </Box>
+      <ClickAwayListener onClickAway={handleClickOutside}>
+        <StyledSelect
+          ref={selectRef}
+          className={cx(BaseSelectMeta.className, {
+            [`${BaseSelectMeta.className}--open`]: open,
+          })}
+          data-testid={BaseSelectMeta.dataTestId}
+          open={open}
+          {...onHoverMethods}
+          multiple={multiple}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          displayEmpty
+          placeholder={placeholder}
+          value={value}
+          renderValue={renderSelectedValue}
+          disabled={disabled}
+          styleVariant={variant}
+          wrap={wrap}
+          variant={VariantMap[variant] as any}
+          IconComponent={(props: any) => (
+            <SelectIcon endAdornment={endAdornment} {...props} open={open} />
+          )}
+          MenuProps={{
+            ...menuProps,
+          }}
+        >
+          {options?.map((opt: StandardSelectOption | any, idx: number) => {
+            return renderMenuItem(opt, idx);
+          })}
+        </StyledSelect>
+      </ClickAwayListener>
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
     </BaseInput>
   );

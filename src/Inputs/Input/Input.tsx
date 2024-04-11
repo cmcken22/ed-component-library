@@ -22,6 +22,7 @@ const InputComp = ({
   readOnly,
   inputRef,
   onClick,
+  autoFocus,
 }: InputProps) => {
   const { endAdornment } = useContext(BaseInputContext);
 
@@ -60,6 +61,7 @@ const InputComp = ({
       </BaseInput.Label>
       <TextField
         ref={inputRef}
+        autoFocus={autoFocus}
         placeholder={placeholder}
         type={type}
         value={value}

@@ -26,6 +26,7 @@ export interface BaseInputProps {
   endAdornment?: React.ReactNode;
   readOnly?: boolean;
   onClick?: (e: any) => void;
+  autoFocus?: boolean;
 }
 
 export interface StandardInputProps

@@ -37,8 +37,6 @@ const useKeyBoardInput = ({
       if (key === 38 || code === "ArrowUp") {
         e.preventDefault();
         const newValue = parseValue(value) + 1;
-        console.log("value:", value);
-        console.log("newValue:", newValue);
         const formattedValue = newValue.toLocaleString();
         const floatValue = newValue;
         callback({

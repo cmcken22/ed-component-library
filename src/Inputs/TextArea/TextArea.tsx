@@ -21,6 +21,7 @@ const TextAreaComp = ({
   maxWords,
   variant,
   color,
+  autoFocus,
 }: TextAreaProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
@@ -57,6 +58,7 @@ const TextAreaComp = ({
       </BaseInput.Label>
       <TextField
         value={value}
+        autoFocus={autoFocus}
         placeholder={placeholder}
         disabled={disabled}
         onChange={handleChange}

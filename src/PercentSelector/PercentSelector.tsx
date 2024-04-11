@@ -1,5 +1,5 @@
 import { Box, InputAdornment, Stack } from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Button from "src/Button";
 import { IconVariant } from "src/Icon";
 import Popover from "src/Popover";
@@ -81,6 +81,13 @@ const PercentSelectorModal = ({ value, onSubmit, onCancel }: any) => {
     if (onCancel) onCancel();
   }, [onCancel]);
 
+  const valid = useMemo(() => {
+    if (operand === OPERAND.BETWEEN) {
+      return val1 && val2 && operand;
+    }
+    return val1 && operand;
+  }, [operand, val1, val2]);
+
   return (
     <Box
       sx={{
@@ -119,6 +126,7 @@ const PercentSelectorModal = ({ value, onSubmit, onCancel }: any) => {
         <Box className="item">
           <Select
             key={operand}
+            autoFocus
             fullWidth
             defaultActiveFirstOption
             sx={{
@@ -171,7 +179,7 @@ const PercentSelectorModal = ({ value, onSubmit, onCancel }: any) => {
         <Button variant="link" color="danger" onClick={handleCancel}>
           Clear
         </Button>
-        <Button variant="link" onClick={handleSubmit}>
+        <Button variant="link" onClick={handleSubmit} disabled={!valid}>
           Apply
         </Button>
       </Stack>
@@ -191,7 +199,9 @@ const PercentSelector = ({
   disabled,
   tooltip,
   variant,
+  fullWidth,
   onChange,
+  renderValue,
 }: PercentSelectorProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
@@ -212,11 +222,24 @@ const PercentSelector = ({
     if (onChange) onChange([]);
   }, [setValue, setOpen, onChange]);
 
+  const handleOpen = useCallback(() => {
+    if (disabled) return;
+    setOpen(true);
+  }, [disabled, setOpen]);
+
+  const handleRenderValue = useCallback(
+    (value: any) => {
+      if (renderValue) return renderValue(value);
+      return value?.join(" ") || "";
+    },
+    [renderValue]
+  );
+
   return (
     <>
       <Input
         id={id}
-        onClick={() => setOpen(true)}
+        onClick={handleOpen}
         inputRef={(r: any) => setAnchorEl(r)}
         className={className}
         label={label}
@@ -224,18 +247,17 @@ const PercentSelector = ({
         disabled={disabled}
         helperText={helperText}
         required={required}
-        value={value?.join(" ") || ""}
-        fullWidth={false}
+        value={handleRenderValue(value)}
+        fullWidth={fullWidth}
         labelPosition={labelPosition}
         tooltip={tooltip}
         variant={variant}
-        onChange={() => {}}
         readOnly
         sx={{
           ...sx,
-          cursor: "pointer",
+          cursor: disabled ? "default" : "pointer",
           ".MuiInputBase-root, input": {
-            cursor: "pointer",
+            cursor: disabled ? "default" : "pointer",
           },
         }}
         endAdornment={
@@ -244,7 +266,7 @@ const PercentSelector = ({
               icon={open ? IconVariant.NavArrowUp : IconVariant.NavArrowDown}
               size={20}
               sx={{
-                cursor: "pointer",
+                cursor: disabled ? "default" : "pointer",
               }}
             />
           </InputAdornment>

@@ -44,6 +44,7 @@ const CurrencyComp = ({
   variant,
   color,
   allowKeyBoardInput,
+  autoFocus,
 }: CurrencyProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue);
@@ -110,6 +111,7 @@ const CurrencyComp = ({
       </BaseInput.Label>
       <NumericFormat
         value={value}
+        autoFocus={autoFocus}
         onValueChange={handleChange}
         placeholder={placeholder}
         thousandSeparator={thousandSeparator}

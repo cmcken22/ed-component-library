@@ -37,6 +37,7 @@ const PercentComp = ({
   variant,
   color,
   allowKeyBoardInput,
+  autoFocus,
 }: PercentProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue);
@@ -96,6 +97,7 @@ const PercentComp = ({
       </BaseInput.Label>
       <NumericFormat
         value={value}
+        autoFocus={autoFocus}
         onValueChange={handleChange}
         placeholder={placeholder}
         thousandSeparator={thousandSeparator}

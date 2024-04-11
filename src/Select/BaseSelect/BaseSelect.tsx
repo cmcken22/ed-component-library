@@ -151,6 +151,7 @@ const BaseSelectComp = ({
   variant,
   wrap,
   disablePortal,
+  autoFocus,
 }: BaseSelectProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const selectRef = useRef<Element>(null);
@@ -253,6 +254,7 @@ const BaseSelectComp = ({
           })}
           data-testid={BaseSelectMeta.dataTestId}
           open={open}
+          autoFocus={autoFocus}
           {...onHoverMethods}
           multiple={multiple}
           onOpen={() => setOpen(true)}

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import BaseInput, { withBaseInput } from "src/BaseInput";
 import Button from "src/Button";
@@ -8,23 +8,70 @@ import { FONT_WEIGHT } from "src/theme/Typography";
 import { Icon, Percent, Typography, useEllisDonTheme } from "..";
 import { PercentSelectorProps } from "./PercentSelector.types";
 
-const PercentSelectorModal = ({ onSubmit, onCancel }: any) => {
+enum OPERAND {
+  EQUAL_TO = "Equal to",
+  MORE_THAN = "More than",
+  LESS_THAN = "Less than",
+  BETWEEN = "Between",
+}
+
+const OPTIONS = [
+  {
+    label: OPERAND.EQUAL_TO,
+    value: OPERAND.EQUAL_TO,
+  },
+  {
+    label: OPERAND.MORE_THAN,
+    value: OPERAND.MORE_THAN,
+  },
+  {
+    label: OPERAND.LESS_THAN,
+    value: OPERAND.LESS_THAN,
+  },
+  {
+    label: OPERAND.BETWEEN,
+    value: OPERAND.BETWEEN,
+  },
+];
+
+const PercentSelectorModal = ({ value, onSubmit, onCancel }: any) => {
   const theme: any = useEllisDonTheme();
-  const [operand, setOperand] = useState("Equal to");
-  const [val1, setVal1] = useState<any>(0);
-  const [val2, setVal2] = useState<any>(0);
-  const val1Ref = useRef<any>(0);
+  const [operand, setOperand] = useState(value?.[0] || OPTIONS?.[0]?.value);
+  const [val1, setVal1] = useState<any>(value?.[1] || null);
+  const [val2, setVal2] = useState<any>(value?.[2] || null);
+  const val1Ref = useRef<any>(value?.[1] || null);
+  const val2Ref = useRef<any>(value?.[2] || null);
 
   useEffect(() => {
-    if (operand === "Between") {
-      setVal2(val1Ref.current);
+    if (value && value.length) {
+      const [operand, val1, val2] = value;
+      setOperand(operand);
+      setVal1(val1);
+      val1Ref.current = val1;
+      if (operand === OPERAND.BETWEEN) {
+        setVal2(val2);
+        val2Ref.current = val2;
+      }
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (!operand) return;
+    if (operand === OPERAND.BETWEEN) {
+      if (val2Ref.current === null) {
+        setVal2(val1Ref.current);
+        val2Ref.current = val1Ref.current;
+      }
+    } else {
+      setVal2(null);
+      val2Ref.current = null;
     }
   }, [operand]);
 
   const handleSubmit = useCallback(() => {
     const res = [operand];
     res.push(val1);
-    if (operand === "Between") {
+    if (operand === OPERAND.BETWEEN) {
       res.push(val2);
     }
     if (onSubmit) onSubmit(res);
@@ -86,24 +133,7 @@ const PercentSelectorModal = ({ onSubmit, onCancel }: any) => {
             value={operand}
             disablePortal
             onChange={setOperand}
-            options={[
-              {
-                label: "Equal to",
-                value: "Equal to",
-              },
-              {
-                label: "More than",
-                value: "More than",
-              },
-              {
-                label: "Less than",
-                value: "Less than",
-              },
-              {
-                label: "Between",
-                value: "Between",
-              },
-            ]}
+            options={OPTIONS}
           />
         </Box>
         <Box
@@ -122,13 +152,14 @@ const PercentSelectorModal = ({ onSubmit, onCancel }: any) => {
               setVal1(val);
             }}
           />
-          {operand === "Between" && (
+          {operand === OPERAND.BETWEEN && (
             <>
               <Icon icon="ArrowRight" size={16} sx={{ flexShrink: 0 }} />
               <Percent
                 value={val2}
                 fullWidth
                 onChange={(val) => {
+                  val2Ref.current = val;
                   setVal2(val);
                 }}
               />
@@ -136,20 +167,14 @@ const PercentSelectorModal = ({ onSubmit, onCancel }: any) => {
           )}
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          mt: 0.5,
-        }}
-      >
+      <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
         <Button variant="link" color="danger" onClick={handleCancel}>
           Clear
         </Button>
         <Button variant="link" onClick={handleSubmit}>
           Apply
         </Button>
-      </Box>
+      </Stack>
     </Box>
   );
 };
@@ -159,9 +184,26 @@ const PercentSelectorComp = ({
   labelPosition = "top",
   label,
   helperText,
+  onChange,
 }: PercentSelectorProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<any>([]);
+
+  const handleSubmit = useCallback(
+    (val: any) => {
+      setValue(val);
+      setOpen(false);
+      if (onChange) onChange(val);
+    },
+    [setValue, setOpen, onChange]
+  );
+
+  const handleClear = useCallback(() => {
+    setValue([]);
+    setOpen(false);
+    if (onChange) onChange([]);
+  }, [setValue, setOpen, onChange]);
 
   return (
     <>
@@ -170,7 +212,7 @@ const PercentSelectorComp = ({
           {label}
         </BaseInput.Label>
         <Box
-          data-testid="calendar-input"
+          data-testid="PercentSelector"
           onClick={() => setOpen(true)}
           ref={(r: any) => setAnchorEl(r)}
         >
@@ -187,8 +229,9 @@ const PercentSelectorComp = ({
       </BaseInput>
       <Popover open={open} anchorEl={anchorEl} onClose={() => setOpen(false)}>
         <PercentSelectorModal
-          onSubmit={() => setOpen(false)}
-          onCancel={() => setOpen(false)}
+          value={value}
+          onSubmit={handleSubmit}
+          onCancel={handleClear}
         />
       </Popover>
     </>

@@ -5,4 +5,5 @@ export interface PercentSelectorProps extends StandardInputProps {
   id?: string;
   className?: string;
   sx?: SxProps;
+  onChange?: (value: any) => void;
 }

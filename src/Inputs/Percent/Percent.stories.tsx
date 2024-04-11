@@ -54,6 +54,7 @@ export const Sample: Story = {
     value: "100",
     fullWidth: false,
     labelPosition: "top",
+    tooltip: "Tooltip",
   },
 };
 

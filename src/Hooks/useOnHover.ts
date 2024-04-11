@@ -1,13 +1,31 @@
 import { useCallback } from "react";
 
-const useOnHover = (onHover: (hovered: boolean) => void) => {
-  const handleMouseEnter = useCallback(() => {
-    if (onHover) onHover(true);
-  }, [onHover]);
+interface UseOnHoverProps {
+  callback?: (hovered: boolean) => void;
+  onMouseEnter?: (e: any) => void;
+  onMouseLeave?: (e: any) => void;
+}
 
-  const handleMouseLeave = useCallback(() => {
-    if (onHover) onHover(false);
-  }, [onHover]);
+const useOnHover = ({
+  callback,
+  onMouseEnter,
+  onMouseLeave,
+}: UseOnHoverProps) => {
+  const handleMouseEnter = useCallback(
+    (e: any) => {
+      if (callback) callback(true);
+      if (onMouseEnter) onMouseEnter(e);
+    },
+    [callback, onMouseEnter]
+  );
+
+  const handleMouseLeave = useCallback(
+    (e: any) => {
+      if (callback) callback(false);
+      if (onMouseLeave) onMouseLeave(e);
+    },
+    [callback, onMouseLeave]
+  );
 
   return {
     onMouseEnter: handleMouseEnter,

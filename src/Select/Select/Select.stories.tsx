@@ -36,6 +36,7 @@ export const Smaple: Story = {
     placeholder: "Placeholder",
     helperText: "Helper Text",
     labelPosition: "top",
+    tooltip: "Tooltip",
     options: [
       {
         label: "Option 1",

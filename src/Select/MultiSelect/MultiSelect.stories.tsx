@@ -36,6 +36,7 @@ export const Default: Story = {
     label: "Multi Select",
     placeholder: "Select many options",
     helperText: "Select many options",
+    tooltip: "Tooltip",
     value: ["option1", "option2", "option3", "option4"],
     options: [
       {
@@ -308,13 +309,61 @@ export const TableVariant: Story = {
   },
 };
 
+const StatusFilterCodeSample = `(_, selectedOptions: any) => {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          gap: "8px",
+          overflow: "hidden",
+          width: "100%",
+        }}
+      >
+        <Box sx={{ flexGrow: 0 }}>
+          <Typography preventTextSelection variant="bodyR">
+            Status
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            flexGrow: 1,
+            width: "100%",
+            overflow: "hidden",
+            position: "relative",
+          }}
+        >
+          <OverflowRowCounter counterPosition="left">
+            {selectedOptions?.map((opt: any) => (
+              <Chip
+                key={opt?.value}
+                type={opt?.status}
+                text={opt?.label}
+              />
+            ))}
+          </OverflowRowCounter>
+        </Box>
+      </Box>
+    );
+  }`;
+
 export const StatusFilter: Story = {
+  parameters: {
+    layout: "centered",
+    docs: {
+      source: {
+        transform: sourceCodeFormatter("MultiSelect", {
+          map: {
+            renderValue: StatusFilterCodeSample,
+          },
+        }),
+      },
+    },
+  },
   render: (args) => (
     <Box
       sx={{
         height: "100px",
         width: "300px",
-        // backgroundColor: "rgba(255, 0, 255, 0.1)",
       }}
     >
       <MultiSelect
@@ -324,35 +373,31 @@ export const StatusFilter: Story = {
             <Box
               sx={{
                 display: "flex",
-                // flexDirection: "row",
                 gap: "8px",
                 overflow: "hidden",
                 width: "100%",
-                // width: "200px",
               }}
             >
-              <Box
-                sx={{
-                  // width: "41px",
-                  flexGrow: 0,
-                }}
-              >
+              <Box sx={{ flexGrow: 0 }}>
                 <Typography preventTextSelection variant="bodyR">
                   Status
                 </Typography>
               </Box>
               <Box
                 sx={{
-                  width: "100%",
                   flexGrow: 1,
+                  width: "100%",
                   overflow: "hidden",
-                  // width: "calc(100% - 43px)",
                   position: "relative",
                 }}
               >
                 <OverflowRowCounter counterPosition="left">
                   {selectedOptions?.map((opt: any) => (
-                    <Chip type={opt?.status} text={opt?.label} />
+                    <Chip
+                      key={opt?.value}
+                      type={opt?.status}
+                      text={opt?.label}
+                    />
                   ))}
                 </OverflowRowCounter>
               </Box>
@@ -409,5 +454,6 @@ export const StatusFilter: Story = {
     helperText: "",
     placeholder: "Status",
     labelPosition: "top",
+    renderValue: () => <></>,
   },
 };

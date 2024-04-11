@@ -51,6 +51,7 @@ export const LeftLabel: Story = {
   args: {
     ...Sample.args,
     labelPosition: "left",
+    tooltip: "Tooltip",
   },
 };
 

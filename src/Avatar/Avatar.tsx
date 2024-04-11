@@ -35,7 +35,7 @@ const Avatar = ({
   sx,
   tooltip,
 }: AvatarProps) => {
-  const onHoverMethods = useOnHover(onHover);
+  const onHoverMethods = useOnHover({ callback: onHover });
 
   const getAvatarSize = useCallback(() => {
     if (size === "default") {

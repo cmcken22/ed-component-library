@@ -80,6 +80,7 @@ export const Sample: Story = {
     value: "",
     fullWidth: false,
     labelPosition: "top",
+    tooltip: "Tooltip",
   },
 };
 

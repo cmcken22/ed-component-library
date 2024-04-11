@@ -69,7 +69,7 @@ const BaseSelectComp = ({
 }: BaseSelectProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [open, setOpen] = useState(defaultOpen || false);
-  const onHoverMethods = useOnHover(onHover);
+  const onHoverMethods = useOnHover({ callback: onHover });
 
   useEffect(() => {
     setOpen(defaultOpen || false);
@@ -95,6 +95,7 @@ const BaseSelectComp = ({
         if (checkBoxSelection) {
           return (
             <Checkbox
+              key={optValue}
               label={optLabel}
               checked={selected}
               disabled={optDisabled || disabled}

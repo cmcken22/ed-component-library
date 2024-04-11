@@ -1,26 +1,31 @@
 import { Box } from "@mui/material";
 import cx from "classnames";
-import { isValidElement, useCallback, useMemo } from "react";
+import { forwardRef, isValidElement, useCallback, useMemo } from "react";
 import { useOnHover } from "src/Hooks";
 import { useEllisDonTheme } from "src/theme";
 import { sizeFormat } from "src/utils";
 import { IconProps } from "./";
 import IconMap from "./Icon.map";
 
-const Icon = ({
-  id,
-  className,
-  icon,
-  color,
-  size,
-  height,
-  width,
-  sx,
-  onClick,
-  onHover,
-}: IconProps) => {
+const Icon = forwardRef<HTMLDivElement, IconProps>((props, ref) => {
+  const {
+    id,
+    className,
+    icon,
+    color,
+    size,
+    height,
+    width,
+    sx,
+    onClick,
+    onHover,
+    ...tooltipProps
+  } = props;
   const theme = useEllisDonTheme();
-  const onHoverMethods = useOnHover(onHover);
+  const onHoverMethods = useOnHover({
+    callback: onHover,
+    ...tooltipProps,
+  });
 
   const computedSize = useMemo(() => {
     if (size) {
@@ -48,10 +53,14 @@ const Icon = ({
   return (
     <Box
       id={id}
+      ref={ref}
       className={cx(`icon-wrapper`, {
         [className]: className,
         [`icon--${icon}`]: typeof icon === "string",
       })}
+      // spread the remaining props
+      // this is important for the Icon to be able to have a tooltip wrapper
+      {...tooltipProps}
       {...onHoverMethods}
       onClick={onClick}
       sx={{
@@ -71,7 +80,7 @@ const Icon = ({
       {renderIcon()}
     </Box>
   );
-};
+});
 
 Icon.defaultProps = {} as Partial<IconProps>;
 

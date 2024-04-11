@@ -26,7 +26,7 @@ const theme = createTheme({
     MuiPaginationItem: PaginationItemTheme,
   },
   shape: {
-    borderRadius: 4,
+    borderRadius: 2,
     borderWidth: "1px",
   } as Partial<Theme["shape"]>,
 });

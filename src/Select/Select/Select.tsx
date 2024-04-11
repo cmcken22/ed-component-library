@@ -11,6 +11,7 @@ const Select = (props: SelectProps) => {
     onChange,
     placeholder,
     defaultActiveFirstOption,
+    allowDeselect,
     renderValue,
     variant,
     ...rest
@@ -39,11 +40,11 @@ const Select = (props: SelectProps) => {
   const handleChange = useCallback(
     (nextSelected: string) => {
       let nextValue = nextSelected;
-      if (nextValue === value) nextValue = "";
+      if (nextValue === value && allowDeselect) nextValue = "";
       setValue(nextValue);
       if (onChange) onChange(nextValue);
     },
-    [value, setValue, onChange]
+    [value, setValue, onChange, allowDeselect]
   );
 
   const renderSelectedValue = useCallback(
@@ -116,6 +117,7 @@ Select.defaultProps = {
   options: [],
   maxListHeight: 144,
   variant: "outlined",
+  allowDeselect: true,
 } as Partial<SelectProps>;
 
 export { Select };

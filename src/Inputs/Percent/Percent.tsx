@@ -1,5 +1,5 @@
 import { InputAdornment, TextField, styled } from "@mui/material";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { VariantMap, getFontColor } from "src/BaseInput/helpers";
@@ -48,6 +48,10 @@ const PercentComp = ({
 }: PercentProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue);
+
+  useEffect(() => {
+    setValue(passedValue);
+  }, [passedValue]);
 
   const handleChange = useCallback(
     (e: { formattedValue: string; value: string; floatValue: number }) => {

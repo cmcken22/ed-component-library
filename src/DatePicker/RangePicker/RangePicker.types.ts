@@ -1,6 +1,7 @@
 import { BaseDatePickerProps } from "../Common";
 
-export interface RangePickerProps extends BaseDatePickerProps {
+export interface RangePickerProps
+  extends Omit<BaseDatePickerProps, "placeholder" | "value"> {
   value?: Date[] | null;
   onChange?: (range: Date[]) => void;
   /**

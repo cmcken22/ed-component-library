@@ -1,11 +1,11 @@
-import { Box, Stack } from "@mui/material";
+import { Box, InputAdornment, Stack } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
-import BaseInput, { withBaseInput } from "src/BaseInput";
 import Button from "src/Button";
+import { IconVariant } from "src/Icon";
 import Popover from "src/Popover";
 import { Select } from "src/Select";
 import { FONT_WEIGHT } from "src/theme/Typography";
-import { Icon, Percent, Typography, useEllisDonTheme } from "..";
+import { Icon, Input, Percent, Typography, useEllisDonTheme } from "..";
 import { PercentSelectorProps } from "./PercentSelector.types";
 
 enum OPERAND {
@@ -179,11 +179,18 @@ const PercentSelectorModal = ({ value, onSubmit, onCancel }: any) => {
   );
 };
 
-const PercentSelectorComp = ({
+const PercentSelector = ({
+  id,
+  className,
+  sx,
+  label,
+  placeholder,
+  helperText,
   required,
   labelPosition = "top",
-  label,
-  helperText,
+  disabled,
+  tooltip,
+  variant,
   onChange,
 }: PercentSelectorProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -207,26 +214,42 @@ const PercentSelectorComp = ({
 
   return (
     <>
-      <BaseInput>
-        <BaseInput.Label required={required} position={labelPosition}>
-          {label}
-        </BaseInput.Label>
-        <Box
-          data-testid="PercentSelector"
-          onClick={() => setOpen(true)}
-          ref={(r: any) => setAnchorEl(r)}
-        >
-          <Box
-            sx={{
-              height: "36px",
-              width: "100%",
-              overflow: "hidden",
-              background: "rgba(255, 0, 255, 0.7)",
-            }}
-          ></Box>
-        </Box>
-        <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-      </BaseInput>
+      <Input
+        id={id}
+        onClick={() => setOpen(true)}
+        inputRef={(r: any) => setAnchorEl(r)}
+        className={className}
+        label={label}
+        placeholder={placeholder}
+        disabled={disabled}
+        helperText={helperText}
+        required={required}
+        value={value?.join(" ") || ""}
+        fullWidth={false}
+        labelPosition={labelPosition}
+        tooltip={tooltip}
+        variant={variant}
+        onChange={() => {}}
+        readOnly
+        sx={{
+          ...sx,
+          cursor: "pointer",
+          ".MuiInputBase-root, input": {
+            cursor: "pointer",
+          },
+        }}
+        endAdornment={
+          <InputAdornment position="end">
+            <Icon
+              icon={open ? IconVariant.NavArrowUp : IconVariant.NavArrowDown}
+              size={20}
+              sx={{
+                cursor: "pointer",
+              }}
+            />
+          </InputAdornment>
+        }
+      />
       <Popover open={open} anchorEl={anchorEl} onClose={() => setOpen(false)}>
         <PercentSelectorModal
           value={value}
@@ -237,11 +260,6 @@ const PercentSelectorComp = ({
     </>
   );
 };
-
-const PercentSelector = withBaseInput<PercentSelectorProps>(
-  PercentSelectorComp,
-  "PercentSelector"
-);
 
 PercentSelector.defaultProps = {} as Partial<PercentSelectorProps>;
 

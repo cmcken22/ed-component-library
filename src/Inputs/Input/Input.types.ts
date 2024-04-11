@@ -12,6 +12,9 @@ export interface InputProps extends StandardInputProps {
   type?: "text" | "password" | "number";
   debounce?: number;
   maxChars?: number;
+  inputRef?:
+    | React.RefObject<HTMLInputElement>
+    | ((instance: HTMLInputElement | null) => void);
   // width?: string | number;
   // minWidth?: string | number;
 }

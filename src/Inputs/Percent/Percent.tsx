@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { VariantMap, getFontColor } from "src/BaseInput/helpers";
+import useKeyBoardInput from "src/Hooks/useKeyBoardInput";
 import Icon, { IconVariant } from "src/Icon";
 import { PercentProps } from ".";
 
@@ -15,16 +16,6 @@ const StyledTextField = styled(TextField, {
     },
   };
 });
-
-// const StyledTextIcon = styled(Icon, {
-//   slot: "root",
-// })(() => {
-//   return {
-//     display: "flex",
-//     justifyContent: "center",
-//     alignItems: "center",
-//   };
-// });
 
 const PercentComp = ({
   label,
@@ -45,9 +36,11 @@ const PercentComp = ({
   onChange,
   variant,
   color,
+  allowKeyBoardInput,
 }: PercentProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue);
+  const [hasFocus, setHasFocus] = useState(false);
 
   useEffect(() => {
     setValue(passedValue);
@@ -61,6 +54,14 @@ const PercentComp = ({
     },
     [setValue, onChange]
   );
+
+  useKeyBoardInput({
+    allow: allowKeyBoardInput,
+    hasFocus,
+    value,
+    allowNegative,
+    callback: handleChange,
+  });
 
   const renderStartAdornment = useCallback(() => {
     if (iconPlacement !== "prefix") return null;
@@ -106,6 +107,8 @@ const PercentComp = ({
         allowNegative={allowNegative}
         disabled={disabled}
         variant={VariantMap[variant] as any}
+        onFocus={() => setHasFocus(true)}
+        onBlur={() => setHasFocus(false)}
         InputProps={{
           sx: { "& input": { color: getFontColor(color, value) } },
           startAdornment: renderStartAdornment(),
@@ -132,6 +135,7 @@ Percent.defaultProps = {
   allowNegative: true,
   decimalScale: 2,
   variant: "outlined",
+  allowKeyBoardInput: true,
 } as Partial<PercentProps>;
 
 // export named component for storybook docgen

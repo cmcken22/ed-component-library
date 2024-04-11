@@ -192,6 +192,7 @@ const RangePickerComp = ({
   );
 };
 
+// @ts-ignore
 const WrappedRangePicker = withBaseInput<RangePickerProps>(
   RangePickerComp,
   "RangePicker"

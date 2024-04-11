@@ -22,6 +22,10 @@ export interface BaseInputProps {
   labelPosition?: "top" | "left";
   label?: string;
   helperText?: string;
+  placeholder?: string;
+  endAdornment?: React.ReactNode;
+  readOnly?: boolean;
+  onClick?: (e: any) => void;
 }
 
 export interface StandardInputProps

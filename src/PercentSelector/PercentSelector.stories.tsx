@@ -24,5 +24,7 @@ export const Default: Story = {
   args: {
     ...PercentSelector.defaultProps,
     label: "Percent Selector",
+    placeholder: "Select a percent",
+    helperText: "Helper text",
   },
 };

@@ -19,6 +19,9 @@ const InputComp = ({
   maxChars,
   variant,
   color,
+  readOnly,
+  inputRef,
+  onClick,
 }: InputProps) => {
   const { endAdornment } = useContext(BaseInputContext);
 
@@ -56,15 +59,18 @@ const InputComp = ({
         {label}
       </BaseInput.Label>
       <TextField
+        ref={inputRef}
         placeholder={placeholder}
         type={type}
         value={value}
         variant={VariantMap[variant] as any}
         disabled={disabled}
+        onClick={onClick}
         onChange={handleChange}
         InputProps={{
           sx: { "& input": { color: getFontColor(color, value) } },
           endAdornment,
+          readOnly,
         }}
       />
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>

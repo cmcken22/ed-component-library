@@ -3,6 +3,7 @@ import { useCallback, useContext, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
 import { VariantMap, getFontColor } from "src/BaseInput/helpers";
+import useKeyBoardInput from "src/Hooks/useKeyBoardInput";
 import Icon, { IconVariant } from "src/Icon";
 import { CurrencyProps } from ".";
 
@@ -15,16 +16,6 @@ const StyledTextField = styled(TextField, {
     },
   };
 });
-
-// const StyledTextIcon = styled(Icon, {
-//   slot: "root",
-// })(() => {
-//   return {
-//     display: "flex",
-//     justifyContent: "center",
-//     alignItems: "center",
-//   };
-// });
 
 const SymbolMap: Record<string, string | (() => JSX.Element)> = {
   Dollar: () => <Icon icon={IconVariant.Dollar} size={20} />,
@@ -52,9 +43,11 @@ const CurrencyComp = ({
   onChange,
   variant,
   color,
+  allowKeyBoardInput,
 }: CurrencyProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue);
+  const [hasFocus, setHasFocus] = useState(false);
 
   const handleChange = useCallback(
     (e: { formattedValue: string; value: string; floatValue: number }) => {
@@ -63,6 +56,14 @@ const CurrencyComp = ({
     },
     [setValue, onChange]
   );
+
+  useKeyBoardInput({
+    allow: allowKeyBoardInput,
+    hasFocus,
+    value,
+    allowNegative,
+    callback: handleChange,
+  });
 
   const renderCustomIcon = useCallback(
     (symbol: string | (() => JSX.Element)) => {
@@ -120,6 +121,8 @@ const CurrencyComp = ({
         allowNegative={allowNegative}
         disabled={disabled}
         variant={VariantMap?.[variant] as any}
+        onFocus={() => setHasFocus(true)}
+        onBlur={() => setHasFocus(false)}
         InputProps={{
           sx: { "& input": { color: getFontColor(color, value) } },
           startAdornment: renderStartAdornment(),
@@ -146,6 +149,7 @@ Currency.defaultProps = {
   allowLeadingZeros: false,
   allowNegative: true,
   variant: "outlined",
+  allowKeyBoardInput: true,
 } as Partial<CurrencyProps>;
 
 // export named component for storybook docgen

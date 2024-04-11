@@ -38,4 +38,8 @@ export interface CurrencyProps extends StandardInputProps {
   suffix?: "Dollar" | "Pound" | "Euro";
   allowLeadingZeros?: boolean;
   allowNegative?: boolean;
+  /**
+   * Allow the user to use the keyboard to increment or decrement the value.
+   */
+  allowKeyBoardInput?: boolean;
 }

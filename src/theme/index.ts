@@ -2,6 +2,7 @@ import { Theme, createTheme, useTheme } from "@mui/material";
 import BaseInputTheme from "src/BaseInput/BaseInput.theme";
 import ButtonTheme from "src/Button/Button.theme";
 import CheckboxTheme from "src/Checkbox/Checkbox.theme";
+import { PaginationItemTheme } from "src/Pagination/Pagination.theme";
 import RadioButtonTheme from "src/RadioButton/RadioButton.theme";
 import SelectTheme, {
   SelectListTheme,
@@ -21,6 +22,8 @@ const theme = createTheme({
     MuiSelect: SelectTheme,
     MuiTabs: TabsTheme,
     MuiMenu: SelectListTheme,
+    // MuiPagination: PaginationTheme,
+    MuiPaginationItem: PaginationItemTheme,
   },
   shape: {
     borderRadius: 4,

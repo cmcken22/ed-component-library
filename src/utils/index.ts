@@ -1,4 +1,5 @@
 import { useMediaQuery, useTheme } from "@mui/material";
+import isEqual from "lodash.isequal";
 import { Children } from "react";
 
 export function hexToRGBA(hex: string, opacity: number) {
@@ -47,4 +48,16 @@ export const getChildByDisplayName = (children, displayName) => {
     return null;
   });
   return child;
+};
+
+export const reduceRepeatingValues = (array: any[]) => {
+  const newArray = [];
+  let lastValue = null;
+  for (const item of array) {
+    if (!isEqual(item, lastValue)) {
+      newArray.push(item);
+      lastValue = item;
+    }
+  }
+  return newArray;
 };

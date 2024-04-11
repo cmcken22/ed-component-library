@@ -77,6 +77,7 @@ const Success = {
   light: "#00C37E",
   main: "#00A86B",
   dark: "#008456",
+  contrastText: "#FFFFFF",
 };
 
 const Warning = {
@@ -84,6 +85,7 @@ const Warning = {
   light: "#FFC266",
   main: "#FFA500",
   dark: "#E69500",
+  contrastText: "#FFFFFF",
 };
 
 const Danger = {
@@ -91,6 +93,7 @@ const Danger = {
   light: "#C2284D",
   main: "#B7163E",
   dark: "#A1042B",
+  contrastText: "#FFFFFF",
 };
 
 const Text = {
@@ -180,15 +183,15 @@ omitThemeColors([
   "A700",
   "contrastText",
 ])(palette.grey);
-omitThemeColors(["contrastText"])(palette.primary);
-omitThemeColors(["contrastText"])(palette.secondary);
-omitThemeColors(["contrastText"])(palette.success);
-omitThemeColors(["contrastText"])(palette.warning);
-omitThemeColors(["contrastText"])(palette.danger);
-omitThemeColors(["contrastText"])(palette.charcoal);
-omitThemeColors(["contrastText"])(palette.error);
-omitThemeColors(["contrastText"])(palette.text);
-omitThemeColors(["contrastText"])(palette.info);
+// omitThemeColors(["contrastText"])(palette.primary);
+// omitThemeColors(["contrastText"])(palette.secondary);
+// omitThemeColors(["contrastText"])(palette.success);
+// omitThemeColors(["contrastText"])(palette.warning);
+// omitThemeColors(["contrastText"])(palette.danger);
+// omitThemeColors(["contrastText"])(palette.charcoal);
+// omitThemeColors(["contrastText"])(palette.error);
+// omitThemeColors(["contrastText"])(palette.text);
+// omitThemeColors(["contrastText"])(palette.info);
 
 export { Colors, palette };
 export default palette;

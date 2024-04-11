@@ -17,6 +17,10 @@ export interface BaseInputProps {
     componentType?: string;
     variant?: "standard" | "outlined" | "table";
     color?: string;
+    required?: boolean;
+    labelPosition?: "top" | "left";
+    label?: string;
+    helperText?: string;
 }
 export interface StandardInputProps extends Omit<BaseInputProps, "children" | "componentType"> {
 }

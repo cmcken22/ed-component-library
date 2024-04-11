@@ -1,0 +1,1 @@
+import{r as f}from"./index-Dl6G-zuu.js";const n=({callback:e,onMouseEnter:r,onMouseLeave:s})=>{const o=f.useCallback(t=>{e&&e(!0),r&&r(t)},[e,r]),u=f.useCallback(t=>{e&&e(!1),s&&s(t)},[e,s]);return{onMouseEnter:o,onMouseLeave:u}};export{n as u};

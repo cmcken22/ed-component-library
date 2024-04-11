@@ -8,6 +8,7 @@ export { default as Drawer } from "./Drawer";
 export { Grid, GridItem } from "./Grid";
 export { default as Icon } from "./Icon";
 export { default as Currency } from "./Inputs/Currency";
+export { default as DateField } from "./Inputs/DateField";
 export { default as Input } from "./Inputs/Input";
 export { default as Percent } from "./Inputs/Percent";
 export { default as TextArea } from "./Inputs/TextArea";

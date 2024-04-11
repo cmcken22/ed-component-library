@@ -1,5 +1,4 @@
 import "@testing-library/jest-dom";
-import { printHtml } from "test-utils/helper";
 import { render } from "test-utils/index";
 import Pagination from "./Pagination";
 import { PaginationProps } from "./Pagination.types";
@@ -27,7 +26,6 @@ describe("Pagination", () => {
     props.id = "test";
     const { getByTestId } = renderComponent(props);
     const component = getByTestId("Pagination");
-    printHtml(component);
     expect(component).toHaveAttribute("id", props.id);
   });
 });

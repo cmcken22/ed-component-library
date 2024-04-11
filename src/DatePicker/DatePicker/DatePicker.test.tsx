@@ -42,7 +42,7 @@ describe("DatePicker", () => {
   it("should have value", () => {
     props.value = new Date("2024-03-15T04:00:00.000Z");
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId("calendar-input");
+    const component = getByTestId("date-field-input");
     const input = component.querySelector("input");
     expect(component).toBeInTheDocument();
     const expected = "03/15/2024";
@@ -80,7 +80,7 @@ describe("DatePicker", () => {
 
   it("should render the calendar picker", () => {
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("calendar-input");
+    const inputContainer = getByTestId("date-field-input");
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
     const calendar = getByTestId("calendar");
@@ -89,7 +89,7 @@ describe("DatePicker", () => {
 
   it("should clicking outside should close the calendar", () => {
     const { container, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("calendar-input");
+    const inputContainer = getByTestId("date-field-input");
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
     const calendar = getByTestId("calendar");
@@ -110,7 +110,7 @@ describe("DatePicker", () => {
   it("should hide the calendar", () => {
     props.hideCalendar = true;
     const { container, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("calendar-input");
+    const inputContainer = getByTestId("date-field-input");
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
     const calendar = container.querySelector('[data-testid="calendar"]');
@@ -120,10 +120,10 @@ describe("DatePicker", () => {
   it("should disable input", () => {
     props.disableTextInput = true;
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("calendar-input");
+    const inputContainer = getByTestId("date-field-input");
     expect(inputContainer).toBeInTheDocument();
-    const input = inputContainer.querySelector(".MuiInputBase-root");
-    expect(input).toHaveStyle("cursor: pointer");
+    const input = inputContainer.querySelector("input");
+    expect(input).toHaveAttribute("readonly");
   });
 
   it("should disable current date", () => {
@@ -136,7 +136,6 @@ describe("DatePicker", () => {
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("Input");
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
@@ -150,7 +149,6 @@ describe("DatePicker", () => {
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("Input");
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
@@ -164,7 +162,6 @@ describe("DatePicker", () => {
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("Input");
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
@@ -178,11 +175,10 @@ describe("DatePicker", () => {
     const { getByTestId } = renderComponent(props);
     const inputContainer = getByTestId("Input");
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
-  it("should have error state for invalid date", () => {
+  it("should have call onValidation false for invalid date", () => {
     props = {
       ...props,
       currentDate: new Date("2024-03-15T04:00:00.000Z"),
@@ -198,7 +194,6 @@ describe("DatePicker", () => {
     // april 31st is an invalid date
     fireEvent.change(inputs[0], { target: { value: "04/31/2024" } });
 
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 });

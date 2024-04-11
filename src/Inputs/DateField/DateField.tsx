@@ -1,0 +1,104 @@
+import { InputAdornment } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { useCallback, useContext, useEffect, useState } from "react";
+import BaseInput, { BaseInputContext, withBaseInput } from "src/BaseInput";
+import { VariantMap, getFontColor } from "src/BaseInput/helpers";
+import Icon, { IconVariant } from "src/Icon";
+import { DateFieldProps } from "./DateField.types";
+dayjs.extend(customParseFormat);
+
+const DateFieldComp = ({
+  label,
+  required,
+  labelPosition = "top",
+  helperText,
+  disabled,
+  variant,
+  placeholder,
+  color,
+  format,
+  value: passedValue,
+  onClick,
+  onChange,
+  hideCalendarIcon,
+  readOnly,
+  inputRef,
+}: DateFieldProps) => {
+  const { endAdornment } = useContext(BaseInputContext);
+  const [value, setValue] = useState<Date | null>(passedValue);
+
+  useEffect(() => {
+    setValue(passedValue);
+  }, [passedValue]);
+
+  const startAdornment = useCallback(() => {
+    if (hideCalendarIcon) return null;
+    return (
+      <InputAdornment position="start" sx={{ ml: "8px" }}>
+        <Icon icon={IconVariant.Calendar} height="20px" width="20px" />
+      </InputAdornment>
+    );
+  }, [hideCalendarIcon]);
+
+  const handleSelect = useCallback(
+    (date: Date) => {
+      setValue(date);
+      if (onChange) onChange(date);
+    },
+    [setValue, onChange]
+  );
+
+  return (
+    <BaseInput>
+      <BaseInput.Label required={required} position={labelPosition}>
+        {label}
+      </BaseInput.Label>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <MuiDatePicker
+          ref={inputRef}
+          format={format}
+          disableOpenPicker
+          value={value ? dayjs(value) : null}
+          disabled={disabled}
+          readOnly={readOnly}
+          // fullWidth={fullWidth}
+          slotProps={{
+            textField: {
+              variant: VariantMap[variant] as any,
+              onFocus: readOnly ? (e) => e?.target?.blur() : null,
+              onClick,
+              InputProps: {
+                ...{ "data-testid": "date-field-input" },
+                sx: { "& input": { color: getFontColor(color, value) } },
+                placeholder,
+                startAdornment: startAdornment(),
+                endAdornment,
+              },
+            },
+          }}
+          onChange={(date: any) => {
+            if (readOnly || disabled) return;
+            handleSelect(date ? date.toDate() : null);
+          }}
+        />
+      </LocalizationProvider>
+      <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
+    </BaseInput>
+  );
+};
+
+const DateField = withBaseInput<DateFieldProps>(DateFieldComp, "DateField");
+
+DateField.defaultProps = {
+  format: "MMM DD, YYYY",
+  placeholder: "MMM DD, YYYY",
+  disableFuture: false,
+  disableCurrent: false,
+  disablePast: false,
+} as Partial<DateFieldProps>;
+
+export default DateField;

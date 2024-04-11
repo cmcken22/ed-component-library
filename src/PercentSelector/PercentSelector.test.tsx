@@ -1,4 +1,3 @@
-
 import "@testing-library/jest-dom";
 import { render } from "test-utils/index";
 import PercentSelector from "./PercentSelector";
@@ -15,12 +14,13 @@ describe("PercentSelector", () => {
     props = { ...initialProps };
   });
 
-  const renderComponent = (props: PercentSelectorProps) => render(<PercentSelector {...props} />);
+  const renderComponent = (props: PercentSelectorProps) =>
+    render(<PercentSelector {...props} />);
 
   it("should render correctly", () => {
     props.id = "test";
-    const { getByTestId } = renderComponent();
-    const component = getByTestId("PercentSelector");
-    expect(component).toHaveTextContent(props.id);
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId("Input");
+    expect(component).toHaveAttribute("id", props.id);
   });
 });

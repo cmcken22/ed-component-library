@@ -18,7 +18,7 @@ const StyledWrapper = styled(Box, {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 2,
+    padding: theme.spacing(2),
     borderTop: `${theme.shape.borderWidth} solid`,
     borderColor: theme.palette.charcoal["20"],
   };

@@ -20,9 +20,9 @@ describe("${componentName}", () => {
 
   it("should render correctly", () => {
     props.id = "test";
-    const { getByTestId } = renderComponent();
+    const { getByTestId } = renderComponent(props);
     const component = getByTestId("${componentName}");
-    expect(component).toHaveTextContent(props.id);
+    expect(component).toHaveAttribute("id", props.id);
   });
 });
 `,

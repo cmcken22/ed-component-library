@@ -5,7 +5,7 @@ const StyledWrapper = styled(Box, {
   slot: "root",
 })<any>(({ theme }) => {
   return {
-    padding: 2,
+    padding: theme.spacing(2),
     width: "100px",
     ".toolbar-item": {
       cursor: "pointer",

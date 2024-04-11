@@ -28,12 +28,6 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof DatePickerCalendar>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
   render: (args) => {
     let formattedProps = {};
     if (args?.currentDate) {
@@ -50,6 +44,12 @@ export const Default: Story = {
     }
     return <DatePickerCalendar {...args} {...formattedProps} />;
   },
+} satisfies Meta<typeof DatePickerCalendar>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
   args: {
     ...DatePickerCalendar.defaultProps,
     value: null,
@@ -59,5 +59,13 @@ export const Default: Story = {
     currentDate: new Date() as Date,
     numberOfMonths: 1,
     onSelect: fn(),
+  },
+};
+
+export const WithTools: Story = {
+  args: {
+    ...Default.args,
+    tools: true,
+    previewSelection: true,
   },
 };

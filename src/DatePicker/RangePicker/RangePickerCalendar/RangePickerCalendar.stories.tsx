@@ -18,12 +18,6 @@ const meta = {
   argTypes: {
     onSelect: { action: "onChange" },
   },
-} satisfies Meta<typeof RangePickerCalendar>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
   render: (args) => {
     let formattedProps = {};
     if (args?.currentDate) {
@@ -41,6 +35,12 @@ export const Default: Story = {
     }
     return <RangePickerCalendar {...args} {...formattedProps} />;
   },
+} satisfies Meta<typeof RangePickerCalendar>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
   args: {
     ...RangePickerCalendar.defaultProps,
     disableFuture: false,
@@ -49,5 +49,13 @@ export const Default: Story = {
     currentDate: new Date(),
     numberOfMonths: 2,
     onSelect: fn(),
+  },
+};
+
+export const WithTools: Story = {
+  args: {
+    ...Default.args,
+    tools: true,
+    previewSelection: true,
   },
 };

@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import cx from "classnames";
 import { useCallback, useEffect, useRef, useState } from "react";
 import BaseInput, { withBaseInput } from "src/BaseInput";
 import Button from "src/Button";
@@ -154,9 +153,6 @@ const PercentSelectorModal = () => {
 };
 
 const PercentSelectorComp = ({
-  id,
-  className,
-  sx,
   required,
   labelPosition = "top",
   label,
@@ -166,14 +162,7 @@ const PercentSelectorComp = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <Box
-      id={id}
-      className={cx("PercentSelector", {
-        [className]: className,
-      })}
-      sx={sx}
-      data-testid="PercentSelector"
-    >
+    <>
       <BaseInput>
         <BaseInput.Label required={required} position={labelPosition}>
           {label}
@@ -208,7 +197,7 @@ const PercentSelectorComp = ({
       >
         <PercentSelectorModal />
       </Popover>
-    </Box>
+    </>
   );
 };
 

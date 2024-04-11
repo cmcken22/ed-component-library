@@ -110,7 +110,7 @@ const PercentSelectorModal = ({ value, onSubmit, onCancel }: any) => {
             justifyContent: "center",
             alignItems: "center",
             fontSize: "1.5em",
-            ...(operand === "Between" && {
+            ...(operand === OPERAND.BETWEEN && {
               width: "100%",
             }),
           },

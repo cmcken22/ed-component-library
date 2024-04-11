@@ -6,7 +6,14 @@ import {
   styled,
 } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { VariantMap } from "src/BaseInput/helpers";
 import { useOnHover } from "src/Hooks";
 import { shouldNotForwardProp, sizeFormat } from "src/utils";
@@ -49,6 +56,78 @@ const StyledSelect = styled(MuiSelect, {
   };
 });
 
+const useMenuProps = ({
+  open,
+  selectRef,
+  disablePortal,
+  maxListHeight,
+}: any) => {
+  const [top, setTop] = useState(0);
+  const [left, setLeft] = useState(0);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    const backDrop = document.querySelector(".MuiMenu-root");
+    let top = selectRef?.getBoundingClientRect().top;
+    if (backDrop) {
+      top = top - backDrop.getBoundingClientRect().top;
+    }
+    let left = selectRef?.getBoundingClientRect().left;
+    if (backDrop) {
+      left = left - backDrop.getBoundingClientRect().left;
+    }
+    const width = selectRef?.getBoundingClientRect().width;
+    const height = selectRef?.getBoundingClientRect().height;
+    if (top) setTop(top);
+    if (left) setLeft(left);
+    if (width) setWidth(width);
+    if (height) setHeight(height);
+  }, [open, selectRef, setTop, setLeft, setWidth, setHeight]);
+
+  const menuProps = useMemo(() => {
+    return {
+      ...(disablePortal && {
+        PaperProps: {
+          sx: {
+            top: "100% !important",
+            left: "0px !important",
+          },
+        },
+        getContentAnchorEl: null,
+        keepMounted: true,
+        disablePortal: true,
+        anchorEl: () => selectRef,
+        transformOrigin: {
+          vertical: "top",
+          horizontal: "left",
+        },
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "left",
+        },
+        anchorPosition: {
+          top: 0,
+          left: 0,
+        },
+        anchorReference: "anchorPosition",
+      }),
+      sx: {
+        ...(disablePortal && {
+          transform: `translateY(${sizeFormat(top)}) translateX(${sizeFormat(left)})`,
+          height: sizeFormat(height),
+          width: sizeFormat(width),
+        }),
+        ".MuiPaper-root": {
+          maxHeight: sizeFormat(maxListHeight),
+        },
+      },
+    };
+  }, [disablePortal, maxListHeight, open, selectRef, top, left, width, height]);
+
+  return menuProps;
+};
+
 const BaseSelectComp = ({
   label,
   placeholder,
@@ -75,14 +154,32 @@ const BaseSelectComp = ({
   disablePortal,
 }: BaseSelectProps) => {
   const { endAdornment } = useContext(BaseInputContext);
+  const selectRef = useRef<Element>(null);
   const [open, setOpen] = useState(defaultOpen || false);
   const onHoverMethods = useOnHover({ callback: onHover });
-  const [top, setTop] = useState(0);
-  const [left, setLeft] = useState(0);
 
   useEffect(() => {
     setOpen(defaultOpen || false);
   }, [defaultOpen]);
+
+  const menuProps: any = useMenuProps({
+    open,
+    selectRef: selectRef.current,
+    disablePortal,
+    maxListHeight,
+  });
+
+  const handleClickOutside = useCallback(
+    (e: any) => {
+      if (!disablePortal) return;
+      if (open) {
+        e?.stopPropagation();
+        e?.preventDefault();
+        setOpen(false);
+      }
+    },
+    [open, setOpen, disablePortal]
+  );
 
   const renderMenuItem = useCallback(
     (opt: any, index: number) => {
@@ -144,26 +241,6 @@ const BaseSelectComp = ({
     ]
   );
 
-  const testRef = useRef<Element>(null);
-
-  useEffect(() => {
-    if (open) {
-      const backDrop = document.querySelector(".MuiMenu-root");
-      let top = testRef.current?.getBoundingClientRect().top;
-      if (backDrop) {
-        top = top - backDrop.getBoundingClientRect().top;
-      }
-      let left = testRef.current?.getBoundingClientRect().left;
-      if (backDrop) {
-        left = left - backDrop.getBoundingClientRect().left;
-      }
-      if (top) setTop(top);
-      if (left) setLeft(left);
-    }
-  }, [open]);
-
-  console.log("open", open);
-
   return (
     <BaseInput>
       <BaseInput.Label required={required} position={labelPosition}>
@@ -176,18 +253,9 @@ const BaseSelectComp = ({
           overflow: "hidden",
         }}
       >
-        <ClickAwayListener
-          onClickAway={(e: any) => {
-            if (open && disablePortal) {
-              e?.stopPropagation();
-              e?.preventDefault();
-              console.log("CLICK AWAY LISTENER");
-              setOpen(false);
-            }
-          }}
-        >
+        <ClickAwayListener onClickAway={handleClickOutside}>
           <StyledSelect
-            ref={testRef}
+            ref={selectRef}
             className={cx(BaseSelectMeta.className, {
               [`${BaseSelectMeta.className}--open`]: open,
             })}
@@ -209,76 +277,8 @@ const BaseSelectComp = ({
               <SelectIcon endAdornment={endAdornment} {...props} open={open} />
             )}
             MenuProps={{
-              ...(disablePortal && {
-                PaperProps: {
-                  sx: {
-                    background: "red",
-                    top: `100% !important`,
-                    left: `0px !important`,
-                  },
-                },
-                getContentAnchorEl: null,
-                slotProps: {
-                  root: {},
-                },
-                keepMounted: true,
-                disablePortal: true,
-                anchorEl: () => testRef.current,
-                // anchorEl: () => testRef.current?.childNodes?.[0],
-                // anchorEl: () => document.body,
-
-                transformOrigin: {
-                  vertical: "top",
-                  horizontal: "left",
-                },
-                anchorOrigin: {
-                  vertical: "bottom",
-                  horizontal: "left",
-                },
-                anchorPosition: {
-                  top: 0,
-                  left: 0,
-                },
-                anchorReference: "anchorPosition",
-                // anchorReference: "anchorEl",
-                // PopoverProps: {
-                //   disablePortal: true,
-                //   // anchorEl: testRef.current,
-                //   // anchorReference: "anchorEl",
-                // },
-                // BackdropProps: {
-                //   sx: {
-                //     position: "relative !important",
-                //     background: "rgba(0, 255, 255, 0.4) !important",
-                //     // transformOrigin: "top left",
-                //     transform: `translateY(${top}px) translateX(${left}px)`,
-                //     // top: `${top}px`,
-                //     // top: `${testRef.current?.getBoundingClientRect().top}px`,
-                //     height: `${testRef.current?.getBoundingClientRect().height}px`,
-                //     width: `${testRef.current?.getBoundingClientRect().width}px`,
-                //     // left: `${testRef.current?.getBoundingClientRect().left}px`,
-                //     // pointerEvents: "none !important",
-                //   },
-                // },
-              }),
-              sx: {
-                // position: "relative !important",
-                background: "rgba(0, 255, 255, 0.4) !important",
-                transform: `translateY(${top}px) translateX(${left}px)`,
-                height: `${testRef.current?.getBoundingClientRect().height}px`,
-                width: `${testRef.current?.getBoundingClientRect().width}px`,
-                // left: `${testRef.current?.getBoundingClientRect().left}px`,
-                // pointerEvents: "none !important",
-                ".MuiPaper-root": {
-                  maxHeight: sizeFormat(maxListHeight),
-                },
-              },
+              ...menuProps,
             }}
-            // sx={{
-            //   height: "100px !important",
-            //   background: "red",
-            //   opacity: 0.5,
-            // }}
           >
             {options?.map((opt: StandardSelectOption | any, idx: number) => {
               return renderMenuItem(opt, idx);

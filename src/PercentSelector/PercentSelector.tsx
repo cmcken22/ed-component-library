@@ -8,9 +8,9 @@ import { FONT_WEIGHT } from "src/theme/Typography";
 import { Icon, Percent, Typography, useEllisDonTheme } from "..";
 import { PercentSelectorProps } from "./PercentSelector.types";
 
-const PercentSelectorModal = () => {
+const PercentSelectorModal = ({ onSubmit, onCancel }: any) => {
   const theme: any = useEllisDonTheme();
-  const [operand, setOperand] = useState("Equal to");
+  const [operand, setOperand] = useState("");
   const [val1, setVal1] = useState<any>(0);
   const [val2, setVal2] = useState<any>(0);
   const val1Ref = useRef<any>(0);
@@ -21,23 +21,22 @@ const PercentSelectorModal = () => {
     }
   }, [operand]);
 
-  console.log("val1:", val1);
-  console.log("val2:", val2);
-
   const handleSubmit = useCallback(() => {
-    console.log("submit", operand, val1, val2);
     const res = [operand];
     res.push(val1);
     if (operand === "Between") {
       res.push(val2);
     }
-    console.log("res:", res);
-  }, [operand, val1, val2]);
+    if (onSubmit) onSubmit(res);
+  }, [operand, val1, val2, onSubmit]);
+
+  const handleCancel = useCallback(() => {
+    if (onCancel) onCancel();
+  }, [onCancel]);
 
   return (
     <Box
       sx={{
-        // height: "200px",
         width: "239px",
         background: "white",
         borderRadius: `${theme.shape.borderRadius}px`,
@@ -73,17 +72,20 @@ const PercentSelectorModal = () => {
         <Box className="item">
           <Select
             fullWidth
+            defaultActiveFirstOption
             sx={{
               ".MuiSelect-select": {
                 paddingLeft: "8px",
               },
             }}
             renderValue={(value) => (
-              <Typography variant="bodyS">{value}</Typography>
+              <Typography variant="bodyS" color="secondary.main">
+                {value}
+              </Typography>
             )}
             allowDeselect={false}
             value={operand}
-            disablePortal
+            disablePortal={false}
             onChange={setOperand}
             options={[
               {
@@ -142,7 +144,7 @@ const PercentSelectorModal = () => {
           mt: 0.5,
         }}
       >
-        <Button variant="link" color="danger">
+        <Button variant="link" color="danger" onClick={handleCancel}>
           Clear
         </Button>
         <Button variant="link" onClick={handleSubmit}>
@@ -184,21 +186,11 @@ const PercentSelectorComp = ({
         </Box>
         <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
       </BaseInput>
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        // placement={calendarPlacement}
-        onClose={() => {
-          // if (calendarOpen) return;
-          // if (anchorEl?.contains(document.activeElement)) return;
-          // if (document.activeElement === anchorEl) return;
-          // console.log("anchorEl:", anchorEl);
-          // console.log("document.activeElement:", document.activeElement);
-          // setOpen(false);
-        }}
-        // {...popoverProps}
-      >
-        <PercentSelectorModal />
+      <Popover open={open} anchorEl={anchorEl} onClose={() => setOpen(false)}>
+        <PercentSelectorModal
+          onSubmit={() => setOpen(false)}
+          onCancel={() => setOpen(false)}
+        />
       </Popover>
     </>
   );

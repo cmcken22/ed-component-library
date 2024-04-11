@@ -72,18 +72,21 @@ declare const Colors: {
         light: string;
         main: string;
         dark: string;
+        contrastText: string;
     };
     Warning: {
         extraLight: string;
         light: string;
         main: string;
         dark: string;
+        contrastText: string;
     };
     Danger: {
         extraLight: string;
         light: string;
         main: string;
         dark: string;
+        contrastText: string;
     };
     text: {
         placeholder: string;

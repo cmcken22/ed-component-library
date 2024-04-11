@@ -74,7 +74,13 @@ const Popover = ({
     (e: any) => {
       if (!listenDelay || !open) return;
       if (ref.current && !ref.current.contains(e.target)) {
+        // console.clear();
+        console.log("ref.current:", ref.current);
+        console.log("e.target:", e.target);
+        console.log("OUTSIDE");
         if (onClose) onClose();
+      } else {
+        console.log("INSIDE");
       }
     },
     [onClose, open, listenDelay]

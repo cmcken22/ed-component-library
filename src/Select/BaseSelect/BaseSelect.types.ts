@@ -31,6 +31,7 @@ export interface BaseSelectProps extends StandardInputProps {
   wrap?: boolean;
   renderSelectedValue?: (value: string | string[]) => any;
   getValueSelected?: (value: string) => boolean;
+  disablePortal?: boolean;
   renderOption?: (
     option: any,
     {

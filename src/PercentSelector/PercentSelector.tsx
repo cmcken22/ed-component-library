@@ -83,6 +83,7 @@ const PercentSelectorModal = () => {
             )}
             allowDeselect={false}
             value={operand}
+            disablePortal
             onChange={setOperand}
             options={[
               {
@@ -189,9 +190,11 @@ const PercentSelectorComp = ({
         // placement={calendarPlacement}
         onClose={() => {
           // if (calendarOpen) return;
-          if (anchorEl?.contains(document.activeElement)) return;
-          if (document.activeElement === anchorEl) return;
-          setOpen(false);
+          // if (anchorEl?.contains(document.activeElement)) return;
+          // if (document.activeElement === anchorEl) return;
+          // console.log("anchorEl:", anchorEl);
+          // console.log("document.activeElement:", document.activeElement);
+          // setOpen(false);
         }}
         // {...popoverProps}
       >

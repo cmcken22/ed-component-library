@@ -103,7 +103,6 @@ export const TableVariant: Story = {
       sx={{
         height: "100px",
         width: "300px",
-        // backgroundColor: "rgba(255, 0, 255, 0.1)",
       }}
     >
       <RangePicker {...args} />

@@ -9,6 +9,7 @@ export { Grid, GridItem } from "./Components/Grid";
 export { default as Icon } from "./Components/Icon";
 export { default as Currency } from "./Components/Inputs/Currency";
 export { default as DateField } from "./Components/Inputs/DateField";
+export { default as DateRangeField } from "./Components/Inputs/DateRangeField";
 export { default as Input } from "./Components/Inputs/Input";
 export { default as Percent } from "./Components/Inputs/Percent";
 export { default as TextArea } from "./Components/Inputs/TextArea";

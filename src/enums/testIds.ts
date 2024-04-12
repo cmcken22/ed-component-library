@@ -3,6 +3,7 @@ enum TEST_ID {
   BUTTON = "Button",
   AVATAR = "Avatar",
   CHECKBOX = "Checkbox",
+  DATE_RANGE_FIELD = "DateRangeField",
   DATE_FIELD_INPUT = "date-field-input",
   CHIP = "Chip",
 }

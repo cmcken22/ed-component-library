@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { TEST_ID } from "src/enums";
 import { testInputRendering } from "test-utils/commonTestCases";
 import { fireEvent, render } from "test-utils/index";
 import RangePicker, { RangePickerProps } from ".";
@@ -31,7 +32,7 @@ describe("RangePicker", () => {
   it("should have placeholder", () => {
     props.placeholder = ["Start date", "End date"];
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
 
     const inputs = inputContainer.querySelectorAll("input");
@@ -46,7 +47,7 @@ describe("RangePicker", () => {
       new Date("2024-03-17T04:00:00.000Z"),
     ];
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
 
     const inputs = inputContainer.querySelectorAll("input");
@@ -61,7 +62,7 @@ describe("RangePicker", () => {
       new Date("2024-03-17T04:00:00.000Z"),
     ];
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
 
     const inputs = inputContainer.querySelectorAll("input");
@@ -82,15 +83,14 @@ describe("RangePicker", () => {
     ]);
   });
 
-  it("should have error status for incorrect range", () => {
+  it("should call onValidation false for incorrect range", () => {
     props.value = [
       new Date("2024-03-17T04:00:00.000Z"),
       new Date("2024-03-15T04:00:00.000Z"),
     ];
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
@@ -102,9 +102,8 @@ describe("RangePicker", () => {
       disableCurrent: true,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
@@ -116,9 +115,8 @@ describe("RangePicker", () => {
       disablePast: true,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
@@ -130,9 +128,8 @@ describe("RangePicker", () => {
       disableFuture: true,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
@@ -144,13 +141,12 @@ describe("RangePicker", () => {
       dateDisabled: (date: Date) => date.getDate() === 1,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
-  it("should have error state for invalid date", () => {
+  it("should call onValidation false for invalid date", () => {
     props = {
       ...props,
       currentDate: new Date("2024-03-15T04:00:00.000Z"),
@@ -158,7 +154,7 @@ describe("RangePicker", () => {
       dateDisabled: (date: Date) => date.getDate() === 1,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
 
     const inputs = inputContainer.querySelectorAll("input");
@@ -167,13 +163,12 @@ describe("RangePicker", () => {
     // april 31st is an invalid date
     fireEvent.change(inputs[1], { target: { value: "04/31/2024" } });
 
-    expect(inputContainer).toHaveAttribute("data-test-status", "error");
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
 
   it("should render the calendar picker", () => {
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("calendar-input");
+    const inputContainer = getByTestId(TEST_ID.DATE_RANGE_FIELD);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
     const calendar = getByTestId("calendar");
@@ -182,7 +177,7 @@ describe("RangePicker", () => {
 
   it("should clicking outside should close the calendar", () => {
     const { container, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("calendar-input");
+    const inputContainer = getByTestId(TEST_ID.DATE_RANGE_FIELD);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
     const calendar = getByTestId("calendar");
@@ -203,21 +198,21 @@ describe("RangePicker", () => {
   it("should hide the calendar", () => {
     props.hideCalendarPicker = true;
     const { container, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("calendar-input");
+    const inputContainer = getByTestId(TEST_ID.DATE_RANGE_FIELD);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
     const calendar = container.querySelector('[data-testid="calendar"]');
     expect(calendar).not.toBeInTheDocument();
   });
 
-  it("should disable inputs", () => {
+  it("should disable inputing values by text", () => {
     props.disableTextInput = true;
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("calendar-input");
+    const inputContainer = getByTestId(TEST_ID.DATE_RANGE_FIELD);
     expect(inputContainer).toBeInTheDocument();
     const inputs = inputContainer.querySelectorAll("input");
     expect(inputs).toHaveLength(2);
-    expect(inputs[0]).toHaveAttribute("disabled");
-    expect(inputs[1]).toHaveAttribute("disabled");
+    expect(inputs[0]).toHaveAttribute("readonly");
+    expect(inputs[1]).toHaveAttribute("readonly");
   });
 });

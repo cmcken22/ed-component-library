@@ -11,6 +11,7 @@ import BaseInput, {
 } from "src/Components/BaseInput";
 import { getFontColor } from "src/Components/BaseInput/helpers";
 import Icon, { IconVariant } from "src/Components/Icon";
+import { TEST_ID } from "src/enums";
 import { shouldNotForwardProp } from "src/utils";
 import { DateRangeFieldProps } from "./DateRangeField.types";
 dayjs.extend(customParseFormat);
@@ -114,6 +115,8 @@ const DateRangeFieldComp = ({
   readOnly,
   color,
   hideCalendarIcon,
+  inputRef,
+  onClick,
 }: DateRangeFieldProps) => {
   const { status, endAdornment } = useContext(BaseInputContext);
 
@@ -175,6 +178,7 @@ const DateRangeFieldComp = ({
           format={format}
           disableOpenPicker
           value={value?.[index] ? dayjs(value?.[index]) : null}
+          readOnly={readOnly}
           sx={{
             pointerEvents: readOnly ? "none" : "all",
             fieldset: {
@@ -220,7 +224,14 @@ const DateRangeFieldComp = ({
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
-      <StyledWrapper status={status} disabled={disabled} variant={variant}>
+      <StyledWrapper
+        ref={inputRef}
+        status={status}
+        disabled={disabled}
+        variant={variant}
+        onClick={onClick}
+        data-testid={TEST_ID.DATE_RANGE_FIELD}
+      >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           {startAdornment()}
           <Box

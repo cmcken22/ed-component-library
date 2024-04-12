@@ -10,7 +10,7 @@ export interface DateRangeFieldProps
   value?: Date[] | null;
   onChange?: (value: Date[]) => void;
   hideCalendarIcon?: boolean;
-  // inputRef?: React.Ref<HTMLInputElement>;
+  inputRef?: React.Ref<HTMLInputElement>;
   /**
    * Since there are two inputs, the placeholder can be an array of strings
    * @default MMM DD, YYYY

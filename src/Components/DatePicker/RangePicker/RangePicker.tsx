@@ -1,37 +1,19 @@
-import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import isEqual from "lodash.isequal";
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import BaseInput, {
-  BaseInputContext,
-  withBaseInput,
-} from "src/Components/BaseInput";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import DateRangeField from "src/Components/Inputs/DateRangeField";
 import Popover from "src/Components/Popover";
-import { Status } from "src/enums";
 import { formatDateRange, isValidDate } from "../Common/utils";
 import { RangePickerProps } from "./RangePicker.types";
 import RangePickerCalendar from "./RangePickerCalendar/RangePickerCalendar";
-import RangePickerInput from "./RangePickerInput";
 dayjs.extend(customParseFormat);
 
 const RangePickerComp = ({
-  label,
-  labelPosition,
-  required,
-  helperText,
   value: passedValue,
   disabled,
   onChange,
   format,
-  placeholder,
   currentDate = new Date(),
   disableFuture,
   disableCurrent,
@@ -46,11 +28,10 @@ const RangePickerComp = ({
   popoverProps,
   tools,
   previewSelection,
-  variant,
-  color,
+  readOnly,
+  ...inputProps
 }: RangePickerProps) => {
-  const { endAdornment, status, setStatus } = useContext(BaseInputContext);
-  const anchorRef = useRef<HTMLElement>(null);
+  const [anchorEl, setAnchorRef] = useState<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const [value, setValue] = useState<Date[] | null>(
@@ -113,16 +94,16 @@ const RangePickerComp = ({
 
   useEffect(() => {
     if (error === null) return;
-    if (setStatus) setStatus(error ? Status.error : undefined);
     if (onValidation) onValidation(!error);
-  }, [error, onValidation, setStatus]);
+  }, [error, onValidation]);
 
   const handleSelect = useCallback(
     (dateRange: Date[]) => {
+      if (readOnly) return;
       setValue(dateRange);
       if (onChange) onChange(dateRange);
     },
-    [setValue, onChange]
+    [setValue, onChange, readOnly]
   );
 
   const handleOpenPopover = useCallback(() => {
@@ -140,39 +121,24 @@ const RangePickerComp = ({
 
   return (
     <>
-      <BaseInput>
-        <BaseInput.Label required={required} position={labelPosition}>
-          {label}
-        </BaseInput.Label>
-        <Box
-          data-testid="calendar-input"
-          ref={anchorRef}
-          onClick={handleOpenPopover}
-          sx={{ height: "100%" }}
-        >
-          <RangePickerInput
-            format={format}
-            value={value}
-            onChange={handleSelect}
-            placeholder={placeholder}
-            endAdornment={endAdornment}
-            status={status}
-            disabled={disabled}
-            disableTextInput={disableTextInput}
-            variant={variant}
-            color={color}
-          />
-        </Box>
-        <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
-      </BaseInput>
+      <DateRangeField
+        {...inputProps}
+        onClick={handleOpenPopover}
+        inputRef={(ref) => setAnchorRef(ref)}
+        format={format}
+        value={value}
+        onChange={handleSelect}
+        disabled={disabled}
+        readOnly={disableTextInput || readOnly}
+      />
       <Popover
         open={displayCalendar}
-        anchorEl={anchorRef?.current}
+        anchorEl={anchorEl}
         placement={calendarPlacement}
         onClose={() => {
           if (calendarOpen) return;
-          if (anchorRef?.current?.contains(document.activeElement)) return;
-          if (document.activeElement === anchorRef?.current) return;
+          if (anchorEl?.contains(document.activeElement)) return;
+          if (document.activeElement === anchorEl) return;
           setOpen(false);
         }}
         {...popoverProps}
@@ -195,16 +161,8 @@ const RangePickerComp = ({
   );
 };
 
-// @ts-ignore
-const WrappedRangePicker = withBaseInput<RangePickerProps>(
-  RangePickerComp,
-  "RangePicker"
-);
-
 const RangePicker = (props: RangePickerProps) => {
-  return (
-    <WrappedRangePicker {...props} value={formatDateRange(props?.value)} />
-  );
+  return <RangePickerComp {...props} value={formatDateRange(props?.value)} />;
 };
 
 RangePicker.defaultProps = {

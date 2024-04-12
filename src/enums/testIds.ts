@@ -6,6 +6,9 @@ enum TEST_ID {
   DATE_RANGE_FIELD = "DateRangeField",
   DATE_FIELD_INPUT = "date-field-input",
   CHIP = "Chip",
+  CALENDAR = "calendar",
+  DAY = "day",
+  MONTH = "month",
 }
 
 export default TEST_ID;

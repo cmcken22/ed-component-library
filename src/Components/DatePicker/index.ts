@@ -1,4 +1,4 @@
-export { default as DatePicker } from "./DatePicker";
-export type { DatePickerProps } from "./DatePicker";
-export { default as RangePicker } from "./RangePicker";
-export type { RangePickerProps } from "./RangePicker";
+export { default as DatePicker } from "./DatePicker/DatePicker";
+export type { DatePickerProps } from "./DatePicker/DatePicker";
+export { default as RangePicker } from "./RangePicker/RangePicker";
+export type { RangePickerProps } from "./RangePicker/RangePicker";

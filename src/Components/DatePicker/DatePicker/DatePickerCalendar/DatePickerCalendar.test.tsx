@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { testIds } from "src/Components/DatePicker/Common";
+import { TEST_ID } from "src/enums";
 import { fireEvent, render } from "test-utils/index";
 import DatePickerCalendar, { DatePickerCalendarProps } from ".";
 
@@ -47,7 +47,7 @@ describe("DatePickerCalendar", () => {
 
   it("should render correctly", () => {
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     shouldRenderProperMonth(calendar, "March 2024", 31);
 
     const today = calendar.querySelector(`[data-test-today="true"]`);
@@ -58,7 +58,7 @@ describe("DatePickerCalendar", () => {
   it("should have date selected", () => {
     props.value = new Date("2024-03-15T04:00:00.000Z");
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(1);
@@ -72,7 +72,7 @@ describe("DatePickerCalendar", () => {
   it("should display month according to selection", () => {
     props.value = new Date("2024-04-15T04:00:00.000Z");
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     shouldRenderProperMonth(calendar, "April 2024", 30);
   });
 
@@ -80,7 +80,7 @@ describe("DatePickerCalendar", () => {
     props.value = new Date("2024-03-15T04:00:00.000Z");
     // new Date("2024-03-17T04:00:00.000Z")
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(1);
@@ -106,7 +106,7 @@ describe("DatePickerCalendar", () => {
   it("should unselect date", () => {
     props.value = new Date("2024-03-15T04:00:00.000Z");
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(1);
@@ -125,7 +125,7 @@ describe("DatePickerCalendar", () => {
     props.value = { test: "123" };
     // check if it ignores the bad data and displays current date
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     shouldRenderProperMonth(calendar, "March 2024", 31);
 
     const today = calendar.querySelector(`[data-test-today="true"]`);
@@ -137,7 +137,7 @@ describe("DatePickerCalendar", () => {
     props.value = undefined;
     // check if it ignores the bad data and displays current date
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     shouldRenderProperMonth(calendar, "March 2024", 31);
 
     const today = calendar.querySelector(`[data-test-today="true"]`);
@@ -148,7 +148,7 @@ describe("DatePickerCalendar", () => {
   it("should disable past dates", () => {
     props.disablePast = true;
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(1);
@@ -176,7 +176,7 @@ describe("DatePickerCalendar", () => {
   it("should disable future dates", () => {
     props.disableFuture = true;
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(1);
@@ -204,7 +204,7 @@ describe("DatePickerCalendar", () => {
   it("should disable current date", () => {
     props.disableCurrent = true;
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(1);
@@ -233,7 +233,7 @@ describe("DatePickerCalendar", () => {
       props.tools = true;
       props.value = new Date("2024-09-27T04:00:00.000Z");
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonth(calendar, "September 2024", 30);
 
       const toolbar = getByTestId("toolbar");
@@ -253,7 +253,7 @@ describe("DatePickerCalendar", () => {
       props.tools = true;
       props.value = new Date("2024-09-27T04:00:00.000Z");
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonth(calendar, "September 2024", 30);
 
       const toolbar = getByTestId("toolbar");
@@ -273,7 +273,7 @@ describe("DatePickerCalendar", () => {
       props.tools = true;
       props.value = new Date("2025-09-27T04:00:00.000Z");
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonth(calendar, "September 2025", 30);
 
       const toolbar = getByTestId("toolbar");
@@ -290,7 +290,7 @@ describe("DatePickerCalendar", () => {
       props.tools = true;
       props.value = new Date("2025-09-27T04:00:00.000Z");
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonth(calendar, "September 2025", 30);
 
       const toolbar = getByTestId("toolbar");
@@ -307,7 +307,7 @@ describe("DatePickerCalendar", () => {
       props.tools = true;
       props.value = new Date("2025-09-27T04:00:00.000Z");
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonth(calendar, "September 2025", 30);
 
       const toolbar = getByTestId("toolbar");
@@ -324,7 +324,7 @@ describe("DatePickerCalendar", () => {
       props.tools = true;
       props.value = new Date("2025-09-27T04:00:00.000Z");
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonth(calendar, "September 2025", 30);
 
       const toolbar = getByTestId("toolbar");

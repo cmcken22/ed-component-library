@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { TEST_ID } from "src/enums";
 import { testInputRendering } from "test-utils/commonTestCases";
 import { fireEvent, render } from "test-utils/index";
 import DatePicker, { DatePickerProps } from ".";
@@ -31,7 +32,7 @@ describe("DatePicker", () => {
 
   it("should have placeholder", () => {
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
 
     const inputs = inputContainer.querySelectorAll("input");
@@ -42,7 +43,7 @@ describe("DatePicker", () => {
   it("should have value", () => {
     props.value = new Date("2024-03-15T04:00:00.000Z");
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId("date-field-input");
+    const component = getByTestId(TEST_ID.DATE_FIELD_INPUT);
     const input = component.querySelector("input");
     expect(component).toBeInTheDocument();
     const expected = "03/15/2024";
@@ -64,7 +65,7 @@ describe("DatePicker", () => {
 
   it("should have label", () => {
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
     const label = inputContainer.querySelector(".Input__label");
     expect(label).toHaveTextContent(props.label);
@@ -72,7 +73,7 @@ describe("DatePicker", () => {
 
   it("should have helper text", () => {
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
     const helperText = inputContainer.querySelector(".Input__helper-text");
     expect(helperText).toHaveTextContent(props.helperText);
@@ -80,47 +81,51 @@ describe("DatePicker", () => {
 
   it("should render the calendar picker", () => {
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("date-field-input");
+    const inputContainer = getByTestId(TEST_ID.DATE_FIELD_INPUT);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
-    const calendar = getByTestId("calendar");
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
   });
 
   it("should clicking outside should close the calendar", () => {
     const { container, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("date-field-input");
+    const inputContainer = getByTestId(TEST_ID.DATE_FIELD_INPUT);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
-    const calendar = getByTestId("calendar");
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
 
     fireEvent.click(document);
-    const calendarNow = container.querySelector('[data-testid="calendar"]');
+    const calendarNow = container.querySelector(
+      `[data-testid="${TEST_ID.CALENDAR}"]`
+    );
     expect(calendarNow).not.toBeInTheDocument();
   });
 
   it("should render the calendar picker open by default", () => {
     props.calendarOpen = true;
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId("calendar");
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
   });
 
   it("should hide the calendar", () => {
     props.hideCalendarPicker = true;
     const { container, getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("date-field-input");
+    const inputContainer = getByTestId(TEST_ID.DATE_FIELD_INPUT);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
-    const calendar = container.querySelector('[data-testid="calendar"]');
+    const calendar = container.querySelector(
+      `[data-testid="${TEST_ID.CALENDAR}"]`
+    );
     expect(calendar).not.toBeInTheDocument();
   });
 
   it("should disable input", () => {
     props.disableTextInput = true;
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("date-field-input");
+    const inputContainer = getByTestId(TEST_ID.DATE_FIELD_INPUT);
     expect(inputContainer).toBeInTheDocument();
     const input = inputContainer.querySelector("input");
     expect(input).toHaveAttribute("readonly");
@@ -134,7 +139,7 @@ describe("DatePicker", () => {
       disableCurrent: true,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
@@ -147,7 +152,7 @@ describe("DatePicker", () => {
       disablePast: true,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
@@ -160,7 +165,7 @@ describe("DatePicker", () => {
       disableFuture: true,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
@@ -173,7 +178,7 @@ describe("DatePicker", () => {
       dateDisabled: (date: Date) => date.getDate() === 1,
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
     expect(props.onValidation).toHaveBeenCalledWith(false);
   });
@@ -185,7 +190,7 @@ describe("DatePicker", () => {
       value: new Date("2024-03-01T05:00:00.000Z"),
     };
     const { getByTestId } = renderComponent(props);
-    const inputContainer = getByTestId("Input");
+    const inputContainer = getByTestId(TEST_ID.BASE_INPUT);
     expect(inputContainer).toBeInTheDocument();
 
     const inputs = inputContainer.querySelectorAll("input");

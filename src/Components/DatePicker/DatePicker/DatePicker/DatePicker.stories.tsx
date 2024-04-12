@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import DatePicker from "./DatePicker";
+import DatePicker from ".";
 
 const meta = {
   title: "Example/Date Picker/DatePicker",

@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { testIds } from "src/Components/DatePicker/Common";
+import { TEST_ID } from "src/enums";
 import { fireEvent, render } from "test-utils/index";
 import RangePickerCalendar, { RangePickerCalendarProps } from ".";
 
@@ -49,7 +49,7 @@ describe("RangePickerCalendar", () => {
 
   it("should render correctly", () => {
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
 
     shouldRenderProperMonths(calendar, ["March 2024", "April 2024"], [31, 30]);
 
@@ -64,7 +64,7 @@ describe("RangePickerCalendar", () => {
       new Date("2024-04-17T04:00:00.000Z"),
     ];
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
 
     shouldRenderProperMonths(calendar, ["March 2024", "April 2024"], [31, 30]);
 
@@ -90,7 +90,7 @@ describe("RangePickerCalendar", () => {
       new Date("2024-05-17T04:00:00.000Z"),
     ];
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     shouldRenderProperMonths(calendar, ["May 2024", "June 2024"], [31, 30]);
   });
 
@@ -100,7 +100,7 @@ describe("RangePickerCalendar", () => {
       new Date("2024-03-17T04:00:00.000Z"),
     ];
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(2);
@@ -135,7 +135,7 @@ describe("RangePickerCalendar", () => {
 
   it("should select range", () => {
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(2);
@@ -163,7 +163,7 @@ describe("RangePickerCalendar", () => {
       new Date("2024-03-17T04:00:00.000Z"),
     ];
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(2);
@@ -187,7 +187,7 @@ describe("RangePickerCalendar", () => {
     props.value = { test: "123" };
     // check if it ignores the bad data and displays current date
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     shouldRenderProperMonths(calendar, ["March 2024", "April 2024"], [31, 30]);
 
     const today = calendar.querySelector(`[data-test-today="true"]`);
@@ -199,7 +199,7 @@ describe("RangePickerCalendar", () => {
     props.value = undefined;
     // check if it ignores the bad data and displays current date
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     shouldRenderProperMonths(calendar, ["March 2024", "April 2024"], [31, 30]);
 
@@ -211,7 +211,7 @@ describe("RangePickerCalendar", () => {
   it("should disable past dates", () => {
     props.disablePast = true;
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(2);
@@ -249,7 +249,7 @@ describe("RangePickerCalendar", () => {
   it("should disable future dates", () => {
     props.disableFuture = true;
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(2);
@@ -287,7 +287,7 @@ describe("RangePickerCalendar", () => {
   it("should disable current date", () => {
     props.disableCurrent = true;
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(2);
@@ -309,7 +309,7 @@ describe("RangePickerCalendar", () => {
     expect(today).toHaveTextContent("Today");
     fireEvent.click(today);
 
-    const calendar = getByTestId(testIds.calendar);
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(2);
 
@@ -346,7 +346,7 @@ describe("RangePickerCalendar", () => {
         new Date("2024-09-29T04:00:00.000Z"),
       ];
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonths(
         calendar,
         ["September 2024", "October 2024"],
@@ -378,7 +378,7 @@ describe("RangePickerCalendar", () => {
         new Date("2024-09-29T04:00:00.000Z"),
       ];
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonths(
         calendar,
         ["September 2024", "October 2024"],
@@ -410,7 +410,7 @@ describe("RangePickerCalendar", () => {
         new Date("2024-09-29T04:00:00.000Z"),
       ];
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonths(
         calendar,
         ["September 2024", "October 2024"],
@@ -442,7 +442,7 @@ describe("RangePickerCalendar", () => {
         new Date("2024-09-29T04:00:00.000Z"),
       ];
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonths(
         calendar,
         ["September 2024", "October 2024"],
@@ -474,7 +474,7 @@ describe("RangePickerCalendar", () => {
         new Date("2024-09-29T04:00:00.000Z"),
       ];
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonths(
         calendar,
         ["September 2024", "October 2024"],
@@ -506,7 +506,7 @@ describe("RangePickerCalendar", () => {
         new Date("2024-09-29T04:00:00.000Z"),
       ];
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonths(
         calendar,
         ["September 2024", "October 2024"],
@@ -538,7 +538,7 @@ describe("RangePickerCalendar", () => {
         new Date("2024-09-29T04:00:00.000Z"),
       ];
       const { getByTestId } = renderComponent(props);
-      const calendar = getByTestId(testIds.calendar);
+      const calendar = getByTestId(TEST_ID.CALENDAR);
       shouldRenderProperMonths(
         calendar,
         ["September 2024", "October 2024"],

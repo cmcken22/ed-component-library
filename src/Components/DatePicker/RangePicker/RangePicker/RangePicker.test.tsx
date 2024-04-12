@@ -171,7 +171,7 @@ describe("RangePicker", () => {
     const inputContainer = getByTestId(TEST_ID.DATE_RANGE_FIELD);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
-    const calendar = getByTestId("calendar");
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
   });
 
@@ -180,18 +180,20 @@ describe("RangePicker", () => {
     const inputContainer = getByTestId(TEST_ID.DATE_RANGE_FIELD);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
-    const calendar = getByTestId("calendar");
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
 
     fireEvent.click(document);
-    const calendarNow = container.querySelector('[data-testid="calendar"]');
+    const calendarNow = container.querySelector(
+      `[data-testid="${TEST_ID.CALENDAR}"]`
+    );
     expect(calendarNow).not.toBeInTheDocument();
   });
 
   it("should render the calendar picker open by default", () => {
     props.calendarOpen = true;
     const { getByTestId } = renderComponent(props);
-    const calendar = getByTestId("calendar");
+    const calendar = getByTestId(TEST_ID.CALENDAR);
     expect(calendar).toBeInTheDocument();
   });
 
@@ -201,7 +203,9 @@ describe("RangePicker", () => {
     const inputContainer = getByTestId(TEST_ID.DATE_RANGE_FIELD);
     expect(inputContainer).toBeInTheDocument();
     fireEvent.click(inputContainer);
-    const calendar = container.querySelector('[data-testid="calendar"]');
+    const calendar = container.querySelector(
+      `[data-testid="${TEST_ID.CALENDAR}"]`
+    );
     expect(calendar).not.toBeInTheDocument();
   });
 

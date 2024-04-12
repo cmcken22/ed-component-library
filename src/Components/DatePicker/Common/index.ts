@@ -9,9 +9,3 @@ export {
 export type { CalendarContextType } from "./CalendarContextProvider";
 export { default as CalendarWrapper } from "./CalendarWrapper";
 export { default as Day } from "./Day";
-
-export const testIds = {
-  calendar: "calendar",
-  day: "day",
-  month: "month",
-};

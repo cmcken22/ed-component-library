@@ -1,7 +1,5 @@
 import { Box, styled } from "@mui/material";
-import { testIds } from ".";
-
-export const dataTestId = "calendar";
+import { TEST_ID } from "src/enums";
 
 const StyledCalendarWrapper = styled(Box, {
   slot: "root",
@@ -22,7 +20,7 @@ const StyledCalendarWrapper = styled(Box, {
 
 const CalendarWrapper = ({ children }: any) => {
   return (
-    <StyledCalendarWrapper className="calendar" data-testid={testIds.calendar}>
+    <StyledCalendarWrapper className="calendar" data-testid={TEST_ID.CALENDAR}>
       {children}
     </StyledCalendarWrapper>
   );

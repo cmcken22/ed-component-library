@@ -1,4 +1,4 @@
-import { BaseDatePickerProps } from "../Common";
+import { BaseDatePickerProps } from "../../Common";
 
 export interface RangePickerProps
   extends Omit<BaseDatePickerProps, "placeholder" | "value"> {

@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import RangePicker from "./RangePicker";
+import RangePicker from ".";
 
 const meta = {
   title: "Example/Date Picker/RangePicker",

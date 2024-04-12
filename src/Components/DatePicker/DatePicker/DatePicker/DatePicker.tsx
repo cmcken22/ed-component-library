@@ -2,9 +2,9 @@ import isEqual from "lodash.isequal";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import DateField from "src/Components/Inputs/DateField";
 import Popover from "src/Components/Popover";
-import { convertDateToGMT, isValidDate } from "../Common/utils";
+import { convertDateToGMT, isValidDate } from "../../Common/utils";
+import DatePickerCalendar from "../DatePickerCalendar";
 import { DatePickerProps } from "./DatePicker.types";
-import DatePickerCalendar from "./DatePickerCalendar";
 
 const DatePickerComp = ({
   value: passedValue,

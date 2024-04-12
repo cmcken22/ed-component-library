@@ -4,9 +4,9 @@ import isEqual from "lodash.isequal";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import DateRangeField from "src/Components/Inputs/DateRangeField";
 import Popover from "src/Components/Popover";
-import { formatDateRange, isValidDate } from "../Common/utils";
+import { formatDateRange, isValidDate } from "../../Common/utils";
+import RangePickerCalendar from "../RangePickerCalendar/RangePickerCalendar";
 import { RangePickerProps } from "./RangePicker.types";
-import RangePickerCalendar from "./RangePickerCalendar/RangePickerCalendar";
 dayjs.extend(customParseFormat);
 
 const RangePickerComp = ({

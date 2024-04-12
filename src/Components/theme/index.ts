@@ -38,6 +38,7 @@ const useEllisDonTheme = () => {
 
 const DEFAULT_WIDTHS = {
   RangePicker: "400px",
+  DateRangeField: "360px",
   Input: "240px",
 };
 

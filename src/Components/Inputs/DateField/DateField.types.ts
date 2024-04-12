@@ -7,12 +7,6 @@ export interface DateFieldProps extends StandardInputProps {
   sx?: SxProps;
   format?: string;
   value?: Date | null;
-  // currentDate?: Date;
-  // disableFuture?: boolean;
-  // disableCurrent?: boolean;
-  // disablePast?: boolean;
-  // dateDisabled?: (date: Date) => boolean;
-  // onValidation?: (isValid: boolean) => void;
   onChange?: (value: Date) => void;
   hideCalendarIcon?: boolean;
   inputRef?: React.Ref<HTMLInputElement>;

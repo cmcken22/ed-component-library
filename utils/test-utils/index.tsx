@@ -1,6 +1,6 @@
 import { render, RenderOptions } from "@testing-library/react";
 import React, { ReactElement } from "react";
-import ThemeWrapper from "src/ThemeWrapper";
+import ThemeWrapper from "src/Components/ThemeWrapper";
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return <ThemeWrapper>{children}</ThemeWrapper>;

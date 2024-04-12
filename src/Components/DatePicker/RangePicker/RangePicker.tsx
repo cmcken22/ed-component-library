@@ -10,12 +10,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { Status } from "src/CommonTypes";
 import BaseInput, {
   BaseInputContext,
   withBaseInput,
 } from "src/Components/BaseInput";
 import Popover from "src/Components/Popover";
+import { Status } from "src/enums";
 import { formatDateRange, isValidDate } from "../Common/utils";
 import { RangePickerProps } from "./RangePicker.types";
 import RangePickerCalendar from "./RangePickerCalendar/RangePickerCalendar";

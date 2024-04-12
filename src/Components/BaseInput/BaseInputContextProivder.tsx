@@ -1,6 +1,6 @@
 import { InputAdornment } from "@mui/material";
 import { useCallback, useMemo, useState } from "react";
-import { Status } from "src/CommonTypes";
+import { Status } from "src/enums";
 import { BaseInputContext, BaseInputProps } from ".";
 import Icon, { IconVariant } from "../Icon";
 

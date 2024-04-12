@@ -1,6 +1,6 @@
 import { SxProps } from "@mui/material";
 import { createContext } from "react";
-import { Status } from "src/CommonTypes";
+import { Status } from "src/enums";
 
 export interface BaseInputProps {
   id?: string;

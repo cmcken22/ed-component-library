@@ -6,7 +6,7 @@ import Popover from "src/Components/Popover";
 import { Select } from "src/Components/Select";
 import { FONT_WEIGHT } from "src/Components/theme/Typography";
 import { Icon, Input, Percent, Typography, useEllisDonTheme } from "../..";
-import { PercentSelectorProps } from "./PercentSelector.types";
+import { PercentFilterProps } from "./PercentFilter.types";
 
 enum OPERAND {
   EQUAL_TO = "Equal to",
@@ -34,7 +34,7 @@ const OPTIONS = [
   },
 ];
 
-const PercentSelectorModal = ({ value, onSubmit, onCancel }: any) => {
+const PercentFilterModal = ({ value, onSubmit, onCancel }: any) => {
   const theme: any = useEllisDonTheme();
   const [operand, setOperand] = useState(value?.[0] || OPTIONS?.[0]?.value);
   const [val1, setVal1] = useState<any>(value?.[1] || null);
@@ -187,7 +187,7 @@ const PercentSelectorModal = ({ value, onSubmit, onCancel }: any) => {
   );
 };
 
-const PercentSelector = ({
+const PercentFilter = ({
   id,
   className,
   sx,
@@ -202,7 +202,7 @@ const PercentSelector = ({
   fullWidth,
   onChange,
   renderValue,
-}: PercentSelectorProps) => {
+}: PercentFilterProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<any>([]);
@@ -273,7 +273,7 @@ const PercentSelector = ({
         }
       />
       <Popover open={open} anchorEl={anchorEl} onClose={() => setOpen(false)}>
-        <PercentSelectorModal
+        <PercentFilterModal
           value={value}
           onSubmit={handleSubmit}
           onCancel={handleClear}
@@ -283,6 +283,6 @@ const PercentSelector = ({
   );
 };
 
-PercentSelector.defaultProps = {} as Partial<PercentSelectorProps>;
+PercentFilter.defaultProps = {} as Partial<PercentFilterProps>;
 
-export default PercentSelector;
+export default PercentFilter;

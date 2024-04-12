@@ -1,22 +1,22 @@
 import "@testing-library/jest-dom";
 import { TEST_ID } from "src/enums";
 import { render } from "test-utils/index";
-import PercentSelector from "./PercentSelector";
-import { PercentSelectorProps } from "./PercentSelector.types";
+import PercentFilter from "./PercentFilter";
+import { PercentFilterProps } from "./PercentFilter.types";
 
-const initialProps: PercentSelectorProps = {
-  ...PercentSelector.defaultProps,
+const initialProps: PercentFilterProps = {
+  ...PercentFilter.defaultProps,
 };
 
-describe("PercentSelector", () => {
-  let props: PercentSelectorProps = { ...initialProps };
+describe("PercentFilter", () => {
+  let props: PercentFilterProps = { ...initialProps };
 
   beforeEach(() => {
     props = { ...initialProps };
   });
 
-  const renderComponent = (props: PercentSelectorProps) =>
-    render(<PercentSelector {...props} />);
+  const renderComponent = (props: PercentFilterProps) =>
+    render(<PercentFilter {...props} />);
 
   it("should render correctly", () => {
     props.id = "test";

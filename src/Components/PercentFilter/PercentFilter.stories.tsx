@@ -1,28 +1,28 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import PercentSelector from ".";
+import PercentFilter from ".";
 
 const meta = {
-  title: "Example/PercentSelector",
-  component: PercentSelector,
+  title: "Example/PercentFilter",
+  component: PercentFilter,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("PercentSelector"),
+        transform: sourceCodeFormatter("PercentFilter"),
       },
     },
   },
   tags: ["autodocs"],
   argTypes: {},
-} satisfies Meta<typeof PercentSelector>;
+} satisfies Meta<typeof PercentFilter>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    ...PercentSelector.defaultProps,
+    ...PercentFilter.defaultProps,
     label: "Percent Selector",
     placeholder: "Select a percent",
     helperText: "Helper text",

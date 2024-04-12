@@ -20,7 +20,8 @@ export default defineConfig(({ mode }) => {
     }),
   ];
   // the build for storybook doesn't like the removeConsole plugin
-  // so only add it for lib build
+  // so only add it for lib build.
+  // a "lib build" is for publishing the npm package
   if (env.BUILD_MODE === "lib") {
     plugins.push(removeConsole());
   }

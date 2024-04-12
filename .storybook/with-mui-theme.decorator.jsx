@@ -1,5 +1,5 @@
-import { SnackbarProvider } from "../src/Snackbar";
-import ThemeWrapper from "../src/ThemeWrapper";
+import { SnackbarProvider } from "../src/Components/Snackbar";
+import ThemeWrapper from "../src/Components/ThemeWrapper";
 import "../src/index.css";
 
 export const withMuiTheme = (Story, context) => {

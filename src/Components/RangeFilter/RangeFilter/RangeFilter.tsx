@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useState } from "react";
-import { Button, Percent } from "src/index";
-import HorizontalStack from "../HorizontalStack";
+import { useCallback, useEffect, useState } from "react";
+import { Button, Currency, Percent } from "src/index";
+import { clamp } from "src/utils";
+import HorizontalStack from "../../HorizontalStack";
+import RangeSlider from "../RangeSlider";
 import { RangeFilterProps } from "./RangeFilter.types";
-import RangeSlider from "./RangeSlider";
 
 const getDefaultValue = ({
   defaultValue,
@@ -52,6 +53,7 @@ const RangeFilter = ({
   applyBtnProps,
   minInputLabel,
   maxInputLabel,
+  step,
 }: RangeFilterProps) => {
   const [value, setValue] = useState<number[]>(
     getDefaultValue({
@@ -61,8 +63,18 @@ const RangeFilter = ({
       max,
       minDistance,
     })
-    // []
   );
+
+  useEffect(() => {
+    const val = getDefaultValue({
+      defaultValue,
+      value: passedValue,
+      min,
+      max,
+      minDistance,
+    });
+    setValue(val);
+  }, [defaultValue, passedValue, min, max, minDistance]);
 
   const handleChange = useCallback(
     (newValue: number[]) => {
@@ -74,22 +86,12 @@ const RangeFilter = ({
   const handleInputChange = useCallback(
     (newValue: number, index: number) => {
       if (index === 0) {
-        let minVal = newValue;
-        let maxVal = value[1];
-        if (minVal >= maxVal - minDistance) {
-          maxVal = minVal + minDistance;
-        }
-        if (maxVal > max) {
-          maxVal = max;
-          minVal = maxVal - minDistance;
-        }
+        const minVal = newValue;
+        const maxVal = clamp(value[1], minVal + minDistance, max);
         handleChange([minVal, maxVal]);
       } else {
         const maxVal = newValue;
-        let minVal = value[0];
-        if (minVal >= maxVal) {
-          minVal = maxVal - minDistance;
-        }
+        const minVal = clamp(value[0], min, maxVal - minDistance);
         handleChange([minVal, maxVal]);
       }
     },
@@ -112,8 +114,6 @@ const RangeFilter = ({
     if (onSubmit) onSubmit(value);
   }, [value, onSubmit]);
 
-  console.log("VALUE:", value);
-
   return (
     <Box
       id={id}
@@ -132,17 +132,20 @@ const RangeFilter = ({
         value={value}
         min={min}
         max={max}
+        step={step}
         onChange={handleChange}
         minDistance={minDistance}
         displayValueTooltip={displayValueTooltip}
       />
       <HorizontalStack sx={{ mt: 2 }}>
-        <Component
+        <Percent
           label={minInputLabel}
           fullWidth
           value={value?.[0]}
           min={min}
           max={max - minDistance}
+          step={step}
+          variant="table"
           onChange={(val: number) => handleInputChange(val, 0)}
         />
         <Component
@@ -151,6 +154,8 @@ const RangeFilter = ({
           value={value?.[1]}
           min={min + minDistance}
           max={max}
+          step={step}
+          variant="table"
           onChange={(val: number) => handleInputChange(val, 1)}
         />
       </HorizontalStack>
@@ -172,14 +177,15 @@ const RangeFilter = ({
 };
 
 RangeFilter.defaultProps = {
-  Component: Percent,
+  Component: Currency,
   clearBtnText: "Clear",
   applyBtnText: "Apply",
   minInputLabel: "Min",
   maxInputLabel: "Max",
+  step: 10,
   min: 0,
   max: 100,
-  minDistance: 0,
+  minDistance: 20,
 } as Partial<RangeFilterProps>;
 
 export default RangeFilter;

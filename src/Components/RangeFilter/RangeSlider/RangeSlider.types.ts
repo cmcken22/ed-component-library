@@ -9,6 +9,7 @@ export interface RangeSliderProps {
   minDistance?: number;
   value?: number[];
   onChange: (value: number[]) => void;
+  step?: number;
   /**
    * Controls when the value label is displayed:
    *

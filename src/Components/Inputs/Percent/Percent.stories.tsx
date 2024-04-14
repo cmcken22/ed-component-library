@@ -52,7 +52,7 @@ export const Sample: Story = {
     disabled: false,
     helperText: "Helper Text",
     required: false,
-    value: "100",
+    value: undefined,
     fullWidth: false,
     labelPosition: "top",
     tooltip: "Tooltip",

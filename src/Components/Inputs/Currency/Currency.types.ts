@@ -4,15 +4,11 @@ export interface CurrencyProps extends StandardInputProps {
   label?: string;
   placeholder?: string;
   helperText?: string;
-  value?: string | number;
+  value?: number;
   required?: boolean;
   labelPosition?: "top" | "left";
   debounce?: number;
-  onChange?: (
-    value: string,
-    formattedValue: string,
-    floatValue: number
-  ) => void;
+  onChange?: (value: number, formattedValue: string) => void;
   fixedDecimalScale?: boolean;
   decimalScale?: number;
   /**
@@ -42,4 +38,11 @@ export interface CurrencyProps extends StandardInputProps {
    * Allow the user to use the keyboard to increment or decrement the value.
    */
   allowKeyBoardInput?: boolean;
+  max?: number;
+  min?: number;
+  /**
+   * The amount to increment/decrement the value when using keyboard input
+   * @default 1
+   */
+  step?: number;
 }

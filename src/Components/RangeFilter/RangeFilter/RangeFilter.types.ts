@@ -1,5 +1,5 @@
 import { SxProps } from "@mui/material";
-import { ButtonProps } from "../Button";
+import { ButtonProps } from "../../Button";
 
 export interface RangeFilterProps {
   id?: string;
@@ -28,4 +28,5 @@ export interface RangeFilterProps {
   applyBtnProps?: ButtonProps;
   minInputLabel?: string;
   maxInputLabel?: string;
+  step?: number;
 }

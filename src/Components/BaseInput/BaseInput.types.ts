@@ -27,6 +27,8 @@ export interface BaseInputProps {
   readOnly?: boolean;
   onClick?: (e: any) => void;
   autoFocus?: boolean;
+  onFocus?: (e: any) => void;
+  onBlur?: (e: any) => void;
 }
 
 export interface StandardInputProps

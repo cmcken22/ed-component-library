@@ -1,6 +1,7 @@
 import { useMediaQuery, useTheme } from "@mui/material";
 import isEqual from "lodash.isequal";
 import { Children } from "react";
+import { removeNumericFormat } from "react-number-format";
 
 export function hexToRGBA(hex: string, opacity: number) {
   hex = hex.replace("#", "");
@@ -67,4 +68,29 @@ export const generateUniqueKey = () => {
   const randomString = Math.random().toString(36).substr(2, 5); // Generate a random string
   const uniqueKey = timestamp + "-" + randomString; // Combine timestamp and random string
   return uniqueKey;
+};
+
+export const removeNumericFormatting = (value: string, formattingProps) => {
+  const result = parseFloat(
+    removeNumericFormat(
+      value,
+      {
+        from: { start: 0, end: value?.length },
+        to: { start: 0, end: value?.length },
+        lastValue: value,
+      },
+      formattingProps
+    )
+  );
+  return result;
+};
+
+export const clamp = (value: number, min: number, max: number) => {
+  let val = value;
+  if ((min || min === 0) && val < min) {
+    val = min;
+  } else if ((max || max === 0) && val > max) {
+    val = max;
+  }
+  return val;
 };

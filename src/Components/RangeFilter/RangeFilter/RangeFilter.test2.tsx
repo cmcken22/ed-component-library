@@ -1,7 +1,6 @@
-
 import "@testing-library/jest-dom";
 import { render } from "test-utils/index";
-import RangeFilter from "./RangeFilter";
+import RangeFilter from ".";
 import { RangeFilterProps } from "./RangeFilter.types";
 
 const initialProps: RangeFilterProps = {
@@ -15,7 +14,8 @@ describe("RangeFilter", () => {
     props = { ...initialProps };
   });
 
-  const renderComponent = (props: RangeFilterProps) => render(<RangeFilter {...props} />);
+  const renderComponent = (props: RangeFilterProps) =>
+    render(<RangeFilter {...props} />);
 
   it("should render correctly", () => {
     props.id = "test";

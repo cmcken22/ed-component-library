@@ -1,12 +1,14 @@
 import { InputAdornment, TextField, styled } from "@mui/material";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { NumericFormat } from "react-number-format";
+import _debounce from "lodash.debounce";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { NumericFormat, numericFormatter } from "react-number-format";
 import BaseInput, {
   BaseInputContext,
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
 import Icon, { IconVariant } from "src/Components/Icon";
+import useClampValue from "src/Hooks/useClampValue";
 import useKeyBoardInput from "src/Hooks/useKeyBoardInput";
 import { CurrencyProps } from ".";
 
@@ -34,43 +36,75 @@ const CurrencyComp = ({
   value: passedValue,
   required,
   labelPosition = "top",
-  fixedDecimalScale,
-  decimalScale,
-  thousandSeparator,
-  decimalSeparator,
   prefix,
   suffix,
   persistSuffix,
-  allowLeadingZeros,
-  allowNegative,
   onChange,
   variant,
   color,
   allowKeyBoardInput,
   autoFocus,
+  min,
+  max,
+  step,
+  debounce,
+  onFocus,
+  onBlur,
+  ...formattingProps
 }: CurrencyProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
-  const [value, setValue] = useState(passedValue);
+  const inputRef = useRef(null);
   const [hasFocus, setHasFocus] = useState(false);
+  const [value, setValue] = useState<number>(passedValue);
+  const clamp = useClampValue({ min, max });
 
   useEffect(() => {
-    setValue(passedValue);
-  }, [passedValue]);
+    setValue(clamp(passedValue));
+  }, [passedValue, clamp]);
+
+  const debounceOnChange = useCallback(
+    _debounce((value: number, formattedValue: string) => {
+      if (onChange) onChange(value, formattedValue);
+    }, debounce),
+    [debounce, onChange]
+  );
+
+  const handleChangeCallback = useCallback(
+    (value: number, formattedValue: string) => {
+      if (!onChange) return;
+      if (debounce || debounce === 0) {
+        debounceOnChange(value, formattedValue);
+      } else {
+        onChange(value, formattedValue);
+      }
+    },
+    [debounce, onChange]
+  );
 
   const handleChange = useCallback(
-    (e: { formattedValue: string; value: string; floatValue: number }) => {
-      setValue(e.value);
-      if (onChange) onChange(e.value, e.formattedValue, e.floatValue);
+    (e: { floatValue: number }) => {
+      const { floatValue } = e;
+      const clampedValue = clamp(floatValue);
+      const valid = floatValue === clampedValue;
+      setValue(floatValue);
+      if (valid) {
+        const inputValue = inputRef.current?.value;
+        const formattedValue = numericFormatter(inputValue, formattingProps);
+        handleChangeCallback(floatValue, formattedValue);
+      }
     },
-    [setValue, onChange]
+    [setValue, clamp, handleChangeCallback, formattingProps]
   );
 
   useKeyBoardInput({
     allow: allowKeyBoardInput,
     hasFocus,
     value,
-    allowNegative,
-    callback: handleChange,
+    allowNegative: formattingProps?.allowNegative,
+    min,
+    max,
+    step,
+    callback: (val: number) => handleChange({ floatValue: val }),
   });
 
   const renderCustomIcon = useCallback(
@@ -111,27 +145,44 @@ const CurrencyComp = ({
     );
   }, [suffix, persistSuffix, statusAdornment]);
 
+  const handleFocus = useCallback(
+    (e: any) => {
+      setHasFocus(true);
+      if (onFocus) onFocus(e);
+    },
+    [setHasFocus, onFocus]
+  );
+
+  const handleBlur = useCallback(
+    (e: any) => {
+      setHasFocus(false);
+      const clampedValue = clamp(value);
+      if (clampedValue !== value) {
+        handleChange({ floatValue: clampedValue });
+      }
+      if (onBlur) onBlur(e);
+    },
+    [setHasFocus, value, clamp, handleChange, onBlur]
+  );
+
   return (
     <BaseInput>
       <BaseInput.Label required={required} position={labelPosition}>
         {label}
       </BaseInput.Label>
       <NumericFormat
+        inputRef={inputRef}
+        defaultValue={value}
         value={value}
         autoFocus={autoFocus}
         onValueChange={handleChange}
         placeholder={placeholder}
-        thousandSeparator={thousandSeparator}
-        decimalSeparator={decimalSeparator}
-        fixedDecimalScale={fixedDecimalScale}
-        decimalScale={decimalScale}
         customInput={StyledTextField}
-        allowLeadingZeros={allowLeadingZeros}
-        allowNegative={allowNegative}
+        {...formattingProps}
         disabled={disabled}
         variant={VariantMap?.[variant] as any}
-        onFocus={() => setHasFocus(true)}
-        onBlur={() => setHasFocus(false)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         InputProps={{
           sx: { "& input": { color: getFontColor(color, value) } },
           startAdornment: renderStartAdornment(),
@@ -159,6 +210,7 @@ Currency.defaultProps = {
   allowNegative: true,
   variant: "outlined",
   allowKeyBoardInput: true,
+  step: 1,
 } as Partial<CurrencyProps>;
 
 // export named component for storybook docgen

@@ -23,6 +23,7 @@ const RangeSlider = ({
   minDistance,
   onChange,
   displayValueTooltip,
+  step,
 }: RangeSliderProps) => {
   const [value, setValue] = useState<number[]>(passedValue);
 
@@ -53,7 +54,7 @@ const RangeSlider = ({
 
   const isValid = useMemo(() => validateRange(value), [value]);
 
-  console.log("isValid:", isValid);
+  // console.log("isValid:", isValid);
 
   return (
     <Box
@@ -79,6 +80,7 @@ const RangeSlider = ({
         color="secondary"
         max={max}
         min={min}
+        step={step}
         sx={{
           ...(!isValid && {
             ".MuiSlider-track": {
@@ -96,6 +98,7 @@ RangeSlider.defaultProps = {
   min: 0,
   max: 100,
   displayValueTooltip: "off",
+  step: undefined,
 } as Partial<RangeSliderProps>;
 
 export default RangeSlider;

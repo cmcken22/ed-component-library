@@ -1,13 +1,14 @@
 import { InputAdornment, TextField, styled } from "@mui/material";
 import _debounce from "lodash.debounce";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { NumericFormat } from "react-number-format";
+import { NumericFormat, numericFormatter } from "react-number-format";
 import BaseInput, {
   BaseInputContext,
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
 import Icon, { IconVariant } from "src/Components/Icon";
+import useClampValue from "src/Hooks/useClampValue";
 import useKeyBoardInput from "src/Hooks/useKeyBoardInput";
 import { PercentProps } from ".";
 
@@ -38,32 +39,36 @@ const PercentComp = ({
   autoFocus,
   min,
   max,
+  step,
   debounce,
+  onFocus,
+  onBlur,
   ...formattingProps
 }: PercentProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
-  const [value, setValue] = useState(passedValue);
-  const [hasFocus, setHasFocus] = useState(false);
   const inputRef = useRef(null);
+  const [hasFocus, setHasFocus] = useState(false);
+  const [value, setValue] = useState<number>(passedValue);
+  const clamp = useClampValue({ min, max });
 
   useEffect(() => {
-    setValue(passedValue);
-  }, [passedValue]);
+    setValue(clamp(passedValue));
+  }, [passedValue, clamp]);
 
   const debounceOnChange = useCallback(
-    _debounce((value: number) => {
-      if (onChange) onChange(value);
+    _debounce((value: number, formattedValue: string) => {
+      if (onChange) onChange(value, formattedValue);
     }, debounce),
     [debounce, onChange]
   );
 
   const handleChangeCallback = useCallback(
-    (value: number) => {
+    (value: number, formattedValue: string) => {
       if (!onChange) return;
       if (debounce || debounce === 0) {
-        debounceOnChange(value);
+        debounceOnChange(value, formattedValue);
       } else {
-        onChange(value);
+        onChange(value, formattedValue);
       }
     },
     [debounce, onChange]
@@ -72,18 +77,16 @@ const PercentComp = ({
   const handleChange = useCallback(
     (e: { floatValue: number }) => {
       const { floatValue } = e;
-
-      let valid = true;
-      if ((min || min === 0) && floatValue < min) {
-        valid = false;
-      } else if ((max || max === 0) && floatValue > max) {
-        valid = false;
-      }
-
+      const clampedValue = clamp(floatValue);
+      const valid = floatValue === clampedValue;
       setValue(floatValue);
-      if (valid) handleChangeCallback(floatValue);
+      if (valid) {
+        const inputValue = inputRef.current?.value;
+        const formattedValue = numericFormatter(inputValue, formattingProps);
+        handleChangeCallback(floatValue, formattedValue);
+      }
     },
-    [setValue, min, max, handleChangeCallback]
+    [setValue, clamp, handleChangeCallback, formattingProps]
   );
 
   useKeyBoardInput({
@@ -93,6 +96,7 @@ const PercentComp = ({
     allowNegative: formattingProps?.allowNegative,
     min,
     max,
+    step,
     callback: (val: number) => handleChange({ floatValue: val }),
   });
 
@@ -122,23 +126,25 @@ const PercentComp = ({
     );
   }, [iconPlacement, persistSuffix, statusAdornment]);
 
-  const handleBlur = useCallback(() => {
-    setHasFocus(false);
-    if (value === null || value === undefined) {
-      return;
-    }
-    const parsedValue = parseFloat(`${value}`);
-    if ((min || min === 0) && parsedValue < min) {
-      const nextValue = `${min}`;
-      const floatValue = parseFloat(nextValue);
-      handleChange({ floatValue });
-    }
-    if ((max || max === 0) && parsedValue > max) {
-      const nextValue = `${max}`;
-      const floatValue = parseFloat(nextValue);
-      handleChange({ floatValue });
-    }
-  }, [value, min, max, setHasFocus, formattingProps, handleChange]);
+  const handleFocus = useCallback(
+    (e: any) => {
+      setHasFocus(true);
+      if (onFocus) onFocus(e);
+    },
+    [setHasFocus, onFocus]
+  );
+
+  const handleBlur = useCallback(
+    (e: any) => {
+      setHasFocus(false);
+      const clampedValue = clamp(value);
+      if (clampedValue !== value) {
+        handleChange({ floatValue: clampedValue });
+      }
+      if (onBlur) onBlur(e);
+    },
+    [setHasFocus, value, clamp, handleChange, onBlur]
+  );
 
   return (
     <BaseInput>
@@ -157,7 +163,7 @@ const PercentComp = ({
         disabled={disabled}
         // @ts-ignore
         variant={VariantMap[variant] as any}
-        onFocus={() => setHasFocus(true)}
+        onFocus={handleFocus}
         onBlur={handleBlur}
         inputProps={{
           min,
@@ -190,8 +196,7 @@ Percent.defaultProps = {
   decimalScale: 2,
   variant: "outlined",
   allowKeyBoardInput: true,
-  min: 0,
-  max: 100,
+  step: 1,
 } as Partial<PercentProps>;
 
 // export named component for storybook docgen

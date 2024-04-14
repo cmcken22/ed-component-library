@@ -77,7 +77,7 @@ export const Sample: Story = {
     disabled: false,
     helperText: "Helper Text",
     required: false,
-    value: "",
+    value: undefined,
     fullWidth: false,
     labelPosition: "top",
     tooltip: "Tooltip",

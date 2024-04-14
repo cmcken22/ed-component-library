@@ -15,7 +15,7 @@ export interface PercentProps extends StandardInputProps {
   persistSuffix?: boolean;
   // endAdornment?: React.ReactNode;
   debounce?: number;
-  onChange?: (value?: number) => void;
+  onChange?: (value: number, formattedValue: string) => void;
   fixedDecimalScale?: boolean;
   decimalScale?: number;
   /**
@@ -40,4 +40,9 @@ export interface PercentProps extends StandardInputProps {
   allowKeyBoardInput?: boolean;
   max?: number;
   min?: number;
+  /**
+   * The amount to increment/decrement the value when using keyboard input
+   * @default 1
+   */
+  step?: number;
 }

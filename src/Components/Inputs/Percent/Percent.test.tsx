@@ -11,7 +11,7 @@ const initialProps: PercentProps = {
   placeholder: "placeholder",
   helperText: "helperText",
   disabled: false,
-  value: "",
+  value: undefined,
   fullWidth: false,
   required: false,
   labelPosition: "top",
@@ -37,18 +37,12 @@ describe("Percent", () => {
     const Input = container.querySelector("input");
     expect(Input).toBeInTheDocument();
 
-    const nextValue = "100";
+    const nextValue = 100;
     const formattedValue = "100";
-    const floatValue = 100;
-    const expectedValue = "100";
     fireEvent.change(Input, { target: { value: nextValue } });
 
-    expect(props.onChange).toHaveBeenCalledWith(
-      nextValue,
-      formattedValue,
-      floatValue
-    );
-    expect(Input).toHaveValue(expectedValue);
+    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(Input).toHaveValue(formattedValue);
   });
 
   it("should have fixed decimal", () => {
@@ -61,18 +55,12 @@ describe("Percent", () => {
     const Input = container.querySelector("input");
     expect(Input).toBeInTheDocument();
 
-    const nextValue = "100";
+    const nextValue = 100;
     const formattedValue = "100.00";
-    const floatValue = 100.0;
-    const expectedValue = "100.00";
     fireEvent.change(Input, { target: { value: nextValue } });
 
-    expect(props.onChange).toHaveBeenCalledWith(
-      formattedValue,
-      formattedValue,
-      floatValue
-    );
-    expect(Input).toHaveValue(expectedValue);
+    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(Input).toHaveValue(formattedValue);
   });
 
   it("should not have decimal but not fixed", () => {
@@ -84,29 +72,17 @@ describe("Percent", () => {
     const Input = container.querySelector("input");
     expect(Input).toBeInTheDocument();
 
-    let nextValue = "100";
+    let nextValue = 100;
     let formattedValue = "100";
-    let floatValue = 100;
-    let expectedValue = "100";
     fireEvent.change(Input, { target: { value: nextValue } });
-    expect(props.onChange).toHaveBeenCalledWith(
-      nextValue,
-      formattedValue,
-      floatValue
-    );
+    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
 
-    nextValue = "100.12";
+    nextValue = 100.12;
     formattedValue = "100.12";
-    floatValue = 100.12;
-    expectedValue = "100.12";
     fireEvent.change(Input, { target: { value: nextValue } });
-    expect(props.onChange).toHaveBeenCalledWith(
-      nextValue,
-      formattedValue,
-      floatValue
-    );
+    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
 
-    expect(Input).toHaveValue(expectedValue);
+    expect(Input).toHaveValue(formattedValue);
   });
 
   it("should have thousand separator", () => {
@@ -118,18 +94,12 @@ describe("Percent", () => {
     const Input = container.querySelector("input");
     expect(Input).toBeInTheDocument();
 
-    const nextValue = "1000";
+    const nextValue = 1000;
     const formattedValue = "1,000";
-    const floatValue = 1000;
-    const expectedValue = "1,000";
     fireEvent.change(Input, { target: { value: nextValue } });
 
-    expect(props.onChange).toHaveBeenCalledWith(
-      nextValue,
-      formattedValue,
-      floatValue
-    );
-    expect(Input).toHaveValue(expectedValue);
+    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(Input).toHaveValue(formattedValue);
   });
 
   it("should allow negative values", () => {
@@ -137,18 +107,12 @@ describe("Percent", () => {
     const Input = container.querySelector("input");
     expect(Input).toBeInTheDocument();
 
-    const nextValue = "-100";
+    const nextValue = -100;
     const formattedValue = "-100";
-    const floatValue = -100;
-    const expectedValue = "-100";
     fireEvent.change(Input, { target: { value: nextValue } });
 
-    expect(props.onChange).toHaveBeenCalledWith(
-      nextValue,
-      formattedValue,
-      floatValue
-    );
-    expect(Input).toHaveValue(expectedValue);
+    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(Input).toHaveValue(formattedValue);
   });
 
   it("should be disabled", () => {

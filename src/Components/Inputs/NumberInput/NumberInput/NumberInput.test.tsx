@@ -2,33 +2,23 @@ import "@testing-library/jest-dom";
 import { testInputRendering } from "test-utils/commonTestCases";
 import { getChildFromContainer } from "test-utils/helper";
 import { fireEvent, render } from "test-utils/index";
-import Currency, { CurrencyProps } from ".";
+import NumberInput from "./NumberInput";
+import { NumberInputProps } from "./NumberInput.types";
 
-const initialProps: CurrencyProps = {
-  ...Currency.defaultProps,
-  id: "test_id",
-  label: "This is a label",
-  placeholder: "placeholder",
-  helperText: "helperText",
-  disabled: false,
-  value: undefined,
-  fullWidth: false,
-  required: false,
-  labelPosition: "top",
+const initialProps: NumberInputProps = {
+  ...NumberInput.defaultProps,
   onChange: jest.fn(),
 };
 
-describe("Currency", () => {
-  let props: CurrencyProps = { ...initialProps };
+describe("NumberInput", () => {
+  let props: NumberInputProps = { ...initialProps };
 
   beforeEach(() => {
     props = { ...initialProps };
   });
 
-  const renderComponent = (props: any) => {
-    const component = render(<Currency {...props} />, {});
-    return component;
-  };
+  const renderComponent = (props: NumberInputProps) =>
+    render(<NumberInput {...props} />);
 
   testInputRendering(renderComponent, props);
 
@@ -44,9 +34,11 @@ describe("Currency", () => {
   });
 
   it("should accept string value", () => {
+    props.value = "100";
     const { container } = renderComponent(props);
     const Input = container.querySelector("input");
     expect(Input).toBeInTheDocument();
+    expect(Input).toHaveValue(props.value);
 
     const nextValue = "100";
     const formattedValue = "100";

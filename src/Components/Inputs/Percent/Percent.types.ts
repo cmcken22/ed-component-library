@@ -1,4 +1,4 @@
-import { NumberInputProps } from "../NumberInput";
+import { NumberInputProps } from "../NumberInput/NumberInput";
 
 export interface PercentProps
   extends Omit<NumberInputProps, "persistEndAdornment"> {

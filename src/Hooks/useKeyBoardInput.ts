@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { clamp } from "src/utils";
+import useStepIncrementor from "./useStepIncrementor";
 
 interface UseKeyBoardInputProps {
   min?: number;
@@ -12,12 +12,6 @@ interface UseKeyBoardInputProps {
   callback: (value: number) => void;
 }
 
-const parseValue = (value: string | number) => {
-  if (value === null || value === undefined || value === "") return 0;
-  if (isNaN(+value)) return 0;
-  return parseFloat(`${value}`);
-};
-
 const useKeyBoardInput = ({
   min,
   max,
@@ -28,14 +22,14 @@ const useKeyBoardInput = ({
   allowNegative,
   callback,
 }: UseKeyBoardInputProps) => {
-  const getNextValue = useCallback(
-    (value: number, incrementor = 1) => {
-      let newValue = parseValue(value || 0) + incrementor;
-      newValue = clamp(newValue, min, max);
-      return newValue;
-    },
-    [min, max, value]
-  );
+  const { increment, decrement } = useStepIncrementor({
+    min,
+    max,
+    step,
+    value,
+    allowNegative,
+    callback,
+  });
 
   const handleKeyDown = useCallback(
     (e: any) => {
@@ -44,19 +38,14 @@ const useKeyBoardInput = ({
       const code = e.code;
       if (key === 38 || code === "ArrowUp") {
         e.preventDefault();
-        const newValue = getNextValue(value as number, step || 1);
-        callback(newValue);
+        increment();
       }
       if (key === 40 || code === "ArrowDown") {
         e.preventDefault();
-        let newValue = getNextValue(value as number, -step || -1);
-        if (!allowNegative && newValue < 0) {
-          newValue = 0;
-        }
-        callback(newValue);
+        decrement();
       }
     },
-    [allow, hasFocus, value, allowNegative, step, callback, getNextValue]
+    [allow, hasFocus, increment, decrement]
   );
 
   useEffect(() => {

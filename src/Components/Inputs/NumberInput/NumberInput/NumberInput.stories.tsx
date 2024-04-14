@@ -14,7 +14,31 @@ const meta = {
     },
   },
   tags: ["autodocs"],
-  argTypes: {},
+  render: (args) => {
+    console.log("args:", args?.thousandSeparator);
+    let thousandSeparator = args.thousandSeparator;
+    if (thousandSeparator === "true") {
+      thousandSeparator = true;
+    }
+    if (thousandSeparator === "false") {
+      thousandSeparator = false;
+    }
+    return <NumberInput {...args} thousandSeparator={thousandSeparator} />;
+  },
+  argTypes: {
+    onChange: { action: "changed" },
+    thousandSeparator: {
+      control: { type: "text" },
+    },
+    status: {
+      options: ["error", "success", "warning"],
+      control: { type: "radio" },
+    },
+    labelPosition: {
+      options: ["top", "left"],
+      control: { type: "radio" },
+    },
+  },
 } satisfies Meta<typeof NumberInput>;
 
 export default meta;

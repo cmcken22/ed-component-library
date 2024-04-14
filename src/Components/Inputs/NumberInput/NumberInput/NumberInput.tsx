@@ -1,6 +1,13 @@
 import { InputAdornment, TextField, styled } from "@mui/material";
 import _debounce from "lodash.debounce";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { NumericFormat, numericFormatter } from "react-number-format";
 import BaseInput, {
   BaseInputContext,
@@ -10,6 +17,7 @@ import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
 import useClampValue from "src/Hooks/useClampValue";
 import useKeyBoardInput from "src/Hooks/useKeyBoardInput";
 import { FormattingProps, NumberInputProps } from ".";
+import Stepper from "../Stepper";
 
 const StyledTextField = styled(TextField, {
   slot: "root",
@@ -32,30 +40,50 @@ export const useFormattingPropIsolation = <T extends FormattingProps>(
     decimalSeparator,
     allowLeadingZeros,
     allowNegative,
-    ...inputProps
+    ...rest
   } = props;
 
-  return {
-    formattingProps: {
+  const formattingProps: FormattingProps = useMemo(() => {
+    return {
       fixedDecimalScale,
       decimalScale,
       thousandSeparator,
       decimalSeparator,
       allowLeadingZeros,
       allowNegative,
-    } as FormattingProps,
-    inputProps: inputProps as Omit<T, keyof FormattingProps>,
+    };
+  }, [
+    fixedDecimalScale,
+    decimalScale,
+    thousandSeparator,
+    decimalSeparator,
+    allowLeadingZeros,
+    allowNegative,
+  ]);
+
+  const inputProps: Omit<T, keyof FormattingProps> = useMemo(() => {
+    return rest;
+  }, [rest]);
+
+  return {
+    formattingProps,
+    inputProps,
   };
 };
 
-const NumberInputComp = (props: NumberInputProps) => {
+interface NumberInputCompProps extends Omit<NumberInputProps, "value"> {
+  value: number;
+}
+
+const NumberInputComp = (props: NumberInputCompProps) => {
   const { inputProps, formattingProps } =
-    useFormattingPropIsolation<NumberInputProps>(props);
+    useFormattingPropIsolation<NumberInputCompProps>(props);
   const {
     label,
     placeholder,
     helperText,
     disabled,
+    readOnly,
     value: passedValue,
     required,
     labelPosition = "top",
@@ -75,6 +103,7 @@ const NumberInputComp = (props: NumberInputProps) => {
     startAdornment,
     persistEndAdornment,
     textAlign,
+    showSteps,
   } = inputProps;
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const inputRef = useRef(null);
@@ -131,6 +160,30 @@ const NumberInputComp = (props: NumberInputProps) => {
     callback: (val: number) => handleChange({ floatValue: val }),
   });
 
+  const renderStepper = useCallback(() => {
+    if (!showSteps && !disabled && !readOnly) return null;
+    return (
+      <Stepper
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        allowNegative={formattingProps?.allowNegative}
+        onChange={(val: number) => handleChange({ floatValue: val })}
+      />
+    );
+  }, [
+    showSteps,
+    disabled,
+    readOnly,
+    min,
+    max,
+    step,
+    value,
+    formattingProps,
+    handleChange,
+  ]);
+
   const renderStartAdornment = useCallback(() => {
     if (!startAdornment) return null;
     return (
@@ -141,8 +194,8 @@ const NumberInputComp = (props: NumberInputProps) => {
   }, [startAdornment]);
 
   const renderEndAdornment = useCallback(() => {
-    if (!endAdornment && !statusAdornment) return null;
-    if (!endAdornment) return statusAdornment;
+    if (!endAdornment && !statusAdornment && !showSteps) return null;
+    if (!endAdornment && !showSteps) return statusAdornment;
 
     let renderEndAdornment = true;
     if (statusAdornment) {
@@ -153,13 +206,26 @@ const NumberInputComp = (props: NumberInputProps) => {
     return (
       <InputAdornment
         position="end"
-        sx={{ ml: "8px", ".status-adornment": { ml: 0 } }}
+        sx={{
+          ml: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+          ".status-adornment": { ml: 0 },
+        }}
       >
+        {renderStepper()}
         {renderEndAdornment ? endAdornment : null}
         {statusAdornment}
       </InputAdornment>
     );
-  }, [statusAdornment, endAdornment, persistEndAdornment]);
+  }, [
+    statusAdornment,
+    endAdornment,
+    persistEndAdornment,
+    handleChange,
+    renderStepper,
+  ]);
 
   const handleFocus = useCallback(
     (e: any) => {
@@ -194,13 +260,16 @@ const NumberInputComp = (props: NumberInputProps) => {
         onValueChange={handleChange}
         placeholder={placeholder}
         customInput={StyledTextField}
+        readOnly={readOnly}
         {...formattingProps}
         disabled={disabled}
         variant={VariantMap?.[variant] as any}
         onClick={onClick}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        autoComplete="one-time-code" // <- to prevent chrome from autofilling
         InputProps={{
+          readOnly,
           sx: {
             "& input": {
               color: getFontColor(color, value),
@@ -216,14 +285,25 @@ const NumberInputComp = (props: NumberInputProps) => {
   );
 };
 
+// this warpper is meant to convert the value to a number
+const NumberInputWrapper = (props: NumberInputProps) => {
+  const value = useMemo(() => {
+    if (props?.value === undefined) return undefined;
+    if (props?.value === null) return null;
+    return Number(props?.value);
+  }, [props?.value]);
+
+  return <NumberInputComp {...props} value={value} />;
+};
+
 const NumberInput = withBaseInput<NumberInputProps>(
-  NumberInputComp,
+  NumberInputWrapper,
   "NumberInput"
 );
 
 NumberInput.defaultProps = {
   labelPosition: "top",
-  thousandSeparator: true,
+  thousandSeparator: false,
   fixedDecimalScale: false,
   decimalSeparator: ".",
   decimalScale: 2,
@@ -236,6 +316,7 @@ NumberInput.defaultProps = {
   persistEndAdornment: false,
   textAlign: "right",
   step: 1,
+  showSteps: false,
 } as Partial<NumberInputProps>;
 
 // export named component for storybook docgen

@@ -9,6 +9,7 @@ enum TEST_ID {
   CALENDAR = "calendar",
   DAY = "day",
   MONTH = "month",
+  STEPPER = "Stepper",
 }
 
 export default TEST_ID;

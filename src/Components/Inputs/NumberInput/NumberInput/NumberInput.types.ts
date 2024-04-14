@@ -25,7 +25,7 @@ export interface NumberInputProps extends StandardInputProps, FormattingProps {
   label?: string;
   placeholder?: string;
   helperText?: string;
-  value?: number;
+  value?: number | string;
   required?: boolean;
   labelPosition?: "top" | "left";
   debounce?: number;
@@ -41,6 +41,7 @@ export interface NumberInputProps extends StandardInputProps, FormattingProps {
    * @default 1
    */
   step?: number;
+  showSteps?: boolean;
   /**
    * In the case that a staus is provided, the endAdornment will be hidden.
    * Setting `persistEndAdornment` to true will keep the endAdornment visible beside the status icon.

@@ -3,9 +3,7 @@ import cx from "classnames";
 import { useCallback } from "react";
 import Icon, { IconVariant } from "src/Components/Icon";
 import { PercentProps } from ".";
-import NumberInput, {
-  useFormattingPropIsolation,
-} from "../NumberInput/NumberInput";
+import NumberInput, { useFormattingPropIsolation } from "../NumberInput";
 
 const Percent = (props: PercentProps) => {
   const { inputProps, formattingProps } =

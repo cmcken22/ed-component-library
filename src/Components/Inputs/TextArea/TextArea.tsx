@@ -25,6 +25,7 @@ const TextAreaComp = ({
   variant,
   color,
   autoFocus,
+  readOnly,
 }: TextAreaProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
@@ -33,6 +34,18 @@ const TextAreaComp = ({
     _debounce((value: any) => {
       if (onChange) onChange(value);
     }, debounce),
+    [debounce, onChange]
+  );
+
+  const handleChangeCallback = useCallback(
+    (value: string) => {
+      if (!onChange) return;
+      if (debounce || debounce === 0) {
+        debounceOnChange(value);
+      } else {
+        onChange(value);
+      }
+    },
     [debounce, onChange]
   );
 
@@ -45,13 +58,9 @@ const TextAreaComp = ({
         return;
       }
       setValue(e.target.value);
-      if (onChange) {
-        if (debounce || debounce === 0) {
-          debounceOnChange(e.target.value);
-        } else onChange(e.target.value);
-      }
+      handleChangeCallback(e.target.value);
     },
-    [onChange, setValue, debounce, debounceOnChange, maxChars, maxWords]
+    [setValue, maxChars, maxWords, handleChangeCallback]
   );
 
   return (
@@ -70,6 +79,7 @@ const TextAreaComp = ({
         maxRows={maxRows}
         variant={VariantMap[variant] as any}
         InputProps={{
+          readOnly,
           sx: { "& input": { color: getFontColor(color, value) } },
           endAdornment,
         }}

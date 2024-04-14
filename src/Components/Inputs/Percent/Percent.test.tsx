@@ -45,6 +45,17 @@ describe("Percent", () => {
     expect(Input).toHaveValue(formattedValue);
   });
 
+  it("should accept string value", () => {
+    const { container } = renderComponent(props);
+    const Input = container.querySelector("input");
+    expect(Input).toBeInTheDocument();
+
+    const nextValue = "100";
+    const formattedValue = "100";
+    fireEvent.change(Input, { target: { value: nextValue } });
+    expect(Input).toHaveValue(formattedValue);
+  });
+
   it("should have fixed decimal", () => {
     props = {
       ...props,

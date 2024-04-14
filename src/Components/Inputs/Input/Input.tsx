@@ -28,7 +28,6 @@ const InputComp = ({
   autoFocus,
 }: InputProps) => {
   const { endAdornment } = useContext(BaseInputContext);
-
   const [value, setValue] = useState(passedValue || "");
 
   useEffect(() => {
@@ -42,19 +41,27 @@ const InputComp = ({
     [debounce, onChange]
   );
 
+  const handleChangeCallback = useCallback(
+    (value: string) => {
+      if (!onChange) return;
+      if (debounce || debounce === 0) {
+        debounceOnChange(value);
+      } else {
+        onChange(value);
+      }
+    },
+    [debounce, onChange]
+  );
+
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if ((maxChars || maxChars === 0) && e.target.value.length > maxChars) {
         return;
       }
       setValue(e.target.value);
-      if (onChange) {
-        if (debounce || debounce === 0) {
-          debounceOnChange(e.target.value);
-        } else onChange(e.target.value);
-      }
+      handleChangeCallback(e.target.value);
     },
-    [onChange, setValue, debounce, debounceOnChange, maxChars]
+    [onChange, setValue, maxChars, handleChangeCallback]
   );
 
   return (

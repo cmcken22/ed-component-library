@@ -1,4 +1,4 @@
-import { NumberInputProps } from "../NumberInput";
+import { NumberInputProps } from "../NumberInput/NumberInput";
 
 export interface CurrencyProps
   extends Omit<NumberInputProps, "persistEndAdornment"> {

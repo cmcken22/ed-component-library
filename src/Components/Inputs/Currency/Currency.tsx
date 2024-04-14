@@ -2,8 +2,7 @@ import cx from "classnames";
 import { useCallback } from "react";
 import Icon, { IconVariant } from "src/Components/Icon";
 import { CurrencyProps } from ".";
-import NumberInput from "../NumberInput";
-import { useFormattingPropIsolation } from "../NumberInput/NumberInput";
+import NumberInput, { useFormattingPropIsolation } from "../NumberInput";
 
 const SymbolMap: Record<string, string | (() => JSX.Element)> = {
   Dollar: () => (

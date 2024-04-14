@@ -4,7 +4,7 @@ export interface PercentProps extends StandardInputProps {
   label?: string;
   placeholder?: string;
   helperText?: string;
-  value?: string | number;
+  value?: number;
   required?: boolean;
   labelPosition?: "top" | "left";
   iconPlacement?: "prefix" | "suffix";
@@ -15,11 +15,7 @@ export interface PercentProps extends StandardInputProps {
   persistSuffix?: boolean;
   // endAdornment?: React.ReactNode;
   debounce?: number;
-  onChange?: (
-    value: string,
-    formattedValue: string,
-    floatValue: number
-  ) => void;
+  onChange?: (value?: number) => void;
   fixedDecimalScale?: boolean;
   decimalScale?: number;
   /**
@@ -42,4 +38,6 @@ export interface PercentProps extends StandardInputProps {
    * Allow the user to use the keyboard to increment or decrement the value.
    */
   allowKeyBoardInput?: boolean;
+  max?: number;
+  min?: number;
 }

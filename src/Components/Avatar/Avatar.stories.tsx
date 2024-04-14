@@ -16,6 +16,8 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     size: {
+      onHover: { action: "onHover" },
+      onClick: { action: "onClick" },
       control: { type: "radio", options: ["default", "large", "small"] },
     },
   },

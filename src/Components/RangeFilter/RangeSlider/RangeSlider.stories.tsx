@@ -1,30 +1,27 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import PercentFilter from ".";
+import RangeSlider from ".";
 
 const meta = {
-  title: "Example/PercentFilter",
-  component: PercentFilter,
+  title: "Example/RangeSlider",
+  component: RangeSlider,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("PercentFilter"),
+        transform: sourceCodeFormatter("RangeSlider"),
       },
     },
   },
   tags: ["autodocs"],
   argTypes: {},
-} satisfies Meta<typeof PercentFilter>;
+} satisfies Meta<typeof RangeSlider>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    ...PercentFilter.defaultProps,
-    label: "Percent Filter",
-    placeholder: "Select a percent",
-    helperText: "Helper text",
+    ...RangeSlider.defaultProps,
   },
 };

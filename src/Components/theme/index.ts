@@ -4,6 +4,7 @@ import ButtonTheme from "src/Components/Button/Button.theme";
 import CheckboxTheme from "src/Components/Checkbox/Checkbox.theme";
 import { PaginationItemTheme } from "src/Components/Pagination/Pagination.theme";
 import RadioButtonTheme from "src/Components/RadioButton/RadioButton.theme";
+import RangeSliderTheme from "src/Components/RangeFilter/RangeSlider/RangeSlider.theme";
 import SelectTheme, {
   SelectListTheme,
 } from "src/Components/Select/BaseSelect/BaseSelect.theme";
@@ -24,6 +25,7 @@ const theme = createTheme({
     MuiMenu: SelectListTheme,
     // MuiPagination: PaginationTheme,
     MuiPaginationItem: PaginationItemTheme,
+    MuiSlider: RangeSliderTheme,
   },
   shape: {
     borderRadius: 2,

@@ -1,19 +1,13 @@
 import { useCallback, useEffect } from "react";
 
 interface UseKeyBoardInputProps {
+  min?: number;
+  max?: number;
   allow: boolean;
   hasFocus: boolean;
   value: string | number;
   allowNegative: boolean;
-  callback: ({
-    value,
-    formattedValue,
-    floatValue,
-  }: {
-    value: string;
-    formattedValue: string;
-    floatValue: number;
-  }) => void;
+  callback: (value: number) => void;
 }
 
 const parseValue = (value: string | number) => {
@@ -23,6 +17,8 @@ const parseValue = (value: string | number) => {
 };
 
 const useKeyBoardInput = ({
+  min,
+  max,
   allow,
   hasFocus,
   value,
@@ -36,14 +32,13 @@ const useKeyBoardInput = ({
       const code = e.code;
       if (key === 38 || code === "ArrowUp") {
         e.preventDefault();
-        const newValue = parseValue(value) + 1;
-        const formattedValue = newValue.toLocaleString();
-        const floatValue = newValue;
-        callback({
-          value: newValue.toString(),
-          formattedValue,
-          floatValue,
-        });
+        let newValue = parseValue(value) + 1;
+        if (max || max === 0) {
+          if (newValue > max) {
+            newValue = max;
+          }
+        }
+        callback(newValue);
       }
       if (key === 40 || code === "ArrowDown") {
         e.preventDefault();
@@ -51,16 +46,15 @@ const useKeyBoardInput = ({
         if (!allowNegative && newValue < 0) {
           newValue = 0;
         }
-        const formattedValue = newValue.toLocaleString();
-        const floatValue = newValue;
-        callback({
-          value: newValue.toString(),
-          formattedValue,
-          floatValue,
-        });
+        if (min || min === 0) {
+          if (newValue < min) {
+            newValue = min;
+          }
+        }
+        callback(newValue);
       }
     },
-    [allow, hasFocus, value, allowNegative, callback]
+    [allow, hasFocus, value, allowNegative, callback, min, max]
   );
 
   useEffect(() => {

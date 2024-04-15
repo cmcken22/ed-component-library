@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { IconVariant } from "src/Components/Icon";
-import { Icon, Input, NumberInput } from "src/index";
+import { Icon, Input } from "src/index";
 import RangeFilterModal from "../RangeFilterModal/RangeFilterModal";
 import { RangeFilterProps } from "./RangeFilter.types";
 
@@ -138,8 +138,8 @@ const RangeFilterInput = ({
 };
 
 RangeFilterInput.defaultProps = {
+  // Component: NumberInput,
   defaultRange: [0, 100],
-  Component: NumberInput,
   clearBtnText: "Clear",
   applyBtnText: "Apply",
   minInputLabel: "Minimum",

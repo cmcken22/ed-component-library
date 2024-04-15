@@ -6,6 +6,9 @@ export interface RangeFilterControlProps {
   className?: string;
   sx?: SxProps;
   label?: string;
+  /**
+   * The component to render the input as will default to NumberInput.
+   */
   Component?: React.ElementType;
   /**
    * Props to pass to the Component

@@ -31,9 +31,28 @@ export const Default: Story = {
     label: "Range Filter",
     placeholder: "Select a range",
     helperText: "Helper text",
+    min: 0,
+    max: 100,
+    step: 1,
+    minDistance: 0,
+  },
+};
+
+export const CurrencyRangeFilter: Story = {
+  // @ts-ignore
+  args: {
+    ...RangeFilter.defaultProps,
+    label: "Range Filter",
+    placeholder: "Select a range",
+    helperText: "Helper text",
+    min: 0,
+    max: 100,
+    step: 1,
+    minDistance: 0,
     Component: Currency,
+    filterLabel: "Contract Amount",
     ComponentProps: {
-      prefix: "Euro",
+      prefix: "Dollar",
     },
   },
 };

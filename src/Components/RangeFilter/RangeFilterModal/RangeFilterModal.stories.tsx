@@ -18,7 +18,10 @@ const meta = {
   // rendering the control component so we can actually see the component in the story
   // and capture the screenshot for visual regression testing
   render: (args: any) => <RangeFilterControl {...args} />,
-  argTypes: {},
+  argTypes: {
+    onSubmit: { action: "onSubmit" },
+    onClear: { action: "onClear" },
+  },
 } satisfies Meta<typeof RangeFilterModal>;
 
 export default meta;

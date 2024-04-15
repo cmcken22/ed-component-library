@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { FONT_WEIGHT } from "src/Components/theme/Typography";
 import { Button, NumberInput, Typography } from "src/index";
 import { clamp } from "src/utils";
@@ -51,7 +51,7 @@ const RangeFilterControl = ({
   className,
   sx,
   label,
-  Component,
+  Component: ComponentToRender,
   ComponentProps,
   value: passedValue,
   defaultValue,
@@ -122,6 +122,11 @@ const RangeFilterControl = ({
   const handleSubmit = useCallback(() => {
     if (onSubmit) onSubmit(value);
   }, [value, onSubmit]);
+
+  const Component = useMemo(
+    () => ComponentToRender || NumberInput,
+    [ComponentToRender]
+  );
 
   return (
     <Box
@@ -194,7 +199,7 @@ const RangeFilterControl = ({
 };
 
 RangeFilterControl.defaultProps = {
-  Component: NumberInput,
+  // Component: NumberInput,
   clearBtnText: "Clear",
   applyBtnText: "Apply",
   step: 1,

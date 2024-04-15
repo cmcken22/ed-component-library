@@ -23,6 +23,7 @@ export interface BaseInputProps {
   label?: string;
   helperText?: string;
   placeholder?: string;
+  startAdornment?: React.ReactNode;
   endAdornment?: React.ReactNode;
   readOnly?: boolean;
   onClick?: (e: any) => void;
@@ -30,6 +31,11 @@ export interface BaseInputProps {
   onFocus?: (e: any) => void;
   onBlur?: (e: any) => void;
   debounce?: number;
+  /**
+   * In the case that a staus is provided, the endAdornment will be hidden.
+   * Setting `persistEndAdornment` to true will keep the endAdornment visible beside the status icon.
+   */
+  persistEndAdornment?: boolean;
 }
 
 export interface StandardInputProps

@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import { useCallback, useContext, useEffect, useState } from "react";
 import BaseInput, {
   BaseInputContext,
@@ -26,8 +26,11 @@ const InputComp = ({
   inputRef,
   onClick,
   autoFocus,
+  startAdornment,
+  endAdornment,
+  persistEndAdornment,
 }: InputProps) => {
-  const { endAdornment } = useContext(BaseInputContext);
+  const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
   const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
@@ -46,6 +49,42 @@ const InputComp = ({
     [onChange, setValue, maxChars, handleChangeCallback]
   );
 
+  const renderStartAdornment = useCallback(() => {
+    if (!startAdornment) return null;
+    return (
+      <InputAdornment position="start" sx={{ ml: "8px" }}>
+        {startAdornment}
+      </InputAdornment>
+    );
+  }, [startAdornment]);
+
+  const renderEndAdornment = useCallback(() => {
+    if (!endAdornment && !statusAdornment) return null;
+    if (!endAdornment) return statusAdornment;
+
+    let renderEndAdornment = true;
+    if (statusAdornment) {
+      renderEndAdornment = false;
+      if (persistEndAdornment) renderEndAdornment = true;
+    }
+
+    return (
+      <InputAdornment
+        position="end"
+        sx={{
+          ml: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+          ".status-adornment": { ml: 0 },
+        }}
+      >
+        {renderEndAdornment ? endAdornment : null}
+        {statusAdornment}
+      </InputAdornment>
+    );
+  }, [statusAdornment, endAdornment, persistEndAdornment]);
+
   return (
     <BaseInput>
       <BaseInput.Label required={required} position={labelPosition}>
@@ -62,9 +101,10 @@ const InputComp = ({
         onClick={onClick}
         onChange={handleChange}
         InputProps={{
-          sx: { "& input": { color: getFontColor(color, value) } },
-          endAdornment,
           readOnly,
+          sx: { "& input": { color: getFontColor(color, value) } },
+          startAdornment: renderStartAdornment(),
+          endAdornment: renderEndAdornment(),
         }}
       />
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>

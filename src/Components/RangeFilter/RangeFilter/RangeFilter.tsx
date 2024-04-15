@@ -1,51 +1,31 @@
-import { Box } from "@mui/material";
-import cx from "classnames";
 import { useCallback, useEffect, useState } from "react";
-import { Button, Currency, Percent } from "src/index";
-import { clamp } from "src/utils";
-import HorizontalStack from "../../HorizontalStack";
-import RangeSlider from "../RangeSlider";
+import { IconVariant } from "src/Components/Icon";
+import { Icon, Input, NumberInput } from "src/index";
+import RangeFilterModal from "../RangeFilterModal/RangeFilterModal";
 import { RangeFilterProps } from "./RangeFilter.types";
 
-const getDefaultValue = ({
-  defaultValue,
-  value,
-  min,
-  max,
-  minDistance,
-}: any) => {
-  const formattedValue = value || defaultValue || [];
-
-  let minVal = min;
-  let maxVal = minVal + minDistance;
-
-  if (formattedValue.length === 2) {
-    minVal = Math.max(min, formattedValue[0]);
-    maxVal = Math.min(formattedValue[1], max);
-    if (maxVal - minVal < minDistance) {
-      minVal = maxVal - minDistance;
-    }
-  }
-
-  if (formattedValue.length === 1) {
-    minVal = Math.max(min, formattedValue[0]);
-  }
-
-  return [minVal, Math.min(maxVal, max)];
-};
-
-const RangeFilter = ({
+const RangeFilterInput = ({
   id,
   className,
   sx,
+  label,
+  filterLabel,
+  placeholder,
+  helperText,
+  required,
   Component,
-  value: passedValue,
+  ComponentProps,
   defaultValue,
+  defaultRange,
+  value: passedValue,
+  labelPosition = "top",
+  disabled,
+  tooltip,
+  variant,
+  fullWidth,
   min,
   max,
   minDistance,
-  onSubmit,
-  onClear,
   displayValueTooltip,
   clearBtnText,
   clearBtnProps,
@@ -54,138 +34,122 @@ const RangeFilter = ({
   minInputLabel,
   maxInputLabel,
   step,
+  filterPlacement,
+  onChange,
+  renderValue,
 }: RangeFilterProps) => {
-  const [value, setValue] = useState<number[]>(
-    getDefaultValue({
-      defaultValue,
-      value: passedValue,
-      min,
-      max,
-      minDistance,
-    })
-  );
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<number[]>(passedValue || []);
 
   useEffect(() => {
-    const val = getDefaultValue({
-      defaultValue,
-      value: passedValue,
-      min,
-      max,
-      minDistance,
-    });
-    setValue(val);
-  }, [defaultValue, passedValue, min, max, minDistance]);
+    setValue(passedValue || []);
+  }, [passedValue]);
 
-  const handleChange = useCallback(
-    (newValue: number[]) => {
-      setValue(newValue);
+  const handleSubmit = useCallback(
+    (val: any) => {
+      setValue(val);
+      setOpen(false);
+      if (onChange) onChange(val);
     },
-    [setValue]
-  );
-
-  const handleInputChange = useCallback(
-    (newValue: number, index: number) => {
-      if (index === 0) {
-        const minVal = newValue;
-        const maxVal = clamp(value[1], minVal + minDistance, max);
-        handleChange([minVal, maxVal]);
-      } else {
-        const maxVal = newValue;
-        const minVal = clamp(value[0], min, maxVal - minDistance);
-        handleChange([minVal, maxVal]);
-      }
-    },
-    [value, handleChange, minDistance]
+    [setValue, setOpen, onChange]
   );
 
   const handleClear = useCallback(() => {
-    const nextValue = getDefaultValue({
-      defaultValue,
-      value: passedValue,
-      min,
-      max,
-      minDistance,
-    });
-    handleChange(nextValue);
-    if (onClear) onClear(nextValue);
-  }, [defaultValue, passedValue, min, max, minDistance, handleChange, onClear]);
+    setValue([]);
+    setOpen(false);
+    if (onChange) onChange([]);
+  }, [setValue, setOpen, onChange]);
 
-  const handleSubmit = useCallback(() => {
-    if (onSubmit) onSubmit(value);
-  }, [value, onSubmit]);
+  const handleOpen = useCallback(() => {
+    if (disabled) return;
+    setOpen(true);
+  }, [disabled, setOpen]);
+
+  const handleRenderValue = useCallback(
+    (value: any) => {
+      if (renderValue) return renderValue(value);
+      return value?.join(" - ") || "";
+    },
+    [renderValue]
+  );
 
   return (
-    <Box
-      id={id}
-      className={cx("RangeFilter", {
-        [className]: className,
-      })}
-      sx={{
-        ...sx,
-        width: "200px",
-        display: "flex",
-        flexDirection: "column",
-      }}
-      data-testid="RangeFilter"
-    >
-      <RangeSlider
-        value={value}
+    <>
+      <Input
+        id={id}
+        onClick={handleOpen}
+        inputRef={(r: any) => setAnchorEl(r)}
+        className={className}
+        label={label}
+        placeholder={placeholder}
+        disabled={disabled}
+        helperText={helperText}
+        required={required}
+        value={handleRenderValue(value)}
+        fullWidth={fullWidth}
+        labelPosition={labelPosition}
+        tooltip={tooltip}
+        variant={variant}
+        readOnly
+        sx={{
+          ...sx,
+          cursor: disabled ? "default" : "pointer",
+          ".MuiInputBase-root, input": {
+            cursor: disabled ? "default" : "pointer",
+          },
+        }}
+        endAdornment={
+          <Icon
+            icon={open ? IconVariant.NavArrowUp : IconVariant.NavArrowDown}
+            size={20}
+            sx={{
+              cursor: disabled ? "default" : "pointer",
+            }}
+          />
+        }
+      />
+      <RangeFilterModal
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => setOpen(false)}
+        placement={filterPlacement}
+        label={filterLabel}
+        onSubmit={handleSubmit}
+        onClear={handleClear}
         min={min}
         max={max}
-        step={step}
-        onChange={handleChange}
         minDistance={minDistance}
+        defaultValue={defaultValue || defaultRange}
+        value={value}
+        Component={Component}
+        ComponentProps={ComponentProps}
         displayValueTooltip={displayValueTooltip}
+        clearBtnText={clearBtnText}
+        clearBtnProps={clearBtnProps}
+        applyBtnText={applyBtnText}
+        applyBtnProps={applyBtnProps}
+        minInputLabel={minInputLabel}
+        maxInputLabel={maxInputLabel}
+        step={step}
       />
-      <HorizontalStack sx={{ mt: 2 }}>
-        <Percent
-          label={minInputLabel}
-          fullWidth
-          value={value?.[0]}
-          min={min}
-          max={max - minDistance}
-          step={step}
-          variant="table"
-          onChange={(val: number) => handleInputChange(val, 0)}
-        />
-        <Component
-          label={maxInputLabel}
-          fullWidth
-          value={value?.[1]}
-          min={min + minDistance}
-          max={max}
-          step={step}
-          variant="table"
-          onChange={(val: number) => handleInputChange(val, 1)}
-        />
-      </HorizontalStack>
-      <HorizontalStack justifyContent="space-between" sx={{ mt: 0.5 }}>
-        <Button
-          variant="link"
-          color="danger"
-          onClick={handleClear}
-          {...clearBtnProps}
-        >
-          {clearBtnText}
-        </Button>
-        <Button variant="link" onClick={handleSubmit} {...applyBtnProps}>
-          {applyBtnText}
-        </Button>
-      </HorizontalStack>
-    </Box>
+    </>
   );
 };
 
-RangeFilter.defaultProps = {
-  Component: Currency,
+RangeFilterInput.defaultProps = {
+  defaultRange: [0, 100],
+  Component: NumberInput,
   clearBtnText: "Clear",
   applyBtnText: "Apply",
-  minInputLabel: "Min",
-  maxInputLabel: "Max",
-  step: 10,
+  minInputLabel: "Minimum",
+  maxInputLabel: "Maximum",
+  filterLabel: "Amount",
+  step: 1,
   min: 0,
   max: 100,
-  minDistance: 20,
+  minDistance: 0,
+  filterPlacement: "bottom-end",
 } as Partial<RangeFilterProps>;
 
-export default RangeFilter;
+export default RangeFilterInput;

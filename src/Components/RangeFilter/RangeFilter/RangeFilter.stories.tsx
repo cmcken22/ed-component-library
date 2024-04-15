@@ -1,10 +1,11 @@
-
 import type { Meta, StoryObj } from "@storybook/react";
- import { sourceCodeFormatter } from "sb-utils/index";
-import RangeFilter from "./";
+import commonArgTypes from "sb-utils/commonArgTypes";
+import { sourceCodeFormatter } from "sb-utils/index";
+import Currency from "src/Components/Inputs/Currency";
+import RangeFilter from ".";
 
 const meta = {
-  title: "Example/RangeFilter",
+  title: "Example/RangeFilter/RangeFilter",
   component: RangeFilter,
   parameters: {
     layout: "centered",
@@ -15,14 +16,24 @@ const meta = {
     },
   },
   tags: ["autodocs"],
-  argTypes: {},
+  argTypes: {
+    ...commonArgTypes.onChange,
+  },
 } satisfies Meta<typeof RangeFilter>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  // @ts-ignore
   args: {
     ...RangeFilter.defaultProps,
+    label: "Range Filter",
+    placeholder: "Select a range",
+    helperText: "Helper text",
+    Component: Currency,
+    ComponentProps: {
+      prefix: "Euro",
+    },
   },
 };

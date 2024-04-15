@@ -1,4 +1,4 @@
-import { Box, InputAdornment, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Button from "src/Components/Button";
 import { IconVariant } from "src/Components/Icon";
@@ -261,15 +261,13 @@ const PercentFilter = ({
           },
         }}
         endAdornment={
-          <InputAdornment position="end">
-            <Icon
-              icon={open ? IconVariant.NavArrowUp : IconVariant.NavArrowDown}
-              size={20}
-              sx={{
-                cursor: disabled ? "default" : "pointer",
-              }}
-            />
-          </InputAdornment>
+          <Icon
+            icon={open ? IconVariant.NavArrowUp : IconVariant.NavArrowDown}
+            size={20}
+            sx={{
+              cursor: disabled ? "default" : "pointer",
+            }}
+          />
         }
       />
       <Popover open={open} anchorEl={anchorEl} onClose={() => setOpen(false)}>

@@ -1,32 +1,34 @@
-import { SxProps } from "@mui/material";
-import { ButtonProps } from "../../Button";
+import { StandardInputProps } from "src/Components/BaseInput";
+import { RangeFilterModalProps } from "../RangeFilterModal/RangeFilterModal.types";
 
-export interface RangeFilterProps {
-  id?: string;
-  className?: string;
-  sx?: SxProps;
-  Component?: React.ElementType;
-  minDistance?: number;
-  onSubmit: (value: number[]) => void;
-  onClear: (value: number[]) => void;
-  value?: number[];
-  defaultValue?: number[];
-  min: number;
-  max: number;
+interface ModalProps
+  extends Omit<
+    RangeFilterModalProps,
+    "onSubmit" | "onClear" | "placement" | "label"
+  > {}
+
+export interface RangeFilterProps extends StandardInputProps, ModalProps {
+  onChange?: (value: number[]) => void;
+  renderValue?: (value: number[]) => string;
   /**
-   * Controls when the value label is displayed:
-   *
-   * - `auto` the value label will display when the thumb is hovered or focused.
-   * - `on` will display persistently.
-   * - `off` will never display.
-   * @default 'off'
+   * The values to start with in the range filter modal
    */
-  displayValueTooltip?: "on" | "auto" | "off";
-  clearBtnText?: string;
-  clearBtnProps?: ButtonProps;
-  applyBtnText?: string;
-  applyBtnProps?: ButtonProps;
-  minInputLabel?: string;
-  maxInputLabel?: string;
-  step?: number;
+  defaultRange?: number[];
+  filterLabel?: string;
+  filterPlacement?:
+    | "auto-end"
+    | "auto-start"
+    | "auto"
+    | "bottom-end"
+    | "bottom-start"
+    | "bottom"
+    | "left-end"
+    | "left-start"
+    | "left"
+    | "right-end"
+    | "right-start"
+    | "right"
+    | "top-end"
+    | "top-start"
+    | "top";
 }

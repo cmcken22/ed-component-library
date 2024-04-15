@@ -5,9 +5,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { RangeSliderProps } from "./RangeSlider.types";
 
 const validateRange = (value: number[]) => {
-  const filteredValue = value.filter((v) => !isNaN(v));
+  const filteredValue = value?.filter((v) => !isNaN(v));
 
-  if (filteredValue.length !== 2) {
+  if (filteredValue?.length !== 2) {
     return false;
   }
   return true;

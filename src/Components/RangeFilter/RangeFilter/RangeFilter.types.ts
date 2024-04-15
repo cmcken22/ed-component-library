@@ -1,4 +1,5 @@
 import { StandardInputProps } from "src/Components/BaseInput";
+import { PopoverPlacement } from "src/Components/Popover";
 import { RangeFilterModalProps } from "../RangeFilterModal/RangeFilterModal.types";
 
 interface ModalProps
@@ -15,20 +16,5 @@ export interface RangeFilterProps extends StandardInputProps, ModalProps {
    */
   defaultRange?: number[];
   filterLabel?: string;
-  filterPlacement?:
-    | "auto-end"
-    | "auto-start"
-    | "auto"
-    | "bottom-end"
-    | "bottom-start"
-    | "bottom"
-    | "left-end"
-    | "left-start"
-    | "left"
-    | "right-end"
-    | "right-start"
-    | "right"
-    | "top-end"
-    | "top-start"
-    | "top";
+  filterPlacement?: PopoverPlacement;
 }

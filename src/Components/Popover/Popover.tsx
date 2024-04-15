@@ -87,9 +87,6 @@ const Popover = ({
     };
   }, [handleClickOutside]);
 
-  // console.log("arrowRef", arrowRef?.classList);
-  // console.log("ref", ref?.current?.classList);
-
   return (
     <StyledPopover
       ref={ref}

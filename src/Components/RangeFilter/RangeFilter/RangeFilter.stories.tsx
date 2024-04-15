@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Currency from "src/Components/Inputs/Currency";
+import { PopoverPlacement } from "src/Components/Popover";
 import RangeFilter from ".";
 
 const meta = {
@@ -18,6 +19,10 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     ...commonArgTypes.onChange,
+    filterPlacement: {
+      options: [...Object.values(PopoverPlacement)],
+      control: { type: "select" },
+    },
   },
 } satisfies Meta<typeof RangeFilter>;
 

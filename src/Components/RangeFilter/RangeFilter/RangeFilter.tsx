@@ -35,6 +35,7 @@ const RangeFilterInput = ({
   maxInputLabel,
   step,
   filterPlacement,
+  startAdornment,
   onChange,
   renderValue,
 }: RangeFilterProps) => {
@@ -99,6 +100,7 @@ const RangeFilterInput = ({
             cursor: disabled ? "default" : "pointer",
           },
         }}
+        startAdornment={startAdornment}
         endAdornment={
           <Icon
             icon={open ? IconVariant.NavArrowUp : IconVariant.NavArrowDown}

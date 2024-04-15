@@ -29,6 +29,7 @@ export interface BaseInputProps {
   autoFocus?: boolean;
   onFocus?: (e: any) => void;
   onBlur?: (e: any) => void;
+  debounce?: number;
 }
 
 export interface StandardInputProps

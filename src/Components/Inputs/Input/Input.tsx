@@ -1,11 +1,11 @@
 import { TextField } from "@mui/material";
-import _debounce from "lodash.debounce";
 import { useCallback, useContext, useEffect, useState } from "react";
 import BaseInput, {
   BaseInputContext,
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
+import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { InputProps } from ".";
 
 const InputComp = ({
@@ -29,29 +29,11 @@ const InputComp = ({
 }: InputProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
+  const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
   useEffect(() => {
     setValue(passedValue || "");
   }, [passedValue]);
-
-  const debounceOnChange = useCallback(
-    _debounce((value: any) => {
-      if (onChange) onChange(value);
-    }, debounce),
-    [debounce, onChange]
-  );
-
-  const handleChangeCallback = useCallback(
-    (value: string) => {
-      if (!onChange) return;
-      if (debounce || debounce === 0) {
-        debounceOnChange(value);
-      } else {
-        onChange(value);
-      }
-    },
-    [debounce, onChange]
-  );
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

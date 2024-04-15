@@ -8,11 +8,11 @@ export interface ButtonProps {
   children?: ReactNode | string;
   variant?: "contained" | "outlined" | "link";
   color?: any;
-  onClick?: () => void;
+  onClick?: (e: any) => void;
   disabled?: boolean;
   iconLeft?: IconVariantType | ReactNode;
   iconRight?: IconVariantType | ReactNode;
   loading?: boolean;
-  onHover?: () => void;
+  onHover?: (hovered: boolean) => void;
   sx?: SxProps;
 }

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import DateRangeField from ".";
 
@@ -15,7 +16,7 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    onChange: { action: "onChange" },
+    ...commonArgTypes.onChange,
   },
 } satisfies Meta<typeof DateRangeField>;
 

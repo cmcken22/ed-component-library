@@ -12,7 +12,7 @@ export interface ToggleProps {
   label?: string;
   sx?: any;
   labelPosition?: "left" | "right";
+  onHover?: (hovered?: boolean) => void;
   // TODO:
-  // onHover?: () => void;
   // tooltip?: string;
 }

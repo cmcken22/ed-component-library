@@ -7,7 +7,7 @@ export interface AvatarProps {
   text?: string;
   sx?: SxProps;
   src?: string;
-  onClick?: () => void;
+  onClick?: (e: any) => void;
   onHover?: (hovered: boolean) => void;
   tooltip?: string;
 }

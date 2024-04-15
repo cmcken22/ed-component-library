@@ -1,6 +1,7 @@
 import { Box, styled } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useState } from "react";
+import { useOnHover } from "src/Hooks";
 import Typography from "../Typography";
 import { ToggleProps } from "./Toggle.types";
 
@@ -131,12 +132,14 @@ const Toggle = ({
   checked: passedValue,
   disabled,
   onChange,
+  onHover,
   displayToggleText,
   label,
   labelPosition,
   sx,
 }: ToggleProps) => {
   const [checked, setChecked] = useState(passedValue || false);
+  const onHoverMethods = useOnHover({ callback: onHover });
 
   const handleChange = useCallback(
     (value: boolean) => {
@@ -187,6 +190,7 @@ const Toggle = ({
       data-checked={checked}
       disabled={disabled}
       checked={checked}
+      {...onHoverMethods}
       onClick={() => handleChange(!checked)}
       labelPosition={labelPosition}
       sx={sx}

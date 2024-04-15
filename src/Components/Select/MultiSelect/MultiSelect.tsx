@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import OverflowRowCounter from "src/Components/OverflowRowCounter";
+import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { Typography } from "src/index";
 import BaseSelect from "../BaseSelect";
 import { useCommonMethods } from "../Common";
@@ -16,6 +17,7 @@ const MultiSelect = (props: MultiSelectProps) => {
     renderValue,
     wrap,
     counterPosition,
+    debounce,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || []);
@@ -26,6 +28,7 @@ const MultiSelect = (props: MultiSelectProps) => {
     handleGetOptionDisabled,
     getOptionFromValue,
   } = useCommonMethods<MultiSelectProps>(props);
+  const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
   useEffect(() => {
     setValue(passedValue || []);
@@ -48,9 +51,9 @@ const MultiSelect = (props: MultiSelectProps) => {
         nextValue.push(nextSelected);
       }
       setValue(nextValue);
-      if (onChange) onChange(nextValue);
+      handleChangeCallback(nextValue);
     },
-    [value, setValue, onChange]
+    [value, setValue, handleChangeCallback]
   );
 
   const renderSelectedValue = useCallback(

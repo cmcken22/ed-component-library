@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Avatar from ".";
 
@@ -16,8 +17,8 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     size: {
-      onHover: { action: "onHover" },
-      onClick: { action: "onClick" },
+      ...commonArgTypes.onHover,
+      ...commonArgTypes.onClick,
       control: { type: "radio", options: ["default", "large", "small"] },
     },
   },

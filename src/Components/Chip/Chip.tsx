@@ -3,6 +3,7 @@ import cx from "classnames";
 import { useMemo } from "react";
 import Icon, { IconVariant } from "src/Components/Icon";
 import Typography from "src/Components/Typography";
+import { useOnHover } from "src/Hooks";
 import { TEST_ID } from "src/enums";
 import { hexToRGBA } from "src/utils";
 import { ChipProps, ChipType } from ".";
@@ -57,6 +58,8 @@ const Chip = ({
   children,
   sx,
 }: ChipProps) => {
+  const onHoverMethods = useOnHover({ callback: onHover });
+
   const currentIconVariant = useMemo(() => {
     if (type === "positive") return IconVariant.Success;
     if (type === "negative") return IconVariant.Error;
@@ -75,7 +78,7 @@ const Chip = ({
       type={type}
       iconPosition={iconPosition}
       onClick={onClick}
-      onMouseEnter={onHover}
+      {...onHoverMethods}
       sx={{
         cursor: onClick ? "pointer" : "default",
         ...sx,

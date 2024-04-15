@@ -11,6 +11,7 @@ import BaseInput, {
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
 import Icon, { IconVariant } from "src/Components/Icon";
+import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { TEST_ID } from "src/enums";
 import { DateFieldProps } from "./DateField.types";
 dayjs.extend(customParseFormat);
@@ -31,9 +32,11 @@ const DateFieldComp = ({
   hideCalendarIcon,
   readOnly,
   inputRef,
+  debounce,
 }: DateFieldProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState<Date | null>(passedValue);
+  const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
   useEffect(() => {
     setValue(passedValue);
@@ -51,9 +54,9 @@ const DateFieldComp = ({
   const handleSelect = useCallback(
     (date: Date) => {
       setValue(date);
-      if (onChange) onChange(date);
+      handleChangeCallback(date);
     },
-    [setValue, onChange]
+    [setValue, handleChangeCallback]
   );
 
   return (

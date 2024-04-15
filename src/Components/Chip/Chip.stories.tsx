@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Chip from "./Chip";
 
@@ -15,8 +16,8 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    onClick: { action: "onClick" },
-    onHover: { action: "onHover" },
+    ...commonArgTypes.onClick,
+    ...commonArgTypes.onHover,
     type: {
       options: ["positive", "negative", "warning", "pending", "neutral"],
       control: { type: "radio" },

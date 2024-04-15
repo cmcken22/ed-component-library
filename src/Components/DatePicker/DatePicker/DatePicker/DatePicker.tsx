@@ -2,6 +2,7 @@ import isEqual from "lodash.isequal";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import DateField from "src/Components/Inputs/DateField";
 import Popover from "src/Components/Popover";
+import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { convertDateToGMT, isValidDate } from "../../Common/utils";
 import DatePickerCalendar from "../DatePickerCalendar";
 import { DatePickerProps } from "./DatePicker.types";
@@ -24,11 +25,13 @@ const DatePickerComp = ({
   tools,
   previewSelection,
   disabled,
+  debounce,
   ...dateFieldProps
 }: DatePickerProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<Date | null>(passedValue);
+  const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
   useEffect(() => {
     setValue(passedValue);
@@ -81,10 +84,10 @@ const DatePickerComp = ({
   const handleSelect = useCallback(
     (date: Date) => {
       setValue(date);
-      if (onChange) onChange(date);
+      handleChangeCallback(date);
       handleValidation(date);
     },
-    [setValue, onChange, handleValidation]
+    [setValue, handleChangeCallback, handleValidation]
   );
 
   const displayCalendar = useMemo(() => {

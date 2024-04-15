@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useMemo } from "react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import { IconVariant } from "src/Components/Icon";
 import Button from "./Button";
@@ -17,6 +18,8 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
+    ...commonArgTypes.onClick,
+    ...commonArgTypes.onHover,
     color: {
       options: ["primary", "secondary", "danger"],
       control: { type: "select" },
@@ -26,11 +29,11 @@ const meta = {
       control: { type: "select" },
     },
     iconLeft: {
-      options: ["undefined", ...Object.keys(IconVariant)],
+      options: [undefined, ...Object.keys(IconVariant)],
       control: { type: "select" },
     },
     iconRight: {
-      options: ["undefined", ...Object.keys(IconVariant)],
+      options: [undefined, ...Object.keys(IconVariant)],
       control: { type: "select" },
     },
   },

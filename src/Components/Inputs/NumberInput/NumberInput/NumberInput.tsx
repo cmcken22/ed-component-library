@@ -1,5 +1,4 @@
 import { InputAdornment, TextField, styled } from "@mui/material";
-import _debounce from "lodash.debounce";
 import {
   useCallback,
   useContext,
@@ -15,6 +14,7 @@ import BaseInput, {
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
 import useClampValue from "src/Hooks/useClampValue";
+import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import useKeyBoardInput from "src/Hooks/useKeyBoardInput";
 import { FormattingProps, NumberInputProps } from ".";
 import Stepper from "../Stepper";
@@ -109,30 +109,12 @@ const NumberInputComp = (props: NumberInputCompProps) => {
   const inputRef = useRef(null);
   const [hasFocus, setHasFocus] = useState(false);
   const [value, setValue] = useState<number>(passedValue);
+  const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
   const clamp = useClampValue({ min, max });
 
   useEffect(() => {
     setValue(clamp(passedValue));
   }, [passedValue, clamp]);
-
-  const debounceOnChange = useCallback(
-    _debounce((value: number, formattedValue: string) => {
-      if (onChange) onChange(value, formattedValue);
-    }, debounce),
-    [debounce, onChange]
-  );
-
-  const handleChangeCallback = useCallback(
-    (value: number, formattedValue: string) => {
-      if (!onChange) return;
-      if (debounce || debounce === 0) {
-        debounceOnChange(value, formattedValue);
-      } else {
-        onChange(value, formattedValue);
-      }
-    },
-    [debounce, onChange]
-  );
 
   const handleChange = useCallback(
     (e: { floatValue: number }) => {

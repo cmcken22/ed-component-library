@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import NumberInput from ".";
 
@@ -15,7 +16,6 @@ const meta = {
   },
   tags: ["autodocs"],
   render: (args) => {
-    console.log("args:", args?.thousandSeparator);
     let thousandSeparator = args.thousandSeparator;
     if (thousandSeparator === "true") {
       thousandSeparator = true;
@@ -26,17 +26,14 @@ const meta = {
     return <NumberInput {...args} thousandSeparator={thousandSeparator} />;
   },
   argTypes: {
-    onChange: { action: "changed" },
+    ...commonArgTypes.onChange,
+    ...commonArgTypes.onBlur,
+    ...commonArgTypes.onFocus,
+    ...commonArgTypes.onClick,
+    ...commonArgTypes.status,
+    ...commonArgTypes.labelPosition,
     thousandSeparator: {
       control: { type: "text" },
-    },
-    status: {
-      options: ["error", "success", "warning"],
-      control: { type: "radio" },
-    },
-    labelPosition: {
-      options: ["top", "left"],
-      control: { type: "radio" },
     },
   },
 } satisfies Meta<typeof NumberInput>;

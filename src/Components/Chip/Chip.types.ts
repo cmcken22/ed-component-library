@@ -15,7 +15,7 @@ export interface ChipProps {
   hideIcon?: boolean;
   iconPosition?: "left" | "right";
   onClick?: () => void;
-  onHover?: () => void;
+  onHover?: (hovered: boolean) => void;
   children?: string | React.ReactNode;
   sx?: SxProps;
 }

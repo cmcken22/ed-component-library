@@ -4,6 +4,7 @@ import isEqual from "lodash.isequal";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import DateRangeField from "src/Components/Inputs/DateRangeField";
 import Popover from "src/Components/Popover";
+import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { formatDateRange, isValidDate } from "../../Common/utils";
 import RangePickerCalendar from "../RangePickerCalendar/RangePickerCalendar";
 import { RangePickerProps } from "./RangePicker.types";
@@ -29,6 +30,7 @@ const RangePickerComp = ({
   tools,
   previewSelection,
   readOnly,
+  debounce,
   ...inputProps
 }: RangePickerProps) => {
   const [anchorEl, setAnchorRef] = useState<HTMLElement | null>(null);
@@ -37,6 +39,11 @@ const RangePickerComp = ({
   const [value, setValue] = useState<Date[] | null>(
     (passedValue ? passedValue : []) as Date[]
   );
+  const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
+
+  useEffect(() => {
+    setValue(passedValue ? passedValue : []);
+  }, [passedValue]);
 
   const checkDateDisabled = useCallback(
     (date: Date) => {
@@ -101,9 +108,9 @@ const RangePickerComp = ({
     (dateRange: Date[]) => {
       if (readOnly) return;
       setValue(dateRange);
-      if (onChange) onChange(dateRange);
+      handleChangeCallback(dateRange);
     },
-    [setValue, onChange, readOnly]
+    [setValue, readOnly, handleChangeCallback]
   );
 
   const handleOpenPopover = useCallback(() => {

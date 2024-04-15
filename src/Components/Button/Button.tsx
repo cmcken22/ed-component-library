@@ -2,6 +2,7 @@ import { Box, Button as MuiButton } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useRef } from "react";
 import Icon from "src/Components/Icon";
+import { useOnHover } from "src/Hooks";
 import { TEST_ID } from "src/enums";
 import { ButtonProps } from "./Button.types";
 import LoadingIdicator from "./LoadingIndicator";
@@ -21,10 +22,14 @@ const Button = ({
   sx,
 }: ButtonProps) => {
   const buttonRef = useRef(null);
+  const onHoverMethods = useOnHover({ callback: onHover });
 
-  const handleClick = useCallback(() => {
-    if (onClick) onClick();
-  }, [onClick]);
+  const handleClick = useCallback(
+    (e: any) => {
+      if (onClick) onClick(e);
+    },
+    [onClick]
+  );
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -43,7 +48,7 @@ const Button = ({
         color={color}
         disabled={disabled}
         disableTouchRipple
-        onMouseEnter={onHover}
+        {...onHoverMethods}
         sx={{
           ...sx,
           position: "relative",

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Percent from ".";
 
@@ -15,15 +16,12 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    onChange: { action: "onChange" },
-    status: {
-      options: ["error", "success", "warning"],
-      control: { type: "radio" },
-    },
-    labelPosition: {
-      options: ["top", "left"],
-      control: { type: "radio" },
-    },
+    ...commonArgTypes.onChange,
+    ...commonArgTypes.onBlur,
+    ...commonArgTypes.onFocus,
+    ...commonArgTypes.onClick,
+    ...commonArgTypes.status,
+    ...commonArgTypes.labelPosition,
     iconPlacement: {
       options: ["prefix", "suffix"],
       control: { type: "radio" },

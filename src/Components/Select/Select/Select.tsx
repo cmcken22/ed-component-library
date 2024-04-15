@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { Typography } from "src/index";
 import BaseSelect from "../BaseSelect";
 import { useCommonMethods } from "../Common";
@@ -14,6 +15,7 @@ const Select = (props: SelectProps) => {
     allowDeselect,
     renderValue,
     variant,
+    debounce,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || "");
@@ -24,6 +26,7 @@ const Select = (props: SelectProps) => {
     handleGetOptionDisabled,
     getOptionFromValue,
   } = useCommonMethods<SelectProps>(props);
+  const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
   useEffect(() => {
     setValue(passedValue || "");
@@ -42,9 +45,9 @@ const Select = (props: SelectProps) => {
       let nextValue = nextSelected;
       if (nextValue === value && allowDeselect) nextValue = "";
       setValue(nextValue);
-      if (onChange) onChange(nextValue);
+      handleChangeCallback(nextValue);
     },
-    [value, setValue, onChange, allowDeselect]
+    [value, setValue, allowDeselect, handleChangeCallback]
   );
 
   const renderSelectedValue = useCallback(

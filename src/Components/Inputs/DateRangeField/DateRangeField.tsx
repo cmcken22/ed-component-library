@@ -11,46 +11,15 @@ import BaseInput, {
 } from "src/Components/BaseInput";
 import { getFontColor } from "src/Components/BaseInput/helpers";
 import Icon, { IconVariant } from "src/Components/Icon";
+import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { TEST_ID } from "src/enums";
 import { shouldNotForwardProp } from "src/utils";
+import {
+  findIndicesOfSpecialCharacters,
+  inverseIndices,
+} from "./DateRangeField.helpers";
 import { DateRangeFieldProps } from "./DateRangeField.types";
 dayjs.extend(customParseFormat);
-
-const findIndicesOfSpecialCharacters = (str) => {
-  const formattedStr = str.replace(/ /g, "_");
-  const indices = [];
-  const specialCharRegex = /[^A-Za-z0-9\s]/g; // Regular expression to match any non-alphanumeric character
-
-  let match;
-  while ((match = specialCharRegex.exec(formattedStr)) !== null) {
-    indices.push(match.index);
-  }
-
-  return indices;
-};
-
-const inverseIndices = (indices, strLength) => {
-  const ranges = [];
-
-  // Add range from beginning to first index - 1
-  if (indices[0] > 0) {
-    ranges.push([0, indices[0] - 1]);
-  }
-
-  // Add ranges between consecutive indices
-  for (let i = 0; i < indices.length - 1; i++) {
-    if (indices[i] + 1 < indices[i + 1]) {
-      ranges.push([indices[i] + 1, indices[i + 1] - 1]);
-    }
-  }
-
-  // Add range from last index + 1 to end
-  if (indices[indices.length - 1] < strLength - 1) {
-    ranges.push([indices[indices.length - 1] + 1, strLength - 1]);
-  }
-
-  return ranges;
-};
 
 const StyledWrapper = styled(Box, {
   shouldForwardProp: shouldNotForwardProp(["row", "status", "variant"]),
@@ -117,8 +86,10 @@ const DateRangeFieldComp = ({
   hideCalendarIcon,
   inputRef,
   onClick,
+  debounce,
 }: DateRangeFieldProps) => {
   const { status, endAdornment } = useContext(BaseInputContext);
+  const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
   const ref1 = useRef(null);
   const ref2 = useRef(null);
@@ -165,9 +136,9 @@ const DateRangeFieldComp = ({
       const nextValue = [...value];
       nextValue[idx] = date;
       setValue(nextValue);
-      if (onChange) onChange(nextValue);
+      handleChangeCallback(nextValue);
     },
-    [value, onChange, setValue]
+    [value, setValue, handleChangeCallback]
   );
 
   const renderInput = useCallback(

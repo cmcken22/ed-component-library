@@ -85,7 +85,7 @@ Button.defaultProps = {
   color: "primary",
   disabled: false,
   onHover: () => {},
-  loading: true,
+  loading: false,
 } as Partial<ButtonProps>;
 
 export default Button;

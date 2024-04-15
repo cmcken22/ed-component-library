@@ -36,9 +36,6 @@ const RangeSlider = ({
       if (!Array.isArray(newValue)) {
         return;
       }
-      console.clear();
-      console.log("newValue:", newValue);
-      console.log("activeThumb:", activeThumb);
 
       let nextValue: number[] = [];
       if (activeThumb === 0) {
@@ -53,8 +50,6 @@ const RangeSlider = ({
   );
 
   const isValid = useMemo(() => validateRange(value), [value]);
-
-  // console.log("isValid:", isValid);
 
   return (
     <Box

@@ -81,9 +81,11 @@ const Popover = ({
   );
 
   useEffect(() => {
-    window.addEventListener("click", handleClickOutside);
+    // use mouse down instead of click to handle outside click
+    // important for components like the RangeFilter which has a slider
+    window.addEventListener("mousedown", handleClickOutside);
     return () => {
-      window.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("mousedown", handleClickOutside);
     };
   }, [handleClickOutside]);
 

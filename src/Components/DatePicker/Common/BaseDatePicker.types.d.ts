@@ -1,4 +1,4 @@
-import { PopoverProps } from '../../Popover';
+import { PopoverPlacement, PopoverProps } from '../../Popover';
 import { StandardInputProps } from '../../BaseInput';
 
 export interface BaseDatePickerProps extends StandardInputProps {
@@ -62,7 +62,7 @@ export interface BaseDatePickerProps extends StandardInputProps {
      * @default false
      */
     disableTextInput?: boolean;
-    calendarPlacement?: "auto-end" | "auto-start" | "auto" | "bottom-end" | "bottom-start" | "bottom" | "left-end" | "left-start" | "left" | "right-end" | "right-start" | "right" | "top-end" | "top-start" | "top";
+    calendarPlacement?: PopoverPlacement;
     /**
      * Popover props to pass to the underlying Popover component
      */

@@ -9,6 +9,8 @@ const meta = {
   title: "Example/Button",
   component: Button,
   parameters: {
+    // defaulting to dark because the button loading animation is white
+    backgrounds: { default: "dark" },
     layout: "centered",
     docs: {
       source: {

@@ -1,10 +1,11 @@
-import { Box, Tooltip, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import cx from "classnames";
 import { useCallback } from "react";
 import Typography from "src/Components/Typography";
 import { useOnHover } from "src/Hooks";
 import { TEST_ID } from "src/enums";
 import { AvatarProps } from ".";
+import Tooltip from "../Tooltip/Tooltip";
 
 const StyledWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "src",
@@ -35,6 +36,7 @@ const Avatar = ({
   onClick,
   sx,
   tooltip,
+  ToolTipProps,
 }: AvatarProps) => {
   const onHoverMethods = useOnHover({ callback: onHover });
 
@@ -71,7 +73,7 @@ const Avatar = ({
   }, [size]);
 
   return (
-    <Tooltip title={tooltip} placement="top" arrow>
+    <Tooltip title={tooltip} {...ToolTipProps}>
       <StyledWrapper
         id={id}
         className={cx("avatar", className)}

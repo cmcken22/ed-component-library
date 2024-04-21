@@ -63,7 +63,7 @@ export interface BaseDatePickerProps extends StandardInputProps {
    */
   disableTextInput?: boolean;
 
-  calendarPlacement?: PopoverPlacement;
+  calendarPlacement?: keyof typeof PopoverPlacement;
 
   /**
    * Popover props to pass to the underlying Popover component

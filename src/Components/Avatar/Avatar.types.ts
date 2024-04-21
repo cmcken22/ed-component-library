@@ -1,4 +1,5 @@
 import { SxProps } from "@mui/material";
+import { TooltipProps } from "../Tooltip/Tooltip";
 
 export interface AvatarProps {
   id?: string;
@@ -10,4 +11,5 @@ export interface AvatarProps {
   onClick?: (e: any) => void;
   onHover?: (hovered: boolean) => void;
   tooltip?: string;
+  ToolTipProps?: TooltipProps;
 }

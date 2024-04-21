@@ -7,8 +7,18 @@ const withBaseInput = <T extends BaseInputProps>(
   displayName: string
 ): FC<T> => {
   const WithBaseInput = (props: T) => {
-    const { id, status, fullWidth, tooltip, className, sx, variant, ...rest } =
-      props;
+    const {
+      id,
+      status,
+      fullWidth,
+      tooltip,
+      TooltipProps,
+      className,
+      sx,
+      variant,
+      ...rest
+    } = props;
+
     return (
       <BaseInputContextProvider
         id={id}
@@ -17,6 +27,7 @@ const withBaseInput = <T extends BaseInputProps>(
         status={status}
         fullWidth={fullWidth}
         tooltip={tooltip}
+        TooltipProps={TooltipProps}
         sx={sx}
         variant={variant}
       >

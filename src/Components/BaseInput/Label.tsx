@@ -1,7 +1,8 @@
-import { Box, Tooltip } from "@mui/material";
+import { Box } from "@mui/material";
 import { useCallback, useContext, useEffect } from "react";
 import Icon, { IconVariant } from "src/Components/Icon";
 import { BaseInputContext } from ".";
+import Tooltip from "../Tooltip/Tooltip";
 import Typography from "../Typography";
 import { FONT_VARIANT } from "../theme/Typography";
 
@@ -12,7 +13,8 @@ export interface LabelProps {
 }
 
 const Label = ({ children, required, position }: LabelProps) => {
-  const { setLabelPosition, tooltip, variant } = useContext(BaseInputContext);
+  const { setLabelPosition, tooltip, variant, TooltipProps } =
+    useContext(BaseInputContext);
 
   useEffect(() => {
     if (position) setLabelPosition(position);
@@ -35,7 +37,7 @@ const Label = ({ children, required, position }: LabelProps) => {
   const renderInfoTooltip = useCallback(() => {
     if (!tooltip) return null;
     return (
-      <Tooltip title={tooltip} placement="top" arrow>
+      <Tooltip title={tooltip} {...TooltipProps}>
         <Icon
           icon={IconVariant.WarningV2}
           height="12px"
@@ -47,7 +49,7 @@ const Label = ({ children, required, position }: LabelProps) => {
         />
       </Tooltip>
     );
-  }, [tooltip]);
+  }, [tooltip, TooltipProps]);
 
   if (!children) return null;
   if (variant === "table") return null;

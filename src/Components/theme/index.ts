@@ -9,6 +9,7 @@ import SelectTheme, {
   SelectListTheme,
 } from "src/Components/Select/BaseSelect/BaseSelect.theme";
 import TabsTheme from "src/Components/Tabs/Tabs.theme";
+import TooltipTheme from "src/Components/Tooltip/Tooltip.theme";
 import typography from "./Typography";
 import { Colors, palette } from "./palette";
 
@@ -26,6 +27,7 @@ const theme = createTheme({
     // MuiPagination: PaginationTheme,
     MuiPaginationItem: PaginationItemTheme,
     MuiSlider: RangeSliderTheme,
+    MuiTooltip: TooltipTheme,
   },
   shape: {
     borderRadius: 2,

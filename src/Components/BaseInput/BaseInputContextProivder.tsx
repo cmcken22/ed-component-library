@@ -13,6 +13,7 @@ const BaseInputContextProvider = ({
   sx,
   children,
   tooltip,
+  TooltipProps,
   componentType,
   variant,
   // endAdornment,
@@ -64,6 +65,7 @@ const BaseInputContextProvider = ({
         disabled,
         endAdornment: renderStatusIcon(),
         tooltip,
+        TooltipProps,
         variant,
       }}
     >

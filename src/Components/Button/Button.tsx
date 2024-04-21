@@ -1,26 +1,28 @@
 import { Box, Button as MuiButton } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useRef } from "react";
+import { forwardRef, useCallback, useRef } from "react";
 import Icon from "src/Components/Icon";
 import { useOnHover } from "src/Hooks";
 import { TEST_ID } from "src/enums";
 import { ButtonProps } from "./Button.types";
 import LoadingIdicator from "./LoadingIndicator";
 
-const Button = ({
-  id,
-  className,
-  children,
-  onClick,
-  color,
-  variant,
-  disabled,
-  iconLeft,
-  iconRight,
-  loading,
-  onHover,
-  sx,
-}: ButtonProps) => {
+const Button = forwardRef<HTMLDivElement, ButtonProps>((props, ref) => {
+  const {
+    id,
+    className,
+    children,
+    onClick,
+    color,
+    variant,
+    disabled,
+    iconLeft,
+    iconRight,
+    loading,
+    onHover,
+    sx,
+    ...tooltipProps
+  } = props;
   const buttonRef = useRef(null);
   const onHoverMethods = useOnHover({ callback: onHover });
 
@@ -32,7 +34,7 @@ const Button = ({
   );
 
   return (
-    <Box sx={{ position: "relative" }}>
+    <Box ref={ref} {...tooltipProps} sx={{ position: "relative" }}>
       <LoadingIdicator buttonRef={buttonRef} loading={loading} />
       <MuiButton
         id={id}
@@ -78,7 +80,7 @@ const Button = ({
       </MuiButton>
     </Box>
   );
-};
+});
 
 Button.defaultProps = {
   variant: "contained",

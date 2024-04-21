@@ -1,9 +1,9 @@
-import { Box, Tooltip } from "@mui/material";
+import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
 import { IconVariant } from "src/Components/Icon";
 import Tabs, { Tab, TabContextProvider, TabPanel } from ".";
-import { Button, Icon, Typography } from "../..";
+import { Button, Icon, Tooltip, Typography } from "../..";
 
 const Code = (res: string) => `
 <TabContextProvider defaultValue="1">
@@ -99,17 +99,15 @@ export const CustomTabs: Story = {
                 alignItems="center"
               >
                 <Typography variant="bodyXS">Tab 1</Typography>
-                <Tooltip title="This is a tooltip" placement="top" arrow>
-                  <span>
-                    <Icon
-                      icon={IconVariant.WarningV2}
-                      height="12px"
-                      width="12px"
-                      sx={{
-                        transform: "rotate(180deg)",
-                      }}
-                    />
-                  </span>
+                <Tooltip title="This is a tooltip">
+                  <Icon
+                    icon={IconVariant.WarningV2}
+                    height="12px"
+                    width="12px"
+                    sx={{
+                      transform: "rotate(180deg)",
+                    }}
+                  />
                 </Tooltip>
               </Box>
             </Tab>

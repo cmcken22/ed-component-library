@@ -16,5 +16,5 @@ export interface RangeFilterProps extends StandardInputProps, ModalProps {
    */
   defaultRange?: number[];
   filterLabel?: string;
-  filterPlacement?: PopoverPlacement;
+  filterPlacement?: keyof typeof PopoverPlacement;
 }

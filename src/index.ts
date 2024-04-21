@@ -15,6 +15,7 @@ export { default as NumberInput } from "./Components/Inputs/NumberInput";
 export { default as Percent } from "./Components/Inputs/Percent";
 export { default as TextArea } from "./Components/Inputs/TextArea";
 export { default as OverflowRowCounter } from "./Components/OverflowRowCounter";
+export { default as RadioButton } from "./Components/RadioButton";
 export { RangeFilter, RangeFilterModal } from "./Components/RangeFilter";
 export { MultiSelect, Select } from "./Components/Select";
 export {
@@ -30,5 +31,6 @@ export {
   default as Tabs,
 } from "./Components/Tabs";
 export { default as ThemeWrapper } from "./Components/ThemeWrapper";
+export { default as Tooltip } from "./Components/Tooltip/Tooltip";
 export { default as Typography } from "./Components/Typography";
 export { palette, theme, useEllisDonTheme } from "./Components/theme";

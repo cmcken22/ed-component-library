@@ -24,5 +24,5 @@ export interface PopoverProps {
   arrow?: boolean;
   allowFlip?: boolean;
   offset?: number[];
-  placement?: PopoverPlacement;
+  placement?: keyof typeof PopoverPlacement;
 }

@@ -1,6 +1,20 @@
 import { SxProps } from "@mui/material";
 import React from "react";
 
+export enum TooltipPlacement {
+  "bottom-end" = "bottom-end",
+  "bottom-start" = "bottom-start",
+  "bottom" = "bottom",
+  "left-end" = "left-end",
+  "left-start" = "left-start",
+  "left" = "left",
+  "right-end" = "right-end",
+  "right-start" = "right-start",
+  "top-end" = "top-end",
+  "top-start" = "top-start",
+  "top" = "top",
+}
+
 export interface TooltipProps {
   id?: string;
   className?: string;
@@ -11,19 +25,7 @@ export interface TooltipProps {
   open?: boolean;
   defaultOpen?: boolean;
   allowClose?: boolean;
-  placement?:
-    | "bottom-end"
-    | "bottom-start"
-    | "bottom"
-    | "left-end"
-    | "left-start"
-    | "left"
-    | "right-end"
-    | "right-start"
-    | "right"
-    | "top-end"
-    | "top-start"
-    | "top";
+  placement?: keyof typeof TooltipPlacement;
   persistent?: boolean;
   onOpen?: () => void;
   onClose?: () => void;

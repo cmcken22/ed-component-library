@@ -6,6 +6,7 @@ import Popover from "src/Components/Popover";
 import { Select } from "src/Components/Select";
 import { FONT_WEIGHT } from "src/Components/theme/Typography";
 import { Icon, Input, Percent, Typography, useEllisDonTheme } from "../..";
+import { NumberInputOnChange } from "../Inputs/NumberInput/NumberInput/NumberInput.types";
 import { PercentFilterProps } from "./PercentFilter.types";
 
 enum OPERAND {
@@ -155,9 +156,9 @@ const PercentFilterModal = ({ value, onSubmit, onCancel }: any) => {
           <Percent
             value={val1}
             fullWidth
-            onChange={(val) => {
-              val1Ref.current = val;
-              setVal1(val);
+            onChange={(val: NumberInputOnChange) => {
+              val1Ref.current = val?.floatValue;
+              setVal1(val?.floatValue);
             }}
           />
           {operand === OPERAND.BETWEEN && (
@@ -166,9 +167,9 @@ const PercentFilterModal = ({ value, onSubmit, onCancel }: any) => {
               <Percent
                 value={val2}
                 fullWidth
-                onChange={(val) => {
-                  val2Ref.current = val;
-                  setVal2(val);
+                onChange={(val: NumberInputOnChange) => {
+                  val2Ref.current = val?.floatValue;
+                  setVal2(val?.floatValue);
                 }}
               />
             </>

@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useCallback, useContext, useEffect } from "react";
 import Icon, { IconVariant } from "src/Components/Icon";
 import { BaseInputContext } from ".";
-import Tooltip from "../Tooltip/Tooltip";
+import Tooltip from "../Tooltip";
 import Typography from "../Typography";
 import { FONT_VARIANT } from "../theme/Typography";
 

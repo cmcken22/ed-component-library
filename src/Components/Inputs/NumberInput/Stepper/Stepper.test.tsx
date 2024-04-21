@@ -52,15 +52,15 @@ describe("Stepper", () => {
     const upIcon = component.querySelector(".Stepper__icon--up");
     expect(upIcon).toBeInTheDocument();
     fireEvent.click(upIcon);
-    expect(props.onChange).toHaveBeenCalledWith(1);
+    expect(props.onChange).toHaveBeenCalledWith("1");
     fireEvent.click(upIcon);
-    expect(props.onChange).toHaveBeenCalledWith(2);
+    expect(props.onChange).toHaveBeenCalledWith("2");
 
     const downIcon = component.querySelector(".Stepper__icon--down");
     expect(downIcon).toBeInTheDocument();
     fireEvent.click(downIcon);
-    expect(props.onChange).toHaveBeenCalledWith(1);
+    expect(props.onChange).toHaveBeenCalledWith("1");
     fireEvent.click(downIcon);
-    expect(props.onChange).toHaveBeenCalledWith(0);
+    expect(props.onChange).toHaveBeenCalledWith("0");
   });
 });

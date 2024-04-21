@@ -34,7 +34,7 @@ const Stepper = ({
   onChange,
   disabled,
 }: StepperProps) => {
-  const [value, setValue] = useState<number>(passedValue);
+  const [value, setValue] = useState<number | string>(passedValue);
 
   useEffect(() => {
     setValue(passedValue);

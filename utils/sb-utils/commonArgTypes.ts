@@ -15,7 +15,7 @@ const commonArgTypes = {
     onChange: { action: "onChange" },
   },
   onFocus: {
-    onfocus: { action: "onFocus" },
+    onFocus: { action: "onFocus" },
   },
   onBlur: {
     onBlur: { action: "onBlur" },

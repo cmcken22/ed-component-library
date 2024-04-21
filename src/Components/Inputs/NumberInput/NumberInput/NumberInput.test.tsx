@@ -57,9 +57,14 @@ describe("NumberInput", () => {
     expect(Input).toBeInTheDocument();
 
     const nextValue = 100;
+    const floatValue = 100.0;
     const formattedValue = "100.00";
     fireEvent.change(Input, { target: { value: nextValue } });
-    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(props.onChange).toHaveBeenCalledWith({
+      value: formattedValue,
+      floatValue,
+      formattedValue,
+    });
     expect(Input).toHaveValue(formattedValue);
   });
 
@@ -73,16 +78,26 @@ describe("NumberInput", () => {
     expect(Input).toBeInTheDocument();
 
     let nextValue = 100;
+    let floatValue = 100;
     let formattedValue = "100";
     fireEvent.change(Input, { target: { value: nextValue } });
-    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(props.onChange).toHaveBeenCalledWith({
+      value: `${nextValue}`,
+      floatValue,
+      formattedValue,
+    });
     expect(Input).toHaveValue(formattedValue);
 
     nextValue = 100.12;
+    floatValue = 100.12;
     formattedValue = "100.12";
     fireEvent.change(Input, { target: { value: nextValue } });
 
-    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(props.onChange).toHaveBeenCalledWith({
+      value: `${nextValue}`,
+      floatValue,
+      formattedValue,
+    });
     expect(Input).toHaveValue(formattedValue);
   });
 
@@ -96,10 +111,15 @@ describe("NumberInput", () => {
     expect(Input).toBeInTheDocument();
 
     const nextValue = 1000;
+    const floatValue = 1000;
     const formattedValue = "1,000";
     fireEvent.change(Input, { target: { value: nextValue } });
 
-    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(props.onChange).toHaveBeenCalledWith({
+      value: `${nextValue}`,
+      floatValue,
+      formattedValue,
+    });
     expect(Input).toHaveValue(formattedValue);
   });
 
@@ -109,10 +129,15 @@ describe("NumberInput", () => {
     expect(Input).toBeInTheDocument();
 
     const nextValue = -100;
+    const floatValue = -100;
     const formattedValue = "-100";
     fireEvent.change(Input, { target: { value: nextValue } });
 
-    expect(props.onChange).toHaveBeenCalledWith(nextValue, formattedValue);
+    expect(props.onChange).toHaveBeenCalledWith({
+      value: `${nextValue}`,
+      floatValue,
+      formattedValue,
+    });
     expect(Input).toHaveValue(formattedValue);
   });
 

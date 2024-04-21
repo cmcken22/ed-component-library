@@ -3,7 +3,7 @@ import { clamp } from "src/utils";
 
 const useClampValue = ({ min, max }: { min: number; max: number }) => {
   const clampValue = useCallback(
-    (value: number) => {
+    (value: string | number) => {
       return clamp(value, min, max);
     },
     [min, max]

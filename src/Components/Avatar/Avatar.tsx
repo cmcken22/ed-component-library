@@ -5,7 +5,7 @@ import Typography from "src/Components/Typography";
 import { useOnHover } from "src/Hooks";
 import { TEST_ID } from "src/enums";
 import { AvatarProps } from ".";
-import Tooltip from "../Tooltip/Tooltip";
+import Tooltip from "../Tooltip";
 
 const StyledWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "src",

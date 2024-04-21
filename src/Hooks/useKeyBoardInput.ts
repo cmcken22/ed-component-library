@@ -9,7 +9,7 @@ interface UseKeyBoardInputProps {
   hasFocus: boolean;
   value: string | number;
   allowNegative: boolean;
-  callback: (value: number) => void;
+  callback: (value: string) => void;
 }
 
 const useKeyBoardInput = ({

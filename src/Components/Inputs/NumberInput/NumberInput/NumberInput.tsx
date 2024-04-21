@@ -72,7 +72,7 @@ export const useFormattingPropIsolation = <T extends FormattingProps>(
 };
 
 interface NumberInputCompProps extends Omit<NumberInputProps, "value"> {
-  value: number;
+  value: string;
 }
 
 const NumberInputComp = (props: NumberInputCompProps) => {
@@ -108,24 +108,37 @@ const NumberInputComp = (props: NumberInputCompProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const inputRef = useRef(null);
   const [hasFocus, setHasFocus] = useState(false);
-  const [value, setValue] = useState<number>(passedValue);
+  const [value, setValue] = useState<string>(passedValue);
   const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
   const clamp = useClampValue({ min, max });
 
   useEffect(() => {
-    setValue(clamp(passedValue));
+    setValue(clamp(passedValue) as string);
   }, [passedValue, clamp]);
 
   const handleChange = useCallback(
-    (e: { floatValue: number }) => {
-      const { floatValue } = e;
+    (e: { value: string | number }) => {
+      const value = `${e.value}`;
+      if (e?.value === "") {
+        handleChangeCallback({
+          value,
+          floatValue: null,
+          formattedValue: "",
+        });
+        setValue(value);
+        return;
+      }
+      const floatValue = parseFloat(value);
       const clampedValue = clamp(floatValue);
       const valid = floatValue === clampedValue;
-      setValue(floatValue);
+      setValue(value);
       if (valid) {
-        const inputValue = inputRef.current?.value;
-        const formattedValue = numericFormatter(inputValue, formattingProps);
-        handleChangeCallback(floatValue, formattedValue);
+        const formattedValue = numericFormatter(value, formattingProps);
+        handleChangeCallback({
+          value,
+          floatValue,
+          formattedValue,
+        });
       }
     },
     [setValue, clamp, handleChangeCallback, formattingProps]
@@ -139,7 +152,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
     min,
     max,
     step,
-    callback: (val: number) => handleChange({ floatValue: val }),
+    callback: (val: any) => handleChange({ value: val }),
   });
 
   const renderStepper = useCallback(() => {
@@ -152,7 +165,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
         step={step}
         value={value}
         allowNegative={formattingProps?.allowNegative}
-        onChange={(val: number) => handleChange({ floatValue: val })}
+        onChange={(val: any) => handleChange({ value: val })}
       />
     );
   }, [
@@ -223,7 +236,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
       setHasFocus(false);
       const clampedValue = clamp(value);
       if (clampedValue !== value) {
-        handleChange({ floatValue: clampedValue });
+        handleChange({ value: clampedValue });
       }
       if (onBlur) onBlur(e);
     },
@@ -268,14 +281,16 @@ const NumberInputComp = (props: NumberInputCompProps) => {
   );
 };
 
-// this warpper is meant to convert the value to a number
+// this warpper is meant to convert the value to a string
 const NumberInputWrapper = (props: NumberInputProps) => {
   const value = useMemo(() => {
-    if (props?.value === undefined) return undefined;
-    if (props?.value === null) return null;
-    return Number(props?.value);
+    // if (props?.value === undefined) return undefined;
+    // if (props?.value === null) return null;
+    // return Number(props?.value);
+    return `${props?.value}`;
   }, [props?.value]);
 
+  // @ts-ignore
   return <NumberInputComp {...props} value={value} />;
 };
 

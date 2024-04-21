@@ -85,12 +85,13 @@ export const removeNumericFormatting = (value: string, formattingProps) => {
   return result;
 };
 
-export const clamp = (value: number, min: number, max: number) => {
+export const clamp = (value: number | string, min: number, max: number) => {
   let val = value;
-  if ((min || min === 0) && val < min) {
+  if ((min || min === 0) && +val < min) {
     val = min;
-  } else if ((max || max === 0) && val > max) {
+  } else if ((max || max === 0) && +val > max) {
     val = max;
   }
+  if (typeof value === "string") return `${val}`;
   return val;
 };

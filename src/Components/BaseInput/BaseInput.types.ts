@@ -1,7 +1,7 @@
 import { SxProps } from "@mui/material";
 import { createContext } from "react";
 import { Status } from "src/enums";
-import { TooltipProps } from "../Tooltip/Tooltip";
+import { TooltipProps } from "../Tooltip";
 
 export interface BaseInputProps {
   id?: string;

@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { NumberInputOnChange } from "src/Components/Inputs/NumberInput/NumberInput/NumberInput.types";
 import { FONT_WEIGHT } from "src/Components/theme/Typography";
 import { Button, NumberInput, Typography } from "src/index";
 import { clamp } from "src/utils";
@@ -93,14 +94,15 @@ const RangeFilterControl = ({
   );
 
   const handleInputChange = useCallback(
-    (newValue: number, index: number) => {
+    (newValue: NumberInputOnChange, index: number) => {
+      const { floatValue } = newValue;
       if (index === 0) {
-        const minVal = newValue;
-        const maxVal = clamp(value[1], minVal + minDistance, max);
+        const minVal = floatValue;
+        const maxVal = clamp(value[1], minVal + minDistance, max) as number;
         handleChange([minVal, maxVal]);
       } else {
-        const maxVal = newValue;
-        const minVal = clamp(value[0], min, maxVal - minDistance);
+        const maxVal = floatValue;
+        const minVal = clamp(value[0], min, maxVal - minDistance) as number;
         handleChange([minVal, maxVal]);
       }
     },
@@ -166,8 +168,7 @@ const RangeFilterControl = ({
           min={min}
           max={max - minDistance}
           step={step}
-          // variant="table"
-          onChange={(val: number) => handleInputChange(val, 0)}
+          onChange={(val: NumberInputOnChange) => handleInputChange(val, 0)}
         />
         <Component
           {...ComponentProps}
@@ -177,8 +178,7 @@ const RangeFilterControl = ({
           min={min + minDistance}
           max={max}
           step={step}
-          // variant="table"
-          onChange={(val: number) => handleInputChange(val, 1)}
+          onChange={(val: NumberInputOnChange) => handleInputChange(val, 1)}
         />
       </HorizontalStack>
       <HorizontalStack justifyContent="space-between" sx={{ mt: 0.5 }}>

@@ -1,5 +1,5 @@
 import { SxProps } from "@mui/material";
-import { TooltipProps } from "../Tooltip/Tooltip";
+import { TooltipProps } from "../Tooltip";
 
 export interface AvatarProps {
   id?: string;

@@ -1,20 +1,21 @@
 import "@testing-library/jest-dom";
 import { render } from "test-utils/index";
 import RangeFilterInput from "./RangeFilter";
-import { RangeFilterInputProps } from "./RangeFilter.types";
+import { RangeFilterProps } from "./RangeFilter.types";
 
-const initialProps: RangeFilterInputProps = {
+// @ts-ignore
+const initialProps: RangeFilterProps = {
   ...RangeFilterInput.defaultProps,
 };
 
 describe("RangeFilterInput", () => {
-  let props: RangeFilterInputProps = { ...initialProps };
+  let props: RangeFilterProps = { ...initialProps };
 
   beforeEach(() => {
     props = { ...initialProps };
   });
 
-  const renderComponent = (props: RangeFilterInputProps) =>
+  const renderComponent = (props: RangeFilterProps) =>
     render(<RangeFilterInput {...props} />);
 
   it("should render correctly", () => {

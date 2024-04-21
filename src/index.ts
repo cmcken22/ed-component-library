@@ -31,6 +31,6 @@ export {
   default as Tabs,
 } from "./Components/Tabs";
 export { default as ThemeWrapper } from "./Components/ThemeWrapper";
-export { default as Tooltip } from "./Components/Tooltip/Tooltip";
+export { default as Tooltip } from "./Components/Tooltip";
 export { default as Typography } from "./Components/Typography";
 export { palette, theme, useEllisDonTheme } from "./Components/theme";

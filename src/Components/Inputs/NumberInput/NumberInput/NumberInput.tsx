@@ -116,16 +116,20 @@ const NumberInputComp = (props: NumberInputCompProps) => {
     setValue(clamp(passedValue) as string);
   }, [passedValue, clamp]);
 
+  const handleClearValue = useCallback(() => {
+    handleChangeCallback({
+      value: "",
+      floatValue: null,
+      formattedValue: "",
+    });
+    setValue("");
+  }, [handleChangeCallback, setValue]);
+
   const handleChange = useCallback(
     (e: { value: string | number }) => {
       const value = `${e.value}`;
       if (e?.value === "") {
-        handleChangeCallback({
-          value,
-          floatValue: null,
-          formattedValue: "",
-        });
-        setValue(value);
+        handleClearValue();
         return;
       }
       const floatValue = parseFloat(value);
@@ -141,7 +145,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
         });
       }
     },
-    [setValue, clamp, handleChangeCallback, formattingProps]
+    [setValue, clamp, handleChangeCallback, formattingProps, handleClearValue]
   );
 
   useKeyBoardInput({

@@ -143,7 +143,8 @@ const NumberInputComp = (props: NumberInputCompProps) => {
   });
 
   const renderStepper = useCallback(() => {
-    if (!showSteps && !disabled && !readOnly) return null;
+    if (!showSteps) return null;
+    if (disabled || readOnly) return null;
     return (
       <Stepper
         min={min}

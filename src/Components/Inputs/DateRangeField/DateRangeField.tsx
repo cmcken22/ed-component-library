@@ -43,6 +43,9 @@ const StyledWrapper = styled(Box, {
 
   return {
     backgroundColor: theme.palette.common.white,
+    ...(disabled && {
+      backgroundColor: theme.palette.charcoal?.["5"],
+    }),
     border: "1px solid",
     borderRadius: "4px",
     display: "flex",

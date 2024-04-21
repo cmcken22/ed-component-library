@@ -28,5 +28,6 @@ export const Default: Story = {
     ...DateRangeField.defaultProps,
     label: "Date Range",
     helperText: "Helper text",
+    disabled: false,
   },
 };

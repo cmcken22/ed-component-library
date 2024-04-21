@@ -84,6 +84,7 @@ const StyledWrapper = styled(Box, {
       },
     },
     "& .MuiInputBase-root.Mui-disabled": {
+      backgroundColor: theme.palette.charcoal["5"],
       "& fieldset": {
         borderColor: borderColor,
       },

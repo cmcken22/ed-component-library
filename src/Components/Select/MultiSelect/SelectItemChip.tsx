@@ -5,18 +5,24 @@ import Icon, { IconVariant } from "src/Components/Icon";
 interface SelectedItemChipProps {
   label: string;
   onRemove: () => void;
+  disabled?: boolean;
 }
 
-const SelectedItemChip = ({ label, onRemove }: SelectedItemChipProps) => {
+const SelectedItemChip = ({
+  label,
+  disabled,
+  onRemove,
+}: SelectedItemChipProps) => {
   const handleClick = useCallback(
     (e: any) => {
+      if (disabled) return;
       e?.stopPropagation();
       e?.preventDefault();
       if (onRemove) {
         onRemove();
       }
     },
-    [onRemove]
+    [onRemove, disabled]
   );
 
   return (
@@ -32,7 +38,7 @@ const SelectedItemChip = ({ label, onRemove }: SelectedItemChipProps) => {
         fontSize: "12px",
         lineHeight: "16px",
         padding: "0 8px",
-        cursor: "pointer",
+        cursor: disabled ? "default" : "pointer",
       }}
     >
       {label}
@@ -42,7 +48,7 @@ const SelectedItemChip = ({ label, onRemove }: SelectedItemChipProps) => {
           icon={IconVariant.Close1}
           size={12}
           color="text.main"
-          sx={{ marginLeft: "4px", cursor: "pointer" }}
+          sx={{ marginLeft: "4px", cursor: disabled ? "default" : "pointer" }}
         />
       </Box>
     </Box>

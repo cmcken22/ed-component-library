@@ -93,6 +93,9 @@ const StyledWrapper = styled(Box, {
         borderColor: theme.palette.charcoal["20"],
       },
     },
+    ".Mui-disabled": {
+      textFillColor: "unset !important",
+    },
     ...(variant === "table" && {
       height: "100%",
     }),

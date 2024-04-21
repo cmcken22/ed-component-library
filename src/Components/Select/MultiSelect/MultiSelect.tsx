@@ -18,6 +18,7 @@ const MultiSelect = (props: MultiSelectProps) => {
     wrap,
     counterPosition,
     debounce,
+    disabled,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || []);
@@ -76,6 +77,7 @@ const MultiSelect = (props: MultiSelectProps) => {
           selectedOptions.push(opt);
           res.push(
             <SelectedItemChip
+              disabled={disabled}
               key={val}
               label={handleGetOptionLabel(opt)}
               onRemove={() => handleChange(val)}
@@ -100,6 +102,7 @@ const MultiSelect = (props: MultiSelectProps) => {
       renderValue,
       handleChange,
       counterPosition,
+      disabled,
     ]
   );
 
@@ -139,6 +142,7 @@ const MultiSelect = (props: MultiSelectProps) => {
       getValueSelected={handleGetValueSelected}
       placeholder={placeholder}
       wrap={wrap}
+      disabled={disabled}
     />
   );
 };

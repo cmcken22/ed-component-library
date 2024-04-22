@@ -288,9 +288,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
 // this warpper is meant to convert the value to a string
 const NumberInputWrapper = (props: NumberInputProps) => {
   const value = useMemo(() => {
-    // if (props?.value === undefined) return undefined;
-    // if (props?.value === null) return null;
-    // return Number(props?.value);
+    if (isNaN(+props?.value)) return undefined;
     return `${props?.value}`;
   }, [props?.value]);
 

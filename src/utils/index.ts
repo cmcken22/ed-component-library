@@ -86,6 +86,7 @@ export const removeNumericFormatting = (value: string, formattingProps) => {
 };
 
 export const clamp = (value: number | string, min: number, max: number) => {
+  if (isNaN(+value)) return undefined;
   let val = value;
   if ((min || min === 0) && +val < min) {
     val = min;

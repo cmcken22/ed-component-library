@@ -1,5 +1,10 @@
 import { StandardInputProps } from '../../../BaseInput';
 
+export interface NumberInputOnChange {
+    value: string;
+    formattedValue: string;
+    floatValue: number;
+}
 export interface FormattingProps {
     fixedDecimalScale?: boolean;
     decimalScale?: number;
@@ -28,7 +33,10 @@ export interface NumberInputProps extends StandardInputProps, FormattingProps {
     required?: boolean;
     labelPosition?: "top" | "left";
     debounce?: number;
-    onChange?: (value: number, formattedValue: string) => void;
+    /**
+     * { value: string, formattedValue: string, floatValue: number }: NumberInputOnChange
+     */
+    onChange?: (value: NumberInputOnChange) => void;
     /**
      * Allow the user to use the keyboard to increment or decrement the value.
      */

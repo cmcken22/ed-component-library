@@ -4,7 +4,7 @@ import { StoryObj } from '@storybook/react';
 declare const meta: {
     title: string;
     component: {
-        ({ id, className, size, text, src, onHover, onClick, sx, tooltip, }: import('./Avatar.types').AvatarProps): import("react/jsx-runtime").JSX.Element;
+        ({ id, className, size, text, src, onHover, onClick, sx, tooltip, ToolTipProps, }: import('./Avatar.types').AvatarProps): import("react/jsx-runtime").JSX.Element;
         defaultProps: Partial<import('./Avatar.types').AvatarProps>;
     };
     parameters: {

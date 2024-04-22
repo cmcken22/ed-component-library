@@ -1,7 +1,4 @@
 import { ButtonProps } from './Button.types';
 
-declare const Button: {
-    ({ id, className, children, onClick, color, variant, disabled, iconLeft, iconRight, loading, onHover, sx, }: ButtonProps): import("react/jsx-runtime").JSX.Element;
-    defaultProps: Partial<ButtonProps>;
-};
+declare const Button: import('../../../node_modules/react').ForwardRefExoticComponent<ButtonProps & import("react").RefAttributes<HTMLDivElement>>;
 export default Button;

@@ -1,0 +1,1 @@
+const o={labelPosition:{labelPosition:{options:["top","left"],control:{type:"radio"}}},status:{status:{options:[void 0,"success","warning","error"],control:{type:"radio"}}},onChange:{onChange:{action:"onChange"}},onFocus:{onFocus:{action:"onFocus"}},onBlur:{onBlur:{action:"onBlur"}},onClick:{onClick:{action:"onClick"}},onHover:{onHover:{action:"onHover"}}};export{o as c};

@@ -5,5 +5,5 @@ export interface RangeFilterModalProps extends RangeFilterControlProps {
     open?: boolean;
     anchorEl?: HTMLElement | null;
     onClose?: () => void;
-    placement?: PopoverPlacement;
+    placement?: keyof typeof PopoverPlacement;
 }

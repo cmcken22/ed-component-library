@@ -2,19 +2,19 @@
 export declare enum PopoverPlacement {
     "auto-end" = "auto-end",
     "auto-start" = "auto-start",
-    auto = "auto",
+    "auto" = "auto",
     "bottom-end" = "bottom-end",
     "bottom-start" = "bottom-start",
-    bottom = "bottom",
+    "bottom" = "bottom",
     "left-end" = "left-end",
     "left-start" = "left-start",
-    left = "left",
+    "left" = "left",
     "right-end" = "right-end",
     "right-start" = "right-start",
-    right = "right",
+    "right" = "right",
     "top-end" = "top-end",
     "top-start" = "top-start",
-    top = "top"
+    "top" = "top"
 }
 export interface PopoverProps {
     children: React.ReactNode;
@@ -24,5 +24,5 @@ export interface PopoverProps {
     arrow?: boolean;
     allowFlip?: boolean;
     offset?: number[];
-    placement?: PopoverPlacement;
+    placement?: keyof typeof PopoverPlacement;
 }

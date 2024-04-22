@@ -4,7 +4,7 @@ interface UseStepIncrementorProps {
     step?: number;
     value: string | number;
     allowNegative: boolean;
-    callback: (value: number) => void;
+    callback: (value: number | string) => void;
 }
 declare const useStepIncrementor: {
     ({ min, max, step, value, allowNegative, callback, }: UseStepIncrementorProps): {

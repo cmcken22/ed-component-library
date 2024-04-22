@@ -1,3 +1,4 @@
+import { TooltipProps } from '../Tooltip';
 import { Status } from '../../enums';
 import { SxProps } from '@mui/material';
 
@@ -14,6 +15,7 @@ export interface BaseInputProps {
      */
     sx?: SxProps;
     tooltip?: string;
+    TooltipProps?: TooltipProps;
     componentType?: string;
     variant?: "standard" | "outlined" | "table";
     color?: string;
@@ -52,6 +54,7 @@ export type BaseInputContext = {
     setLabelPosition: (pos: string) => void;
     setStatus?: (status: Status | undefined) => void;
     tooltip?: string;
+    TooltipProps?: TooltipProps;
     variant?: "standard" | "outlined" | "table";
 };
 export declare const BaseInputContext: import('../../../node_modules/react').Context<BaseInputContext>;

@@ -7,7 +7,7 @@ export interface StepperProps {
     min?: number;
     max?: number;
     step?: number;
-    value?: number;
+    value?: string | number;
     allowNegative?: boolean;
     onChange?: (val: number) => void;
     disabled?: boolean;

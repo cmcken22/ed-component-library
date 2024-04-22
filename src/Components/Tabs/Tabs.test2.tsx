@@ -8,6 +8,7 @@ describe("Tabs", () => {
   beforeEach(() => {
     props = {
       id: "123",
+      children: <></>,
     };
   });
 

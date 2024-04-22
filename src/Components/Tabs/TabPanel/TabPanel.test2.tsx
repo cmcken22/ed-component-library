@@ -8,6 +8,8 @@ describe("TabPanel", () => {
   beforeEach(() => {
     props = {
       id: "123",
+      tabValue: "1",
+      children: <></>,
     };
   });
 

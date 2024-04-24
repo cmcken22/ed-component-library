@@ -14,7 +14,9 @@ const meta = {
     },
   },
   tags: ["autodocs"],
-  argTypes: {},
+  argTypes: {
+    onChange: { action: "onChange" },
+  },
 } satisfies Meta<typeof PercentFilter>;
 
 export default meta;

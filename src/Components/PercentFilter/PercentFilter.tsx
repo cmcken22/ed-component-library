@@ -84,9 +84,9 @@ const PercentFilterModal = ({ value, onSubmit, onCancel }: any) => {
 
   const valid = useMemo(() => {
     if (operand === OPERAND.BETWEEN) {
-      return val1 && val2 && operand;
+      return (val1 || val1 === 0) && (val2 || val2 === 0) && operand;
     }
-    return val1 && operand;
+    return (val1 || val1 === 0) && operand;
   }, [operand, val1, val2]);
 
   return (

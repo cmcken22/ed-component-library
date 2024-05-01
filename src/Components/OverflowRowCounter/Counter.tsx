@@ -1,7 +1,7 @@
-import { Box, SxProps } from "@mui/material";
+import { SxProps } from "@mui/material";
 import { forwardRef } from "react";
+import { Chip } from "src";
 import { sizeFormat } from "src/utils";
-import { Typography } from "../..";
 
 interface CounterProps {
   count?: number;
@@ -13,28 +13,23 @@ const Counter = forwardRef(({ count, sx, gap }: CounterProps, ref: any) => {
   if (count === 0) return null;
 
   return (
-    <Box
+    <Chip
       ref={ref}
       className="counter"
+      type="secondary"
+      text={`+${count}`}
       sx={{
         height: "22px",
         width: "fit-content",
         display: "flex",
         alignItems: "center",
-        background: (theme) => theme.palette.secondary.main,
-        padding: "8px",
-        borderRadius: "40px",
         flexShrink: 0,
         boxSizing: "border-box",
         ml: sizeFormat(gap),
         top: "calc(50% - 11px)",
         ...sx,
       }}
-    >
-      <Typography variant="bodyXS" color="white">
-        +{count}
-      </Typography>
-    </Box>
+    />
   );
 });
 

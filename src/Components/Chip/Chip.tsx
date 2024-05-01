@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/material";
 import cx from "classnames";
-import { useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import Icon, { IconVariant } from "src/Components/Icon";
 import Typography from "src/Components/Typography";
 import { useOnHover } from "src/Hooks";
@@ -62,21 +62,23 @@ const StyledContainer = styled(Box, {
   };
 });
 
-const Chip = ({
-  id,
-  type,
-  text,
-  hideIcon,
-  className,
-  iconPosition,
-  onClick,
-  onHover,
-  children,
-  allowClose,
-  variant,
-  icon,
-  sx,
-}: ChipProps) => {
+const Chip = forwardRef((props: ChipProps, ref: any) => {
+  const {
+    id,
+    type,
+    text,
+    hideIcon,
+    className,
+    iconPosition,
+    onClick,
+    onMouseDown,
+    onHover,
+    children,
+    allowClose,
+    variant,
+    icon,
+    sx,
+  } = props;
   const onHoverMethods = useOnHover({ callback: onHover });
 
   const currentIconVariant = useMemo(() => {
@@ -92,6 +94,7 @@ const Chip = ({
   return (
     <StyledContainer
       id={id}
+      ref={ref}
       className={cx("chip", {
         [className]: className,
       })}
@@ -99,10 +102,10 @@ const Chip = ({
       iconPosition={iconPosition}
       variant={variant}
       onClick={onClick}
+      onMouseDown={onMouseDown}
       {...onHoverMethods}
       sx={{
-        // cursor: onClick ? "pointer" : "default",
-        ...(onClick && {
+        ...((onClick || onMouseDown) && {
           cursor: "pointer",
           ".icon-wrapper": {
             cursor: "pointer",
@@ -133,7 +136,7 @@ const Chip = ({
       )}
     </StyledContainer>
   );
-};
+});
 
 Chip.defaultProps = {
   type: "neutral",

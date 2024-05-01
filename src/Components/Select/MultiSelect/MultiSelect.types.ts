@@ -7,5 +7,8 @@ export interface MultiSelectProps extends CommonSelectProps {
   renderValue?: (value: string[], selectedOptions: any[]) => React.ReactNode;
   wrap?: boolean;
   counterPosition?: "left" | "right";
+  /**
+   * Change the props for the selected item chips
+   */
   ChipProps?: ChipProps;
 }

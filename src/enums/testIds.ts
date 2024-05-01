@@ -10,6 +10,7 @@ enum TEST_ID {
   DAY = "day",
   MONTH = "month",
   STEPPER = "Stepper",
+  RADIO_BUTTON_GROUP = "RadioButtonGroup",
 }
 
 export default TEST_ID;

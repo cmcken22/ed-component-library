@@ -1,5 +1,5 @@
 import { Box, styled } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
 import Checkbox from "../Checkbox";
 import { CheckboxGroupProps } from "./CheckboxGroup.types";
 
@@ -26,18 +26,20 @@ const CheckboxGroupWrapper = styled(Box, {
   };
 });
 
-const CheckboxGroup = ({
-  id,
-  options,
-  value: passedValue,
-  onChange,
-  disabled,
-  row,
-  getOptionValue,
-  getOptionLabel,
-  getOptionDisabled,
-  labelPosition,
-}: CheckboxGroupProps) => {
+const CheckboxGroup = forwardRef((props: CheckboxGroupProps, ref: any) => {
+  const {
+    id,
+    options,
+    value: passedValue,
+    onChange,
+    disabled,
+    row,
+    getOptionValue,
+    getOptionLabel,
+    getOptionDisabled,
+    labelPosition,
+    ...tooltipProps
+  } = props;
   const [selected, setSelected] = useState(passedValue || []);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ const CheckboxGroup = ({
   );
 
   return (
-    <CheckboxGroupWrapper id={id} row={row}>
+    <CheckboxGroupWrapper id={id} ref={ref} row={row} {...tooltipProps}>
       {options?.map((option, index) => {
         const label = getOptionLabel ? getOptionLabel(option) : option?.label;
         const value = getOptionValue ? getOptionValue(option) : option?.value;
@@ -92,7 +94,7 @@ const CheckboxGroup = ({
       })}
     </CheckboxGroupWrapper>
   );
-};
+});
 
 CheckboxGroup.defaultProps = {
   options: [],

@@ -4,7 +4,13 @@ import {
   styled,
 } from "@mui/material";
 import cx from "classnames";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { TEST_ID } from "src/enums";
 import { CheckboxProps } from "./Checkbox.types";
 
@@ -54,16 +60,18 @@ const muiLabelPlacementMap: Record<string, "start" | "end"> = {
   right: "end",
 };
 
-const Checkbox = ({
-  id,
-  className,
-  label,
-  checked: passedValue,
-  disabled,
-  onChange,
-  labelPosition,
-  typographyVariant,
-}: CheckboxProps) => {
+const Checkbox = forwardRef((props: CheckboxProps, ref: any) => {
+  const {
+    id,
+    className,
+    label,
+    checked: passedValue,
+    disabled,
+    onChange,
+    labelPosition,
+    typographyVariant,
+    ...tooltipProps
+  } = props;
   const [checked, setChecked] = useState(passedValue || false);
 
   useEffect(() => {
@@ -83,6 +91,7 @@ const Checkbox = ({
   return (
     <StyledFormControlLabel
       id={id}
+      ref={ref}
       className={cx("checkbox", {
         [className]: className,
       })}
@@ -107,9 +116,10 @@ const Checkbox = ({
           disabled={disabled}
         />
       }
+      {...tooltipProps}
     />
   );
-};
+});
 
 Checkbox.defaultProps = {
   labelPosition: "right",

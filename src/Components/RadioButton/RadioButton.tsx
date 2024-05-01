@@ -1,6 +1,6 @@
 import { Box, FormControlLabel, styled } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useEffect, useState } from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
 import { RadioButtonProps, baseClassName, dataTestId } from ".";
 import { hexToRGBA } from "../../utils";
 import { FONTS } from "../theme/Typography";
@@ -93,18 +93,20 @@ const muiLabelPlacementMap: Record<string, "start" | "end"> = {
   right: "end",
 };
 
-const RadioButton = ({
-  id,
-  className,
-  checked: passedValue,
-  disabled,
-  label,
-  value,
-  onChange,
-  allowDeselect,
-  labelPosition,
-  sx,
-}: RadioButtonProps) => {
+const RadioButton = forwardRef((props: RadioButtonProps, ref: any) => {
+  const {
+    id,
+    className,
+    checked: passedValue,
+    disabled,
+    label,
+    value,
+    onChange,
+    allowDeselect,
+    labelPosition,
+    sx,
+    ...tooltipProps
+  } = props;
   const [checked, setChecked] = useState(passedValue || false);
 
   useEffect(() => {
@@ -125,6 +127,7 @@ const RadioButton = ({
   return (
     <RadioButtonWrapper
       id={id}
+      ref={ref}
       className={cx(`${baseClassName}`, {
         [className]: className,
       })}
@@ -133,6 +136,7 @@ const RadioButton = ({
       checked={checked}
       disabled={disabled}
       sx={sx}
+      {...tooltipProps}
     >
       <StyledFormControlLabel
         className={`${baseClassName}__label`}
@@ -150,7 +154,7 @@ const RadioButton = ({
       />
     </RadioButtonWrapper>
   );
-};
+});
 
 RadioButton.defaultProps = {
   checked: false,

@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 import { useOnHover } from "src/Hooks";
 import Typography from "../Typography";
 import { ToggleProps } from "./Toggle.types";
@@ -126,18 +126,20 @@ const ToggleText = styled(Box, {
   };
 });
 
-const Toggle = ({
-  id,
-  className,
-  checked: passedValue,
-  disabled,
-  onChange,
-  onHover,
-  displayToggleText,
-  label,
-  labelPosition,
-  sx,
-}: ToggleProps) => {
+const Toggle = forwardRef((props: ToggleProps, ref: any) => {
+  const {
+    id,
+    className,
+    checked: passedValue,
+    disabled,
+    onChange,
+    onHover,
+    displayToggleText,
+    label,
+    labelPosition,
+    sx,
+    ...tooltipProps
+  } = props;
   const [checked, setChecked] = useState(passedValue || false);
   const onHoverMethods = useOnHover({ callback: onHover });
 
@@ -183,6 +185,7 @@ const Toggle = ({
   return (
     <ToggleContainer
       id={id}
+      ref={ref}
       className={cx("Toggle", {
         [className]: className,
       })}
@@ -194,6 +197,7 @@ const Toggle = ({
       onClick={() => handleChange(!checked)}
       labelPosition={labelPosition}
       sx={sx}
+      {...tooltipProps}
     >
       <ToggleWrapper
         className="ToggleWrapper"
@@ -211,7 +215,7 @@ const Toggle = ({
       {renderToggleLabel()}
     </ToggleContainer>
   );
-};
+});
 
 Toggle.defaultProps = {
   displayToggleText: false,

@@ -1,18 +1,21 @@
 import { Box, styled } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useEffect, useState } from "react";
-import { baseClassName, dataTestId } from ".";
+import { forwardRef, useCallback, useEffect, useState } from "react";
+import { TEST_ID } from "src/enums";
+import { shouldNotForwardProp, sizeFormat } from "src/utils";
+import { RadioButtonGroupProps } from ".";
 import RadioButton from "../RadioButton";
 
 const RadioButtonGroupWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "row",
+  shouldForwardProp: shouldNotForwardProp(["row", "gap"]),
   slot: "root",
-})<{ row?: boolean }>(({ theme, row }) => {
+})<{ row?: boolean; gap?: string | number }>(({ theme, row, gap }) => {
   return {
     ...(!row
       ? {
           display: "flex",
           flexDirection: "column",
+          gap: gap !== undefined ? sizeFormat(gap) : theme.spacing(1),
           ".RadioButtonWrapper": {
             marginBottom: theme.spacing(2),
           },
@@ -20,6 +23,7 @@ const RadioButtonGroupWrapper = styled(Box, {
       : {
           display: "flex",
           flexDirection: "row",
+          gap: gap !== undefined ? sizeFormat(gap) : theme.spacing(1),
           ".RadioButtonWrapper": {
             marginRight: theme.spacing(2),
           },
@@ -27,96 +31,83 @@ const RadioButtonGroupWrapper = styled(Box, {
   };
 });
 
-export type OptionType = {
-  label: string;
-  value: any;
-  disabled?: boolean;
-};
+const RadioButtonGroup = forwardRef(
+  (props: RadioButtonGroupProps, ref: any) => {
+    const {
+      id,
+      className,
+      options,
+      value: selectedValue,
+      onChange,
+      disabled,
+      row,
+      gap,
+      allowDeselect,
+      getOptionValue,
+      getOptionLabel,
+      getOptionDisabled,
+      labelPosition,
+      ...tooltipProps
+    } = props;
+    const [value, setValue] = useState(selectedValue || null);
 
-export interface RadioButtonGroupProps {
-  id?: string;
-  className?: string;
-  options: OptionType[] | any[];
-  value: any;
-  onChange?: (value: any) => void;
-  disabled?: boolean;
-  row?: boolean;
-  allowDeselect?: boolean;
-  getOptionValue?: (option: any) => any;
-  getOptionLabel?: (option: any) => any;
-  getOptionDisabled?: (option: any) => any;
-  labelPosition?: "left" | "right";
-}
+    useEffect(() => {
+      setValue(selectedValue || null);
+    }, [selectedValue]);
 
-const RadioButtonGroup = ({
-  id,
-  className,
-  options,
-  value: selectedValue,
-  onChange,
-  disabled,
-  row,
-  allowDeselect,
-  getOptionValue,
-  getOptionLabel,
-  getOptionDisabled,
-  labelPosition,
-}: RadioButtonGroupProps) => {
-  const [value, setValue] = useState(selectedValue || null);
+    const getOptionChecked = useCallback(
+      (optionValue: any) => {
+        return optionValue === value;
+      },
+      [value]
+    );
 
-  useEffect(() => {
-    setValue(selectedValue || null);
-  }, [selectedValue]);
+    const handleChange = useCallback(
+      (value: any, checked: any) => {
+        let nextValue = value;
+        if (allowDeselect) nextValue = checked ? value : null;
+        setValue(nextValue);
+        if (onChange) onChange(nextValue);
+      },
+      [setValue, onChange, allowDeselect]
+    );
 
-  const getOptionChecked = useCallback(
-    (optionValue: any) => {
-      return optionValue === value;
-    },
-    [value]
-  );
-
-  const handleChange = useCallback(
-    (value: any, checked: any) => {
-      let nextValue = value;
-      if (allowDeselect) nextValue = checked ? value : null;
-      setValue(nextValue);
-      if (onChange) onChange(nextValue);
-    },
-    [setValue, onChange, allowDeselect]
-  );
-
-  return (
-    <RadioButtonGroupWrapper
-      id={id}
-      row={row}
-      className={cx(baseClassName, {
-        [className]: className,
-      })}
-      data-testid={dataTestId}
-      data-value={value}
-    >
-      {options?.map((option, index) => {
-        const label = getOptionLabel ? getOptionLabel(option) : option?.label;
-        const value = getOptionValue ? getOptionValue(option) : option?.value;
-        const optDisabled = getOptionDisabled
-          ? getOptionDisabled(option)
-          : option?.disabled;
-        return (
-          <RadioButton
-            key={`${label}--${index}`}
-            {...option}
-            label={label}
-            onChange={handleChange}
-            checked={() => getOptionChecked(value)}
-            disabled={optDisabled || disabled}
-            allowDeselect={allowDeselect}
-            labelPosition={labelPosition}
-          />
-        );
-      })}
-    </RadioButtonGroupWrapper>
-  );
-};
+    return (
+      <RadioButtonGroupWrapper
+        id={id}
+        ref={ref}
+        row={row}
+        className={cx("RadioButtonGroup", {
+          [className]: className,
+        })}
+        gap={gap}
+        data-testid={TEST_ID.RADIO_BUTTON_GROUP}
+        data-value={value}
+        {...tooltipProps}
+      >
+        {options?.map((option, index) => {
+          const label = getOptionLabel ? getOptionLabel(option) : option?.label;
+          const value = getOptionValue ? getOptionValue(option) : option?.value;
+          const optDisabled = getOptionDisabled
+            ? getOptionDisabled(option)
+            : option?.disabled;
+          return (
+            <RadioButton
+              key={`${label}--${index}`}
+              {...option}
+              label={label}
+              onChange={handleChange}
+              checked={() => getOptionChecked(value)}
+              disabled={optDisabled || disabled}
+              allowDeselect={allowDeselect}
+              labelPosition={labelPosition}
+            />
+          );
+        })}
+      </RadioButtonGroupWrapper>
+    );
+  }
+);
 
 RadioButtonGroup.defaultProps = {
   options: [],
@@ -125,6 +116,7 @@ RadioButtonGroup.defaultProps = {
   row: false,
   allowDeselect: false,
   labelPosition: "right",
+  gap: "8px",
 } as Partial<RadioButtonGroupProps>;
 
 export default RadioButtonGroup;

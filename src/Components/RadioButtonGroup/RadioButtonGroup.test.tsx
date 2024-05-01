@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
+import { TEST_ID } from "src/enums";
 import { fireEvent, render } from "test-utils/index";
-import RadioButtonGroup, { RadioButtonGroupProps, dataTestId } from ".";
+import RadioButtonGroup, { RadioButtonGroupProps } from ".";
 import { baseClassName as radioButtonClassName } from "../RadioButton";
 
 describe("RadioButtonGroup", () => {
@@ -29,14 +30,14 @@ describe("RadioButtonGroup", () => {
 
   it("should render correctly", () => {
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId(dataTestId);
+    const component = getByTestId(TEST_ID.RADIO_BUTTON_GROUP);
     expect(component).toBeInTheDocument();
     expect(component).toHaveAttribute("id", props.id);
   });
 
   it("should render all options", () => {
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId(dataTestId);
+    const component = getByTestId(TEST_ID.RADIO_BUTTON_GROUP);
     expect(component).toBeInTheDocument();
 
     const options = component.querySelectorAll(`.${radioButtonClassName}`);
@@ -50,7 +51,7 @@ describe("RadioButtonGroup", () => {
   it("should have option 1 selected by default", () => {
     props.value = "option_1";
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId(dataTestId);
+    const component = getByTestId(TEST_ID.RADIO_BUTTON_GROUP);
     expect(component).toBeInTheDocument();
     expect(component).toHaveAttribute("data-value", props.value);
     const options = component.querySelectorAll(`.${radioButtonClassName}`);
@@ -59,7 +60,7 @@ describe("RadioButtonGroup", () => {
 
   it("should have third option disabled only", () => {
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId(dataTestId);
+    const component = getByTestId(TEST_ID.RADIO_BUTTON_GROUP);
     expect(component).toBeInTheDocument();
 
     const options = component.querySelectorAll(`.${radioButtonClassName}`);
@@ -78,7 +79,7 @@ describe("RadioButtonGroup", () => {
 
   it("should select first value", () => {
     const { getByTestId } = renderComponent(props);
-    const component = getByTestId(dataTestId);
+    const component = getByTestId(TEST_ID.RADIO_BUTTON_GROUP);
     expect(component).toBeInTheDocument();
 
     const options = component.querySelectorAll(`.${radioButtonClassName}`);

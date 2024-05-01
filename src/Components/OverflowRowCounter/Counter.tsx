@@ -1,6 +1,6 @@
 import { SxProps } from "@mui/material";
 import { forwardRef } from "react";
-import { Chip } from "src";
+import { Chip } from "src/index";
 import { sizeFormat } from "src/utils";
 
 interface CounterProps {

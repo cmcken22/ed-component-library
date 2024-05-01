@@ -76,7 +76,7 @@ const Tooltip = ({
         {typeof title !== "string" ? (
           title
         ) : (
-          <Typography variant="bodyS" className="Tooltip__title">
+          <Typography variant="bodyXS" className="Tooltip__title">
             {title}
           </Typography>
         )}
@@ -101,12 +101,20 @@ const Tooltip = ({
 
   const renderTooltip = useCallback(() => {
     if (render) return render();
+    const Title = renderTitle();
+    const Content = renderContent();
+    const Footer = renderFooter();
+
+    if (!Title && !Content && !Footer) {
+      return null;
+    }
+
     return (
       <Stack sx={{ position: "relative" }} gap={1}>
         {renderCloseIcon()}
-        {renderTitle()}
-        {renderContent()}
-        {renderFooter()}
+        {Title}
+        {Content}
+        {Footer}
       </Stack>
     );
   }, [

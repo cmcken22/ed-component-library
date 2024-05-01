@@ -1,7 +1,6 @@
 export default {
   styleOverrides: {
     tooltip: ({ theme, ownerState }: any) => {
-      // const boxShadow = "0px 0px 2px red";
       const boxShadow = "0px 0px 9px rgba(0, 0, 0, 0.4)";
 
       let fontColor = theme.palette.text.primary;
@@ -9,11 +8,11 @@ export default {
 
       if (ownerState?.variant === "dark") {
         fontColor = "white";
-        bgColor = "rgb(17, 23, 38)";
+        bgColor = theme.palette.charcoal[90];
       }
 
       return {
-        padding: theme.spacing(1),
+        padding: theme.spacing(2),
         // use filter for drop shadow to account for arrow
         filter: `drop-shadow(${boxShadow})`,
         ".MuiTypography-root": {

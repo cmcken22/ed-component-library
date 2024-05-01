@@ -55,6 +55,13 @@ describe("Chip", () => {
     expect(component).toHaveStyle("cursor: default");
   });
 
+  it("should have cursor pointer", () => {
+    props.onClick = jest.fn();
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId(TEST_ID.CHIP);
+    expect(component).toHaveStyle("cursor: pointer");
+  });
+
   it("should have proper icons 1", () => {
     props.type = "positive";
     const { getByTestId } = renderComponent(props);

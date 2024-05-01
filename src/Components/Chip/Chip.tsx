@@ -106,6 +106,7 @@ const Chip = forwardRef((props: ChipProps, ref: any) => {
       onMouseDown={onMouseDown}
       {...onHoverMethods}
       sx={{
+        cursor: "default",
         ...((onClick || onMouseDown) &&
           !disabled && {
             cursor: "pointer",

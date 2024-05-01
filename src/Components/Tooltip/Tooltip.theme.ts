@@ -13,9 +13,6 @@ export default {
 
       return {
         padding: theme.spacing(2),
-        ...(!ownerState?.fullWidth && {
-          maxWidth: "200px",
-        }),
         // use filter for drop shadow to account for arrow
         filter: `drop-shadow(${boxShadow})`,
         ".MuiTypography-root": {

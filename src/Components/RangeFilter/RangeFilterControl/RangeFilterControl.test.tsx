@@ -12,6 +12,11 @@ describe("RangeFilterControl", () => {
   let props: RangeFilterControlProps = { ...initialProps };
 
   beforeEach(() => {
+    global.ResizeObserver = jest.fn().mockImplementation(() => ({
+      observe: jest.fn(),
+      unobserve: jest.fn(),
+      disconnect: jest.fn(),
+    }));
     props = { ...initialProps };
   });
 

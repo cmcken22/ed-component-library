@@ -48,6 +48,8 @@ export const Sample: Story = {
     hideIcon: false,
     iconPosition: "left",
     variant: "contained",
+    onClick: undefined,
+    onMouseDown: undefined,
   },
 };
 

@@ -1,10 +1,21 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, styled } from "@mui/material";
 import MuiTooltip from "@mui/material/Tooltip";
 import cx from "classnames";
 import { useCallback, useState } from "react";
 import Icon, { IconVariant } from "../Icon";
 import Typography from "../Typography";
 import { TooltipProps } from "./Tooltip.types";
+
+const SyledTooltip = styled(MuiTooltip, {
+  shouldForwardProp: (prop) => prop !== "fullWidth",
+  slot: "root",
+})<{ fullWidth?: boolean }>(({ fullWidth }) => {
+  return {
+    ...(!fullWidth && {
+      maxWidth: "200px",
+    }),
+  };
+});
 
 const Tooltip = ({
   id,
@@ -128,7 +139,7 @@ const Tooltip = ({
   ]);
 
   return (
-    <MuiTooltip
+    <SyledTooltip
       id={id}
       className={cx("Tooltip", className)}
       sx={sx}
@@ -146,7 +157,7 @@ const Tooltip = ({
       fullWidth={fullWidth}
     >
       {children}
-    </MuiTooltip>
+    </SyledTooltip>
   );
 };
 

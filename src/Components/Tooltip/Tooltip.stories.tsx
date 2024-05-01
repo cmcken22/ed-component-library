@@ -36,12 +36,22 @@ export const Default: Story = {
   args: {
     ...Tooltip.defaultProps,
     title: "This is a tooltip",
-    // content:
-    //   "Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand the meaning, function or alt-text of an element.",
+    content:
+      "Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand the meaning, function or alt-text of an element.",
     defaultOpen: true,
     placement: "top",
     persistent: false,
     allowClose: false,
+    fullWidth: false,
+  },
+};
+
+export const ContentOnly: Story = {
+  args: {
+    ...Default.args,
+    title: "",
+    content: "This is a very simple tooltip with long text",
+    fullWidth: true,
   },
 };
 

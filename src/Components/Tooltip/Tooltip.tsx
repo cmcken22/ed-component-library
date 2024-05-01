@@ -28,6 +28,7 @@ const Tooltip = ({
   enterNextDelay,
   leaveDelay,
   disabled,
+  fullWidth,
 }: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(open || defaultOpen || false);
 
@@ -76,7 +77,7 @@ const Tooltip = ({
         {typeof title !== "string" ? (
           title
         ) : (
-          <Typography variant="bodyXS" className="Tooltip__title">
+          <Typography variant="bodyS" className="Tooltip__title">
             {title}
           </Typography>
         )}
@@ -142,6 +143,7 @@ const Tooltip = ({
       enterDelay={enterDelay}
       enterNextDelay={enterNextDelay}
       leaveDelay={leaveDelay}
+      fullWidth={fullWidth}
     >
       {children}
     </MuiTooltip>
@@ -158,6 +160,7 @@ Tooltip.defaultProps = {
   disabled: false,
   allowClose: false,
   persistent: false,
+  fullWidth: true,
 } as Partial<TooltipProps>;
 
 export default Tooltip;

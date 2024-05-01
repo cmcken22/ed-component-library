@@ -5,18 +5,31 @@ import Icon, { IconVariant } from "src/Components/Icon";
 import Typography from "src/Components/Typography";
 import { useOnHover } from "src/Hooks";
 import { TEST_ID } from "src/enums";
-import { hexToRGBA } from "src/utils";
+import { shouldNotForwardProp } from "src/utils";
 import { ChipProps, ChipType } from ".";
 
 const StyledContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "type" && prop !== "iconPosition",
+  shouldForwardProp: shouldNotForwardProp(["type", "iconPosition", "variant"]),
   slot: "root",
-})<{ type?: ChipType; iconPosition?: "left" | "right" }>(({
+})<{ type?: ChipType; iconPosition?: "left" | "right"; variant: string }>(({
   theme,
   type,
   iconPosition,
+  variant,
 }) => {
-  const colorMap = {
+  const bgColorMap = {
+    primary: "#D8F0F2",
+    secondary: "#DA4167",
+    positive: "#E7FFF2",
+    negative: "#FFF2F5",
+    warning: "#FFFAF0",
+    pending: "#E2FBFF",
+    neutral: "#F6F6F6",
+  };
+
+  const fontColorMap = {
+    primary: theme.palette.primary.main,
+    secondary: theme.palette.common.white,
     positive: theme.palette.success.dark,
     negative: theme.palette.error.dark,
     warning: theme.palette.warning.dark,
@@ -34,15 +47,18 @@ const StyledContainer = styled(Box, {
     paddingBottom: theme.spacing(0.5),
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    background: hexToRGBA(colorMap[type], 0.2),
+    background: bgColorMap[type],
     gap: theme.spacing(0.5),
     ".icon-wrapper": {
-      color: colorMap[type],
+      color: fontColorMap[type],
     },
     ".MuiTypography-root": {
-      color: colorMap[type],
+      color: fontColorMap[type],
       lineHeight: "normal",
     },
+    ...(variant === "outlined" && {
+      border: `1px solid ${fontColorMap[type]}`,
+    }),
   };
 });
 
@@ -56,18 +72,22 @@ const Chip = ({
   onClick,
   onHover,
   children,
+  allowClose,
+  variant,
+  icon,
   sx,
 }: ChipProps) => {
   const onHoverMethods = useOnHover({ callback: onHover });
 
   const currentIconVariant = useMemo(() => {
+    if (icon) return icon;
     if (type === "positive") return IconVariant.Success;
     if (type === "negative") return IconVariant.Error;
     if (type === "warning") return IconVariant.WarningV2;
     if (type === "pending") return IconVariant.MoreActionsHorizontal;
     if (type === "neutral") return IconVariant.Undetermined;
     return "";
-  }, [type]);
+  }, [type, icon]);
 
   return (
     <StyledContainer
@@ -77,10 +97,17 @@ const Chip = ({
       })}
       type={type}
       iconPosition={iconPosition}
+      variant={variant}
       onClick={onClick}
       {...onHoverMethods}
       sx={{
-        cursor: onClick ? "pointer" : "default",
+        // cursor: onClick ? "pointer" : "default",
+        ...(onClick && {
+          cursor: "pointer",
+          ".icon-wrapper": {
+            cursor: "pointer",
+          },
+        }),
         ...sx,
       }}
       data-testid={TEST_ID.CHIP}
@@ -101,6 +128,9 @@ const Chip = ({
           {text}
         </Typography>
       )}
+      {allowClose && (
+        <Icon icon={IconVariant.Close} height="14px" width="14px" />
+      )}
     </StyledContainer>
   );
 };
@@ -109,6 +139,8 @@ Chip.defaultProps = {
   type: "neutral",
   hideIcon: false,
   iconPosition: "left",
+  allowClose: false,
+  variant: "contained",
 } as Partial<ChipProps>;
 
 export default Chip;

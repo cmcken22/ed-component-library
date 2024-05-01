@@ -1,11 +1,15 @@
 import { SxProps } from "@mui/material";
+import { ReactNode } from "react";
+import { IconVariantType } from "../Icon";
 
 export type ChipType =
   | "positive"
   | "negative"
   | "warning"
   | "pending"
-  | "neutral";
+  | "neutral"
+  | "primary"
+  | "secondary";
 
 export interface ChipProps {
   id?: string;
@@ -18,4 +22,7 @@ export interface ChipProps {
   onHover?: (hovered: boolean) => void;
   children?: string | React.ReactNode;
   sx?: SxProps;
+  icon?: IconVariantType | ReactNode;
+  allowClose?: boolean;
+  variant?: "outlined" | "contained";
 }

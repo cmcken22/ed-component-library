@@ -28,7 +28,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Smaple: Story = {
+export const Sample: Story = {
   args: {
     ...Select.defaultProps,
     id: "Select",
@@ -77,7 +77,7 @@ export const Smaple: Story = {
 export const LeftLabel: Story = {
   args: {
     ...Select.defaultProps,
-    ...Smaple.args,
+    ...Sample.args,
     labelPosition: "left",
   },
 };
@@ -318,7 +318,7 @@ export const TableVariant: Story = {
     </Box>
   ),
   args: {
-    ...Smaple.args,
+    ...Sample.args,
     id: "Select",
     label: "",
     helperText: "",

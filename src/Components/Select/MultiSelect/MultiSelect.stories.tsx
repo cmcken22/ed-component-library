@@ -8,6 +8,27 @@ import OverflowRowCounter from "src/Components/OverflowRowCounter";
 import Typography from "src/Components/Typography";
 import MultiSelect from ".";
 
+const renderFirstAndLastOptions = (options: any[]) => {
+  let res = "[";
+  const opt1 = options[0];
+  const opt2 = options[options.length - 1];
+  if (opt1) {
+    res += `{
+      label: "${opt1.label}",
+      value: "${opt1.value}",
+    },\n`;
+  }
+  if (opt2) {
+    res += `    ...\n`;
+    res += `    {
+      label: "${opt2.label}",
+      value: "${opt2.value}",
+    },\n`;
+  }
+  res += "  ]";
+  return res;
+};
+
 const meta = {
   title: "Example/Select/MultiSelect",
   component: MultiSelect,
@@ -15,7 +36,11 @@ const meta = {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("MultiSelect"),
+        transform: sourceCodeFormatter("MultiSelect", {
+          map: {
+            options: renderFirstAndLastOptions,
+          },
+        }),
       },
     },
   },
@@ -91,6 +116,16 @@ export const Default: Story = {
   },
 };
 
+export const AlternativeChipType: Story = {
+  args: {
+    ...Default.args,
+    ChipProps: {
+      type: "positive",
+      variant: "outlined",
+    },
+  },
+};
+
 const RenderOptionCodeSample = `(option: any, { label, value }: any) => (
     <Box
       key={value}
@@ -115,6 +150,7 @@ export const CustomOptionRenderer: Story = {
         transform: sourceCodeFormatter("MultiSelect", {
           map: {
             renderOption: RenderOptionCodeSample,
+            options: renderFirstAndLastOptions,
           },
         }),
       },
@@ -193,6 +229,7 @@ export const CustomValueRenderer: Story = {
         transform: sourceCodeFormatter("MultiSelect", {
           map: {
             renderValue: RenderValueCodeSample,
+            options: renderFirstAndLastOptions,
           },
         }),
       },
@@ -354,6 +391,7 @@ export const StatusFilter: Story = {
         transform: sourceCodeFormatter("MultiSelect", {
           map: {
             renderValue: StatusFilterCodeSample,
+            options: renderFirstAndLastOptions,
           },
         }),
       },

@@ -1,3 +1,4 @@
+import { ChipProps } from "src/Components/Chip";
 import { CommonSelectProps } from "../Common/Common.types";
 
 export interface MultiSelectProps extends CommonSelectProps {
@@ -6,4 +7,5 @@ export interface MultiSelectProps extends CommonSelectProps {
   renderValue?: (value: string[], selectedOptions: any[]) => React.ReactNode;
   wrap?: boolean;
   counterPosition?: "left" | "right";
+  ChipProps?: ChipProps;
 }

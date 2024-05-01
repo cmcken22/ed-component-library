@@ -9,7 +9,9 @@ export const sourceCodeFormatter =
     for (const key in context.args) {
       const value = context.args[key];
       if (map && map[key]) {
-        args += `${ind(indent)}${key}={${map[key]}}\n`;
+        const formattedValue =
+          typeof map[key] === "function" ? map[key](value) : map[key];
+        args += `${ind(indent)}${key}={${formattedValue}}\n`;
         continue;
       }
       if (typeof value === "function") {

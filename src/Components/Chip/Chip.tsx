@@ -77,6 +77,7 @@ const Chip = forwardRef((props: ChipProps, ref: any) => {
     allowClose,
     variant,
     icon,
+    disabled,
     sx,
   } = props;
   const onHoverMethods = useOnHover({ callback: onHover });
@@ -105,12 +106,13 @@ const Chip = forwardRef((props: ChipProps, ref: any) => {
       onMouseDown={onMouseDown}
       {...onHoverMethods}
       sx={{
-        ...((onClick || onMouseDown) && {
-          cursor: "pointer",
-          ".icon-wrapper": {
+        ...((onClick || onMouseDown) &&
+          !disabled && {
             cursor: "pointer",
-          },
-        }),
+            ".icon-wrapper": {
+              cursor: "pointer",
+            },
+          }),
         ...sx,
       }}
       data-testid={TEST_ID.CHIP}

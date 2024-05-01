@@ -35,9 +35,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     ...Tooltip.defaultProps,
-    title: "Tooltip title",
-    content:
-      "Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand the meaning, function or alt-text of an element.",
+    title: "This is a tooltip",
+    // content:
+    //   "Tooltips are used to describe or identify an element. In most scenarios, tooltips help the user understand the meaning, function or alt-text of an element.",
     defaultOpen: true,
     placement: "top",
     persistent: false,

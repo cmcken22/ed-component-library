@@ -32,6 +32,7 @@ const SelectedItemChip = ({
       text={label}
       hideIcon
       allowClose
+      disabled={disabled}
       {...ChipProps}
       // use mouse down to interrupt mui's event listener
       onMouseDown={handleClick}

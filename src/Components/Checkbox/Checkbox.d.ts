@@ -1,7 +1,4 @@
 import { CheckboxProps } from './Checkbox.types';
 
-declare const Checkbox: {
-    ({ id, className, label, checked: passedValue, disabled, onChange, labelPosition, typographyVariant, }: CheckboxProps): import("react/jsx-runtime").JSX.Element;
-    defaultProps: Partial<CheckboxProps>;
-};
+declare const Checkbox: import('../../../node_modules/react').ForwardRefExoticComponent<CheckboxProps & import("react").RefAttributes<unknown>>;
 export default Checkbox;

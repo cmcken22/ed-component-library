@@ -1,0 +1,1 @@
+var A=(t=>(t.BASE_INPUT="Input",t.BUTTON="Button",t.AVATAR="Avatar",t.CHECKBOX="Checkbox",t.DATE_RANGE_FIELD="DateRangeField",t.DATE_FIELD_INPUT="date-field-input",t.CHIP="Chip",t.CALENDAR="calendar",t.DAY="day",t.MONTH="month",t.STEPPER="Stepper",t.RADIO_BUTTON_GROUP="RadioButtonGroup",t))(A||{});export{A as T};

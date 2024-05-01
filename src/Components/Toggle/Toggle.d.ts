@@ -1,7 +1,4 @@
 import { ToggleProps } from './Toggle.types';
 
-declare const Toggle: {
-    ({ id, className, checked: passedValue, disabled, onChange, onHover, displayToggleText, label, labelPosition, sx, }: ToggleProps): import("react/jsx-runtime").JSX.Element;
-    defaultProps: Partial<ToggleProps>;
-};
+declare const Toggle: import('../../../node_modules/react').ForwardRefExoticComponent<ToggleProps & import("react").RefAttributes<unknown>>;
 export default Toggle;

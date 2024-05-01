@@ -9,6 +9,7 @@ declare enum TEST_ID {
     CALENDAR = "calendar",
     DAY = "day",
     MONTH = "month",
-    STEPPER = "Stepper"
+    STEPPER = "Stepper",
+    RADIO_BUTTON_GROUP = "RadioButtonGroup"
 }
 export default TEST_ID;

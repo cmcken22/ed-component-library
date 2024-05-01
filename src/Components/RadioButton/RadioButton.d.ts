@@ -1,7 +1,4 @@
 import { RadioButtonProps } from '.';
 
-declare const RadioButton: {
-    ({ id, className, checked: passedValue, disabled, label, value, onChange, allowDeselect, labelPosition, sx, }: RadioButtonProps): import("react/jsx-runtime").JSX.Element;
-    defaultProps: Partial<RadioButtonProps>;
-};
+declare const RadioButton: import('../../../node_modules/react').ForwardRefExoticComponent<RadioButtonProps & import("react").RefAttributes<unknown>>;
 export default RadioButton;

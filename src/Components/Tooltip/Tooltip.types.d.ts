@@ -42,4 +42,10 @@ export interface TooltipProps {
      */
     enterNextDelay?: number;
     leaveDelay?: number;
+    /**
+     * If true, the tooltip will take up the full width of its children.
+     * Otherwise, the tooltip will be 200px.
+     * @default false
+     */
+    fullWidth?: boolean;
 }

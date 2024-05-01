@@ -18,4 +18,5 @@ export interface ChipProps {
     icon?: IconVariantType | ReactNode;
     allowClose?: boolean;
     variant?: "outlined" | "contained";
+    disabled?: boolean;
 }

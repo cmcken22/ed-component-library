@@ -1,7 +1,15 @@
 import { Box, styled } from "@mui/material";
 import cx from "classnames";
-import { useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
+import useElementResizeListener from "src/Hooks/useElementResizeListener";
 import { useStateWithPrevious } from "src/Hooks/useStateWithPrevious";
+import { generateUniqueKey } from "src/utils";
 import { useEllisDonTheme } from "../..";
 
 const StyledWrapper = styled(Box, {
@@ -82,6 +90,9 @@ const LoadingIdicator = ({
 }: LoadingIdicatorProps) => {
   const [prevActive, active, setActive] = useStateWithPrevious(false);
   const [complete, setComplete] = useState(false);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const [key, setKey] = useState(generateUniqueKey());
 
   useEffect(() => {
     setActive(loading);
@@ -96,16 +107,38 @@ const LoadingIdicator = ({
     }
   }, [active, prevActive]);
 
-  const [width, height] = useMemo(() => {
-    if (!buttonRef?.current) return [0, 0];
+  const detectDimensions = useCallback(() => {
+    if (!buttonRef?.current) {
+      setWidth(0);
+      setHeight(0);
+      return;
+    }
     const { width, height } = buttonRef.current.getBoundingClientRect();
-    return [width + 2, height + 2];
-  }, [buttonRef?.current]);
+    setWidth(width + 2);
+    setHeight(height + 2);
+  }, [setWidth, setHeight]);
+
+  useLayoutEffect(() => {
+    detectDimensions();
+  }, []);
+
+  const handleResize = useCallback(() => {
+    // if we resize the animation is off by a few pixels,
+    // and I can't figure out why..
+    // so I just generate a new key to force the component to redraw
+    // this is a very unlikely scenario since buttons tend to remain one size,
+    // but it is possible to change the size
+    setKey(generateUniqueKey());
+    detectDimensions();
+  }, [detectDimensions, setKey]);
+
+  useElementResizeListener(buttonRef?.current, handleResize);
 
   if (!loading && !active && !complete) return null;
 
   return (
     <StyledWrapper
+      key={key}
       className="loading-indicator__wrapper"
       color={color}
       sx={{

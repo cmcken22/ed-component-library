@@ -16,10 +16,11 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
+    ...commonArgTypes.onHover,
+    ...commonArgTypes.onClick,
     size: {
-      ...commonArgTypes.onHover,
-      ...commonArgTypes.onClick,
-      control: { type: "radio", options: ["default", "large", "small"] },
+      control: { type: "radio" },
+      options: ["default", "large", "small"],
     },
   },
 } satisfies Meta<typeof Avatar>;

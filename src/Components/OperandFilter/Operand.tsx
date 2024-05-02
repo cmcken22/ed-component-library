@@ -7,7 +7,7 @@ import { Select } from "src/Components/Select";
 import { FONT_WEIGHT } from "src/Components/theme/Typography";
 import { Icon, Input, Percent, Typography, useEllisDonTheme } from "../..";
 import { NumberInputOnChange } from "../Inputs/NumberInput/NumberInput/NumberInput.types";
-import { PercentFilterProps } from "./PercentFilter.types";
+import { OperandFilterProps } from "./Operand.types";
 
 enum OPERAND {
   EQUAL_TO = "Equal to",
@@ -35,7 +35,7 @@ const OPTIONS = [
   },
 ];
 
-const PercentFilterModal = ({ value, onSubmit, onCancel }: any) => {
+const OperandFilterModal = ({ value, onSubmit, onCancel }: any) => {
   const theme: any = useEllisDonTheme();
   const [operand, setOperand] = useState(value?.[0] || OPTIONS?.[0]?.value);
   const [val1, setVal1] = useState<any>(value?.[1] || null);
@@ -188,7 +188,7 @@ const PercentFilterModal = ({ value, onSubmit, onCancel }: any) => {
   );
 };
 
-const PercentFilter = ({
+const OperandFilter = ({
   id,
   className,
   sx,
@@ -203,7 +203,7 @@ const PercentFilter = ({
   fullWidth,
   onChange,
   renderValue,
-}: PercentFilterProps) => {
+}: OperandFilterProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<any>([]);
@@ -272,7 +272,7 @@ const PercentFilter = ({
         }
       />
       <Popover open={open} anchorEl={anchorEl} onClose={() => setOpen(false)}>
-        <PercentFilterModal
+        <OperandFilterModal
           value={value}
           onSubmit={handleSubmit}
           onCancel={handleClear}
@@ -282,6 +282,6 @@ const PercentFilter = ({
   );
 };
 
-PercentFilter.defaultProps = {} as Partial<PercentFilterProps>;
+OperandFilter.defaultProps = {} as Partial<OperandFilterProps>;
 
-export default PercentFilter;
+export default OperandFilter;

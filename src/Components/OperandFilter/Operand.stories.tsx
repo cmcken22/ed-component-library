@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import PercentFilter from ".";
+import OperandFilter from ".";
 
 const meta = {
-  title: "Example/PercentFilter",
-  component: PercentFilter,
+  title: "Example/OperandFilter",
+  component: OperandFilter,
   parameters: {
     layout: "centered",
     docs: {
       source: {
-        transform: sourceCodeFormatter("PercentFilter"),
+        transform: sourceCodeFormatter("OperandFilter"),
       },
     },
   },
@@ -17,15 +17,15 @@ const meta = {
   argTypes: {
     onChange: { action: "onChange" },
   },
-} satisfies Meta<typeof PercentFilter>;
+} satisfies Meta<typeof OperandFilter>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    ...PercentFilter.defaultProps,
-    label: "Percent Filter",
+    ...OperandFilter.defaultProps,
+    label: "Operand Filter",
     placeholder: "Select a percent",
     helperText: "Helper text",
   },

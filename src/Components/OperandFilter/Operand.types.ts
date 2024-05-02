@@ -1,7 +1,7 @@
 import { SxProps } from "@mui/material";
 import { StandardInputProps } from "src/Components/BaseInput";
 
-export interface PercentFilterProps extends StandardInputProps {
+export interface OperandFilterProps extends StandardInputProps {
   id?: string;
   className?: string;
   sx?: SxProps;

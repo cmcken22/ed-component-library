@@ -1,20 +1,21 @@
 import { Box, Stack } from "@mui/material";
+import cx from "classnames";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Button from "src/Components/Button";
-import { IconVariant } from "src/Components/Icon";
-import Popover from "src/Components/Popover";
 import { Select } from "src/Components/Select";
 import { FONT_WEIGHT } from "src/Components/theme/Typography";
-import { Icon, Input, Percent, Typography, useEllisDonTheme } from "../..";
-import { NumberInputOnChange } from "../Inputs/NumberInput/NumberInput/NumberInput.types";
-import { OperandFilterProps } from "./Operand.types";
-
-enum OPERAND {
-  EQUAL_TO = "Equal to",
-  MORE_THAN = "More than",
-  LESS_THAN = "Less than",
-  BETWEEN = "Between",
-}
+import { TEST_ID } from "src/enums";
+import {
+  Button,
+  Icon,
+  NumberInput,
+  Typography,
+  useEllisDonTheme,
+} from "src/index";
+import { NumberInputOnChange } from "../../Inputs/NumberInput/NumberInput/NumberInput.types";
+import {
+  OPERAND,
+  OperandFilterControlProps,
+} from "./OperandFilterControl.types";
 
 const OPTIONS = [
   {
@@ -35,13 +36,36 @@ const OPTIONS = [
   },
 ];
 
-const OperandFilterModal = ({ value, onSubmit, onCancel }: any) => {
+const OperandFilterControl = ({
+  id,
+  className,
+  sx,
+  label,
+  value,
+  defaultValue,
+  onSubmit,
+  onClear,
+  clearBtnText,
+  clearBtnProps,
+  applyBtnText,
+  applyBtnProps,
+  Component: ComponentToRender,
+  ComponentProps,
+  min,
+  max,
+}: OperandFilterControlProps) => {
   const theme: any = useEllisDonTheme();
-  const [operand, setOperand] = useState(value?.[0] || OPTIONS?.[0]?.value);
-  const [val1, setVal1] = useState<any>(value?.[1] || null);
-  const [val2, setVal2] = useState<any>(value?.[2] || null);
-  const val1Ref = useRef<any>(value?.[1] || null);
-  const val2Ref = useRef<any>(value?.[2] || null);
+  const [operand, setOperand] = useState(
+    value?.[0] || defaultValue?.[0] || null
+  );
+  const [val1, setVal1] = useState<any>(
+    value?.[1] || defaultValue?.[1] || null
+  );
+  const [val2, setVal2] = useState<any>(
+    value?.[2] || defaultValue?.[2] || null
+  );
+  const val1Ref = useRef<any>(value?.[1] || defaultValue?.[1] || null);
+  const val2Ref = useRef<any>(value?.[2] || defaultValue?.[2] || null);
 
   useEffect(() => {
     if (value && value.length) {
@@ -78,9 +102,12 @@ const OperandFilterModal = ({ value, onSubmit, onCancel }: any) => {
     if (onSubmit) onSubmit(res);
   }, [operand, val1, val2, onSubmit]);
 
-  const handleCancel = useCallback(() => {
-    if (onCancel) onCancel();
-  }, [onCancel]);
+  const handleClear = useCallback(() => {
+    setVal1("");
+    setVal2("");
+    setOperand(OPTIONS?.[0]?.value);
+    if (onClear) onClear([]);
+  }, [onClear, setVal1, setVal2, setOperand]);
 
   const valid = useMemo(() => {
     if (operand === OPERAND.BETWEEN) {
@@ -89,19 +116,32 @@ const OperandFilterModal = ({ value, onSubmit, onCancel }: any) => {
     return (val1 || val1 === 0) && operand;
   }, [operand, val1, val2]);
 
+  const Component = useMemo(
+    () => ComponentToRender || NumberInput,
+    [ComponentToRender]
+  );
+
   return (
     <Box
+      id={id}
+      className={cx("OperandFilterControl", {
+        [className]: className,
+      })}
       sx={{
         width: "239px",
         background: "white",
         borderRadius: `${theme.shape.borderRadius}px`,
         border: `${theme.shape.borderWidth} solid ${theme.palette.border.main}`,
         p: 1,
+        ...sx,
       }}
+      data-testid={TEST_ID.OPERAND_FILTER_CONTROL}
     >
-      <Typography variant="bodyS" fontWeight={FONT_WEIGHT.bold}>
-        Percent Complete
-      </Typography>
+      {label && (
+        <Typography variant="bodyS" fontWeight={FONT_WEIGHT.bold}>
+          {label}
+        </Typography>
+      )}
       <Box
         sx={{
           mt: 2,
@@ -153,9 +193,12 @@ const OperandFilterModal = ({ value, onSubmit, onCancel }: any) => {
             gap: "8px",
           }}
         >
-          <Percent
-            value={val1}
+          <Component
+            value={val1 ?? ""}
             fullWidth
+            min={min}
+            max={max}
+            {...ComponentProps}
             onChange={(val: NumberInputOnChange) => {
               val1Ref.current = val?.floatValue;
               setVal1(val?.floatValue);
@@ -164,9 +207,12 @@ const OperandFilterModal = ({ value, onSubmit, onCancel }: any) => {
           {operand === OPERAND.BETWEEN && (
             <>
               <Icon icon="ArrowRight" size={16} sx={{ flexShrink: 0 }} />
-              <Percent
-                value={val2}
+              <Component
+                value={val2 ?? ""}
                 fullWidth
+                min={min}
+                max={max}
+                {...ComponentProps}
                 onChange={(val: NumberInputOnChange) => {
                   val2Ref.current = val?.floatValue;
                   setVal2(val?.floatValue);
@@ -177,111 +223,30 @@ const OperandFilterModal = ({ value, onSubmit, onCancel }: any) => {
         </Box>
       </Box>
       <Stack direction="row" justifyContent="space-between" sx={{ mt: 2 }}>
-        <Button variant="link" color="danger" onClick={handleCancel}>
-          Clear
+        <Button
+          variant="link"
+          color="danger"
+          onClick={handleClear}
+          {...clearBtnProps}
+        >
+          {clearBtnText}
         </Button>
-        <Button variant="link" onClick={handleSubmit} disabled={!valid}>
-          Apply
+        <Button
+          variant="link"
+          onClick={handleSubmit}
+          disabled={!valid}
+          {...applyBtnProps}
+        >
+          {applyBtnText}
         </Button>
       </Stack>
     </Box>
   );
 };
 
-const OperandFilter = ({
-  id,
-  className,
-  sx,
-  label,
-  placeholder,
-  helperText,
-  required,
-  labelPosition = "top",
-  disabled,
-  tooltip,
-  variant,
-  fullWidth,
-  onChange,
-  renderValue,
-}: OperandFilterProps) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<any>([]);
-
-  const handleSubmit = useCallback(
-    (val: any) => {
-      setValue(val);
-      setOpen(false);
-      if (onChange) onChange(val);
-    },
-    [setValue, setOpen, onChange]
-  );
-
-  const handleClear = useCallback(() => {
-    setValue([]);
-    setOpen(false);
-    if (onChange) onChange([]);
-  }, [setValue, setOpen, onChange]);
-
-  const handleOpen = useCallback(() => {
-    if (disabled) return;
-    setOpen(true);
-  }, [disabled, setOpen]);
-
-  const handleRenderValue = useCallback(
-    (value: any) => {
-      if (renderValue) return renderValue(value);
-      return value?.join(" ") || "";
-    },
-    [renderValue]
-  );
-
-  return (
-    <>
-      <Input
-        id={id}
-        onClick={handleOpen}
-        inputRef={(r: any) => setAnchorEl(r)}
-        className={className}
-        label={label}
-        placeholder={placeholder}
-        disabled={disabled}
-        helperText={helperText}
-        required={required}
-        value={handleRenderValue(value)}
-        fullWidth={fullWidth}
-        labelPosition={labelPosition}
-        tooltip={tooltip}
-        variant={variant}
-        readOnly
-        sx={{
-          ...sx,
-          cursor: disabled ? "default" : "pointer",
-          ".MuiInputBase-root, input": {
-            cursor: disabled ? "default" : "pointer",
-          },
-        }}
-        endAdornment={
-          <Icon
-            icon={open ? IconVariant.NavArrowUp : IconVariant.NavArrowDown}
-            size={20}
-            sx={{
-              cursor: disabled ? "default" : "pointer",
-            }}
-          />
-        }
-      />
-      <Popover open={open} anchorEl={anchorEl} onClose={() => setOpen(false)}>
-        <OperandFilterModal
-          value={value}
-          onSubmit={handleSubmit}
-          onCancel={handleClear}
-        />
-      </Popover>
-    </>
-  );
+OperandFilterControl.defaultProps = {
+  clearBtnText: "Clear",
+  applyBtnText: "Apply",
 };
 
-OperandFilter.defaultProps = {} as Partial<OperandFilterProps>;
-
-export default OperandFilter;
+export default OperandFilterControl;

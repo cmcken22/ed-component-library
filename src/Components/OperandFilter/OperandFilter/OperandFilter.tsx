@@ -1,49 +1,37 @@
 import { useCallback, useEffect, useState } from "react";
 import { IconVariant } from "src/Components/Icon";
-import { Icon, Input } from "src/index";
-import RangeFilterModal from "../RangeFilterModal/RangeFilterModal";
-import { RangeFilterProps } from "./RangeFilter.types";
+import { Icon, Input } from "../../..";
+import { OPERAND } from "../OperandFilterControl";
+import OperandFilterModal from "../OperandFilterModal";
+import { OperandFilterProps } from "./OperandFilter.types";
 
-const RangeFilterInput = ({
+const OperandFilter = ({
   id,
   className,
   sx,
   label,
-  filterLabel,
+  value: passedValue,
+  defaultFilterValue,
   placeholder,
   helperText,
   required,
-  Component,
-  ComponentProps,
-  defaultRange,
-  value: passedValue,
   labelPosition = "top",
   disabled,
   tooltip,
   variant,
   fullWidth,
-  min,
-  max,
-  minDistance,
-  displayValueTooltip,
-  clearBtnText,
-  clearBtnProps,
-  applyBtnText,
-  applyBtnProps,
-  minInputLabel,
-  maxInputLabel,
-  step,
-  filterPlacement,
-  startAdornment,
   onChange,
   renderValue,
-}: RangeFilterProps) => {
+  filterLabel,
+  filterPlacement,
+  ...rest
+}: OperandFilterProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<number[]>(passedValue || []);
+  const [value, setValue] = useState<any>(passedValue || []);
 
   useEffect(() => {
-    setValue(passedValue || []);
+    setValue(passedValue);
   }, [passedValue]);
 
   const handleSubmit = useCallback(
@@ -69,7 +57,12 @@ const RangeFilterInput = ({
   const handleRenderValue = useCallback(
     (value: any) => {
       if (renderValue) return renderValue(value);
-      return value?.join(" - ") || "";
+      const operand = value?.[0];
+      if (operand === OPERAND.BETWEEN) {
+        const [op, val1, val2] = value;
+        return `${op} ${val1}, ${val2}`;
+      }
+      return value?.join(" ") || "";
     },
     [renderValue]
   );
@@ -99,7 +92,6 @@ const RangeFilterInput = ({
             cursor: disabled ? "default" : "pointer",
           },
         }}
-        startAdornment={startAdornment}
         endAdornment={
           <Icon
             icon={open ? IconVariant.NavArrowUp : IconVariant.NavArrowDown}
@@ -110,46 +102,24 @@ const RangeFilterInput = ({
           />
         }
       />
-      <RangeFilterModal
+      <OperandFilterModal
         open={open}
         anchorEl={anchorEl}
-        onClose={() => setOpen(false)}
-        placement={filterPlacement}
         label={filterLabel}
+        value={value}
+        defaultValue={defaultFilterValue}
+        placement={filterPlacement}
+        onClose={() => setOpen(false)}
         onSubmit={handleSubmit}
         onClear={handleClear}
-        min={min}
-        max={max}
-        minDistance={minDistance}
-        defaultValue={defaultRange}
-        value={value}
-        Component={Component}
-        ComponentProps={ComponentProps}
-        displayValueTooltip={displayValueTooltip}
-        clearBtnText={clearBtnText}
-        clearBtnProps={clearBtnProps}
-        applyBtnText={applyBtnText}
-        applyBtnProps={applyBtnProps}
-        minInputLabel={minInputLabel}
-        maxInputLabel={maxInputLabel}
-        step={step}
+        {...rest}
       />
     </>
   );
 };
 
-RangeFilterInput.defaultProps = {
-  defaultRange: [0, 100],
-  clearBtnText: "Clear",
-  applyBtnText: "Apply",
-  minInputLabel: "Minimum",
-  maxInputLabel: "Maximum",
-  filterLabel: "Amount",
-  step: 1,
-  min: 0,
-  max: 100,
-  minDistance: 0,
+OperandFilter.defaultProps = {
   filterPlacement: "bottom-end",
-} as Partial<RangeFilterProps>;
+} as Partial<OperandFilterProps>;
 
-export default RangeFilterInput;
+export default OperandFilter;

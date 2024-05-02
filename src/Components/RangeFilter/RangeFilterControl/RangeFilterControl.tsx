@@ -3,6 +3,7 @@ import cx from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { NumberInputOnChange } from "src/Components/Inputs/NumberInput/NumberInput/NumberInput.types";
 import { FONT_WEIGHT } from "src/Components/theme/Typography";
+import { TEST_ID } from "src/enums";
 import { Button, NumberInput, Typography } from "src/index";
 import { clamp } from "src/utils";
 import HorizontalStack from "../../HorizontalStack";
@@ -145,7 +146,7 @@ const RangeFilterControl = ({
         borderRadius: (theme: any) => theme.shape.borderRadius,
         padding: 1,
       }}
-      data-testid="RangeFilterControl"
+      data-testid={TEST_ID.RANGE_FILTER_CONTROL}
     >
       <Typography variant="bodyS" fontWeight={FONT_WEIGHT.bold} sx={{ mb: 2 }}>
         {label}

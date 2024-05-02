@@ -11,6 +11,8 @@ enum TEST_ID {
   MONTH = "month",
   STEPPER = "Stepper",
   RADIO_BUTTON_GROUP = "RadioButtonGroup",
+  RANGE_FILTER_CONTROL = "RangeFilterControl",
+  OPERAND_FILTER_CONTROL = "OperandFilterControl",
 }
 
 export default TEST_ID;

@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import { TEST_ID } from "src/enums";
 import { render } from "test-utils/index";
-import OperandFilter from "./Operand";
-import { OperandFilterProps } from "./Operand.types";
+import OperandFilter from "./OperandFilter";
+import { OperandFilterProps } from "./OperandFilter.types";
 
 const initialProps: OperandFilterProps = {
   ...OperandFilter.defaultProps,

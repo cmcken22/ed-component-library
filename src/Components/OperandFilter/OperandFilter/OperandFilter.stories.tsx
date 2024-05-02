@@ -3,7 +3,7 @@ import { sourceCodeFormatter } from "sb-utils/index";
 import OperandFilter from ".";
 
 const meta = {
-  title: "Example/OperandFilter",
+  title: "Example/OperandFilter/OperandFilter",
   component: OperandFilter,
   parameters: {
     layout: "centered",
@@ -28,5 +28,6 @@ export const Default: Story = {
     label: "Operand Filter",
     placeholder: "Select a percent",
     helperText: "Helper text",
+    filterLabel: "Operand Filter",
   },
 };

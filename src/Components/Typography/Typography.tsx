@@ -18,6 +18,8 @@ export interface TypographyProps {
   fontSize?: string;
   preventTextSelection?: boolean;
   sx?: any;
+  component?: any;
+  onClick?: (e: any) => void;
 }
 
 const Typography = ({
@@ -29,6 +31,8 @@ const Typography = ({
   color,
   fontSize,
   preventTextSelection,
+  onClick,
+  component,
   sx,
 }: TypographyProps) => {
   const convertedFontWeight = useMemo(
@@ -47,6 +51,8 @@ const Typography = ({
       fontStyle={fontStyle}
       color={color}
       fontSize={fontSize}
+      component={component}
+      onClick={onClick}
       sx={{
         ...(preventTextSelection && {
           webkitUserSelect: "none",

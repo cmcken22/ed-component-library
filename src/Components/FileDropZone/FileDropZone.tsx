@@ -1,53 +1,44 @@
 import { Box } from "@mui/material";
 import cx from "classnames";
-import { useCallback, useEffect, useState } from "react";
-import { Accept, useDropzone } from "react-dropzone";
+import { useCallback, useState } from "react";
+import { FileRejection, useDropzone } from "react-dropzone";
+import { sizeFormat } from "src/utils";
 import Typography from "../Typography";
-import { FileDropZoneProps, MimeTypes } from "./FileDropZone.types";
-
-const getFile = (file: any) => {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = function (event: any) {
-      const binaryString = event.target.result;
-      return resolve([file, binaryString]);
-    };
-    reader.readAsBinaryString(file);
-  });
-};
-
-const arrayToAcceptObject = (arr: string[]) => {
-  if (!arr.length) return MimeTypes;
-
-  const obj: any = {};
-  for (const fileType of arr) {
-    for (const key in MimeTypes) {
-      if (MimeTypes[key].includes(fileType)) {
-        if (!obj[key]) {
-          obj[key] = [];
-        }
-        obj[key] = [...obj[key], fileType];
-      }
-    }
-  }
-  return obj as Accept;
-};
+import { fileTypesAcceptObject, getFile } from "./FileDropZone.helper";
+import { FileDropZoneProps, FileTypeMap } from "./FileDropZone.types";
 
 const FileDropZone = ({
   id,
   className,
   sx,
-  onDrop,
-  onError,
   accept,
+  onDrop,
+  validator,
+  onError,
+  disabled,
   maxFiles,
+  minSize,
+  maxSize,
+  noClick,
+  noDrag,
+  noKeyboard,
+  noDragEventsBubbling,
+  renderContent,
+  renderAcceptedFiles,
+  text,
+  linkText,
+  width,
+  height,
+  fullWidth,
 }: FileDropZoneProps) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const handleDrop = useCallback(
-    (acceptedFiles: any) => {
-      console.clear();
-      console.log("acceptedFiles", acceptedFiles);
+    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+      if (fileRejections && fileRejections?.length) {
+        if (onError) onError(fileRejections);
+        return;
+      }
       const files: any = [];
       const binaryStrings: any = [];
 
@@ -61,8 +52,9 @@ const FileDropZone = ({
       Promise.all(promises)
         .then((res: any) => {
           res.forEach((arr: any) => {
-            files.push(arr[0]);
-            binaryStrings.push(arr[1]);
+            const [file, binaryString] = arr;
+            files.push(file);
+            binaryStrings.push(binaryString);
           });
           setFiles(files);
           if (onDrop) onDrop(files, binaryStrings);
@@ -71,53 +63,49 @@ const FileDropZone = ({
           console.error(err);
         });
     },
-    [onDrop, setFiles, maxFiles]
+    [onDrop, setFiles, maxFiles, onError]
   );
 
-  const { getRootProps, getInputProps, isDragActive, fileRejections, open } =
+  const { getRootProps, getInputProps, open, isDragActive, isFocused } =
     useDropzone({
-      accept: arrayToAcceptObject(accept || []),
+      accept: fileTypesAcceptObject(accept || []),
       onDrop: handleDrop,
+      validator,
+      disabled,
       maxFiles,
+      minSize,
+      maxSize,
       multiple: maxFiles === 1 ? false : true,
-      noClick: true,
+      noClick,
+      noDrag,
+      noKeyboard,
+      noDragEventsBubbling,
     });
 
-  useEffect(() => {
-    if (fileRejections.length) {
-      if (onError) onError(fileRejections);
+  const renderFiles = useCallback(() => {
+    if (renderAcceptedFiles) {
+      return renderAcceptedFiles(files);
     }
-  }, [fileRejections, onError]);
+    if (!files?.length) return null;
+    return files?.map((file: File) => {
+      return <Box key={file?.name}>{file?.name}</Box>;
+    });
+  }, [renderAcceptedFiles, files]);
 
-  return (
-    <Box
-      id={id}
-      className={cx("FileDropZone", {
-        [className]: className,
-      })}
-      sx={sx}
-      data-testid="FileDropZone"
-    >
+  const renderBody = useCallback(() => {
+    if (renderContent) {
+      return renderContent({ open, isDragActive, isFocused, files });
+    }
+
+    return (
       <Box
         sx={{
-          ...(isDragActive && {
-            backgroundColor: "action.active",
-            opacity: 0.5,
-          }),
-          border: "1px dashed",
-          borderColor: "divider",
-          padding: 16,
-          // "&:hover": {
-          //   backgroundColor: "action.hover",
-          //   cursor: "pointer",
-          //   opacity: 0.5,
-          // },
+          opacity: disabled ? 0.5 : 1,
+          pointerEvents: disabled ? "none" : "auto",
         }}
-        {...getRootProps()}
       >
-        <input {...getInputProps()} />
         <Typography variant="bodyR" color="text.secondary">
-          Drag and drop or{" "}
+          {text}{" "}
           <Typography
             variant="bodyR"
             color="primary"
@@ -125,18 +113,71 @@ const FileDropZone = ({
             onClick={open}
             component="a"
           >
-            Browse Files
+            {linkText}
           </Typography>
         </Typography>
-        {files?.map((file: File) => <Box>{file.name}</Box>)}
+        {renderFiles()}
       </Box>
+    );
+  }, [
+    renderContent,
+    disabled,
+    open,
+    isDragActive,
+    isFocused,
+    text,
+    linkText,
+    files,
+    renderFiles,
+  ]);
+
+  return (
+    <Box
+      id={id}
+      className={cx("FileDropZone", {
+        [className]: className,
+      })}
+      data-testid="FileDropZone"
+      sx={{
+        ...(isDragActive && {
+          backgroundColor: "action.active",
+          opacity: 0.5,
+        }),
+        border: "1px dashed",
+        borderColor: "divider",
+        height: sizeFormat(height),
+        width: fullWidth ? "100%" : sizeFormat(width),
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        "&:hover": {
+          backgroundColor: "action.hover",
+          cursor: noClick ? "default" : "pointer",
+        },
+        ...sx,
+      }}
+      {...getRootProps()}
+    >
+      <input {...getInputProps()} />
+      {renderBody()}
     </Box>
   );
 };
 
 FileDropZone.defaultProps = {
-  maxFiles: 2,
-  accept: [".png", ".jpg", ".jpeg"],
+  maxFiles: 1,
+  accept: [...Object.values(FileTypeMap)],
+  noClick: false,
+  noDrag: false,
+  noKeyboard: false,
+  noDragEventsBubbling: false,
+  disabled: false,
+  minSize: 0,
+  maxSize: 10485760, // 10MB
+  text: "Drag and drop or",
+  linkText: "Browse Files",
+  width: 500,
+  height: 300,
 } as Partial<FileDropZoneProps>;
 
 export default FileDropZone;

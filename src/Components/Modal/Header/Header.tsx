@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import Typography from "../../Typography";
 import { HeaderProps } from "./Header.types";
 
-const Header = ({ id, className, title, subtitle, children }: any) => {
+const Header = ({ id, className, title, subtitle, children }: HeaderProps) => {
   const renderHeader = useCallback(() => {
     return (
       <>

@@ -16,7 +16,7 @@ const Footer = ({
   cancelBtn,
   cancelBtnText,
   cancelBtnProps,
-}: any) => {
+}: FooterProps) => {
   return (
     <Box
       id={id}

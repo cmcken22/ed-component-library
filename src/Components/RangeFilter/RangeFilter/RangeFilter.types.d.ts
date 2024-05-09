@@ -2,7 +2,7 @@ import { RangeFilterModalProps } from '../RangeFilterModal/RangeFilterModal.type
 import { PopoverPlacement } from '../../Popover';
 import { StandardInputProps } from '../../BaseInput';
 
-interface ModalProps extends Omit<RangeFilterModalProps, "onSubmit" | "onClear" | "placement" | "label"> {
+interface ModalProps extends Omit<RangeFilterModalProps, "onSubmit" | "onClear" | "placement" | "label" | "defaultValue"> {
 }
 export interface RangeFilterProps extends StandardInputProps, ModalProps {
     onChange?: (value: number[]) => void;

@@ -10,9 +10,11 @@ export interface TypographyProps {
     fontSize?: string;
     preventTextSelection?: boolean;
     sx?: any;
+    component?: any;
+    onClick?: (e: any) => void;
 }
 declare const Typography: {
-    ({ variant, children, fontWeight, fontStyle, className, color, fontSize, preventTextSelection, sx, }: TypographyProps): import("react/jsx-runtime").JSX.Element;
+    ({ variant, children, fontWeight, fontStyle, className, color, fontSize, preventTextSelection, onClick, component, sx, }: TypographyProps): import("react/jsx-runtime").JSX.Element;
     defaultProps: {
         preventTextSelection: boolean;
         sx: {};

@@ -2,6 +2,7 @@ import { Dialog } from "@mui/material";
 import cx from "classnames";
 import { useCallback } from "react";
 import { Icon } from "src/index";
+import { sizeFormat } from "src/utils";
 import { IconVariant } from "../../Icon";
 import Content from "../Content";
 import Footer from "../Footer";
@@ -41,9 +42,9 @@ const Modal = ({
       })}
       PaperProps={{
         sx: {
-          width,
-          minWidth,
-          maxWidth,
+          width: sizeFormat(width),
+          minWidth: sizeFormat(minWidth),
+          maxWidth: sizeFormat(maxWidth),
           borderRadius: "4px",
           ...sx,
         },

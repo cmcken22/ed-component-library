@@ -17,6 +17,7 @@ export const shouldNotForwardProp =
   };
 
 export const sizeFormat = (value: string | number) => {
+  if (value === undefined) return undefined;
   if (typeof value === "string") {
     const num = +value;
     if (!isNaN(num)) return `${num}px`;

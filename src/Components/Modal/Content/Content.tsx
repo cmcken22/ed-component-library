@@ -2,7 +2,15 @@ import { Box } from "@mui/material";
 import cx from "classnames";
 import { ContentProps } from "./Content.types";
 
-const Content = ({ id, className, children, sx }: any) => {
+const Content = ({
+  id,
+  className,
+  children,
+  sx,
+  height,
+  maxHeight,
+  minHeight,
+}: ContentProps) => {
   return (
     <Box
       id={id}
@@ -10,8 +18,11 @@ const Content = ({ id, className, children, sx }: any) => {
         [className]: className,
       })}
       sx={{
-        minHeight: "45px",
         padding: 2,
+        height,
+        minHeight,
+        maxHeight,
+        overflow: "auto",
         ...sx,
       }}
     >
@@ -20,6 +31,8 @@ const Content = ({ id, className, children, sx }: any) => {
   );
 };
 
-Content.defaultProps = {} as Partial<ContentProps>;
+Content.defaultProps = {
+  maxHeight: "calc(100vh - 200px)",
+} as Partial<ContentProps>;
 
 export default Content;

@@ -10,8 +10,8 @@ export interface ModalProps {
   hideCloseIcon?: boolean;
   hideBackdrop?: boolean;
   disableBackdropClick?: boolean;
-  width?: string;
-  minWidth?: string;
-  maxWidth?: string;
+  width?: string | number;
+  minWidth?: string | number;
+  maxWidth?: string | number;
   disableEscapeKeyDown?: boolean;
 }

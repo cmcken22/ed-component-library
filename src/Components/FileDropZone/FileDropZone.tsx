@@ -185,7 +185,7 @@ FileDropZone.defaultProps = {
   noDragEventsBubbling: false,
   disabled: false,
   minSize: 0,
-  maxSize: 10485760, // 10MB
+  maxSize: 20971520, // 20MB
   text: "Drag and drop or {{Browse Files}}",
   width: 500,
   height: 300,

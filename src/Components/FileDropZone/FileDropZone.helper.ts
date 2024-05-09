@@ -28,3 +28,47 @@ export const fileTypesAcceptObject = (arr: string[]) => {
   }
   return obj as Accept;
 };
+
+interface ExtractedTextResult {
+  result: string[];
+  matchIndicies: number[];
+}
+
+export const extractText = (input: string): ExtractedTextResult => {
+  // Regular expression to match "{{...}}"
+  const pattern = /\{\{([^}]+)\}\}/g;
+
+  // Array to store the extracted text
+  const result: string[] = [];
+
+  // Index to keep track of the start of the current match
+  let lastIndex = 0;
+  const matchIndicies: number[] = [];
+
+  // Iterate through matches
+  let match;
+  while ((match = pattern.exec(input)) !== null) {
+    // Extract the text before the match
+    const beforeMatch = input.substring(lastIndex, match.index);
+    if (beforeMatch.trim() !== "") {
+      result.push(beforeMatch.trim());
+    }
+    // Extract the text within the curly braces
+    const insideMatch = match[1];
+    result.push(insideMatch.trim());
+    matchIndicies.push(result?.length - 1);
+    // Update the last index
+    lastIndex = match.index + match[0].length;
+  }
+
+  // Extract the remaining text after the last match
+  const remainingText = input.substring(lastIndex);
+  if (remainingText.trim() !== "") {
+    result.push(remainingText.trim());
+  }
+
+  return {
+    result,
+    matchIndicies,
+  };
+};

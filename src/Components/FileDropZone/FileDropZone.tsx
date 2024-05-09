@@ -4,7 +4,11 @@ import { useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { sizeFormat } from "src/utils";
 import Typography from "../Typography";
-import { fileTypesAcceptObject, getFile } from "./FileDropZone.helper";
+import {
+  extractText,
+  fileTypesAcceptObject,
+  getFile,
+} from "./FileDropZone.helper";
 import { FileDropZoneProps, FileTypeMap } from "./FileDropZone.types";
 
 const FileDropZone = ({
@@ -26,7 +30,6 @@ const FileDropZone = ({
   renderContent,
   renderAcceptedFiles,
   text,
-  linkText,
   width,
   height,
   fullWidth,
@@ -97,6 +100,8 @@ const FileDropZone = ({
       return renderContent({ open, isDragActive, isFocused, files });
     }
 
+    const { result, matchIndicies } = extractText(text);
+
     return (
       <Box
         sx={{
@@ -105,16 +110,24 @@ const FileDropZone = ({
         }}
       >
         <Typography variant="bodyR" color="text.secondary">
-          {text}{" "}
-          <Typography
-            variant="bodyR"
-            color="primary"
-            sx={{ cursor: "pointer" }}
-            onClick={open}
-            component="a"
-          >
-            {linkText}
-          </Typography>
+          {result.map((item: string, index: number) => {
+            if (matchIndicies?.includes(index)) {
+              return (
+                <Typography
+                  key={index}
+                  variant="bodyR"
+                  color="primary"
+                  sx={{ cursor: "pointer" }}
+                  onClick={open}
+                  component="a"
+                >
+                  {item}
+                  {index === result.length - 1 ? "" : " "}
+                </Typography>
+              );
+            }
+            return index === result.length - 1 ? item : `${item} `;
+          })}
         </Typography>
         {renderFiles()}
       </Box>
@@ -126,7 +139,6 @@ const FileDropZone = ({
     isDragActive,
     isFocused,
     text,
-    linkText,
     files,
     renderFiles,
   ]);
@@ -174,8 +186,7 @@ FileDropZone.defaultProps = {
   disabled: false,
   minSize: 0,
   maxSize: 10485760, // 10MB
-  text: "Drag and drop or",
-  linkText: "Browse Files",
+  text: "Drag and drop or {{Browse Files}}",
   width: 500,
   height: 300,
 } as Partial<FileDropZoneProps>;

@@ -79,8 +79,11 @@ export interface FileDropZoneProps {
     files,
   }: Partial<DropzoneState> & { files: File[] }) => JSX.Element;
   renderAcceptedFiles?: (files: File[]) => JSX.Element;
+  /**
+   * The text to display. Wrap the link in double curly braces to extract the text.
+   * Example: "Click {{here}} to upload a file"
+   */
   text?: string;
-  linkText?: string;
   width?: string | number;
   height?: string | number;
   fullWidth?: boolean;

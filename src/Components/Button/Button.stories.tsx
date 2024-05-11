@@ -5,6 +5,20 @@ import { sourceCodeFormatter } from "sb-utils/index";
 import { IconVariant } from "src/Components/Icon";
 import Button from "./Button";
 
+const renderTemplate = (args) => {
+  const iconLeft: any = useMemo(() => {
+    if (args?.iconLeft === "undefined") return undefined;
+    return args?.iconLeft;
+  }, [args?.iconLeft]);
+
+  const iconRight: any = useMemo(() => {
+    if (args?.iconRight === "undefined") return undefined;
+    return args?.iconRight;
+  }, [args?.iconRight]);
+
+  return <Button {...args} iconLeft={iconLeft} iconRight={iconRight} />;
+};
+
 const meta = {
   title: "Example/Button",
   component: Button,
@@ -18,6 +32,7 @@ const meta = {
       },
     },
   },
+  render: renderTemplate,
   tags: ["autodocs"],
   argTypes: {
     ...commonArgTypes.onClick,
@@ -44,32 +59,32 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-const renderTemplate = (args) => {
-  const iconLeft: any = useMemo(() => {
-    if (args?.iconLeft === "undefined") return undefined;
-    return args?.iconLeft;
-  }, [args?.iconLeft]);
-
-  const iconRight: any = useMemo(() => {
-    if (args?.iconRight === "undefined") return undefined;
-    return args?.iconRight;
-  }, [args?.iconRight]);
-
-  return <Button {...args} iconLeft={iconLeft} iconRight={iconRight} />;
-};
-
-export const Sample: Story = {
-  render: renderTemplate,
+export const Primary: Story = {
   args: {
-    children: "Sample Button",
+    children: "Primary Button",
     variant: "contained",
     color: "primary",
     loading: false,
   },
 };
 
+export const Secondary: Story = {
+  args: {
+    ...Primary.args,
+    children: "Secondary Button",
+    color: "secondary",
+  },
+};
+
+export const Danger: Story = {
+  args: {
+    ...Primary.args,
+    children: "Danger Button",
+    color: "danger",
+  },
+};
+
 export const WithIcon: Story = {
-  render: renderTemplate,
   args: {
     children: "Click Me",
     variant: "contained",

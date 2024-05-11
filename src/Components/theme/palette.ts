@@ -90,9 +90,9 @@ const Warning = {
 
 const Danger = {
   extraLight: "#FFF3F6",
-  light: "#C2284D",
-  main: "#B7163E",
-  dark: "#A1042B",
+  light: "#BD113A",
+  main: "#950B2E",
+  dark: "#6C031D",
   contrastText: "#FFFFFF",
 };
 

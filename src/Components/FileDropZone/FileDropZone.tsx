@@ -21,6 +21,7 @@ interface StyledContainerProps {
   height?: string | number;
   width?: string | number;
   noClick?: boolean;
+  disabled?: boolean;
 }
 
 const StyledContainer = styled(Box, {
@@ -34,13 +35,10 @@ const StyledContainer = styled(Box, {
   slot: "root",
   // @ts-ignore
 })<StyledContainerProps>((props) => {
-  const { isDragActive, fullWidth, height, width, noClick, theme } = props;
+  const { isDragActive, fullWidth, height, width, noClick, disabled, theme } =
+    props;
 
   return {
-    ...(isDragActive && {
-      backgroundColor: theme.palette.revolver?.["5"],
-      opacity: 0.5,
-    }),
     border: "1px dashed",
     borderColor: theme.palette.revolver.light,
     height: sizeFormat(height),
@@ -48,10 +46,16 @@ const StyledContainer = styled(Box, {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    "&:hover": {
-      backgroundColor: noClick ? "initial" : theme.palette.revolver?.["5"],
-      cursor: noClick ? "default" : "pointer",
-    },
+    ...(!disabled && {
+      ...(isDragActive && {
+        backgroundColor: theme.palette.revolver?.["5"],
+        opacity: 0.5,
+      }),
+      "&:hover": {
+        backgroundColor: noClick ? "initial" : theme.palette.revolver?.["5"],
+        cursor: noClick ? "default" : "pointer",
+      },
+    }),
   };
 });
 
@@ -237,6 +241,7 @@ const FileDropZone = ({
       height={height}
       width={width}
       noClick={noClick}
+      disabled={disabled}
       sx={sx}
       {...getRootProps()}
     >

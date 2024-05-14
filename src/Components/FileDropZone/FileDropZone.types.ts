@@ -47,11 +47,11 @@ export interface FileDropZoneProps {
   maxFiles?: number;
   onError?: (err: FileRejection[]) => void;
   /**
-   * The minimum file size in bytes
+   * The minimum file size in MB, defaults to 0MB
    */
   minSize?: number;
   /**
-   * The maximum file size in bytes, defaults to 20MB
+   * The maximum file size in MB, defaults to 20MB
    */
   maxSize?: number;
   validator?: <T extends File>(file: T) => FileError | FileError[] | null;

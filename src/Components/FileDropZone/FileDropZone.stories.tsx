@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
 import FileDropZone from "./";
@@ -14,6 +15,11 @@ const meta = {
     },
   },
   tags: ["autodocs"],
+  render: (args) => (
+    <Box sx={{ width: "800px" }}>
+      <FileDropZone {...args} />
+    </Box>
+  ),
   argTypes: {
     onDrop: {
       action: "onDrop",

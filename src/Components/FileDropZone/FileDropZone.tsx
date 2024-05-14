@@ -2,7 +2,7 @@ import { Box, styled } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
-import { bytesToMb, sizeFormat } from "src/utils";
+import { mbToBytes, sizeFormat } from "src/utils";
 import Icon, { IconVariant } from "../Icon";
 import Typography from "../Typography";
 import { FONT_WEIGHT } from "../theme/Typography";
@@ -39,6 +39,7 @@ const StyledContainer = styled(Box, {
     props;
 
   return {
+    backgroundColor: theme.palette.common.white,
     border: "1px dashed",
     borderColor: theme.palette.revolver.light,
     height: sizeFormat(height),
@@ -124,8 +125,8 @@ const FileDropZone = ({
       validator,
       disabled,
       maxFiles,
-      minSize,
-      maxSize,
+      minSize: mbToBytes(maxSize),
+      maxSize: mbToBytes(maxSize),
       multiple: maxFiles === 1 ? false : true,
       noClick,
       noDrag,
@@ -167,8 +168,8 @@ const FileDropZone = ({
 
   const renderSubText = useCallback(() => {
     const limits: string[] = [];
-    if (minSize) limits.push(`Min ${bytesToMb(minSize)}mb`);
-    if (maxSize) limits.push(`Max ${bytesToMb(maxSize)}mb`);
+    if (minSize) limits.push(`Min ${minSize}mb`);
+    if (maxSize) limits.push(`Max ${maxSize}mb`);
     return (
       <Typography
         className="FileDropZone__subText"
@@ -195,6 +196,7 @@ const FileDropZone = ({
           flexDirection: "row",
           alignItems: "center",
           gap: 1,
+          px: "40px",
         }}
       >
         <Box
@@ -212,6 +214,7 @@ const FileDropZone = ({
           className="FileDropZone__content-container"
           display="flex"
           flexDirection="column"
+          // maxWidth="80%"
         >
           {renderText()}
           {renderSubText()}
@@ -260,12 +263,12 @@ FileDropZone.defaultProps = {
   noDragEventsBubbling: false,
   disabled: false,
   minSize: 0,
-  // minSize: 10485760,
-  maxSize: 20971520, // 20MB
-  text: "Drag and drop or {{Browse Files}}",
+  maxSize: 20,
+  text: "Drop your files here or {{browse}}",
   subText: undefined,
   width: 500,
   height: 160,
+  fullWidth: true,
 } as Partial<FileDropZoneProps>;
 
 export default FileDropZone;

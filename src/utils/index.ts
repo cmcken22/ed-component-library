@@ -32,6 +32,12 @@ export const bytesToMb = (bytes: number) => {
   return bytes / 1024 / 1024;
 };
 
+export const mbToBytes = (mb: number) => {
+  if (mb === undefined) return undefined;
+  if (mb === 0) return 0;
+  return mb * 1024 * 1024;
+};
+
 export const useBreakPoint = () => {
   const theme = useTheme();
   const xl = useMediaQuery(theme.breakpoints.up("xl"));

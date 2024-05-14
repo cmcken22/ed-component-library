@@ -32,11 +32,12 @@ declare const Colors: {
         90: string;
         100: string;
     };
-    Resolver: {
+    Revolver: {
         light: string;
         main: string;
         dark: string;
         contrastText: string;
+        5: string;
         10: string;
         20: string;
         30: string;
@@ -121,11 +122,13 @@ declare module "@mui/material/styles/createPalette" {
         danger: any;
         charcoal: any;
         border: any;
+        revolver: any;
     }
     interface PaletteOptions {
         danger: any;
         charcoal: any;
         border: any;
+        revolver: any;
     }
 }
 declare const palette: import('@mui/material').Palette;

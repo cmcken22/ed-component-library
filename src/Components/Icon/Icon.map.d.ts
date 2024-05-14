@@ -135,6 +135,10 @@ declare const IconMap: {
         stroke: string;
         fill: string;
     }) => import("react/jsx-runtime").JSX.Element;
+    FileUpload: ({ stroke, fill }: {
+        stroke: string;
+        fill: string;
+    }) => import("react/jsx-runtime").JSX.Element;
     GraphDown: ({ stroke, fill }: {
         stroke: string;
         fill: string;

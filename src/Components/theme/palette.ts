@@ -35,11 +35,12 @@ const Cabaret = {
   100: "#340E16",
 };
 
-const Resolver = {
+const Revolver = {
   light: "#B08CCC",
   main: "#9C71C0",
   dark: "#8856B4",
   contrastText: "#FFFFFF",
+  5: "#E8DFEF",
   10: "#E8DFEF",
   20: "#D5C3E3",
   30: "#C2A6D7",
@@ -116,7 +117,7 @@ const Border = {
 const Colors = {
   Bermuda,
   Cabaret,
-  Resolver,
+  Revolver,
   Charcoal,
   Success,
   Warning,
@@ -131,11 +132,13 @@ declare module "@mui/material/styles/createPalette" {
     danger: any;
     charcoal: any;
     border: any;
+    revolver: any;
   }
   interface PaletteOptions {
     danger: any;
     charcoal: any;
     border: any;
+    revolver: any;
   }
 }
 
@@ -145,6 +148,7 @@ const theme = createTheme({
     secondary: Colors.Cabaret,
     danger: Colors.Danger,
     charcoal: Colors.Charcoal,
+    revolver: Colors.Revolver,
     success: Colors.Success,
     warning: Colors.Warning,
     error: Colors.Danger,

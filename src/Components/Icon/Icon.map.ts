@@ -44,6 +44,7 @@ import DownloadV2 from "./IconElements/DownloadV2";
 import Edit from "./IconElements/Edit";
 import Error from "./IconElements/Error";
 import Euro from "./IconElements/Euro";
+import FileUpload from "./IconElements/FileUpload";
 import Files from "./IconElements/Files";
 import Filter from "./IconElements/Filter";
 import FilterV2 from "./IconElements/FilterV2";
@@ -149,6 +150,7 @@ const IconMap = {
   Files,
   FilterV2,
   Filter,
+  FileUpload,
   GraphDown,
   GraphUp,
   Hammer,

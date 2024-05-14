@@ -1,15 +1,59 @@
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import cx from "classnames";
 import { useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
-import { sizeFormat } from "src/utils";
+import { bytesToMb, sizeFormat } from "src/utils";
+import Icon, { IconVariant } from "../Icon";
 import Typography from "../Typography";
+import { FONT_WEIGHT } from "../theme/Typography";
 import {
   extractText,
   fileTypesAcceptObject,
   getFile,
 } from "./FileDropZone.helper";
 import { FileDropZoneProps, FileTypeMap } from "./FileDropZone.types";
+
+import { shouldNotForwardProp } from "src/utils";
+
+interface StyledContainerProps {
+  isDragActive?: boolean;
+  fullWidth?: boolean;
+  height?: string | number;
+  width?: string | number;
+  noClick?: boolean;
+}
+
+const StyledContainer = styled(Box, {
+  shouldForwardProp: shouldNotForwardProp([
+    "isDragActive",
+    "fullWidth",
+    "height",
+    "width",
+    "noClick",
+  ]),
+  slot: "root",
+  // @ts-ignore
+})<StyledContainerProps>((props) => {
+  const { isDragActive, fullWidth, height, width, noClick, theme } = props;
+
+  return {
+    ...(isDragActive && {
+      backgroundColor: theme.palette.revolver?.["5"],
+      opacity: 0.5,
+    }),
+    border: "1px dashed",
+    borderColor: theme.palette.revolver.light,
+    height: sizeFormat(height),
+    width: fullWidth ? "100%" : sizeFormat(width),
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "&:hover": {
+      backgroundColor: noClick ? "initial" : theme.palette.revolver?.["5"],
+      cursor: noClick ? "default" : "pointer",
+    },
+  };
+});
 
 const FileDropZone = ({
   id,
@@ -28,8 +72,8 @@ const FileDropZone = ({
   noKeyboard,
   noDragEventsBubbling,
   renderContent,
-  renderAcceptedFiles,
   text,
+  subText,
   width,
   height,
   fullWidth,
@@ -85,94 +129,120 @@ const FileDropZone = ({
       noDragEventsBubbling,
     });
 
-  const renderFiles = useCallback(() => {
-    if (renderAcceptedFiles) {
-      return renderAcceptedFiles(files);
-    }
-    if (!files?.length) return null;
-    return files?.map((file: File) => {
-      return <Box key={file?.name}>{file?.name}</Box>;
-    });
-  }, [renderAcceptedFiles, files]);
+  const renderText = useCallback(() => {
+    const { result, matchIndicies } = extractText(text);
+
+    return (
+      <Typography
+        className="FileDropZone__text"
+        variant="bodyS"
+        color="text.secondary"
+        fontWeight={FONT_WEIGHT.bold}
+      >
+        {result.map((item: string, index: number) => {
+          if (matchIndicies?.includes(index)) {
+            return (
+              <Typography
+                key={index}
+                variant="bodyS"
+                color="primary"
+                sx={{ cursor: "pointer" }}
+                onClick={open}
+                component="a"
+              >
+                {item}
+                {index === result.length - 1 ? "" : " "}
+              </Typography>
+            );
+          }
+          return index === result.length - 1 ? item : `${item} `;
+        })}
+      </Typography>
+    );
+  }, [text, open]);
+
+  const renderSubText = useCallback(() => {
+    const limits: string[] = [];
+    if (minSize) limits.push(`Min ${bytesToMb(minSize)}mb`);
+    if (maxSize) limits.push(`Max ${bytesToMb(maxSize)}mb`);
+    return (
+      <Typography
+        className="FileDropZone__subText"
+        variant="bodyXS"
+        color="charcoal.50"
+      >
+        {subText !== undefined ? subText : limits?.join(" | ")}
+      </Typography>
+    );
+  }, [subText, minSize, maxSize]);
 
   const renderBody = useCallback(() => {
     if (renderContent) {
       return renderContent({ open, isDragActive, isFocused, files });
     }
 
-    const { result, matchIndicies } = extractText(text);
-
     return (
       <Box
+        className="FileDropZone__content"
         sx={{
           opacity: disabled ? 0.5 : 1,
           pointerEvents: disabled ? "none" : "auto",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 1,
         }}
       >
-        <Typography variant="bodyR" color="text.secondary">
-          {result.map((item: string, index: number) => {
-            if (matchIndicies?.includes(index)) {
-              return (
-                <Typography
-                  key={index}
-                  variant="bodyR"
-                  color="primary"
-                  sx={{ cursor: "pointer" }}
-                  onClick={open}
-                  component="a"
-                >
-                  {item}
-                  {index === result.length - 1 ? "" : " "}
-                </Typography>
-              );
-            }
-            return index === result.length - 1 ? item : `${item} `;
-          })}
-        </Typography>
-        {renderFiles()}
+        <Box
+          className="FileDropZone__icon"
+          sx={{ color: (theme: any) => theme.palette.revolver?.["60"] }}
+        >
+          <Icon
+            icon={IconVariant.FileUpload}
+            color="inherit"
+            height="48.06px"
+            width="65.75px"
+          />
+        </Box>
+        <Box
+          className="FileDropZone__content-container"
+          display="flex"
+          flexDirection="column"
+        >
+          {renderText()}
+          {renderSubText()}
+        </Box>
       </Box>
     );
   }, [
     renderContent,
-    disabled,
     open,
     isDragActive,
     isFocused,
-    text,
     files,
-    renderFiles,
+    disabled,
+    renderText,
+    renderSubText,
   ]);
 
   return (
-    <Box
+    <StyledContainer
       id={id}
       className={cx("FileDropZone", {
         [className]: className,
       })}
       data-testid="FileDropZone"
-      sx={{
-        ...(isDragActive && {
-          backgroundColor: "action.active",
-          opacity: 0.5,
-        }),
-        border: "1px dashed",
-        borderColor: "divider",
-        height: sizeFormat(height),
-        width: fullWidth ? "100%" : sizeFormat(width),
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        "&:hover": {
-          backgroundColor: "action.hover",
-          cursor: noClick ? "default" : "pointer",
-        },
-        ...sx,
-      }}
+      isDragActive={isDragActive}
+      fullWidth={fullWidth}
+      height={height}
+      width={width}
+      noClick={noClick}
+      sx={sx}
       {...getRootProps()}
     >
       <input {...getInputProps()} />
       {renderBody()}
-    </Box>
+    </StyledContainer>
   );
 };
 
@@ -185,10 +255,12 @@ FileDropZone.defaultProps = {
   noDragEventsBubbling: false,
   disabled: false,
   minSize: 0,
+  // minSize: 10485760,
   maxSize: 20971520, // 20MB
   text: "Drag and drop or {{Browse Files}}",
+  subText: undefined,
   width: 500,
-  height: 300,
+  height: 160,
 } as Partial<FileDropZoneProps>;
 
 export default FileDropZone;

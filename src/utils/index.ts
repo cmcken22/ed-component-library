@@ -26,6 +26,12 @@ export const sizeFormat = (value: string | number) => {
   return `${value}px`;
 };
 
+export const bytesToMb = (bytes: number) => {
+  if (bytes === undefined) return undefined;
+  if (bytes === 0) return 0;
+  return bytes / 1024 / 1024;
+};
+
 export const useBreakPoint = () => {
   const theme = useTheme();
   const xl = useMediaQuery(theme.breakpoints.up("xl"));

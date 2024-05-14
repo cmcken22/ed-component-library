@@ -42,6 +42,8 @@ export interface FileDropZoneProps {
   id?: string;
   className?: string;
   sx?: SxProps;
+  onDragEnter?: (event: React.DragEvent<HTMLDivElement>) => void;
+  onDragLeave?: (event: React.DragEvent<HTMLDivElement>) => void;
   onDrop?: (files: File[], binaryStrings: string[]) => void;
   accept?: FileType[];
   maxFiles?: number;

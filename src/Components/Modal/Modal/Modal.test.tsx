@@ -5,6 +5,7 @@ import { ModalProps } from "./Modal.types";
 
 const initialProps: ModalProps = {
   ...Modal.defaultProps,
+  open: false,
 };
 
 describe("Modal", () => {
@@ -18,6 +19,7 @@ describe("Modal", () => {
 
   it("should render correctly", () => {
     props.id = "test";
+    props.open = true;
     const { getByTestId } = renderComponent(props);
     const component = getByTestId("Modal");
     expect(component).toHaveAttribute("id", props.id);

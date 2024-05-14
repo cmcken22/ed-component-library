@@ -13,6 +13,7 @@ import {
 } from "./FileDropZone.helper";
 import { FileDropZoneProps, FileTypeMap } from "./FileDropZone.types";
 
+import { TEST_ID } from "src/enums";
 import { shouldNotForwardProp } from "src/utils";
 
 interface StyledContainerProps {
@@ -66,6 +67,8 @@ const FileDropZone = ({
   sx,
   accept,
   onDrop,
+  onDragEnter,
+  onDragLeave,
   validator,
   onError,
   disabled,
@@ -91,6 +94,7 @@ const FileDropZone = ({
         if (onError) onError(fileRejections);
         return;
       }
+
       const files: any = [];
       const binaryStrings: any = [];
 
@@ -122,10 +126,12 @@ const FileDropZone = ({
     useDropzone({
       accept: fileTypesAcceptObject(accept || []),
       onDrop: handleDrop,
+      onDragEnter,
+      onDragLeave,
       validator,
       disabled,
       maxFiles,
-      minSize: mbToBytes(maxSize),
+      minSize: mbToBytes(minSize),
       maxSize: mbToBytes(maxSize),
       multiple: maxFiles === 1 ? false : true,
       noClick,
@@ -238,7 +244,7 @@ const FileDropZone = ({
       className={cx("FileDropZone", {
         [className]: className,
       })}
-      data-testid="FileDropZone"
+      data-testid={TEST_ID.FILE_DROP_ZONE}
       isDragActive={isDragActive}
       fullWidth={fullWidth}
       height={height}
@@ -248,7 +254,7 @@ const FileDropZone = ({
       sx={sx}
       {...getRootProps()}
     >
-      <input {...getInputProps()} />
+      <input {...getInputProps()} disabled={disabled} />
       {renderBody()}
     </StyledContainer>
   );

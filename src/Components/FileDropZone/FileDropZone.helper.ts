@@ -22,7 +22,6 @@ export const fileTypesAcceptObject = (arr: string[]) => {
         if (!obj[key]) {
           obj[key] = [];
         }
-        obj[key] = [...obj[key], fileType];
       }
     }
   }

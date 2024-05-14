@@ -13,6 +13,7 @@ enum TEST_ID {
   RADIO_BUTTON_GROUP = "RadioButtonGroup",
   RANGE_FILTER_CONTROL = "RangeFilterControl",
   OPERAND_FILTER_CONTROL = "OperandFilterControl",
+  FILE_DROP_ZONE = "FileDropZone",
 }
 
 export default TEST_ID;

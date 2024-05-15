@@ -12,6 +12,7 @@ declare enum TEST_ID {
     STEPPER = "Stepper",
     RADIO_BUTTON_GROUP = "RadioButtonGroup",
     RANGE_FILTER_CONTROL = "RangeFilterControl",
-    OPERAND_FILTER_CONTROL = "OperandFilterControl"
+    OPERAND_FILTER_CONTROL = "OperandFilterControl",
+    FILE_DROP_ZONE = "FileDropZone"
 }
 export default TEST_ID;

@@ -49,6 +49,10 @@ export const Default: Story = {
     currentDate: new Date(),
     numberOfMonths: 2,
     onSelect: fn(),
+    value: [
+      new Date("2024-04-15T04:00:00.000Z"),
+      new Date("2024-04-17T04:00:00.000Z"),
+    ],
   },
 };
 

@@ -66,12 +66,12 @@ describe("RangePickerCalendar", () => {
     const { getByTestId } = renderComponent(props);
     const calendar = getByTestId(TEST_ID.CALENDAR);
 
-    shouldRenderProperMonths(calendar, ["March 2024", "April 2024"], [31, 30]);
+    shouldRenderProperMonths(calendar, ["April 2024", "May 2024"], [30, 31]);
 
     const months = calendar.querySelectorAll(`.month`);
     expect(months).toHaveLength(2);
 
-    const april = months[1];
+    const april = months[0];
     const days = april.querySelectorAll(`[data-test-inrange="true"]`);
     expect(days).toHaveLength(3);
 

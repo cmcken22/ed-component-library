@@ -87,7 +87,12 @@ export const NextMonthBtn = () => {
       onClick={handleViewNextMonth}
       sx={{ cursor: "pointer" }}
     >
-      <Icon icon="ArrowRight" height="16px" width="16px" />
+      <Icon
+        icon="ArrowRight"
+        height="16px"
+        width="16px"
+        sx={{ cursor: "pointer" }}
+      />
     </Box>
   );
 };
@@ -109,7 +114,12 @@ export const PrevMonthBtn = () => {
       onClick={handleViewPrevMonth}
       sx={{ cursor: "pointer" }}
     >
-      <Icon icon="ArrowLeft" height="16px" width="16px" />
+      <Icon
+        icon="ArrowLeft"
+        height="16px"
+        width="16px"
+        sx={{ cursor: "pointer" }}
+      />
     </Box>
   );
 };

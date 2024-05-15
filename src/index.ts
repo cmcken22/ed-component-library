@@ -7,6 +7,7 @@ export { DatePicker, RangePicker } from "./Components/DatePicker";
 export { default as Drawer } from "./Components/Drawer";
 export { default as FileDropZone } from "./Components/FileDropZone";
 export { Grid, GridItem } from "./Components/Grid";
+export { default as HorizontalStack } from "./Components/HorizontalStack";
 export { default as Icon } from "./Components/Icon";
 export { default as Currency } from "./Components/Inputs/Currency";
 export { default as DateField } from "./Components/Inputs/DateField";

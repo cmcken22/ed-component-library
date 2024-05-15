@@ -17,11 +17,11 @@ const HorizontalStack = ({
       className={cx("HorizontalStack", {
         [className]: className,
       })}
-      sx={sx}
       data-testid="HorizontalStack"
       flexDirection="row"
       gap={sizeFormat(gap)}
       justifyContent={justifyContent}
+      sx={sx}
     >
       {children}
     </Stack>

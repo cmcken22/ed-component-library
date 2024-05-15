@@ -5,6 +5,7 @@ export { default as Checkbox } from "./Components/Checkbox";
 export { default as Chip } from "./Components/Chip";
 export { DatePicker, RangePicker } from "./Components/DatePicker";
 export { default as Drawer } from "./Components/Drawer";
+export { default as FileDropZone } from "./Components/FileDropZone";
 export { Grid, GridItem } from "./Components/Grid";
 export { default as Icon } from "./Components/Icon";
 export { default as Currency } from "./Components/Inputs/Currency";
@@ -21,6 +22,7 @@ export {
   OperandFilterModal,
 } from "./Components/OperandFilter";
 export { default as OverflowRowCounter } from "./Components/OverflowRowCounter";
+export { default as ProgressBar } from "./Components/ProgressBar";
 export { default as RadioButton } from "./Components/RadioButton";
 export { RangeFilter, RangeFilterModal } from "./Components/RangeFilter";
 export { MultiSelect, Select } from "./Components/Select";

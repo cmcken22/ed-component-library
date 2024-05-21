@@ -46,7 +46,7 @@ export const Sample: Story = {
     ...Percent.defaultProps,
     id: "Percent",
     label: "Percent",
-    placeholder: "",
+    placeholder: "Enter a value",
     disabled: false,
     helperText: "Helper Text",
     required: false,
@@ -54,6 +54,14 @@ export const Sample: Story = {
     fullWidth: false,
     labelPosition: "top",
     tooltip: "Tooltip",
+  },
+};
+
+export const AllowClear: Story = {
+  args: {
+    ...Sample.args,
+    value: "99",
+    allowClear: true,
   },
 };
 

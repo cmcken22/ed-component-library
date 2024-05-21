@@ -47,6 +47,14 @@ export const Text: Story = {
   },
 };
 
+export const AllowClear: Story = {
+  args: {
+    ...Text.args,
+    value: "Clear me",
+    allowClear: true,
+  },
+};
+
 export const Success: Story = {
   args: {
     ...Text.args,

@@ -25,7 +25,8 @@ const renderCustomIcon = (symbol: string | (() => JSX.Element)) => {
 const Currency = (props: CurrencyProps) => {
   const { inputProps, formattingProps } =
     useFormattingPropIsolation<CurrencyProps>(props);
-  const { className, prefix, suffix, persistSuffix, ...rest } = inputProps;
+  const { className, prefix, suffix, persistSuffix, allowClear, ...rest } =
+    inputProps;
 
   const renderStartAdornment = useCallback(() => {
     if (prefix && SymbolMap[prefix]) {
@@ -51,6 +52,7 @@ const Currency = (props: CurrencyProps) => {
       startAdornment={renderStartAdornment()}
       endAdornment={renderEndAdornment()}
       persistEndAdornment={persistSuffix}
+      allowClear={allowClear}
       {...formattingProps}
     />
   );
@@ -71,6 +73,7 @@ Currency.defaultProps = {
   variant: "outlined",
   allowKeyBoardInput: true,
   step: 1,
+  allowClear: false,
 } as Partial<CurrencyProps>;
 
 // export named component for storybook docgen

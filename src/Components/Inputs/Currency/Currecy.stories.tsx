@@ -65,6 +65,14 @@ export const Sample: Story = {
   },
 };
 
+export const AllowClear: Story = {
+  args: {
+    ...Sample.args,
+    value: "99",
+    allowClear: true,
+  },
+};
+
 export const LeftLabel: Story = {
   args: {
     ...Sample.args,

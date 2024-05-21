@@ -13,6 +13,7 @@ import BaseInput, {
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
+import Icon, { IconVariant } from "src/Components/Icon";
 import useClampValue from "src/Hooks/useClampValue";
 import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import useKeyBoardInput from "src/Hooks/useKeyBoardInput";
@@ -104,6 +105,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
     persistEndAdornment,
     textAlign,
     showSteps,
+    allowClear,
   } = inputProps;
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const inputRef = useRef(null);
@@ -116,7 +118,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
     setValue(clamp(passedValue) as string);
   }, [passedValue, clamp]);
 
-  const handleClearValue = useCallback(() => {
+  const handleClear = useCallback(() => {
     handleChangeCallback({
       value: "",
       floatValue: null,
@@ -129,7 +131,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
     (e: { value: string | number }) => {
       const value = `${e.value}`;
       if (e?.value === "") {
-        handleClearValue();
+        handleClear();
         return;
       }
       const floatValue = parseFloat(value);
@@ -145,7 +147,7 @@ const NumberInputComp = (props: NumberInputCompProps) => {
         });
       }
     },
-    [setValue, clamp, handleChangeCallback, formattingProps, handleClearValue]
+    [setValue, clamp, handleChangeCallback, formattingProps, handleClear]
   );
 
   useKeyBoardInput({
@@ -194,14 +196,33 @@ const NumberInputComp = (props: NumberInputCompProps) => {
   }, [startAdornment]);
 
   const renderEndAdornment = useCallback(() => {
-    if (!endAdornment && !statusAdornment && !showSteps) return null;
-    if (!endAdornment && !showSteps) return statusAdornment;
+    const adornments: any = [];
 
-    let renderEndAdornment = true;
-    if (statusAdornment) {
-      renderEndAdornment = false;
-      if (persistEndAdornment) renderEndAdornment = true;
+    if (!endAdornment && !statusAdornment && !allowClear && !showSteps)
+      return null;
+
+    if (allowClear && value && !disabled) {
+      adornments.push(
+        <Icon
+          key="clear"
+          icon={IconVariant.Close}
+          size={20}
+          color="border.dark"
+          onClick={handleClear}
+        />
+      );
     }
+    if (showSteps) {
+      adornments.push(renderStepper());
+    }
+    if (statusAdornment) {
+      adornments.push(statusAdornment);
+    }
+    if (!endAdornment || (endAdornment && persistEndAdornment)) {
+      adornments.push(endAdornment);
+    }
+
+    if (!adornments.length) return null;
 
     return (
       <InputAdornment
@@ -214,17 +235,20 @@ const NumberInputComp = (props: NumberInputCompProps) => {
           ".status-adornment": { ml: 0 },
         }}
       >
-        {renderStepper()}
-        {renderEndAdornment ? endAdornment : null}
-        {statusAdornment}
+        {adornments}
       </InputAdornment>
     );
   }, [
+    allowClear,
+    showSteps,
+    value,
+    disabled,
     statusAdornment,
     endAdornment,
     persistEndAdornment,
     handleChange,
     renderStepper,
+    handleClear,
   ]);
 
   const handleFocus = useCallback(
@@ -317,6 +341,7 @@ NumberInput.defaultProps = {
   textAlign: "right",
   step: 1,
   showSteps: false,
+  allowClear: false,
 } as Partial<NumberInputProps>;
 
 // export named component for storybook docgen

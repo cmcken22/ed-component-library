@@ -5,6 +5,7 @@ import BaseInput, {
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
+import Icon, { IconVariant } from "src/Components/Icon";
 import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { InputProps } from ".";
 
@@ -29,6 +30,7 @@ const InputComp = ({
   startAdornment,
   endAdornment,
   persistEndAdornment,
+  allowClear,
 }: InputProps) => {
   const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
@@ -38,6 +40,11 @@ const InputComp = ({
     setValue(passedValue || "");
   }, [passedValue]);
 
+  const handleClear = useCallback(() => {
+    setValue("");
+    handleChangeCallback("");
+  }, [setValue, handleChangeCallback]);
+
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       if ((maxChars || maxChars === 0) && e.target.value.length > maxChars) {
@@ -46,7 +53,7 @@ const InputComp = ({
       setValue(e.target.value);
       handleChangeCallback(e.target.value);
     },
-    [onChange, setValue, maxChars, handleChangeCallback]
+    [maxChars, setValue, handleChangeCallback]
   );
 
   const renderStartAdornment = useCallback(() => {
@@ -59,14 +66,28 @@ const InputComp = ({
   }, [startAdornment]);
 
   const renderEndAdornment = useCallback(() => {
-    if (!endAdornment && !statusAdornment) return null;
-    if (!endAdornment) return statusAdornment;
+    const adornments: any = [];
 
-    let renderEndAdornment = true;
-    if (statusAdornment) {
-      renderEndAdornment = false;
-      if (persistEndAdornment) renderEndAdornment = true;
+    if (!endAdornment && !statusAdornment && !allowClear) return null;
+    if (allowClear && value && !disabled) {
+      adornments.push(
+        <Icon
+          key="clear"
+          icon={IconVariant.Close}
+          size={20}
+          color="border.dark"
+          onClick={handleClear}
+        />
+      );
     }
+    if (statusAdornment) {
+      adornments.push(statusAdornment);
+    }
+    if (!endAdornment || (endAdornment && persistEndAdornment)) {
+      adornments.push(endAdornment);
+    }
+
+    if (!adornments.length) return null;
 
     return (
       <InputAdornment
@@ -79,11 +100,19 @@ const InputComp = ({
           ".status-adornment": { ml: 0 },
         }}
       >
-        {renderEndAdornment ? endAdornment : null}
-        {statusAdornment}
+        {adornments}
       </InputAdornment>
     );
-  }, [statusAdornment, endAdornment, persistEndAdornment]);
+  }, [
+    statusAdornment,
+    endAdornment,
+    persistEndAdornment,
+    allowClear,
+    disabled,
+    value,
+    handleChange,
+    handleClear,
+  ]);
 
   return (
     <BaseInput>
@@ -118,6 +147,7 @@ Input.defaultProps = {
   labelPosition: "top",
   type: "text",
   variant: "outlined",
+  allowClear: false,
 } as Partial<InputProps>;
 
 // export named component for storybook docgen

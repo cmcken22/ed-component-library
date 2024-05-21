@@ -1,10 +1,11 @@
-import { TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import { useCallback, useContext, useState } from "react";
 import BaseInput, {
   BaseInputContext,
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
+import Icon, { IconVariant } from "src/Components/Icon";
 import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { TextAreaProps } from ".";
 
@@ -26,8 +27,11 @@ const TextAreaComp = ({
   color,
   autoFocus,
   readOnly,
+  allowClear,
+  endAdornment,
+  persistEndAdornment,
 }: TextAreaProps) => {
-  const { endAdornment } = useContext(BaseInputContext);
+  const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState(passedValue || "");
   const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
@@ -44,6 +48,60 @@ const TextAreaComp = ({
     },
     [setValue, maxChars, maxWords, handleChangeCallback]
   );
+
+  const handleClear = useCallback(() => {
+    setValue("");
+    handleChangeCallback("");
+  }, [setValue, handleChangeCallback]);
+
+  const renderEndAdornment = useCallback(() => {
+    const adornments: any = [];
+
+    if (!endAdornment && !statusAdornment && !allowClear) return null;
+
+    if (allowClear && value && !disabled) {
+      adornments.push(
+        <Icon
+          key="clear"
+          icon={IconVariant.Close}
+          size={20}
+          color="border.dark"
+          onClick={handleClear}
+        />
+      );
+    }
+    if (statusAdornment) {
+      adornments.push(statusAdornment);
+    }
+    if (!endAdornment || (endAdornment && persistEndAdornment)) {
+      adornments.push(endAdornment);
+    }
+
+    if (!adornments.length) return null;
+
+    return (
+      <InputAdornment
+        position="end"
+        sx={{
+          ml: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+          ".status-adornment": { ml: 0 },
+        }}
+      >
+        {adornments}
+      </InputAdornment>
+    );
+  }, [
+    allowClear,
+    value,
+    disabled,
+    statusAdornment,
+    endAdornment,
+    persistEndAdornment,
+    handleClear,
+  ]);
 
   return (
     <BaseInput>
@@ -63,7 +121,7 @@ const TextAreaComp = ({
         InputProps={{
           readOnly,
           sx: { "& input": { color: getFontColor(color, value) } },
-          endAdornment,
+          endAdornment: renderEndAdornment(),
         }}
       />
       <BaseInput.HelperText>{helperText}</BaseInput.HelperText>
@@ -78,6 +136,7 @@ TextArea.defaultProps = {
   minRows: 2,
   maxRows: 4,
   variant: "outlined",
+  allowClear: false,
 } as Partial<TextAreaProps>;
 
 // export named component for storybook docgen

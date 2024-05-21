@@ -50,3 +50,11 @@ export const Default: Story = {
     tooltip: "This is a tooltip",
   },
 };
+
+export const AllowClear: Story = {
+  args: {
+    ...Default.args,
+    value: "99",
+    allowClear: true,
+  },
+};

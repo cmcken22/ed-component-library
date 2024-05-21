@@ -8,7 +8,8 @@ import NumberInput, { useFormattingPropIsolation } from "../NumberInput";
 const Percent = (props: PercentProps) => {
   const { inputProps, formattingProps } =
     useFormattingPropIsolation<PercentProps>(props);
-  const { className, iconPlacement, persistSuffix, ...rest } = inputProps;
+  const { className, iconPlacement, persistSuffix, allowClear, ...rest } =
+    inputProps;
 
   const renderStartAdornment = useCallback(() => {
     if (iconPlacement !== "prefix") return null;
@@ -34,6 +35,7 @@ const Percent = (props: PercentProps) => {
       startAdornment={renderStartAdornment()}
       endAdornment={renderEndAdornment()}
       persistEndAdornment={persistSuffix}
+      allowClear={allowClear}
       {...formattingProps}
     />
   );
@@ -55,6 +57,7 @@ Percent.defaultProps = {
   allowKeyBoardInput: true,
   step: 1,
   textAlign: "left",
+  allowClear: false,
 } as Partial<PercentProps>;
 
 // export named component for storybook docgen

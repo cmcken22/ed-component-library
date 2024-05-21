@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import TextArea from "./TextArea";
 
@@ -15,17 +16,13 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    onChange: {
-      action: "changed",
-    },
-    status: {
-      options: ["error", "success", "warning"],
-      control: { type: "radio" },
-    },
-    labelPosition: {
-      options: ["top", "left"],
-      control: { type: "radio" },
-    },
+    ...commonArgTypes.onChange,
+    ...commonArgTypes.onFocus,
+    ...commonArgTypes.onBlur,
+    ...commonArgTypes.onClick,
+    ...commonArgTypes.onHover,
+    ...commonArgTypes.status,
+    ...commonArgTypes.labelPosition,
   },
 } satisfies Meta<typeof TextArea>;
 
@@ -44,6 +41,13 @@ export const Sample: Story = {
     value: "Hello world",
     fullWidth: false,
     labelPosition: "top",
+  },
+};
+
+export const AllowClear: Story = {
+  args: {
+    ...Sample.args,
+    allowClear: true,
   },
 };
 

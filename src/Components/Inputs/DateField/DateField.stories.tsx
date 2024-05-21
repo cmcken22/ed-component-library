@@ -18,6 +18,9 @@ const meta = {
   argTypes: {
     ...commonArgTypes.onChange,
     ...commonArgTypes.onClick,
+    onValidation: {
+      action: "onValidation",
+    },
   },
 } satisfies Meta<typeof DateField>;
 

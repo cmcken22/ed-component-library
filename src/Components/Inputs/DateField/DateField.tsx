@@ -4,12 +4,14 @@ import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import isEqual from "lodash.isequal";
 import { useCallback, useContext, useEffect, useState } from "react";
 import BaseInput, {
   BaseInputContext,
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
+import { isValidDate } from "src/Components/DatePicker/Common/utils";
 import Icon, { IconVariant } from "src/Components/Icon";
 import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { TEST_ID } from "src/enums";
@@ -33,6 +35,12 @@ const DateFieldComp = ({
   readOnly,
   inputRef,
   debounce,
+  currentDate = new Date(),
+  disablePast,
+  disableFuture,
+  disableCurrent,
+  dateDisabled,
+  onValidation,
 }: DateFieldProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState<Date | null>(passedValue);
@@ -51,12 +59,57 @@ const DateFieldComp = ({
     );
   }, [hideCalendarIcon]);
 
+  const checkDateDisabled = useCallback(
+    (date: Date) => {
+      const formattedCurrentDate = new Date(currentDate);
+      formattedCurrentDate.setHours(0, 0, 0, 0);
+
+      if (disableCurrent && isEqual(date, formattedCurrentDate)) {
+        return true;
+      }
+      if (disableFuture && date > formattedCurrentDate) {
+        return true;
+      }
+      if (disablePast && date < formattedCurrentDate) {
+        return true;
+      }
+      if (dateDisabled) {
+        return dateDisabled(date);
+      }
+      return false;
+    },
+    [disableCurrent, currentDate, disableFuture, disablePast, dateDisabled]
+  );
+
+  const handleValidation = useCallback(
+    (date: Date) => {
+      let valid = true;
+      if (!isValidDate(date)) {
+        valid = false;
+      }
+      if (checkDateDisabled(date)) {
+        valid = false;
+      }
+      if (onValidation) onValidation(valid);
+      return valid;
+    },
+    [checkDateDisabled, onValidation]
+  );
+
+  // handle validation on mount
+  useEffect(() => {
+    if (value) {
+      handleValidation(value);
+    }
+  }, []);
+
   const handleSelect = useCallback(
     (date: Date) => {
       setValue(date);
       handleChangeCallback(date);
+      handleValidation(date);
     },
-    [setValue, handleChangeCallback]
+    [setValue, handleChangeCallback, handleValidation]
   );
 
   return (

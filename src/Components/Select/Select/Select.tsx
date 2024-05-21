@@ -16,6 +16,7 @@ const Select = (props: SelectProps) => {
     renderValue,
     variant,
     debounce,
+    allowClear,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || "");
@@ -111,6 +112,7 @@ const Select = (props: SelectProps) => {
       getValueSelected={handleGetValueSelected}
       placeholder={placeholder}
       variant={variant}
+      allowClear={allowClear && Boolean(value)}
     />
   );
 };

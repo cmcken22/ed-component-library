@@ -74,6 +74,13 @@ export const Sample: Story = {
   },
 };
 
+export const AllowClear: Story = {
+  args: {
+    ...Sample.args,
+    allowClear: true,
+  },
+};
+
 export const LeftLabel: Story = {
   args: {
     ...Select.defaultProps,

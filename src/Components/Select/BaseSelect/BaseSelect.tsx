@@ -20,7 +20,7 @@ import BaseInput, { BaseInputContext, withBaseInput } from "../../BaseInput";
 import Checkbox from "../../Checkbox";
 import Typography from "../../Typography";
 import { BaseSelectProps, StandardSelectOption } from "./BaseSelect.types";
-import SelectIcon from "./SelectIcon";
+import SelectEndAdornment from "./SelectEndAdornment";
 
 const StyledSelect = styled(MuiSelect, {
   shouldForwardProp: shouldNotForwardProp(["styleVariant", "wrap"]),
@@ -31,6 +31,9 @@ const StyledSelect = styled(MuiSelect, {
   wrap,
 }) => {
   return {
+    ".MuiInputBase-input": {
+      paddingRight: `${theme.spacing(0.5)} !important`,
+    },
     "& .MuiSelect-select": {
       ...(styleVariant === "table" && {
         "&:focus": {
@@ -43,8 +46,6 @@ const StyledSelect = styled(MuiSelect, {
         background: "transparent !important",
         padding: theme.spacing(1),
         paddingLeft: 0,
-        paddingRight: `${theme.spacing(4)} !important`,
-        backgroundColor: "red",
       }),
       ...(!wrap && {
         overflow: "auto",
@@ -152,6 +153,8 @@ const BaseSelectComp = ({
   wrap,
   disablePortal,
   autoFocus,
+  allowClear,
+  persistEndAdornment,
 }: BaseSelectProps) => {
   const { endAdornment } = useContext(BaseInputContext);
   const selectRef = useRef<Element>(null);
@@ -241,6 +244,10 @@ const BaseSelectComp = ({
     ]
   );
 
+  const handleClear = useCallback(() => {
+    if (onChange) onChange(null);
+  }, [onChange]);
+
   return (
     <BaseInput>
       <BaseInput.Label required={required} position={labelPosition}>
@@ -268,7 +275,16 @@ const BaseSelectComp = ({
           wrap={wrap}
           variant={VariantMap[variant] as any}
           IconComponent={(props: any) => (
-            <SelectIcon endAdornment={endAdornment} {...props} open={open} />
+            <SelectEndAdornment
+              persistEndAdornment={persistEndAdornment}
+              allowClear={allowClear}
+              endAdornment={endAdornment}
+              onClear={handleClear}
+              onOpen={() => setOpen(true)}
+              disabled={disabled}
+              open={open}
+              {...props}
+            />
           )}
           MenuProps={{
             ...menuProps,

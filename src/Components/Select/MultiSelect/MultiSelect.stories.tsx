@@ -116,6 +116,13 @@ export const Default: Story = {
   },
 };
 
+export const AllowClear: Story = {
+  args: {
+    ...Default.args,
+    allowClear: true,
+  },
+};
+
 export const AlternativeChipType: Story = {
   args: {
     ...Default.args,

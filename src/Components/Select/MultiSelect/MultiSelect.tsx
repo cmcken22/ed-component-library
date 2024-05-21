@@ -20,6 +20,7 @@ const MultiSelect = (props: MultiSelectProps) => {
     debounce,
     disabled,
     ChipProps,
+    allowClear,
     ...rest
   } = props;
   const [value, setValue] = useState(passedValue || []);
@@ -46,6 +47,11 @@ const MultiSelect = (props: MultiSelectProps) => {
 
   const handleChange = useCallback(
     (nextSelected: string) => {
+      if (nextSelected === null) {
+        setValue([]);
+        handleChangeCallback([]);
+        return;
+      }
       let nextValue = [...value];
       if (nextValue.includes(nextSelected)) {
         nextValue = nextValue.filter((val) => val !== nextSelected);
@@ -146,6 +152,7 @@ const MultiSelect = (props: MultiSelectProps) => {
       placeholder={placeholder}
       wrap={wrap}
       disabled={disabled}
+      allowClear={allowClear && value && value.length > 0}
     />
   );
 };

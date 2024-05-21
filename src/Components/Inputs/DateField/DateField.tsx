@@ -1,6 +1,7 @@
 import { InputAdornment } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { DateField as MuiDateField } from "@mui/x-date-pickers/DateField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -125,6 +126,7 @@ const DateFieldComp = ({
           value={value ? dayjs(value) : null}
           disabled={disabled}
           readOnly={readOnly}
+          // clearable
           slotProps={{
             textField: {
               variant: VariantMap[variant] as any,

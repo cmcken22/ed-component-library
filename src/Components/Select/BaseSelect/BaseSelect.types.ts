@@ -49,4 +49,5 @@ export interface BaseSelectProps extends StandardInputProps {
     }
   ) => React.ReactNode;
   autoFocus?: boolean;
+  allowClear?: boolean;
 }

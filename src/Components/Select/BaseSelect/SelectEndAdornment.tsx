@@ -28,6 +28,7 @@ const SelectEndAdornment = ({
     if (allowClear && !disabled) {
       res.push(
         <Icon
+          key="clear"
           icon={IconVariant.Close}
           size={20}
           color="border.dark"
@@ -42,6 +43,7 @@ const SelectEndAdornment = ({
     if (!endAdornment || (endAdornment && persistEndAdornment)) {
       res.push(
         <Icon
+          key="arrow"
           icon={IconVariant.NavArrowDown}
           size={20}
           color="border.dark"
@@ -56,6 +58,7 @@ const SelectEndAdornment = ({
     if (endAdornment) {
       res.push(
         <Box
+          key="endAdornment"
           sx={{
             position: "relative",
             margin: "0",

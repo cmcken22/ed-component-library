@@ -39,7 +39,6 @@ const RangePickerCalendarComp = ({
     useContext(CalendarContext);
   const [selectionCount, setSelectionCount] = useState(startingPos(value));
   const prevValue = useRef<Date[]>([]);
-  console.log("selectionCount:", selectionCount % 2 === 0 ? "start" : "end");
 
   const handleUpdateView = useUpdateView();
 

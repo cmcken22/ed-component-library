@@ -108,14 +108,14 @@ describe("RangePickerCalendar", () => {
     const march = months[0];
     const march5 = march.querySelector(`[data-test-date="5"]`);
     const march30 = march.querySelector(`[data-test-date="30"]`);
-    fireEvent.click(march30);
+    fireEvent.click(march5);
 
     expect(props.onSelect).toHaveBeenCalledWith([
-      new Date("2024-03-15T04:00:00.000Z"),
-      new Date("2024-03-30T04:00:00.000Z"),
+      new Date("2024-03-05T05:00:00.000Z"),
+      new Date("2024-03-17T04:00:00.000Z"),
     ]);
 
-    fireEvent.click(march5);
+    fireEvent.click(march30);
     expect(props.onSelect).toHaveBeenCalledWith([
       new Date("2024-03-05T05:00:00.000Z"),
       new Date("2024-03-30T04:00:00.000Z"),
@@ -147,7 +147,6 @@ describe("RangePickerCalendar", () => {
     fireEvent.click(march5);
     expect(props.onSelect).toHaveBeenCalledWith([
       new Date("2024-03-05T05:00:00.000Z"),
-      null,
     ]);
 
     fireEvent.click(march30);
@@ -157,7 +156,7 @@ describe("RangePickerCalendar", () => {
     ]);
   });
 
-  it("should unselect range", () => {
+  it("should update range", () => {
     props.value = [
       new Date("2024-03-15T04:00:00.000Z"),
       new Date("2024-03-17T04:00:00.000Z"),
@@ -169,17 +168,20 @@ describe("RangePickerCalendar", () => {
     expect(months).toHaveLength(2);
 
     const march = months[0];
-    const march15 = march.querySelector(`[data-test-date="15"]`);
-    const march17 = march.querySelector(`[data-test-date="17"]`);
+    const march16 = march.querySelector(`[data-test-date="16"]`);
+    const march18 = march.querySelector(`[data-test-date="18"]`);
 
-    fireEvent.click(march15);
+    fireEvent.click(march16);
     expect(props.onSelect).toHaveBeenCalledWith([
-      null,
+      new Date("2024-03-16T04:00:00.000Z"),
       new Date("2024-03-17T04:00:00.000Z"),
     ]);
 
-    fireEvent.click(march17);
-    expect(props.onSelect).toHaveBeenCalledWith([null, null]);
+    fireEvent.click(march18);
+    expect(props.onSelect).toHaveBeenCalledWith([
+      new Date("2024-03-16T04:00:00.000Z"),
+      new Date("2024-03-18T04:00:00.000Z"),
+    ]);
   });
 
   it("should ignore bad values", () => {

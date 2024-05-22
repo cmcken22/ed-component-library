@@ -37,6 +37,7 @@ export interface BaseInputProps {
      * Setting `persistEndAdornment` to true will keep the endAdornment visible beside the status icon.
      */
     persistEndAdornment?: boolean;
+    allowClear?: boolean;
 }
 export interface StandardInputProps extends Omit<BaseInputProps, "children" | "componentType"> {
 }

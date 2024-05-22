@@ -10,4 +10,26 @@ export interface DateFieldProps extends StandardInputProps {
     onChange?: (value: Date) => void;
     hideCalendarIcon?: boolean;
     inputRef?: React.Ref<HTMLInputElement>;
+    /**
+     * @default false
+     */
+    disableFuture?: boolean;
+    /**
+     * @default false
+     */
+    disableCurrent?: boolean;
+    /**
+     * @default false
+     */
+    disablePast?: boolean;
+    /**
+     * Function to disable specific dates
+     */
+    dateDisabled?: (date: Date) => boolean;
+    /**
+     * Current Date, used for validating the date
+     * @default new Date()
+     */
+    currentDate?: Date;
+    onValidation?: (isValid: boolean) => void;
 }

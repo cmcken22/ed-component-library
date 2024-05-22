@@ -13,6 +13,14 @@ declare enum TEST_ID {
     RADIO_BUTTON_GROUP = "RadioButtonGroup",
     RANGE_FILTER_CONTROL = "RangeFilterControl",
     OPERAND_FILTER_CONTROL = "OperandFilterControl",
-    FILE_DROP_ZONE = "FileDropZone"
+    FILE_DROP_ZONE = "FileDropZone",
+    CLEAR_FIELD_ICON = "ClearFieldIcon",
+    DRAWER = "Drawer",
+    TAB_PANEL = "TabPanel",
+    TABS = "Tabs",
+    TAB = "Tab",
+    HORIZONTAL_STACK = "HorizontalStack",
+    GRID = "Grid",
+    RANGE_SLIDER = "RangeSlider"
 }
 export default TEST_ID;

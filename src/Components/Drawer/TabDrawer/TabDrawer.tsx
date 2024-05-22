@@ -78,7 +78,13 @@ const TabDrawer = ({ children, sx, ...rest }: TabDrawerProps) => {
 };
 
 TabDrawer.defaultProps = {
-  ...Drawer.defaultProps,
+  anchor: "right",
+  headerBorder: true,
+  footerBorder: true,
+  hideBackdrop: true,
+  persistent: false,
+  allowClose: true,
+  displayHeader: true,
 } as Partial<TabDrawerProps>;
 
 export default TabDrawer;

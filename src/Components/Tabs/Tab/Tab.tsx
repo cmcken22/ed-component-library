@@ -3,6 +3,7 @@ import cx from "classnames";
 import { useCallback, useContext, useMemo } from "react";
 import Typography from "src/Components/Typography";
 import { FontWeight } from "src/Components/theme/Typography";
+import { TEST_ID } from "src/enums";
 import { shouldNotForwardProp } from "src/utils";
 import { TabContext } from "../TabContext";
 import { TabProps } from "./Tab.types";
@@ -65,6 +66,7 @@ const Tab = ({
       selected={selected}
       disabled={disabled}
       sx={sx}
+      data-testid={TEST_ID.TAB}
     >
       {children ? (
         children

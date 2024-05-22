@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import cx from "classnames";
+import { TEST_ID } from "src/enums";
 import { sizeFormat } from "src/utils";
 import { HorizontalStackProps } from "./HorizontalStack.types";
 
@@ -17,7 +18,7 @@ const HorizontalStack = ({
       className={cx("HorizontalStack", {
         [className]: className,
       })}
-      data-testid="HorizontalStack"
+      data-testid={TEST_ID.HORIZONTAL_STACK}
       flexDirection="row"
       gap={sizeFormat(gap)}
       justifyContent={justifyContent}

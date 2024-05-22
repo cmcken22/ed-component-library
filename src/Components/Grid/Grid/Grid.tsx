@@ -1,5 +1,6 @@
 import MuiGrid from "@mui/material/Unstable_Grid2";
 import cx from "classnames";
+import { TEST_ID } from "src/enums";
 import { sizeFormat } from "src/utils";
 import { GridItem } from "../GridItem";
 import { GridProps } from "./Grid.types";
@@ -42,6 +43,7 @@ const Grid = ({
       rowSpacing={formatGridSpacing(rowSpacing)}
       direction={direction}
       wrap={wrap}
+      data-testid={TEST_ID.GRID}
     >
       {children}
     </MuiGrid>

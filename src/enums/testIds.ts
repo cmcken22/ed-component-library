@@ -18,6 +18,9 @@ enum TEST_ID {
   DRAWER = "Drawer",
   TAB_PANEL = "TabPanel",
   TABS = "Tabs",
+  TAB = "Tab",
+  HORIZONTAL_STACK = "HorizontalStack",
+  GRID = "Grid",
 }
 
 export default TEST_ID;

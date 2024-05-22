@@ -10,7 +10,7 @@ module.exports = {
     "^.+\\.tsx?$": "ts-jest",
   },
   coveragePathIgnorePatterns: [
-    "<rootDir>/src/Icon/IconElements",
+    "<rootDir>/src/Components/Icon/IconElements",
     "<rootDir>/utils/sb-utils/*",
     ".*\\.theme\\.(ts|tsx)$",
   ],

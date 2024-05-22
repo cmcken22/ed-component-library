@@ -15,6 +15,9 @@ enum TEST_ID {
   OPERAND_FILTER_CONTROL = "OperandFilterControl",
   FILE_DROP_ZONE = "FileDropZone",
   CLEAR_FIELD_ICON = "ClearFieldIcon",
+  DRAWER = "Drawer",
+  TAB_PANEL = "TabPanel",
+  TABS = "Tabs",
 }
 
 export default TEST_ID;

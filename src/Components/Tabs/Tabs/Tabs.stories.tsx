@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { sourceCodeFormatter } from "sb-utils/index";
 import { IconVariant } from "src/Components/Icon";
 import Tabs, { Tab, TabContextProvider, TabPanel } from ".";
-import { Button, Icon, Tooltip, Typography } from "../..";
+import { Button, Icon, Tooltip, Typography } from "../../..";
 
 const Code = (res: string) => `
 <TabContextProvider defaultValue="1">

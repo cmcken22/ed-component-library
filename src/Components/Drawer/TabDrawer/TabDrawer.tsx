@@ -18,6 +18,7 @@ const TabPanelWrapper = styled(Box)(() => ({
 
 const TabDrawer = ({ children, sx, ...rest }: TabDrawerProps) => {
   const getChildByDisplayName = useCallback((children, displayName) => {
+    if (!children) return [];
     const child = Children.map(children, (child: any) => {
       if (child.type.displayName === displayName) {
         return child;

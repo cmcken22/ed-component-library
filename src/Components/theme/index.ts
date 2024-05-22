@@ -8,7 +8,7 @@ import RangeSliderTheme from "src/Components/RangeFilter/RangeSlider/RangeSlider
 import SelectTheme, {
   SelectListTheme,
 } from "src/Components/Select/BaseSelect/BaseSelect.theme";
-import TabsTheme from "src/Components/Tabs/Tabs.theme";
+import TabsTheme from "src/Components/Tabs/Tabs/Tabs.theme";
 import TooltipTheme from "src/Components/Tooltip/Tooltip.theme";
 import typography from "./Typography";
 import { Colors, palette } from "./palette";

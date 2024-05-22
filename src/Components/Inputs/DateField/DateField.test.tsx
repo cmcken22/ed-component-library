@@ -4,8 +4,6 @@ import { fireEvent, render } from "test-utils/index";
 import DateField from "./DateField";
 import { DateFieldProps } from "./DateField.types";
 
-// TODO: add more tests here
-
 const initialProps: DateFieldProps = {
   ...DateField.defaultProps,
   onChange: jest.fn(),

@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import cx from "classnames";
 import { useContext } from "react";
+import { TEST_ID } from "src/enums";
 import { TabContext } from "../TabContext";
 import { TabPanelProps } from "./TabPanel.types";
 
@@ -29,6 +30,7 @@ const TabPanel = ({
       sx={sx}
       role="tabpanel"
       hidden={value !== tabValue}
+      data-testid={TEST_ID.TAB_PANEL}
       {...a11yProps(tabValue)}
       {...other}
     >

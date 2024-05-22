@@ -1,9 +1,10 @@
 import { Box, Tabs as MuiTabs, styled } from "@mui/material";
 import cx from "classnames";
 import { Children, cloneElement, useCallback, useContext } from "react";
+import { TEST_ID } from "src/enums";
 import { sizeFormat } from "src/utils";
 import { TabsProps } from ".";
-import { TabContext } from "./TabContext";
+import { TabContext } from "../TabContext";
 
 const BottomBorder = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -46,6 +47,7 @@ const Tabs = ({
         [className]: className,
       })}
       sx={{ width: "100%", position: "relative", ...sx }}
+      data-testid={TEST_ID.TABS}
     >
       <MuiTabs
         value={value}

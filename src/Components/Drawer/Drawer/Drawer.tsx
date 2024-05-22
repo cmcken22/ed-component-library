@@ -2,6 +2,7 @@ import { Box, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import cx from "classnames";
 import { useMemo } from "react";
+import { TEST_ID } from "src/enums";
 import { Icon, Typography } from "src/index";
 import { shouldNotForwardProp, sizeFormat } from "src/utils";
 import { DrawerProps } from "./Drawer.types";
@@ -108,7 +109,7 @@ const Drawer = ({
         [className]: className,
       })}
       sx={sx}
-      data-testid="Drawer"
+      data-testid={TEST_ID.DRAWER}
       open={open}
       onClose={onClose}
       anchor={anchor}

@@ -2,8 +2,14 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { userEvent, within } from "@storybook/test";
 import { useState } from "react";
 import { sourceCodeFormatter } from "sb-utils/index";
-import { Button, Typography } from "src";
-import Tabs, { Tab, TabContextProvider, TabPanel } from "src/Components/Tabs";
+import {
+  Button,
+  Tab,
+  TabContextProvider,
+  TabPanel,
+  Tabs,
+  Typography,
+} from "src";
 import TabDrawer, { TabDrawerProps } from ".";
 
 const Code = (res: string) => `
@@ -95,6 +101,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     ...TabDrawer.defaultProps,
+    id: "1234",
     title: "Example Title",
     footer: <Typography variant="h5">Example Footer</Typography>,
   },

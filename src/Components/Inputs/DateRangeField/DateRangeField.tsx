@@ -10,6 +10,7 @@ import BaseInput, {
   withBaseInput,
 } from "src/Components/BaseInput";
 import { getFontColor } from "src/Components/BaseInput/helpers";
+import ClearFieldIcon from "src/Components/ClearFieldIcon";
 import Icon, { IconVariant } from "src/Components/Icon";
 import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { TEST_ID } from "src/enums";
@@ -166,13 +167,10 @@ const DateRangeFieldComp = ({
       const val = value?.[idx];
       if (allowClear && val && !disabled) {
         adornments.push(
-          <Icon
+          <ClearFieldIcon
             key="clear"
-            icon={IconVariant.Close}
-            size={20}
+            onClear={(e) => handleClear(e, idx)}
             sx={{ flexShrink: 0 }}
-            color="border.dark"
-            onClick={(e) => handleClear(e, idx)}
           />
         );
       }

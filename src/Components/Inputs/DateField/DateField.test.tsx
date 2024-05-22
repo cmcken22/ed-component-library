@@ -1,11 +1,14 @@
 import "@testing-library/jest-dom";
 import { TEST_ID } from "src/enums";
-import { render } from "test-utils/index";
+import { fireEvent, render } from "test-utils/index";
 import DateField from "./DateField";
 import { DateFieldProps } from "./DateField.types";
 
+// TODO: add more tests here
+
 const initialProps: DateFieldProps = {
   ...DateField.defaultProps,
+  onChange: jest.fn(),
 };
 
 describe("DateField", () => {
@@ -23,5 +26,16 @@ describe("DateField", () => {
     const { getByTestId } = renderComponent(props);
     const component = getByTestId(TEST_ID.BASE_INPUT);
     expect(component).toHaveAttribute("id", props.id);
+  });
+
+  it("should allow clear", () => {
+    props.allowClear = true;
+    props.value = new Date();
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId(TEST_ID.CLEAR_FIELD_ICON);
+    expect(component).toBeInTheDocument();
+
+    fireEvent.click(component);
+    expect(props.onChange).toHaveBeenCalledWith(null);
   });
 });

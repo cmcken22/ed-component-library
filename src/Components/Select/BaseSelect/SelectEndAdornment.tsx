@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { useMemo } from "react";
+import ClearFieldIcon from "src/Components/ClearFieldIcon";
 import Icon, { IconVariant } from "../../Icon";
 
 interface SelectEndAdornmentProps {
@@ -23,25 +24,14 @@ const SelectEndAdornment = ({
   ...props
 }: SelectEndAdornmentProps) => {
   const Comp = useMemo(() => {
-    const res: any = [];
+    const adornments: any = [];
 
     if (allowClear && !disabled) {
-      res.push(
-        <Icon
-          key="clear"
-          icon={IconVariant.Close}
-          size={20}
-          color="border.dark"
-          onClick={onClear}
-          sx={{
-            transform: `rotate(${open ? "180deg" : "0deg"})`,
-          }}
-        />
-      );
+      adornments.push(<ClearFieldIcon key="clear" onClear={onClear} />);
     }
 
     if (!endAdornment || (endAdornment && persistEndAdornment)) {
-      res.push(
+      adornments.push(
         <Icon
           key="arrow"
           icon={IconVariant.NavArrowDown}
@@ -56,7 +46,7 @@ const SelectEndAdornment = ({
     }
 
     if (endAdornment) {
-      res.push(
+      adornments.push(
         <Box
           key="endAdornment"
           sx={{
@@ -77,7 +67,7 @@ const SelectEndAdornment = ({
       );
     }
 
-    return res;
+    return adornments;
   }, [
     allowClear,
     endAdornment,

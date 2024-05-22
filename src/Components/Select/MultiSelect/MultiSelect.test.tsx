@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { TEST_ID } from "src/enums";
 import { testInputRendering } from "test-utils/commonTestCases";
 import { fireEvent, render } from "test-utils/index";
 import { BaseSelectMeta } from "../BaseSelect";
@@ -183,5 +184,16 @@ describe("MultiSelect", () => {
       props.options[0].value,
       props.options[2].value,
     ]);
+  });
+
+  it("should allow clear", () => {
+    props.allowClear = true;
+    props.value = initialProps.options.map((option) => option.value);
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId(TEST_ID.CLEAR_FIELD_ICON);
+    expect(component).toBeInTheDocument();
+
+    fireEvent.click(component);
+    expect(props.onChange).toHaveBeenCalledWith([]);
   });
 });

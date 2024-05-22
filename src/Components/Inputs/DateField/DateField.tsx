@@ -12,6 +12,7 @@ import BaseInput, {
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
+import ClearFieldIcon from "src/Components/ClearFieldIcon";
 import { isValidDate } from "src/Components/DatePicker/Common/utils";
 import Icon, { IconVariant } from "src/Components/Icon";
 import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
@@ -130,15 +131,7 @@ const DateFieldComp = ({
 
     if (!endAdornment && !statusAdornment && !allowClear) return null;
     if (allowClear && value && !disabled) {
-      adornments.push(
-        <Icon
-          key="clear"
-          icon={IconVariant.Close}
-          size={20}
-          color="border.dark"
-          onClick={handleClear}
-        />
-      );
+      adornments.push(<ClearFieldIcon key="clear" onClear={handleClear} />);
     }
     if (statusAdornment) {
       adornments.push(statusAdornment);

@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { TEST_ID } from "src/enums";
 import { testInputRendering } from "test-utils/commonTestCases";
 import { getChildFromContainer } from "test-utils/helper";
 import { fireEvent, render } from "test-utils/index";
@@ -45,6 +46,17 @@ describe("Input", () => {
 
     expect(props.onChange).toHaveBeenCalledWith(nextValue);
     expect(Input).toHaveValue(nextValue);
+  });
+
+  it("should allow clear", () => {
+    props.allowClear = true;
+    props.value = "99";
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId(TEST_ID.CLEAR_FIELD_ICON);
+    expect(component).toBeInTheDocument();
+
+    fireEvent.click(component);
+    expect(props.onChange).toHaveBeenCalledWith("");
   });
 
   it("should be disabled", () => {

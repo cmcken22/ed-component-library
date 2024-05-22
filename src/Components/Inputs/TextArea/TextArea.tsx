@@ -5,7 +5,7 @@ import BaseInput, {
   withBaseInput,
 } from "src/Components/BaseInput";
 import { VariantMap, getFontColor } from "src/Components/BaseInput/helpers";
-import Icon, { IconVariant } from "src/Components/Icon";
+import ClearFieldIcon from "src/Components/ClearFieldIcon";
 import useCommonOnChangeHandler from "src/Hooks/useCommonOnChangeHandler";
 import { TextAreaProps } from ".";
 
@@ -60,15 +60,7 @@ const TextAreaComp = ({
     if (!endAdornment && !statusAdornment && !allowClear) return null;
 
     if (allowClear && value && !disabled) {
-      adornments.push(
-        <Icon
-          key="clear"
-          icon={IconVariant.Close}
-          size={20}
-          color="border.dark"
-          onClick={handleClear}
-        />
-      );
+      adornments.push(<ClearFieldIcon key="clear" onClear={handleClear} />);
     }
     if (statusAdornment) {
       adornments.push(statusAdornment);

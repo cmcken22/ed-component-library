@@ -202,4 +202,15 @@ describe("Select", () => {
       expect(checkbox).toBeInTheDocument();
     }
   });
+
+  it("should allow clear", () => {
+    props.allowClear = true;
+    props.value = initialProps.options?.[0]?.value;
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId(TEST_ID.CLEAR_FIELD_ICON);
+    expect(component).toBeInTheDocument();
+
+    fireEvent.click(component);
+    expect(props.onChange).toHaveBeenCalledWith("");
+  });
 });

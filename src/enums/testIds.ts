@@ -14,6 +14,7 @@ enum TEST_ID {
   RANGE_FILTER_CONTROL = "RangeFilterControl",
   OPERAND_FILTER_CONTROL = "OperandFilterControl",
   FILE_DROP_ZONE = "FileDropZone",
+  CLEAR_FIELD_ICON = "ClearFieldIcon",
 }
 
 export default TEST_ID;

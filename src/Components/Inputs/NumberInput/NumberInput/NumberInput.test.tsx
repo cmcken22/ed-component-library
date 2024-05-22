@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { TEST_ID } from "src/enums";
 import { testInputRendering } from "test-utils/commonTestCases";
 import { getChildFromContainer } from "test-utils/helper";
 import { fireEvent, render } from "test-utils/index";
@@ -31,6 +32,21 @@ describe("NumberInput", () => {
     const formattedValue = "100";
     fireEvent.change(Input, { target: { value: nextValue } });
     expect(Input).toHaveValue(formattedValue);
+  });
+
+  it("should allow clear", () => {
+    props.allowClear = true;
+    props.value = "99";
+    const { getByTestId } = renderComponent(props);
+    const component = getByTestId(TEST_ID.CLEAR_FIELD_ICON);
+    expect(component).toBeInTheDocument();
+
+    fireEvent.click(component);
+    expect(props.onChange).toHaveBeenCalledWith({
+      value: "",
+      floatValue: null,
+      formattedValue: "",
+    });
   });
 
   it("should accept string value", () => {

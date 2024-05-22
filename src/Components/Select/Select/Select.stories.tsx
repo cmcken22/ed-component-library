@@ -77,6 +77,7 @@ export const Sample: Story = {
 export const AllowClear: Story = {
   args: {
     ...Sample.args,
+    value: Sample.args.options[0].value,
     allowClear: true,
   },
 };

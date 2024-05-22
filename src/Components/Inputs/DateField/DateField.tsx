@@ -116,9 +116,14 @@ const DateFieldComp = ({
     [setValue, handleChangeCallback, handleValidation]
   );
 
-  const handleClear = useCallback(() => {
-    handleSelect(null);
-  }, [handleSelect]);
+  const handleClear = useCallback(
+    (e: any) => {
+      e?.preventDefault();
+      e?.stopPropagation();
+      handleSelect(null);
+    },
+    [handleSelect]
+  );
 
   const renderEndAdornment = useCallback(() => {
     const adornments: any = [];

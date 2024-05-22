@@ -149,7 +149,9 @@ const DateRangeFieldComp = ({
   );
 
   const handleClear = useCallback(
-    (idx: number) => {
+    (e: any, idx: number) => {
+      e?.preventDefault();
+      e?.stopPropagation();
       handleChange(null, idx);
     },
     [handleChange]
@@ -170,7 +172,7 @@ const DateRangeFieldComp = ({
             size={20}
             sx={{ flexShrink: 0 }}
             color="border.dark"
-            onClick={() => handleClear(idx)}
+            onClick={(e) => handleClear(e, idx)}
           />
         );
       }

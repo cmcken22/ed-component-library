@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Avatar from "src/Components/Avatar";
 import Icon from "src/Components/Icon";
@@ -18,10 +19,8 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    status: {
-      options: ["error", "success", "warning"],
-      control: { type: "radio" },
-    },
+    ...commonArgTypes.onChange,
+    ...commonArgTypes.status,
   },
 } satisfies Meta<typeof Select>;
 

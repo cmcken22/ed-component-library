@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import type { Meta, StoryObj } from "@storybook/react";
+import commonArgTypes from "sb-utils/commonArgTypes";
 import { sourceCodeFormatter } from "sb-utils/index";
 import Avatar from "src/Components/Avatar";
 import Chip from "src/Components/Chip";
@@ -46,9 +47,8 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    onChange: {
-      action: "onChange",
-    },
+    ...commonArgTypes.onChange,
+    ...commonArgTypes.status,
   },
 } satisfies Meta<typeof MultiSelect>;
 

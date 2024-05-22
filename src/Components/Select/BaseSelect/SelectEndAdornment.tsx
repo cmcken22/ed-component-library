@@ -39,6 +39,20 @@ const SelectEndAdornment = ({
       );
     }
 
+    if (!endAdornment || (endAdornment && persistEndAdornment)) {
+      res.push(
+        <Icon
+          icon={IconVariant.NavArrowDown}
+          size={20}
+          color="border.dark"
+          onClick={!disabled ? onOpen : undefined}
+          sx={{
+            transform: `rotate(${open ? "180deg" : "0deg"})`,
+          }}
+        />
+      );
+    }
+
     if (endAdornment) {
       res.push(
         <Box
@@ -57,20 +71,6 @@ const SelectEndAdornment = ({
         >
           {endAdornment}
         </Box>
-      );
-    }
-
-    if (!endAdornment || (endAdornment && persistEndAdornment)) {
-      res.push(
-        <Icon
-          icon={IconVariant.NavArrowDown}
-          size={20}
-          color="border.dark"
-          onClick={!disabled ? onOpen : undefined}
-          sx={{
-            transform: `rotate(${open ? "180deg" : "0deg"})`,
-          }}
-        />
       );
     }
 

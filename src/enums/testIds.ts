@@ -21,6 +21,7 @@ enum TEST_ID {
   TAB = "Tab",
   HORIZONTAL_STACK = "HorizontalStack",
   GRID = "Grid",
+  RANGE_SLIDER = "RangeSlider",
 }
 
 export default TEST_ID;

@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import Slider from "@mui/material/Slider";
 import cx from "classnames";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { TEST_ID } from "src/enums";
 import { RangeSliderProps } from "./RangeSlider.types";
 
 const validateRange = (value: number[]) => {
@@ -57,7 +58,7 @@ const RangeSlider = ({
       className={cx("RangeSlider", {
         [className]: className,
       })}
-      data-testid="RangeSlider"
+      data-testid={TEST_ID.RANGE_SLIDER}
       sx={{
         width: "calc(100% - 10px)",
         margin: "0 auto",

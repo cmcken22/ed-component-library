@@ -1,10 +1,9 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import Calendar from "src/Components/DatePicker/Common/Calendar";
 import Tools from "src/Components/DatePicker/Common/Tools";
 import withCalendarContext from "src/Components/DatePicker/Common/withCalendarContext";
 import { CalendarContext } from "../../Common";
 import {
-  checkDateInArray,
   nullFilter,
   numberOfMonthsBetween,
   sorteDates,
@@ -17,6 +16,11 @@ import {
 import useTools from "./useTools";
 import useUpdateView from "./useUpdateView";
 
+const startingPos = (value: any[]) => {
+  if (!value || !value?.length) return 0;
+  return value.length;
+};
+
 const RangePickerCalendarComp = ({
   value,
   onSelect,
@@ -26,6 +30,13 @@ const RangePickerCalendarComp = ({
 }: RangePickerCalendarCompProps) => {
   const { months, select, selected, setViewing, currentDate, numberOfMonths } =
     useContext(CalendarContext);
+  // const selectionCount = useRef(startingPos(value));
+  const [selectionCount, setSelectionCount] = useState(startingPos(value));
+  console.log(
+    "selectionCount:",
+    selectionCount,
+    selectionCount % 2 === 0 ? "start" : "end"
+  );
 
   const handleUpdateView = useUpdateView();
 
@@ -68,59 +79,105 @@ const RangePickerCalendarComp = ({
 
   const handleSelect = useCallback(
     (date: Date) => {
+      console.clear();
+      let nextSelectionCount = selectionCount;
+      console.log("handleSelect:", selectionCount % 2, date);
+
+      // const selectingStart = selectionCount.current % 2 === 0;
+
       const filteredValues = [...selected].filter(nullFilter);
-      const nextSelected = [...selected];
+      const nextSelected = [...filteredValues];
 
-      if (checkDateInArray(date, filteredValues)) {
-        const idx = nextSelected.findIndex(
-          (d) => d?.getTime() === date?.getTime()
-        );
+      const idx = nextSelectionCount % 2;
+      nextSelectionCount += 1;
+      console.log("idx:", idx);
 
-        nextSelected[idx] = null;
-        if (nextSelected?.length < 2) {
-          // Add null to the correct position
-          for (let i = 0; i < 2; i++) {
-            if (!nextSelected[i]) {
-              nextSelected[i] = null;
-            }
+      nextSelected[idx] = date;
+      console.log("nextSelected:", nextSelected);
+
+      if (nextSelected?.length === 2) {
+        const first = nextSelected[0];
+        const last = nextSelected[1];
+        console.log("first:", first);
+        console.log("last:", last);
+
+        if (idx === 0) {
+          if (first > last) {
+            console.log("ALSO BAD!!!");
+            nextSelectionCount = 1;
+            select([first], true);
+            handleSelectCallback([first]);
+            setSelectionCount(nextSelectionCount);
+            return;
           }
         }
-        select(nextSelected, true);
-        handleSelectCallback(nextSelected);
-        return;
-      }
 
-      const len = filteredValues?.length;
-
-      if (len < 2) {
-        const nullIdx = nextSelected.findIndex((d) => d === null);
-        nextSelected[nullIdx] = date;
-        if (nextSelected?.length < 2) {
-          // Add null to the correct position
-          for (let i = 0; i < 2; i++) {
-            if (!nextSelected[i]) {
-              nextSelected[i] = null;
-            }
+        if (idx === 1) {
+          if (last < first) {
+            console.log("BAD!!!");
+            nextSelectionCount = 1;
+            select([last], true);
+            handleSelectCallback([last]);
+            setSelectionCount(nextSelectionCount);
+            return;
           }
         }
-        select(nextSelected, true);
-        handleSelectCallback(nextSelected);
-        return;
       }
 
-      const smallest = filteredValues?.[0];
-      const largest = filteredValues?.[1];
+      select(nextSelected, true);
+      handleSelectCallback(nextSelected);
+      setSelectionCount(nextSelectionCount);
 
-      if (date < smallest) {
-        select([date, largest], true);
-        handleSelectCallback([date, largest]);
-        return;
-      }
-      select([smallest, date], true);
-      handleSelectCallback([smallest, date]);
+      // if (checkDateInArray(date, filteredValues)) {
+      //   const idx = nextSelected.findIndex(
+      //     (d) => d?.getTime() === date?.getTime()
+      //   );
+
+      //   nextSelected[idx] = null;
+      //   if (nextSelected?.length < 2) {
+      //     // Add null to the correct position
+      //     for (let i = 0; i < 2; i++) {
+      //       if (!nextSelected[i]) {
+      //         nextSelected[i] = null;
+      //       }
+      //     }
+      //   }
+      //   select(nextSelected, true);
+      //   handleSelectCallback(nextSelected);
+      //   return;
+      // }
+
+      // const len = filteredValues?.length;
+
+      // if (len < 2) {
+      //   const nullIdx = nextSelected.findIndex((d) => d === null);
+      //   nextSelected[nullIdx] = date;
+      //   if (nextSelected?.length < 2) {
+      //     // Add null to the correct position
+      //     for (let i = 0; i < 2; i++) {
+      //       if (!nextSelected[i]) {
+      //         nextSelected[i] = null;
+      //       }
+      //     }
+      //   }
+      //   select(nextSelected, true);
+      //   handleSelectCallback(nextSelected);
+      //   return;
+      // }
+
+      // const smallest = filteredValues?.[0];
+      // const largest = filteredValues?.[1];
+
+      // if (date < smallest) {
+      //   select([date, largest], true);
+      //   handleSelectCallback([date, largest]);
+      //   return;
+      // }
+      // select([smallest, date], true);
+      // handleSelectCallback([smallest, date]);
       return;
     },
-    [select, handleSelectCallback, selected]
+    [select, handleSelectCallback, selected, selectionCount, setSelectionCount]
   );
 
   useEffect(() => {

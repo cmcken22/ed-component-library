@@ -16,7 +16,7 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    onSelect: { action: "onChange" },
+    onSelect: { action: "onSelect" },
   },
   render: (args) => {
     let formattedProps = {};
@@ -27,7 +27,10 @@ const meta = {
       };
     }
     if (args?.value && Array.isArray(args?.value)) {
-      const nextValue = args?.value.map((date: any) => new Date(date));
+      const nextValue = args?.value.map((date: any) => {
+        if (date === "" || date === null || date === undefined) return date;
+        return new Date(date);
+      });
       formattedProps = {
         ...formattedProps,
         value: nextValue,

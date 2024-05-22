@@ -90,8 +90,8 @@ export const Default: Story = {
   },
 };
 
-const currDate = new Date();
-const nextWeek = new Date();
+const currDate = new Date("05-21-2024");
+const nextWeek = new Date("05-21-2024");
 nextWeek.setDate(nextWeek.getDate() + 1 * 7);
 
 export const AllowClear: Story = {

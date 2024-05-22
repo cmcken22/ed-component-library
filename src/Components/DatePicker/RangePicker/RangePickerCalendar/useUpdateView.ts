@@ -2,6 +2,7 @@ import { useCallback, useContext, useRef } from "react";
 import { CalendarContext } from "../../Common";
 import {
   findDiffIndex,
+  isValidDate,
   numberOfMonthsBetween,
   sorteDates,
   subtractMonths,
@@ -73,10 +74,15 @@ const useUpdateView = () => {
       if (d2 && !d1 && diffIndex === 1) {
         setDateInCalendarView(d2, viewing);
         return;
-      }
-      if (d1 && !d2 && diffIndex === 0) {
+      } else if (d1 && !d2 && diffIndex === 0) {
         setDateInCalendarView(d1, viewing);
         return;
+      } else {
+        const validDate = value?.find((d: Date) => isValidDate(d));
+        if (validDate) {
+          setDateInCalendarView(validDate, viewing);
+          return;
+        }
       }
     },
     [numberOfMonths, setViewing, viewing]

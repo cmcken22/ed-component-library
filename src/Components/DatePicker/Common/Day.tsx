@@ -52,6 +52,11 @@ const StyledBox = styled(Box, {
       borderBottomRightRadius: "50%",
     };
   }
+  if (leftRange && rightRange) {
+    borderStyles = {
+      borderRadius: "50%",
+    };
+  }
   let opacity = 1;
   if (disabled) {
     opacity = 0.5;
@@ -101,7 +106,9 @@ const Day = ({ day, onSelect }: { day: Date; onSelect: any }) => {
   const dateInRange = useMemo(() => {
     return inRange(day);
   }, [day, inRange]);
+
   const outOfMonth = useMemo(() => day.getMonth() !== month, [day, month]);
+
   const isToday = useMemo(() => {
     return currentDate && currentDate?.toDateString() === day?.toDateString();
   }, [currentDate, day]);
@@ -132,7 +139,7 @@ const Day = ({ day, onSelect }: { day: Date; onSelect: any }) => {
       const values = [...(validSelectedDates || [])];
       const [start, end] = values.sort((a, b) => a.getTime() - b.getTime());
       if (selected?.length === 2) {
-        if (day?.getTime() === start.getTime()) leftRange = true;
+        if (day?.getTime() === start?.getTime()) leftRange = true;
         if (day?.getTime() === end?.getTime()) rightRange = true;
       }
     }
@@ -144,7 +151,7 @@ const Day = ({ day, onSelect }: { day: Date; onSelect: any }) => {
     if (dateSelected || disabled) return false;
     if (validSelectedDates?.length !== 1) return false;
     const values = [...(validSelectedDates || []), hoveredDate];
-    const [start, end] = values.sort((a, b) => a.getTime() - b.getTime());
+    const [start, end] = values;
     if (inRange(day, start, end)) {
       return true;
     }

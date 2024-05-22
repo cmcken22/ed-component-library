@@ -5,6 +5,7 @@ import Tools from "src/Components/DatePicker/Common/Tools";
 import withCalendarContext from "src/Components/DatePicker/Common/withCalendarContext";
 import { CalendarContext } from "../../Common";
 import {
+  isValidDate,
   nullFilter,
   numberOfMonthsBetween,
   sorteDates,
@@ -19,7 +20,11 @@ import useUpdateView from "./useUpdateView";
 
 const startingPos = (value: any[]) => {
   if (!value || !value?.length) return 0;
-  return value.length;
+  const firstNullIndex = value.findIndex(
+    (v) => v === null || v === undefined || !isValidDate(v)
+  );
+  if (firstNullIndex === -1) return value.length;
+  return firstNullIndex;
 };
 
 const RangePickerCalendarComp = ({
@@ -34,6 +39,7 @@ const RangePickerCalendarComp = ({
     useContext(CalendarContext);
   const [selectionCount, setSelectionCount] = useState(startingPos(value));
   const prevValue = useRef<Date[]>([]);
+  console.log("selectionCount:", selectionCount % 2 === 0 ? "start" : "end");
 
   const handleUpdateView = useUpdateView();
 
@@ -87,8 +93,7 @@ const RangePickerCalendarComp = ({
     (date: Date) => {
       console.clear();
       let nextSelectionCount = selectionCount;
-      const filteredValues = [...selected].filter(nullFilter);
-      const nextSelected = [...filteredValues];
+      const nextSelected = [...selected];
 
       const idx = nextSelectionCount % 2;
       nextSelectionCount += 1;

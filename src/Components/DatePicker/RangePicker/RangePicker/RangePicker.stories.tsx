@@ -23,7 +23,10 @@ const meta = {
       };
     }
     if (args?.value) {
-      const nextValue = args?.value.map((date: any) => new Date(date));
+      const nextValue = args?.value.map((date: any) => {
+        if (date === "" || date === null || date === undefined) return date;
+        return new Date(date);
+      });
       formattedProps = {
         ...formattedProps,
         value: nextValue,
@@ -87,6 +90,7 @@ export const Default: Story = {
       arrow: false,
       offset: [0, 8],
     },
+    // value: [null, new Date("05-21-2024")],
   },
 };
 

@@ -42,8 +42,11 @@ const DateFieldComp = ({
   disableCurrent,
   dateDisabled,
   onValidation,
+  allowClear,
+  endAdornment,
+  persistEndAdornment,
 }: DateFieldProps) => {
-  const { endAdornment } = useContext(BaseInputContext);
+  const { endAdornment: statusAdornment } = useContext(BaseInputContext);
   const [value, setValue] = useState<Date | null>(passedValue);
   const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
@@ -113,6 +116,58 @@ const DateFieldComp = ({
     [setValue, handleChangeCallback, handleValidation]
   );
 
+  const handleClear = useCallback(() => {
+    handleSelect(null);
+  }, [handleSelect]);
+
+  const renderEndAdornment = useCallback(() => {
+    const adornments: any = [];
+
+    if (!endAdornment && !statusAdornment && !allowClear) return null;
+    if (allowClear && value && !disabled) {
+      adornments.push(
+        <Icon
+          key="clear"
+          icon={IconVariant.Close}
+          size={20}
+          color="border.dark"
+          onClick={handleClear}
+        />
+      );
+    }
+    if (statusAdornment) {
+      adornments.push(statusAdornment);
+    }
+    if (!endAdornment || (endAdornment && persistEndAdornment)) {
+      adornments.push(endAdornment);
+    }
+
+    if (!adornments.length) return null;
+
+    return (
+      <InputAdornment
+        position="end"
+        sx={{
+          ml: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+          ".status-adornment": { ml: 0 },
+        }}
+      >
+        {adornments}
+      </InputAdornment>
+    );
+  }, [
+    statusAdornment,
+    endAdornment,
+    persistEndAdornment,
+    allowClear,
+    disabled,
+    value,
+    handleClear,
+  ]);
+
   return (
     <BaseInput>
       <BaseInput.Label required={required} position={labelPosition}>
@@ -126,7 +181,6 @@ const DateFieldComp = ({
           value={value ? dayjs(value) : null}
           disabled={disabled}
           readOnly={readOnly}
-          // clearable
           slotProps={{
             textField: {
               variant: VariantMap[variant] as any,
@@ -137,7 +191,7 @@ const DateFieldComp = ({
                 sx: { "& input": { color: getFontColor(color, value) } },
                 placeholder,
                 startAdornment: startAdornment(),
-                endAdornment,
+                endAdornment: renderEndAdornment(),
               },
             },
           }}
@@ -166,6 +220,7 @@ DateField.defaultProps = {
   disableFuture: false,
   disableCurrent: false,
   disablePast: false,
+  allowClear: false,
 } as Partial<DateFieldProps>;
 
 export default DateField;

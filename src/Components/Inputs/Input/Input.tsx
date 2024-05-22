@@ -110,7 +110,6 @@ const InputComp = ({
     allowClear,
     disabled,
     value,
-    handleChange,
     handleClear,
   ]);
 

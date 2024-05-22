@@ -1,4 +1,3 @@
-import isEqual from "lodash.isequal";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import DateField from "src/Components/Inputs/DateField";
 import Popover from "src/Components/Popover";
@@ -26,6 +25,7 @@ const DatePickerComp = ({
   previewSelection,
   disabled,
   debounce,
+  allowClear,
   ...dateFieldProps
 }: DatePickerProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -37,57 +37,12 @@ const DatePickerComp = ({
     setValue(passedValue);
   }, [passedValue]);
 
-  const checkDateDisabled = useCallback(
-    (date: Date) => {
-      const formattedCurrentDate = new Date(currentDate);
-      formattedCurrentDate.setHours(0, 0, 0, 0);
-
-      if (disableCurrent && isEqual(date, formattedCurrentDate)) {
-        return true;
-      }
-      if (disableFuture && date > formattedCurrentDate) {
-        return true;
-      }
-      if (disablePast && date < formattedCurrentDate) {
-        return true;
-      }
-      if (dateDisabled) {
-        return dateDisabled(date);
-      }
-      return false;
-    },
-    [disableCurrent, currentDate, disableFuture, disablePast, dateDisabled]
-  );
-
-  const handleValidation = useCallback(
-    (date: Date) => {
-      let valid = true;
-      if (!isValidDate(date)) {
-        valid = false;
-      }
-      if (checkDateDisabled(date)) {
-        valid = false;
-      }
-      if (onValidation) onValidation(valid);
-      return valid;
-    },
-    [checkDateDisabled, onValidation]
-  );
-
-  // handle validation on mount
-  useEffect(() => {
-    if (value) {
-      handleValidation(value);
-    }
-  }, []);
-
   const handleSelect = useCallback(
     (date: Date) => {
       setValue(date);
       handleChangeCallback(date);
-      handleValidation(date);
     },
-    [setValue, handleChangeCallback, handleValidation]
+    [setValue, handleChangeCallback]
   );
 
   const displayCalendar = useMemo(() => {
@@ -107,6 +62,12 @@ const DatePickerComp = ({
         readOnly={disableTextInput}
         onChange={handleSelect}
         disabled={disabled}
+        allowClear={allowClear}
+        onValidation={onValidation}
+        disableFuture={disableFuture}
+        disablePast={disablePast}
+        disableCurrent={disableCurrent}
+        currentDate={currentDate}
       />
       <Popover
         open={displayCalendar}
@@ -151,6 +112,7 @@ DatePicker.defaultProps = {
   calendarPlacement: "bottom-end",
   tools: false,
   previewSelection: false,
+  allowClear: false,
 } as Partial<DatePickerProps>;
 
 // export named component for storybook docgen

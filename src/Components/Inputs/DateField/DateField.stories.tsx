@@ -35,3 +35,11 @@ export const Default: Story = {
     helperText: "Helper Text",
   },
 };
+
+export const AllowClear: Story = {
+  args: {
+    ...Default.args,
+    value: new Date(),
+    allowClear: true,
+  },
+};

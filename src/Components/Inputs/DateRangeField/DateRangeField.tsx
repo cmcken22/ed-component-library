@@ -90,8 +90,12 @@ const DateRangeFieldComp = ({
   inputRef,
   onClick,
   debounce,
+  allowClear,
+  endAdornment,
+  persistEndAdornment,
 }: DateRangeFieldProps) => {
-  const { status, endAdornment } = useContext(BaseInputContext);
+  const { status, endAdornment: statusAdornment } =
+    useContext(BaseInputContext);
   const handleChangeCallback = useCommonOnChangeHandler({ onChange, debounce });
 
   const ref1 = useRef(null);
@@ -144,6 +148,92 @@ const DateRangeFieldComp = ({
     [value, setValue, handleChangeCallback]
   );
 
+  const handleClear = useCallback(
+    (idx: number) => {
+      handleChange(null, idx);
+    },
+    [handleChange]
+  );
+
+  const renderInputEndAdornment = useCallback(
+    (idx: number) => {
+      if (!allowClear) return null;
+
+      const adornments: any = [];
+
+      const val = value?.[idx];
+      if (allowClear && val && !disabled) {
+        adornments.push(
+          <Icon
+            key="clear"
+            icon={IconVariant.Close}
+            size={20}
+            sx={{ flexShrink: 0 }}
+            color="border.dark"
+            onClick={() => handleClear(idx)}
+          />
+        );
+      }
+
+      if (!adornments.length) return null;
+
+      return adornments;
+    },
+    [
+      statusAdornment,
+      endAdornment,
+      persistEndAdornment,
+      allowClear,
+      disabled,
+      value,
+      handleClear,
+    ]
+  );
+
+  const renderEndAdornment = useCallback(() => {
+    if (!endAdornment && !statusAdornment) return null;
+
+    const adornments: any = [];
+
+    if (statusAdornment) {
+      adornments.push(statusAdornment);
+    }
+    if (!endAdornment || (endAdornment && persistEndAdornment)) {
+      adornments.push(endAdornment);
+    }
+
+    if (!adornments.length) return null;
+
+    return (
+      <Box
+        sx={{
+          height: "20px",
+          width: "20px",
+          mr: 1,
+          ml: 0.25,
+          flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+          position: "relative",
+        }}
+      >
+        <InputAdornment
+          position="end"
+          sx={{
+            position: "absolute",
+            right: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
+            ".status-adornment": { ml: 0 },
+          }}
+        >
+          {adornments}
+        </InputAdornment>
+      </Box>
+    );
+  }, [statusAdornment, endAdornment, persistEndAdornment]);
+
   const renderInput = useCallback(
     (index: number) => {
       return (
@@ -158,13 +248,19 @@ const DateRangeFieldComp = ({
             fieldset: {
               border: "none",
             },
+            ".MuiInputBase-root": {
+              input: {
+                padding: 0,
+                paddingRight: 0.5,
+              },
+            },
           }}
           slotProps={{
             textField: {
               InputProps: {
                 style: {
                   height: "34px",
-                  padding: 0,
+                  padding: "0 !important",
                   color: getFontColor(color, value?.[index]),
                 },
               },
@@ -213,17 +309,20 @@ const DateRangeFieldComp = ({
               width: "100%",
               display: "flex",
               alignItems: "center",
-              gap: "4px",
+              paddingRight: !endAdornment && !statusAdornment ? 1 : 0,
             }}
           >
             {renderInput(0)}
+            {renderInputEndAdornment(0)}
             <Icon
               icon={IconVariant.ArrowRight}
               height="16px"
               width="16px"
-              sx={{ flexShrink: 0 }}
+              sx={{ flexShrink: 0, mx: 0.5 }}
             />
             {renderInput(1)}
+            {renderInputEndAdornment(1)}
+            {renderEndAdornment()}
           </Box>
           {endAdornment && <Box sx={{ mr: 1 }}>{endAdornment}</Box>}
         </LocalizationProvider>
@@ -242,6 +341,7 @@ const DateRangeField = withBaseInput<DateRangeFieldProps>(
 DateRangeField.defaultProps = {
   format: "MMM DD, YYYY",
   placeholder: "MMM DD, YYYY",
+  allowClear: false,
 } as Partial<DateRangeFieldProps>;
 
 export default DateRangeField;

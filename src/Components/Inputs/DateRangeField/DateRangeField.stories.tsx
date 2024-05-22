@@ -17,6 +17,7 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     ...commonArgTypes.onChange,
+    ...commonArgTypes.status,
   },
 } satisfies Meta<typeof DateRangeField>;
 
@@ -29,5 +30,17 @@ export const Default: Story = {
     label: "Date Range",
     helperText: "Helper text",
     disabled: false,
+  },
+};
+
+const currDate = new Date();
+const nextWeek = new Date();
+nextWeek.setDate(nextWeek.getDate() + 1 * 7);
+
+export const AllowClear: Story = {
+  args: {
+    ...Default.args,
+    value: [currDate, nextWeek],
+    allowClear: true,
   },
 };

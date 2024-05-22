@@ -31,6 +31,7 @@ const RangePickerComp = ({
   previewSelection,
   readOnly,
   debounce,
+  allowClear,
   ...inputProps
 }: RangePickerProps) => {
   const [anchorEl, setAnchorRef] = useState<HTMLElement | null>(null);
@@ -137,6 +138,7 @@ const RangePickerComp = ({
         onChange={handleSelect}
         disabled={disabled}
         readOnly={disableTextInput || readOnly}
+        allowClear={allowClear}
       />
       <Popover
         open={displayCalendar}

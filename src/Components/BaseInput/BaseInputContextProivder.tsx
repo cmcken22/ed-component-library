@@ -16,7 +16,6 @@ const BaseInputContextProvider = ({
   TooltipProps,
   componentType,
   variant,
-  // endAdornment,
 }: BaseInputProps) => {
   const [labelPosition, setLabelPosition] = useState<"top" | "left">("top");
   const [innerStatus, setInnerStatus] = useState<Status>();
@@ -37,18 +36,13 @@ const BaseInputContextProvider = ({
   }, [status, innerStatus]);
 
   const renderStatusIcon = useCallback(() => {
-    // if (!statusIcon && !endAdornment) return null;
-    // if (endAdornment) return endAdornment;
     if (!statusIcon) return null;
     return (
       <InputAdornment position="end" className="status-adornment">
         <Icon icon={statusIcon} size={20} />
       </InputAdornment>
     );
-  }, [
-    statusIcon,
-    // endAdornment
-  ]);
+  }, [statusIcon]);
 
   return (
     <BaseInputContext.Provider
